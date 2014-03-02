@@ -23,16 +23,17 @@ public class GameManager {
 		setGameFrame(gf);
 	}
 	
-	public void createNewGame(){
-		GameModel game = new GameModel();
-		GamePanel gamePanel = new GamePanel();
-		currentGame = new GameController(game, gamePanel);
+	public void createNewGame(int numPlayers, String playersAndTheirNames){
+		//parse the string because that has all the player information
+		//create new players based on it
+		currentGame = new GameController(new GameModel(numPlayers), new GamePanel(numPlayers), playersAndTheirNames, numPlayers);
 		
-		frame.setFrameContent(gamePanel);
+		frame.setFrameContent(currentGame.getGamePanel());
 	}
 	
 	public boolean loadGame(File file){
-		
+		//returns true if successfully loaded
+		//returns false if not.
 		return true;
 	}
 	

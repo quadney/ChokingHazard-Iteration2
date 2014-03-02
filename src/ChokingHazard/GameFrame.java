@@ -6,12 +6,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import Views.HelpFrame;
@@ -20,6 +23,7 @@ import Views.NewGameFrame;
 public class GameFrame extends JFrame {
 	private final int WIDTH, HEIGHT;
 	private GameManager gm;
+	NewGameFrame frame;
 
 	public GameFrame(int width, int height, GameManager gameManager){
 		this.WIDTH = width;
@@ -65,18 +69,10 @@ public class GameFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//display the content pane that will allow the user to add players in a nice interface
 				//rather than what it looks like now
-				NewGameFrame frame = new NewGameFrame();
+				frame = new NewGameFrame();
         		frame.setVisible(true);
-				//when it returns, do this:
-				new Thread(new Runnable(){
-					public void run(){
-						
-						gm.createNewGame();
-//						setContentPane(newGamePanel);
-//						pack();
-//						validate();
-					}
-				}).start();
+        		frame.addStartNewGameListener(new StartGameListener());
+        		//when it returns, it will do the method to start the new game
 			}
 		});
 		file.add(newGame);
@@ -87,12 +83,12 @@ public class GameFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final File file = getFile();
+				System.out.println(file);
 				if(file != null){
 					//starts a new thread
 					new Thread(new Runnable(){
 						public void run(){
 							gm.loadGame(file);
-							
 						}
 					}).start();
 				}
@@ -158,13 +154,49 @@ public class GameFrame extends JFrame {
 	}
 	
 	private boolean askUserIfWouldLikeToSaveGame(){
+		//JOptionPane.showOptionDialog(this, "Would you like to save this game?", "Save Game", JOptionPane.YES_NO_CANCEL_OPTION);;
 		return true;
+	}
+	
+	private void startNewGame(final int numPlayers, final String players){
+		new Thread(new Runnable(){
+			public void run(){
+				gm.createNewGame(numPlayers, players);
+			}
+		}).start();
 	}
 	
 	public void setFrameContent(JPanel panel){
 		this.setContentPane(panel);
 		this.pack();
 		this.validate();
+	}
+	
+	class StartGameListener implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			//this action listener is in the gameFrame class
+		
+			//also check if any of the colors are the same, because they can't be
+			int numPlayers = frame.getPlayerSelectionComboBox().getSelectedIndex();
+			if(numPlayers == 0){
+				//show option pane that the user needs to select players
+				frame.displayErrorMessage("Please Select a Number of Players");
+			}
+			else{
+				//now need to parse through the information that the user submitted
+				numPlayers += 1;
+				JTextField[] playerNames = frame.getPlayerNames();
+				JComboBox[] playerColors = frame.getColorSelection();
+				String players = "";
+				for(int i = 0; i < numPlayers; ++i){
+					players = players+""+playerNames[i].getText()+" "+playerColors[i].getSelectedItem().toString().toLowerCase()+";";
+				}
+				
+				frame.dispose();
+				startNewGame(numPlayers, players);
+			}
+			
+		}
 	}
 	
 

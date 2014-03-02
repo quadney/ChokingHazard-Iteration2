@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -37,24 +38,6 @@ public class NewGameFrame extends JFrame {
 		colorSelection = new JComboBox[4];
 		
 		startGame = new JButton("Let's Play!");
-		startGame.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				//does this button need to have this action listenr in the game frame class?
-				
-				//need to parse through the information
-				//also check if any of the colors are the same, because they can't be
-				int numPlayers = playerSelectionBox.getSelectedIndex();
-				if(numPlayers == 0){
-					//show option pane that the user needs to select players
-				}
-				else{
-					numPlayers += 1;
-				}
-				//need to return that information the the GameFrame or something
-			}
-		});
 		
 		setTitle("Setup New Game");
 		setSize(width, height);
@@ -120,6 +103,24 @@ public class NewGameFrame extends JFrame {
 	private void displayPanel(JPanel panel){
 		this.setContentPane(panel);
 		this.validate();
+	}
+	
+	public void addStartNewGameListener(ActionListener listenForStartGameButton){
+		startGame.addActionListener(listenForStartGameButton);
+	}
+	
+	public void displayErrorMessage(String errorMessage){
+		JOptionPane.showMessageDialog(this,  errorMessage);
+	}
+	
+	public JComboBox getPlayerSelectionComboBox(){
+		return this.playerSelectionBox;
+	}
+	public JTextField[] getPlayerNames(){
+		return this.playerNames;
+	}
+	public JComboBox[] getColorSelection(){
+		return this.colorSelection;
 	}
 
 }

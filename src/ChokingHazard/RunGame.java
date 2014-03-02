@@ -5,7 +5,7 @@ import javax.swing.SwingUtilities;
 
 
 public class RunGame {
-	private final static int WIDTH = 1100;
+	private final static int WIDTH = 1300;
 	private final static int HEIGHT = 850;
 
 	public static void main(String[] args) {
