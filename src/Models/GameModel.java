@@ -42,6 +42,9 @@ public class GameModel {
 
 		this.gameBoard = new BoardModel();
 		this.players = new PlayerModel[numberPlayers];
+		
+		actionHistory = new Stack<Action>();
+		actionReplays = new Stack<Action>();
 	}
 
 	// ----------- GETTERS ----------- //

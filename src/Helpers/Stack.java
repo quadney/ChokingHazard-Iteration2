@@ -9,9 +9,11 @@ package Helpers;
  */
 public class Stack<E> {
 	private StackNode<E> top;
+	private int size;
 
 	public Stack() {
 		top = null;
+		size = 0;
 	}
 
 	/**
@@ -41,6 +43,7 @@ public class Stack<E> {
 	 */
 	public void add(E object) {
 		top = new StackNode<E>(object, top);
+		size++;
 	}
 
 	/**
@@ -48,8 +51,17 @@ public class Stack<E> {
 	 * nothing will happen.
 	 */
 	public void pop() {
-		if (top != null)
+		if (top != null) {
 			top = top.getBelowNode();
+			size -= 1;
+		}
+	}
+
+	/**
+	 * Returns the number of objects in the stack.
+	 */
+	public int size() {
+		return size;
 	}
 
 }
