@@ -53,4 +53,8 @@ public class PlayerModel {
 	public int getNumActionTokens() {
 		return numActionTokens;
 	}
+	
+	public void changeFamePoints(int modifier){
+		famePoints += modifier;
+	}
 }

@@ -1,4 +1,6 @@
 package Models;
+import Helpers.*;
+import Models.Actions.*;
 
 public class GameModel {
 	// VARIABLES
@@ -11,6 +13,9 @@ public class GameModel {
     private int[] palaceTiles;
     private int[] palaceCards;
     //private int currentFaceUpFestivalCard;
+    
+    private Stack<Action> actionHistory; // This holds a history of the actions taken up to the currently held state.
+    private Stack<Action> actionReplays; // This holds currently undone actions for the purposes of Replay Mode
     
     public GameModel(int numberPlayers){
 		this.isFinalRound = false;
@@ -40,5 +45,9 @@ public class GameModel {
 			numPalaceCards += palaceCards[i];
 		}
 		return numPalaceCards;
+	}
+	
+	public void changeFamePoints(int playerIndex, int modifier){
+		players[playerIndex].changeFamePoints(modifier);
 	}
 }
