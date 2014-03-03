@@ -6,7 +6,7 @@ import Models.*;
  * The abstract "action" class, to be defined by various subclasses, each of
  * which handle the representation of different actions taken by players. Every
  * action holds the index of the player who enacted it, its immutable actionID,
- * and and must be able to undo itself.
+ * and and must be able to undo/redo itself.
  * 
  * @author Cameron Morrow
  * 
@@ -45,5 +45,13 @@ public abstract class Action {
 	 *            The game upon which the action took place.
 	 */
 	public abstract void undo(GameModel game);
+	
+	/**
+	 * Redoes the action's effects on the GameModel.
+	 * 
+	 * @param game
+	 *            The game upon which the action took place.
+	 */
+	public abstract void redo(GameModel game);
 
 }

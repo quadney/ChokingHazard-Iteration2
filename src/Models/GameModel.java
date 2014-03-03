@@ -28,6 +28,9 @@ public class GameModel {
 											// for the purposes of Replay Mode
 
 	private GameState gameState;
+	private int actionIDCounter; // Provides unique actionIDs to every action
+									// created. To be incremented after each
+									// action instantiation.
 
 	public GameModel(int numberPlayers) {
 		this.isFinalRound = false;
@@ -94,5 +97,21 @@ public class GameModel {
 			actionHistory.top().undo(this);
 			actionHistory.pop();
 		}
+	}
+
+	/**
+	 * Iterates forward one move during ReplayMode. If the move replayed is the
+	 * last move to be replayed, changes gameState to NormalMode.
+	 * <p>
+	 * This method should only be accessible while the gameState is ReplayMode!
+	 * I'm leaving this responsibility to the view and controller.
+	 */
+	public void replayMove() {
+		actionHistory.add(actionReplays.top());
+		actionReplays.top().redo(this);
+		actionReplays.pop();
+
+		if (actionReplays.isEmpty())
+			gameState = GameState.NormalMode;
 	}
 }

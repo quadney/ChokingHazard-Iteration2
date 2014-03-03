@@ -25,5 +25,11 @@ public class SampleAction extends Action {
 		game.changeFamePoints(playerIndex, famePointsEarned * -1);
 
 	}
+	
+	@Override
+	public void redo(GameModel game) {
+		game.changeFamePoints(playerIndex, famePointsEarned);
+
+	}
 
 }
