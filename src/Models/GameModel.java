@@ -1,6 +1,13 @@
 package Models;
+
 import Helpers.*;
 import Models.Actions.*;
+
+// This enum declaration might need to be moved, not sure how accessible it is right now 
+// (needs to be accessible by GameModel and the Controller). #JavaTroubles
+enum GameState {
+	ReplayMode, PlanningMode, NormalMode
+}
 
 public class GameModel {
 	// VARIABLES
@@ -8,46 +15,84 @@ public class GameModel {
 	private PlayerModel[] players;
 	private int indexOfCurrentPlayer;
 	private boolean isFinalRound;
-	private int irrigationTiles; 
-    private int threeSpaceTiles;
-    private int[] palaceTiles;
-    private int[] palaceCards;
-    //private int currentFaceUpFestivalCard;
-    
-    private Stack<Action> actionHistory; // This holds a history of the actions taken up to the currently held state.
-    private Stack<Action> actionReplays; // This holds currently undone actions for the purposes of Replay Mode
-    
-    public GameModel(int numberPlayers){
+	private int irrigationTiles;
+	private int threeSpaceTiles;
+	private int[] palaceTiles;
+	private int[] palaceCards;
+	// private int currentFaceUpFestivalCard;
+
+	private Stack<Action> actionHistory; // This holds a history of the actions
+											// taken up to the currently held
+											// state.
+	private Stack<Action> actionReplays; // This holds currently undone actions
+											// for the purposes of Replay Mode
+
+	private GameState gameState;
+
+	public GameModel(int numberPlayers) {
 		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.irrigationTiles = 10;
 		this.threeSpaceTiles = 56;
-		this.palaceTiles = new int[]{6, 7, 8, 9, 10};
-		this.palaceCards = new int[]{5, 5, 5, 5, 5, 5};
-		
+		this.palaceTiles = new int[] { 6, 7, 8, 9, 10 };
+		this.palaceCards = new int[] { 5, 5, 5, 5, 5, 5 };
+
 		this.gameBoard = new BoardModel();
 		this.players = new PlayerModel[numberPlayers];
 	}
-    
-    // ----------- GETTERS ----------- //
+
+	// ----------- GETTERS ----------- //
 	public int getIrrigationTiles() {
 		return irrigationTiles;
 	}
+
 	public int getThreeSpaceTiles() {
 		return threeSpaceTiles;
 	}
+
 	public int[] getPalaceTiles() {
 		return palaceTiles;
 	}
+
 	public int getNumberPalaceCards() {
 		int numPalaceCards = 0;
-		for(int i = 0; i < palaceCards.length; ++i){
+		for (int i = 0; i < palaceCards.length; ++i) {
 			numPalaceCards += palaceCards[i];
 		}
 		return numPalaceCards;
 	}
-	
-	public void changeFamePoints(int playerIndex, int modifier){
+
+	// This method is to be used by the controller to determine which buttons
+	// are visible/enabled in the view (and other visual components). For
+	// example, if the gameState is PlanningMode, the undo button and exit
+	// planning mode buttons will be enabled/shown, as well as a Label or
+	// something.
+	public GameState getGameState() {
+		return gameState;
+	}
+
+	public void changeFamePoints(int playerIndex, int modifier) {
 		players[playerIndex].changeFamePoints(modifier);
+	}
+
+	/**
+	 * Backtracks GameModel state to end of current player's previous turn,
+	 * storing all backtracked moves in actionReplays stack. Also changes
+	 * gameState to ReplayMode.
+	 */
+	public void initializeReplayMode() {
+		gameState = GameState.ReplayMode;
+
+		while (actionHistory.top().getPlayerIndex() == indexOfCurrentPlayer) {
+			actionReplays.add(actionHistory.top());
+			actionHistory.top().undo(this);
+			actionHistory.pop();
+		}
+
+		while (actionHistory.top().getPlayerIndex() != indexOfCurrentPlayer) {
+			actionReplays.add(actionHistory.top());
+			actionHistory.top().undo(this);
+			actionHistory.pop();
+		}
 	}
 }

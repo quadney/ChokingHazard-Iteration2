@@ -5,8 +5,8 @@ import Models.*;
 /**
  * The abstract "action" class, to be defined by various subclasses, each of
  * which handle the representation of different actions taken by players. Every
- * action holds the color of the player who enacted it and must be able to undo
- * itself.
+ * action holds the index of the player who enacted it, its immutable actionID,
+ * and and must be able to undo itself.
  * 
  * @author Cameron Morrow
  * 
@@ -22,7 +22,7 @@ public abstract class Action {
 	public int getActionID() {
 		return actionID;
 	}
-	
+
 	protected int playerIndex;
 
 	/**
@@ -32,14 +32,14 @@ public abstract class Action {
 	public int getPlayerIndex() {
 		return playerIndex;
 	}
-	
-	public Action(int actionID, int playerIndex){
+
+	public Action(int actionID, int playerIndex) {
 		this.actionID = actionID;
 		this.playerIndex = playerIndex;
 	}
 
 	/**
-	 * Undoes the action's effects on the {@value game}.
+	 * Undoes the action's effects on the GameModel.
 	 * 
 	 * @param game
 	 *            The game upon which the action took place.
