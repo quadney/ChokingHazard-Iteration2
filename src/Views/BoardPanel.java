@@ -46,45 +46,45 @@ public class BoardPanel extends JPanel {
 		return returnImage;
 	}
 	
-	public void placeTile(int[] loc, String imageSource, int elevation){
+	public void placeTile(int xLoc, int yLoc, int elevation, String imageSource){
 		clearImage(tempImage);
 		g2d = tileImage.createGraphics();
 		//g2d.rotate(rotationState*Math.PI/2, xLoc+50, yLoc+50);
 		g2d.scale(-0.1*elevation, -0.1*elevation);
-		g2d.drawImage(getImage(imageSource), null, loc[0], loc[1]);
+		g2d.drawImage(getImage(imageSource), null, xLoc, yLoc);
 		g2d.setColor(Color.YELLOW);
-		g2d.drawString(""+elevation, loc[0]+35, loc[1]+35);
+		g2d.drawString(""+elevation, xLoc+35, yLoc+35);
 		g2d.dispose();
 		repaint();
 	}
 	
-	public void moveTile(int[] loc, int rotationState, String imageSource){
+	public void moveTile(int xLoc, int yLoc, int rotationState, String imageSource){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
 		g2d.rotate(rotationState*Math.PI/2);
-		g2d.drawImage(getImage(imageSource), null, loc[0], loc[1]);
+		g2d.drawImage(getImage(imageSource), null, xLoc, yLoc);
 //		g2d.setColor(Color.YELLOW);
 //		g2d.setStroke(new BasicStroke(2.0f));
-//		g2d.drawRect(loc[0], loc[1], 50, 50);
+//		g2d.drawRect(xLoc, yLoc, 50, 50);
 		g2d.dispose();
 		repaint();
 	}
 	
-	public void rotate(int[] loc, int rotationState, String imageSource){
+	public void rotate(int xLoc, int yLoc, int rotationState, String imageSource){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
 		g2d.rotate(rotationState*Math.PI/2);
-		g2d.drawImage(getImage(imageSource), null, loc[0], loc[1]);
+		g2d.drawImage(getImage(imageSource), null, xLoc, yLoc);
 		g2d.dispose();
 		repaint();
 	}
 	
-	public void trackDeveloperPath(int playerIndex, int[] loc){
+	public void trackDeveloperPath(int playerIndex, int xLoc, int yLoc){
 		//clearImage(tempImage);
 		g2d = tempImage.createGraphics();
 		g2d.setColor(Color.YELLOW);
 		g2d.setStroke(new BasicStroke());
-		g2d.drawRect(loc[0], loc[1], 50, 50);
+		g2d.drawRect(xLoc, yLoc, 50, 50);
 		g2d.dispose();
 		repaint();
 	}
@@ -103,40 +103,40 @@ public class BoardPanel extends JPanel {
 //		repaint();
 //	}
 	
-	public void placeDeveloper(String playerColor, int[] loc){
+	public void placeDeveloper(String playerColor, int xLoc, int yLoc){
 		clearImage(tempImage);
 		g2d = developers.createGraphics();
-		g2d.drawImage(getImage("/images/player_"+playerColor+".png"), null, loc[0], loc[1]);
+		g2d.drawImage(getImage("/images/player_"+playerColor+".png"), null, xLoc, yLoc);
 		g2d.dispose();
 		repaint();
 	}
 	
-	public void highlightDeveloper(int[] loc){
+	public void highlightDeveloper(int xLoc, int yLoc){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
 		g2d.setColor(Color.RED);
 		g2d.setStroke(new BasicStroke(2.0f));
-		g2d.drawRect(loc[0], loc[1], 50, 50);
+		g2d.drawRect(xLoc, yLoc, 50, 50);
 		g2d.dispose();
 		repaint();
 	}
 	
-	public void removeDeveloper(int[] loc){
+	public void removeDeveloper(int xLoc, int yLoc){
 		//removes developer from the image
-		clearDeveloperSpace(loc[0], loc[1], developers);
+		clearDeveloperSpace(xLoc, yLoc, developers);
 		clearImage(tempImage);
 		repaint();
 	}
 	
-	public void selectHighlightedDeveloper(int playerIndex, int[] loc){
+	public void selectHighlightedDeveloper(int playerIndex, int xLoc, int yLoc){
 		//this method removes the developer from the buffered image, and places it on the temp image
-		clearDeveloperSpace(loc[0], loc[1], developers);
+		clearDeveloperSpace(xLoc, yLoc, developers);
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
-		g2d.drawImage(getImage("images/player_"+playerIndex+".png"), null, loc[0], loc[1]);
+		g2d.drawImage(getImage("images/player_"+playerIndex+".png"), null, xLoc, yLoc);
 		g2d.setColor(Color.YELLOW);
 		g2d.setStroke(new BasicStroke(2.0f));
-		g2d.drawRect(loc[0], loc[1], 50, 50);
+		g2d.drawRect(xLoc, yLoc, 50, 50);
 		g2d.dispose();
 		repaint();
 	}
@@ -156,7 +156,6 @@ public class BoardPanel extends JPanel {
 	}
 	
 	private void clearImage(BufferedImage image){
-		//image = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		g2d = image.createGraphics();
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR)); 
 		g2d.fillRect(0, 0, image.getWidth(), image.getHeight()); 

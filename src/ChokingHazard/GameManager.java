@@ -5,7 +5,7 @@ import java.io.File;
 
 import Controllers.GameController;
 import Models.GameModel;
-import Views.GamePanel;
+import Views.GameContainerPanel;
 
 public class GameManager {
 	GameFrame frame;
@@ -26,7 +26,7 @@ public class GameManager {
 	public void createNewGame(int numPlayers, String playersAndTheirNames){
 		//parse the string because that has all the player information
 		//create new players based on it
-		currentGame = new GameController(new GameModel(numPlayers), new GamePanel(numPlayers), playersAndTheirNames, numPlayers);
+		currentGame = new GameController(new GameModel(numPlayers), new GameContainerPanel(numPlayers), playersAndTheirNames, numPlayers);
 		frame.setFrameContent(currentGame.getGamePanel());
 	}
 	

@@ -5,17 +5,16 @@ import java.util.Scanner;
 
 import Models.GameModel;
 import Models.PlayerModel;
-import Views.GamePanel;
+import Views.GameContainerPanel;
 
 public class GameController {
 	GameModel gameModel;
-	GamePanel gamePanel;
+	GameContainerPanel gamePanel;
 	
-	public GameController(GameModel model, GamePanel view, String playerInformation, int numPlayers){
+	public GameController(GameModel model, GameContainerPanel view, String playerInformation, int numPlayers){
 		//should we just create them here instead of passing it in?
 		this.gameModel = model;
 		this.gamePanel = view;
-		this.gamePanel.setGlobalTileValues(gameModel.getThreeSpaceTiles(), gameModel.getIrrigationTiles(), gameModel.getPalaceTiles(), "bin/images/layout/layout_festivalCard_DRUM.png", gameModel.getNumberPalaceCards());
 		
 		//parse the player information
 //		String[] players = playerInformation.split(";");
@@ -28,7 +27,7 @@ public class GameController {
 //		this.gamePanel.setPlayerPanels(playerModels);
 	}
 	
-	public GamePanel getGamePanel(){
+	public GameContainerPanel getGamePanel(){
 		return this.gamePanel;
 	}
 	
