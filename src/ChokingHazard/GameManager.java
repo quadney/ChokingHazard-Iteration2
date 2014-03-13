@@ -27,7 +27,6 @@ public class GameManager {
 		//parse the string because that has all the player information
 		//create new players based on it
 		currentGame = new GameController(new GameModel(numPlayers), new GamePanel(numPlayers), playersAndTheirNames, numPlayers);
-		
 		frame.setFrameContent(currentGame.getGamePanel());
 	}
 	
