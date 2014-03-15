@@ -4,8 +4,9 @@ public class JavaCell extends Cell
 {
    private int elevation;
    private String cellType;
+   private boolean hasDeveLoper;
    
-   public JavaCell(int x, int y)
+   public JavaCell(int x, int y, String cellType)
    {
       super(x,y);
       elevation = 0;
@@ -30,5 +31,17 @@ public class JavaCell extends Cell
    public void setCellType(String ct)
    {
       cellType = ct;
+   }
+   
+   public void setDeveloper(){
+	   this.hasDeveLoper = true;
+   }
+   
+   public void removeDeveloper(){
+	   this.hasDeveLoper = false;
+   }
+   
+   public boolean hasDeveloper(){
+	   return hasDeveLoper;
    }
 }
