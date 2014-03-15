@@ -39,9 +39,9 @@ public class PlayerPanel extends JPanel{
 		} 
 		
 		setBackground(Color.WHITE);
-        setPreferredSize(new Dimension(270, 335));
-        setMinimumSize(new Dimension(270, 335));
-        setMaximumSize(new Dimension(270, 335));
+        setPreferredSize(new Dimension(200, 335));
+        setMinimumSize(new Dimension(200, 335));
+        setMaximumSize(new Dimension(200, 335));
         setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         
         initHashMap();
@@ -50,14 +50,14 @@ public class PlayerPanel extends JPanel{
 	
 	private void initLayout(int numFamePoints, int numActionPoints, int numDevelopers, int numRiceTile, int numVillageTile, int numTwoTile, int numActionTokens, int numPalaceCards) {
 		JPanel leftPlayerInfo = new JPanel();
-		leftPlayerInfo.setPreferredSize(new Dimension(86, 60));
+		leftPlayerInfo.setPreferredSize(new Dimension(115, 60));
 		leftPlayerInfo.setBackground(Color.WHITE);
 		this.add(leftPlayerInfo);
 		
 		playerName = new JLabel(name);
         playerName.setFont(new Font("Lucida Grande", 0, 18)); 
-        playerName.setPreferredSize(new Dimension(80, 22));
-        playerName.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 5));
+        playerName.setPreferredSize(new Dimension(110, 22));
+        playerName.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         leftPlayerInfo.add(playerName);
         
         actionPointsLeft = new JLabel(numActionPoints+"");
@@ -70,40 +70,40 @@ public class PlayerPanel extends JPanel{
         famePoints = new JLabel(numFamePoints+"");
         famePoints.setFont(new Font("Lucida Grande", 1, 36));
         famePoints.setHorizontalAlignment(SwingConstants.LEFT);
-        famePoints.setPreferredSize(new Dimension(80, 32));
-        famePoints.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 5));
+        famePoints.setPreferredSize(new Dimension(110, 32));
+        famePoints.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         leftPlayerInfo.add(famePoints);
 
         JSeparator jSeparator1 = new JSeparator();
         jSeparator1.setForeground(new Color(102, 102, 102));
-        jSeparator1.setPreferredSize(new Dimension(158, 15));
+        jSeparator1.setPreferredSize(new Dimension(180, 15));
         this.add(jSeparator1);
         
-        developers = newJLabel(numDevelopers+"", imageSourceHashMap.get("layout_player_"+color)); 
+        developers = newJLabel(numDevelopers+"", imageSourceHashMap.get("layout_player_"+color), 80, 45); 
         this.add(developers);
+        
+        actionTokens = newJLabel(numActionTokens+"", imageSourceHashMap.get("layout_actionToken"), 80, 45); 
+        this.add(actionTokens);
 
-        oneTileRice = newJLabel(numRiceTile+"", imageSourceHashMap.get("layout_riceTile")); 
+        oneTileRice = newJLabel(numRiceTile+"", imageSourceHashMap.get("layout_riceTile"), 80, 45); 
         this.add(oneTileRice);
         
-        oneTileVillage = newJLabel(numVillageTile+"", imageSourceHashMap.get("layout_villageTile")); 
+        oneTileVillage = newJLabel(numVillageTile+"", imageSourceHashMap.get("layout_villageTile"), 80, 45); 
         this.add(oneTileVillage);
 
-        twoTile = newJLabel(numTwoTile+"", imageSourceHashMap.get("layout_twoTile")); 
+        twoTile = newJLabel(numTwoTile+"", imageSourceHashMap.get("layout_twoTile"), 160, 45); 
         this.add(twoTile);
         
-        actionTokens = newJLabel(numActionTokens+"", imageSourceHashMap.get("layout_actionToken")); 
-        this.add(actionTokens);
-        
-        palaceCards = newJLabel(numPalaceCards+"", imageSourceHashMap.get("layout_palaceDeck"));
+        palaceCards = newJLabel(numPalaceCards+"", imageSourceHashMap.get("layout_palaceDeck"), 160, 75);
         this.add(palaceCards);
 		
 	}
 	
-	private JLabel newJLabel(String value, String src){
+	private JLabel newJLabel(String value, String src, int width, int height){
 		JLabel label= new JLabel(value);
 		label.setIcon(new ImageIcon(src));
 		label.setFont(new Font("Lucida Grande", 0, 14));
-		label.setPreferredSize(new Dimension(75, 41));
+		label.setPreferredSize(new Dimension(width, height));
 		label.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		return label;
 	}

@@ -12,7 +12,10 @@ public class PlayerController {
 		this.playerPanels = new PlayerPanel[numPlayers];
 		for(int i = 0; i < playerModels.length; ++i){
 			playerModels[i] = new JavaPlayer(playerNames[i], playerColors[i]);
-			playerPanels[i] = new PlayerPanel(playerNames[i], playerColors[i]);
+			playerPanels[i] = new PlayerPanel(playerNames[i], playerColors[i], playerModels[i].getFamePoints(), 
+					playerModels[i].getActionPoints(), playerModels[i].getDevelopersOffBoard(), 
+					playerModels[i].getNumOneRiceTile(), playerModels[i].getNumOneVillageTile(), 
+					playerModels[i].getNumTwoTile(), playerModels[i].getNumActionTokens(), 3);
 		}
 	}
 	

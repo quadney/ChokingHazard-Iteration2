@@ -9,7 +9,7 @@ public class SharedComponentController {
 
 	public SharedComponentController(){
 		this.sharedModel = new SharedComponentModel();
-		this.sharedPanel = new SharedComponentPanel();
+		this.sharedPanel = new SharedComponentPanel(sharedModel.getThreeSpaceTiles(), sharedModel.getIrrigationTiles(), sharedModel.getPalaceTiles(), sharedModel.getNumberPalaceCards());
 	}
 	
 	public SharedComponentPanel getSharedComponentPanel(){

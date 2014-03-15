@@ -26,7 +26,6 @@ public class BoardPanel extends JPanel {
 	private HashMap<String, String> imageSourceHashMap;
 
 	public BoardPanel(){
-
 		initHashMap();
 		getBackgroundImage();
 		Dimension size = new Dimension(board.getWidth(), board.getHeight());
@@ -38,6 +37,10 @@ public class BoardPanel extends JPanel {
 		this.developers = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		this.tempImage = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	}
+	
+//	public BoardPanel(JavaCell[] cells, ){
+//		//constructor for loading a game, populates the board with all the information
+//	}
 	
 	private void getBackgroundImage(){
 		board = getImage(imageSourceHashMap.get("board"));
@@ -53,7 +56,8 @@ public class BoardPanel extends JPanel {
 		}
 		return returnImage;
 	}
-	
+	// call this when the user is for sure placing a tile on the board
+	// aka when the Enter button is pressed
 	public void placeTile(int xLoc, int yLoc, int elevation, String hashMapKey){
 		clearImage(tempImage);
 		g2d = tileImage.createGraphics();
@@ -66,6 +70,7 @@ public class BoardPanel extends JPanel {
 		repaint();
 	}
 	
+	//use this when the user is moving a tile around the board, and has not made the decision to place it yet
 	public void moveTile(int xLoc, int yLoc, int rotationState, String hashMapKey){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
@@ -111,6 +116,7 @@ public class BoardPanel extends JPanel {
 //		repaint();
 //	}
 	
+	//use this when the user places a developer onto the board, aka presses enter
 	public void placeDeveloper(String playerColor, int xLoc, int yLoc){
 		clearImage(tempImage);
 		g2d = developers.createGraphics();
@@ -119,6 +125,7 @@ public class BoardPanel extends JPanel {
 		repaint();
 	}
 	
+	//tabbing through developers
 	public void highlightDeveloper(int xLoc, int yLoc){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();

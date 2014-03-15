@@ -2,9 +2,10 @@ package Views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.HashMap;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JComboBox;;
 
 
 public class GameContainerPanel extends JPanel {
@@ -27,13 +28,13 @@ public class GameContainerPanel extends JPanel {
 		
 		JPanel leftColumn = new JPanel();
 		leftColumn.setLayout(new BorderLayout());
-		leftColumn.setPreferredSize(new Dimension(175, 700));
+		leftColumn.setPreferredSize(new Dimension(205, 700));
 		leftColumn.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		add(leftColumn, BorderLayout.WEST);
 		
 		JPanel rightColumn = new JPanel();
 		rightColumn.setLayout(new BorderLayout());
-		rightColumn.setPreferredSize(new Dimension(175, 700));
+		rightColumn.setPreferredSize(new Dimension(205, 700));
 		rightColumn.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		add(rightColumn, BorderLayout.EAST);
 		
@@ -55,12 +56,21 @@ public class GameContainerPanel extends JPanel {
 		}
 	}
 	
-	/* ----- SETTERS FOR THIS CLASS'S COMPONENTS ----- */
-//	public void setPlayerPanels(PlayerModel[] playerModels){
-//		for(int i = 0; i < players.length; ++i){
-//			players[i] = new PlayerPanel(playerModels[i].getName(), playerModels[i].getColor());
-//		}
-//	}
-
+	public int promptUserForPalaceValue(){
+		String[] palaces = {"2", "4", "6", "8", "10"};
+		JComboBox<String> palaceComboBox = new JComboBox<String>(palaces);
+		palaceComboBox.setEditable(true);
+		JOptionPane.showMessageDialog( null, palaceComboBox, "Select what Palace Value you would like to place", JOptionPane.QUESTION_MESSAGE);
+		
+		return ((palaceComboBox.getSelectedIndex()+1)*2);
+	}
+	
+	public boolean askUserIfWouldLikeToHoldAPalaceFestival(){
+		
+		int holdFestival = JOptionPane.showConfirmDialog(null, "Would you like to hold a Palace Festival?", "Let's Party!", JOptionPane.YES_NO_OPTION);
+		if(holdFestival == 1)
+			return true;
+		return false;
+	}
 
 }

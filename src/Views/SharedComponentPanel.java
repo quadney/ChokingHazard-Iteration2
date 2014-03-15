@@ -15,45 +15,45 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class SharedComponentPanel extends JPanel{
-	private JLabel threePieceTiles, irrigationTiles, twoPalaceTiles, fourPalaceTiles, sixPalaceTiles, eightPalaceTiles, tenPalaceTiles, festivalCard, palaceDeck;
+	private JLabel threeTiles, irrigationTiles, twoPalaceTiles, fourPalaceTiles, sixPalaceTiles, eightPalaceTiles, tenPalaceTiles, festivalCard, palaceDeck;
 	private HashMap<String, String> imageSourceHashMap;
 	
-	public SharedComponentPanel(){
+	public SharedComponentPanel(int numThreeTiles, int numIrrigationTiles, int[] palaceTiles, int numCardsInPalaceDeck){
 		super(new FlowLayout());
 		setPreferredSize(new Dimension(1100, 110));
 		
 		initHashMap();
-		initPanel();
+		initPanel(numThreeTiles, numIrrigationTiles, palaceTiles, numCardsInPalaceDeck);
 	}
 	
-	private void initPanel(){
-		threePieceTiles = newJLabel(imageSourceHashMap.get("layout_threeTile")); 
-		threePieceTiles.setPreferredSize(new Dimension(70, 90));
-        add(threePieceTiles);
+	private void initPanel(int numThreeTiles, int numIrrigationTiles, int[] palaceTiles, int numCardsInPalaceDeck){
+		threeTiles = newJLabel(numThreeTiles+"", imageSourceHashMap.get("layout_threeTile")); 
+		threeTiles.setPreferredSize(new Dimension(70, 90));
+        add(threeTiles);
         
-        irrigationTiles = newJLabel(imageSourceHashMap.get("layout_irrigationTile")); 
+        irrigationTiles = newJLabel(numIrrigationTiles+"", imageSourceHashMap.get("layout_irrigationTile")); 
         add(irrigationTiles);
         
-        twoPalaceTiles = newJLabel(imageSourceHashMap.get("layout_palace2Tile")); 
+        twoPalaceTiles = newJLabel(palaceTiles[0]+"", imageSourceHashMap.get("layout_palace2Tile")); 
         add(twoPalaceTiles);
         
-        fourPalaceTiles = newJLabel(imageSourceHashMap.get("layout_palace4Tile")); 
+        fourPalaceTiles = newJLabel(palaceTiles[1]+"", imageSourceHashMap.get("layout_palace4Tile")); 
         add(fourPalaceTiles);
         
-        sixPalaceTiles = newJLabel(imageSourceHashMap.get("layout_palace6Tile")); 
+        sixPalaceTiles = newJLabel(palaceTiles[2]+"", imageSourceHashMap.get("layout_palace6Tile")); 
         add(sixPalaceTiles);
         
-        eightPalaceTiles = newJLabel(imageSourceHashMap.get("layout_palace8Tile"));
+        eightPalaceTiles = newJLabel(palaceTiles[3]+"", imageSourceHashMap.get("layout_palace8Tile"));
         add(eightPalaceTiles);
         
-        tenPalaceTiles = newJLabel(imageSourceHashMap.get("layout_palace10Tile")); 
+        tenPalaceTiles = newJLabel(palaceTiles[4]+"", imageSourceHashMap.get("layout_palace10Tile")); 
         add(tenPalaceTiles);
 
-        palaceDeck = newJLabel(imageSourceHashMap.get("layout_palaceDeck"));
+        palaceDeck = newJLabel(numCardsInPalaceDeck+"", imageSourceHashMap.get("layout_palaceDeck"));
         add(palaceDeck);
         
         //TODO
-        festivalCard = newJLabel(imageSourceHashMap.get("layout_festival_DRUM"));
+        festivalCard = newJLabel("  ", imageSourceHashMap.get("layout_festival_DRUM"));
         add(festivalCard);
         
 
@@ -65,8 +65,8 @@ public class SharedComponentPanel extends JPanel{
 		
 	}
 	
-	private JLabel newJLabel(String src){
-		JLabel label= new JLabel();
+	private JLabel newJLabel(String value, String src){
+		JLabel label= new JLabel(value);
 		label.setIcon(new ImageIcon(src));
 		label.setFont(new Font("Lucida Grande", 0, 14));
 		label.setPreferredSize(new Dimension(40, 90));
@@ -78,7 +78,7 @@ public class SharedComponentPanel extends JPanel{
 	}
 	
 	public void updateThreePieceTiles(int num){
-		this.threePieceTiles.setText(""+num);
+		this.threeTiles.setText(""+num);
 	}
 	public void updateIrrigationTiles(int num){
 		this.irrigationTiles.setText(""+num);
@@ -106,20 +106,7 @@ public class SharedComponentPanel extends JPanel{
 		this.palaceDeck.setText(""+num);
 	}
 	
-	public void setGlobalTileValues(int threeTiles, int irrigationTiles, int[] palaceTiles, String festivalCardImage, int palaceDeck){
-		updateThreePieceTiles(threeTiles);
-		updateIrrigationTiles(irrigationTiles);
-		updateTwoPalaceTiles(palaceTiles[0]);
-		updateFourPalaceTiles(palaceTiles[1]);
-		updateSixPalaceTiles(palaceTiles[2]);
-		updateEightPalaceTiles(palaceTiles[3]);
-		updateTenPalaceTiles(palaceTiles[4]);
-		updateFestivalCard(festivalCardImage);
-		updatePalaceDeck(palaceDeck);
-	}
-	
 	private void initHashMap(){
-		// TODO test this
 		File imageSourceFile = null;
 		this.imageSourceHashMap = new HashMap<String, String>();
 		try{

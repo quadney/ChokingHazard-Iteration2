@@ -1,4 +1,3 @@
-
 palaceDeck /images/cardDeck.png
 festival_DRUM /images/lfestivalCard_DRUM.png
 festival_MASK /images/festivalCard_MASK.png
