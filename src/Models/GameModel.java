@@ -116,6 +116,103 @@ public class GameModel {
 		return players;
 
    }
+   
+   public ArrayList<Player> getIrrigationRanks(JavaCell cell)
+   {
+      int x = cell.getX();
+      int y = cell.getY();
+      
+      HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
+
+      JavaCell[][] map = gameBoard.getMap();
+      
+	   if (y < 13 && getDeveloperOnCell(map[y + 1][x]) != null)
+		{
+         JavaCell c = map[y + 1][x];
+         Developer d = getDeveloperOnCell(map[y + 1][x]);
+         Player p = d.getOwner();
+         int rank = c.getElevation();
+         if(!scores.containsKey(p))
+         {
+            scores.put(p, rank);
+         }
+         else
+         {
+            int newRank = c.getElevation();
+            if(newRank > rank)
+               scores.put(p, newRank);
+         }
+      }
+		if (y > 0 && getDeveloperOnCell(map[y - 1][x]) != null)
+		{
+         JavaCell c = map[y - 1][x];
+         Developer d = getDeveloperOnCell(map[y - 1][x]);
+			Player p = d.getOwner();
+         int rank = cell.getElevation();
+         if(!scores.containsKey(p))
+         {
+            scores.put(p, rank);
+         }
+         else
+         {
+            int newRank = c.getElevation();
+            if(newRank > rank)
+               scores.put(p, newRank);
+         }
+      }
+		if (x < 14 && getDeveloperOnCell(map[y][x + 1]) != null)
+		{
+         JavaCell c = map[y][x+1];
+         Developer d = getDeveloperOnCell(map[y][x + 1]);
+         Player p = d.getOwner();
+         int rank = c.getElevation();
+         if(!scores.containsKey(p))
+         {
+            scores.put(p, rank);
+         }
+         else
+         {
+            int newRank = c.getElevation();
+            if(newRank > rank)
+               scores.put(p, newRank);
+         }
+      }
+		if (x > 0 && getDeveloperOnCell(map[y][x - 1]) != null)
+		{ 
+         JavaCell c = map[y][x-1];
+         Developer d = getDeveloperOnCell(map[y][x - 1]);
+         Player p = d.getOwner();
+         int rank = cell.getElevation();
+         if(!scores.containsKey(p))
+         {
+            scores.put(p, rank);
+         }
+         else
+         {
+            int newRank = c.getElevation();
+            if(newRank > rank)
+               scores.put(p, newRank);
+         }
+      }
+
+      ArrayList<Integer> values = new ArrayList<Integer>();
+      for(Integer i:scores.values())
+         values.add(i);
+      Collections.sort(values);
+      
+      ArrayList<Player> players = new ArrayList<Player>();
+      
+      for(Integer i:values)
+      {
+         for(Player p : scores.keySet())
+         {
+            if(scores.get(p) == i)
+               players.add(p);
+         }
+      }
+      
+		return players;
+   }
 
 	/**
 	 * Backtracks GameModel state to end of current player's previous turn,
