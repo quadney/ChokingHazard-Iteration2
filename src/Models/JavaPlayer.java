@@ -13,6 +13,7 @@ public class JavaPlayer extends Player {
    private ArrayList<Developer> developersOnBoard;
    private int selectedDeveloperIndex;
 	private boolean placedThreeTile;
+	
 	//private ArrayList<FestivalCard> festivalCards;
 	
 	public JavaPlayer(String name, String color){

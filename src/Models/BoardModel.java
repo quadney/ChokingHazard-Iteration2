@@ -14,21 +14,21 @@ public class BoardModel {
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
 				if (x == 0 || x == 1) {
-					map[x][y] = new JavaCell (x, y);
+					map[x][y] = new JavaCell (x, y, 0);
 				}
 
 				else if (x <= 6 && (y <= 1 || y >= 12)) {
-					map[x][y] = new JavaCell (x, y);
+					map[x][y] = new JavaCell (x, y, 0);
 				}
 
 				else if (x >= 7 && (y <= 1 || y >= 12)) {
-					map[x][y] = new JavaCell (x, y);
+					map[x][y] = new JavaCell (x, y, 0);
 				}
 				else if (x == 12 || x == 13) {
-					map[x][y] = new JavaCell (x, y);
+					map[x][y] = new JavaCell (x, y, 0);
 				}
 				else {
-					map[x][y] = new JavaCell (x,y);	//this creates Cell objects for the rest of central Java
+					map[x][y] = new JavaCell (x,y, 0);	//this creates Cell objects for the rest of central Java
 				}
 			}
 		}
@@ -48,7 +48,7 @@ public class BoardModel {
 
 		if (checkPalacePlacement(miniMap, tile) && 
 			checkTilesBelow(miniMap, tile) && 
-			checkElevation(miniMap, tile) && 
+			checkElevation(miniMap, tile, xC, yC) && 
 			checkIrrigationPlacement(miniMap, tile) &&
 			checkDeveloperOnCell(miniMap, tile) && 
 			checkCityConnection(miniMap, tile) && 
@@ -84,10 +84,25 @@ public class BoardModel {
 	}
 	
 	private boolean checkTilesBelow(JavaCell[][] miniMap, Tile tile) {
+		
+				
+		
 		return true;
 	}
 	
-	private boolean checkElevation(JavaCell[][] miniMap, Tile tile) {
+	private boolean checkElevation(JavaCell[][] miniMap, Tile tile, int xC, int yC) {
+		String[][] tileCells = tile.getTileCells();
+		
+		int elevation = map[xC][yC].getElevation();
+		
+		for (int i = 0; i < tileCells.length; i++) 
+			for (int j = 0; j < tileCells[i].length; j++) {
+				if (tileCells[i][j] != null && miniMap[i][j].getElevation() != elevation ){
+					return false;
+				}
+			}
+		
+		
 		return true;
 	}
 	
@@ -130,6 +145,10 @@ public class BoardModel {
 	}
 	
 	private boolean checkCityConnection(JavaCell[][] miniMap, Tile tile) {
+		
+		//cannot place a village next to 2 palaces
+		
+		
 		return true;
 	}
 	
