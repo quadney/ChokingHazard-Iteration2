@@ -10,14 +10,14 @@ public class JavaCell extends Cell
    {
       super(x,y);
       elevation = 0;
-      cellType = cellType;
+      this.cellType = cellType;
    }
    
    public JavaCell(int x, int y)
    {
       super(x,y);
       elevation = 0;
-      cellType = "BLANK";
+      cellType = "blank";
    }
    
    public int getElevation()

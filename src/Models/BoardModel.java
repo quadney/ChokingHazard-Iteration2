@@ -53,7 +53,6 @@ public class BoardModel {
 			checkDeveloperOnCell(miniMap, tile) && 
 			checkCityConnection(miniMap, tile) && 
 			checkEdgePlacement(miniMap, tile) &&
-
 			player.decrementNActionPoints(neededActionPoints)) {
 				return true;
 		}
@@ -80,6 +79,21 @@ public class BoardModel {
 	}
 	
 	private boolean checkPalacePlacement(JavaCell[][] miniMap, Tile tile) {
+		String[][] tileCells = tile.getTileCells();
+
+		for (int i = 0; i < tileCells.length; i++) {
+			for (int j = 0; j < tileCells[i].length; j++) {
+				if (tileCells[i][j] != null) {
+					if (miniMap[i][j] != null &&
+						miniMap[i][j].getCellType() != null &&
+						miniMap[i][j].getCellType() == "irrigation") {
+		
+							return false;
+					}
+				}
+			}
+		}
+		
 		return true;
 	}
 	
