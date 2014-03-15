@@ -2,16 +2,10 @@ package Models.Actions;
 
 public class SelectThreeTileAction extends SelectRotatableTileAction{
 
-	int rotationState = 0;
 	
-	public SelectThreeTileAction(int x, int y, int rotationState) {
-		super(x, y, rotationState);
-		// TODO Auto-generated constructor stub
+	public SelectThreeTileAction(String imageKey) {
+		super(imageKey);
 		
-	}
-
-	public void pressSpace(){
-		rotationState += 1 % 4;
 	}
 	
 	public void pressArrow(int value){

@@ -2,18 +2,20 @@ package Models.Actions;
 
 public abstract class SelectRotatableTileAction extends MAction {
 
-	int rotationState;
-	int x = 1;
-	int y = 1;
+	int rotationState = 0;
 	
-	public SelectRotatableTileAction(int x, int y, int rotationState) {
-		super();
+	public SelectRotatableTileAction(String imageKey) {
+		super(imageKey);
 		// TODO Auto-generated constructor stub
 		
 	}
 
 	public void pressSpace(){
 		rotationState += 1 % 4;
+	}
+	
+	public int getRotationState(){
+		return rotationState;
 	}
 	
 	

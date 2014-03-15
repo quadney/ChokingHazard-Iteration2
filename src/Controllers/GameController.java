@@ -6,6 +6,7 @@ import java.io.File;
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
+import Models.Actions.SelectRotatableTileAction;
 import Views.GameContainerPanel;
 
 public class GameController {
@@ -88,7 +89,8 @@ public class GameController {
 
 			break;
 		case 10:
-			//released enter, place tile/developer onto board. 
+			//released enter, place tile/developer onto board.
+			
 
 			break;	
 		case 27:
@@ -97,6 +99,9 @@ public class GameController {
 			break;
 		case 32:
 			currentGame.pressSpace();
+			if (currentGame.getSelectedAction() instanceof SelectRotatableTileAction)
+				board.updateSelectedAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+			
 			//released the space bar, rotate
 
 			break;

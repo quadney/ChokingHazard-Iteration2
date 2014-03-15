@@ -19,4 +19,8 @@ public class BoardController {
 	public void selectPalaceTile(int value) {
 		boardPanel.moveTile(1, 1, 0, "Palace 2");
 	}
+
+	public void updateSelectedAction(int x, int y, String imageKey, int rotationState) {
+		boardPanel.moveTile(x, y, rotationState, imageKey);
+	}
 }

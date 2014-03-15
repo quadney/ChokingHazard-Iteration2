@@ -1,14 +1,10 @@
 package Models.Actions;
 
 public class SelectOneSpaceTileAction extends MAction {
-
-	int x = 1;
-	int y = 1;
 	
-	public SelectOneSpaceTileAction(int x, int y) {
-		super();
-		this.x = x;
-		this.y = y;
+	public SelectOneSpaceTileAction(String imageKey) {
+		super(imageKey);
+
 		// TODO Auto-generated constructor stub
 		
 	}
