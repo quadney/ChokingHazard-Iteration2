@@ -1,8 +1,0 @@
-
-palaceDeck 				/images/cardDeck.png
-festival_DRUM 			/images/lfestivalCard_DRUM.png
-festival_MASK 			/images/festivalCard_MASK.png
-festival_PUPPET 		/images/festivalCard_PUPPET.png
-festival_MASK_DRUM 		/images/festivalCard_MASK_DRUM.png
-festival_PUPPET_DRUM 	/images/festivalCard_PUPPET_DRUM.png
-festival_PUPPET_MASK 	/images/festivalCard_PUPPET_MASK.png
