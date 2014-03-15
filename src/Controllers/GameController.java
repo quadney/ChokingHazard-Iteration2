@@ -28,7 +28,7 @@ public class GameController {
 	public void createNewGame(int numPlayers, String[] playerNames, String[] playerColors){
 		//create controllers
 		
-		currentGame = new GameModel(numPlayers);  //?????
+		currentGame = new GameModel(numPlayers);
 		board = new BoardController();
 		players = new PlayerController(numPlayers, playerNames, playerColors);
 		shared = new SharedComponentController();
@@ -47,6 +47,13 @@ public class GameController {
 	public boolean saveGame(){
 		//calls the game manager, see loadGame
 		gameManager.saveGame();
+		return true;
+	}
+	
+	public boolean getCurrentGameExists(){
+		if (currentGame == null){
+			return false;
+		}
 		return true;
 	}
 	
