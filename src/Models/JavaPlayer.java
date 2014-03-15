@@ -9,6 +9,7 @@ public class JavaPlayer extends Player {
 	private int numOneVillageTile;
 	private int numTwoTile;
 	private int numActionTokens;
+	private boolean placedThreeTile;
 	//private ArrayList<FestivalCard> festivalCards;
 	
 	public JavaPlayer(String name, String color){
@@ -45,7 +46,29 @@ public class JavaPlayer extends Player {
 		return numActionTokens;
 	}
 	
+	public int getAvailableActionPoints() {
+		if (placedThreeTile) {
+			return actionPoints;
+		}
+		
+		return actionPoints - 1;
+	}
+	
 	public void changeFamePoints(int modifier){
 		famePoints += modifier;
+	}
+	
+	public boolean hasPlacedThreeTile() {
+		return placedThreeTile;
+	}
+	
+	
+	public boolean decrementNActionPoints(int n) {
+		if (getAvailableActionPoints() >= n) {
+			actionPoints -= n;
+			return true;
+		}
+		
+		return false;
 	}
 }

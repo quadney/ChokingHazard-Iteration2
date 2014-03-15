@@ -36,8 +36,57 @@ public class BoardModel {
 		
 	}
 	
-	public boolean placeTile(Cell[][] cells, Tile tile) {
+	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player) {
+		checkValidTilePlacement(xC, yC, tile, player);
+		return true;
+	}
+	
+	private boolean checkValidTilePlacement(int xC, int yC, Tile tile, JavaPlayer player) {
+		int neededActionPoints = checkNeededActionPoints(xC, yC, tile);
 		
+		if (checkPalacePlacement(xC, yC, tile) && 
+			checkTilesBelow(xC, yC, tile) && 
+			checkElevation(xC, yC, tile) && 
+			checkIrrigationPlacement(xC, yC, tile) &&
+			checkDeveloperOnCell(xC, yC, tile) && 
+			checkCityConnection(xC, yC, tile) && 
+			checkEdgePlacement(xC, yC, tile) &&
+			player.decrementNActionPoints(neededActionPoints)) {
+				return true;
+		}
+
+		return false;
+	}
+	
+	private int checkNeededActionPoints(int xC, int yC, Tile tile) {
+		return 0;
+	}
+	
+	private boolean checkPalacePlacement(int xC, int yC, Tile tile) {
+		return true;
+	}
+	
+	private boolean checkTilesBelow(int xC, int yC, Tile tile) {
+		return true;
+	}
+	
+	private boolean checkElevation(int xC, int yC, Tile tile) {
+		return true;
+	}
+	
+	private boolean checkIrrigationPlacement(int xC, int yC, Tile tile) {
+		return true;
+	}
+	
+	private boolean checkDeveloperOnCell(int xC, int yC, Tile tile) {
+		return true;
+	}
+	
+	private boolean checkCityConnection(int xC, int yC, Tile tile) {
+		return true;
+	}
+	
+	private boolean checkEdgePlacement(int xC, int yC, Tile tile) {
 		return true;
 	}
 }
