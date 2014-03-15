@@ -8,7 +8,8 @@ public class BoardController {
 	BoardPanel boardPanel;
 	
 	public BoardController(){
-		
+		this.boardModel = new BoardModel();
+		this.boardPanel = new BoardPanel();
 	}
 	
 	public BoardPanel getBoardPanel(){

@@ -24,7 +24,7 @@ public class PlayerPanel extends JPanel{
 	private JLabel playerName, famePoints, actionPointsLeft, numDevelopers, numOneTileRice, numOneTileVillage, numTwoTile, numActionTokens;
 	private HashMap<String, String> imageSourceHashMap;
 	
-	public PlayerPanel(String name, String color, HashMap<String, String> imageSources){
+	public PlayerPanel(String name, String color){
 		setLayout(new FlowLayout());
 		this.name = name;
 		this.color = color;
@@ -33,6 +33,7 @@ public class PlayerPanel extends JPanel{
 			Field field = Color.class.getField(color);
 			this.playerColor = (Color)field.get(null);
 		} catch (Exception e) {
+			System.out.println("There was an image parseing the color string to a color");
 			this.playerColor = Color.black;
 		} 
 		
