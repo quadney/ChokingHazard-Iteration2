@@ -1,22 +1,14 @@
 package Models;
 
-public class Cell 
+public abstract class Cell 
 {
    private int xVal;
-   private int yVal;
-   
-   private int elevation;
-
-   //String refering to the type of cell, village, rice, palace, etc.
-   private String cellType;
-   
+   private int yVal;   
    
    public Cell(int x, int y)
    {
       xVal = x;
       yVal = y;
-      elevation = 0;
-      cellType = "BLANK";
    }
    
    public int getX()
@@ -29,13 +21,13 @@ public class Cell
       return yVal;
    }
    
-   public int getElevation()
+   public void setX(int x)
    {
-      return elevation;
+      xVal = x;
    }
    
-   public String getCellType()
+   public void setY(int y)
    {
-      return cellType;
+      yVal = y;
    }
 }
