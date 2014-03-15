@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -18,6 +22,7 @@ public class PlayerPanel extends JPanel{
 	private String name;
 	private Color playerColor;
 	private JLabel playerName, famePoints, actionPointsLeft, numDevelopers, numOneTileRice, numOneTileVillage, numTwoTile, numActionTokens;
+	private HashMap<String, String> imageSourceHashMap;
 	
 	public PlayerPanel(String name, String color){
 		setLayout(new FlowLayout());
@@ -28,6 +33,7 @@ public class PlayerPanel extends JPanel{
 			Field field = Color.class.getField(color);
 			this.playerColor = (Color)field.get(null);
 		} catch (Exception e) {
+			System.out.println("There was an image parseing the color string to a color");
 			this.playerColor = Color.black;
 		} 
 		
@@ -37,6 +43,7 @@ public class PlayerPanel extends JPanel{
         setMaximumSize(new Dimension(270, 335));
         setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         
+        initHashMap();
         initLayout();
         setCurrentPlayer();
 	}
@@ -72,19 +79,19 @@ public class PlayerPanel extends JPanel{
         jSeparator1.setPreferredSize(new Dimension(158, 15));
         this.add(jSeparator1);
         
-        numDevelopers = newJLabel("bin/images/layout/layout_player_"+color+".png"); 
+        numDevelopers = newJLabel(imageSourceHashMap.get("layout_player_"+color)); 
         this.add(numDevelopers);
 
-        numOneTileRice = newJLabel("bin/images/layout/layout_oneTile_rice.png"); 
+        numOneTileRice = newJLabel(imageSourceHashMap.get("layout_riceTile")); 
         this.add(numOneTileRice);
         
-        numOneTileVillage = newJLabel("bin/images/layout/layout_oneTile_village.png"); 
+        numOneTileVillage = newJLabel(imageSourceHashMap.get("layout_villageTile")); 
         this.add(numOneTileVillage);
 
-        numTwoTile = newJLabel("bin/images/layout/layout_twoTile.png"); 
+        numTwoTile = newJLabel(imageSourceHashMap.get("layout_twoTile")); 
         this.add(numTwoTile);
         
-        numActionTokens = newJLabel("bin/images/layout/layout_actionToken.png"); 
+        numActionTokens = newJLabel(imageSourceHashMap.get("layout_actionToken")); 
         this.add(numActionTokens);
 		
 	}
@@ -141,6 +148,24 @@ public class PlayerPanel extends JPanel{
 	
 	public void setNotCurrentPlayer(){
 		this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+	}
+	
+	private void initHashMap(){
+		// TODO test this
+		File imageSourceFile = null;
+		this.imageSourceHashMap = new HashMap<String, String>();
+		try{
+			imageSourceFile = new File("/files/PlayerImageStrings.txt");
+			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
+			String line = fileReader.readLine();
+			String[] hash = line.split(" ");
+			imageSourceHashMap.put(hash[0], hash[1]);
+			System.out.println("Hash 0: "+hash[0]);
+			System.out.println("Hash 1: "+hash[1]);
+		} catch(Exception e){
+			
+		}
+		System.out.println("File Name: "+imageSourceFile.getName());
 	}
 	
 	
