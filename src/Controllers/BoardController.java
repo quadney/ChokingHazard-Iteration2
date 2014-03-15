@@ -15,4 +15,6 @@ public class BoardController {
 	public BoardPanel getBoardPanel(){
 		return this.boardPanel;
 	}
+
+	
 }
