@@ -86,4 +86,8 @@ public class GameModel {
 		if (actionReplays.isEmpty())
 			gameState = GameState.NormalMode;
 	}
+
+	public int getPlayerIndex() {
+		return this.indexOfCurrentPlayer;
+	}
 }

@@ -81,17 +81,15 @@ public class GameController {
 		switch(e.getKeyCode()){
 		case 8:
 			//released delete, delete a developer from the board
-			players.deleteDeveloper();
-			board.deleteDeveloper();
+
 			break;
 		case 9:
 			//released tab, tab through developers
-			players.tabThroughDevelopers()
+
 			break;
 		case 10:
 			//released enter, place tile/developer onto board. 
-			board.pressEnter();
-			players.pressEnter();
+
 			break;	
 		case 27:
 			//released Esc, cancel action
@@ -142,6 +140,10 @@ public class GameController {
 
 			break;
 		case 80:
+			//TODO ask for value
+			int value = GameFrame.getPalaceValueFromUser();
+			if( shared.hasPalaceTileValue( value ) && players.selectPalaceTile( value, currentGame.getPlayerIndex() ) )
+				board.selectPalace( value );
 			//released P, new palace tile, need to ask for value of Tile
 
 			break;

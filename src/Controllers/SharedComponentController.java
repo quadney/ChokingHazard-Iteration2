@@ -15,4 +15,12 @@ public class SharedComponentController {
 	public SharedComponentPanel getSharedComponentPanel(){
 		return this.sharedPanel;
 	}
+
+	public void selectPalaceTile(int value) {
+		sharedModel.hasPalaceTile( value );
+	}
+
+	public boolean hasPalaceTileValue(int value) {
+		return sharedModel.hasPalaceTile( value );
+	}
 }
