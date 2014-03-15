@@ -1,4 +1,5 @@
 package Models;
+import java.util.*;
 
 public class JavaPlayer extends Player {
 	private int famePoints;
@@ -9,6 +10,8 @@ public class JavaPlayer extends Player {
 	private int numOneVillageTile;
 	private int numTwoTile;
 	private int numActionTokens;
+   private ArrayList<Developer> developersOnBoard;
+   private int selectedDeveloperIndex;
 	private boolean placedThreeTile;
 	//private ArrayList<FestivalCard> festivalCards;
 	
@@ -21,6 +24,9 @@ public class JavaPlayer extends Player {
 		this.numOneVillageTile = 2;
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
+      
+      selectedDeveloperIndex = 0;
+      developersOnBoard = new ArrayList<Developer>();
 		//this.festivalCards = new ArrayList<FestivalCard>;
 	}
    
@@ -57,6 +63,29 @@ public class JavaPlayer extends Player {
 	public void changeFamePoints(int modifier){
 		famePoints += modifier;
 	}
+   
+   public ArrayList<Developer> getDevelopersOnBoard()
+   {
+      return developersOnBoard;
+   }
+   
+   //Returns the selected developer if there is a valid option (Developers on the board)
+   public Developer getSelectedDeveloper()
+   {
+      if(developersOnBoard.size() > 0)
+         return developersOnBoard.get(selectedDeveloperIndex);
+      
+      return null;
+   }
+   
+   //Tabs through the collection of developers on the board. If the index is greater than the
+   //number of developers, the first developer in the list becomes selected
+   public void tabThroughDevelopers()
+   {
+      selectedDeveloperIndex++;
+      if(selectedDeveloperIndex >= developersOnBoard.size())
+         selectedDeveloperIndex = 0;
+   }
 	
 	public boolean hasPlacedThreeTile() {
 		return placedThreeTile;
