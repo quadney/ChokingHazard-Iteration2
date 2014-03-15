@@ -1,5 +1,9 @@
 package Models;
 
-public class BoardModel {
+public class BoardModel 
+{
+
+   private Cell[][] board;
+   
 
 }
