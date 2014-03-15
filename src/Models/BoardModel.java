@@ -13,23 +13,23 @@ public class BoardModel {
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
 				if (x == 0 || x == 1) {
-					map[x][y] = new JavaCell (x, y);
+					map[x][y] = new JavaCell (x, y,"BLANK");
 				}
 
 				else if (x <= 6 && (y <= 1 || y >= 12)) {
-					map[x][y] = new JavaCell (x, y);
+					map[x][y] = new JavaCell (x, y, "BLANK");
 				}
 
 				else if (x >= 7 && (y <= 1 || y >= 12)) {
-					map[x][y] = new JavaCell (x, y);
+					map[x][y] = new JavaCell (x, y, "BLANK");
 				}
 
 				else if (x == 12 || x == 13) {
-					map[x][y] = new JavaCell (x, y);
+					map[x][y] = new JavaCell (x, y, "BLANK");
 				}
 				
 				else {
-					map[x][y] = new JavaCell (x,y);	//this creates Cell objects for the rest of central Java
+					map[x][y] = new JavaCell (x,y, "BLANK");	//this creates Cell objects for the rest of central Java
 				}
 			}
 		}
