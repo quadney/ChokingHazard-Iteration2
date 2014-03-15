@@ -12,7 +12,7 @@ public class Tile {
 		this.tileSpaces = tileSpaces;
 		this.tileId = tileId;
 		this.numberCells = numberCells;
-		tileSpaces = new String[2][2];
+		tileSpaces = new String[3][3];
 		createTile();
 	}
 
@@ -27,11 +27,10 @@ public class Tile {
 	public String getType(){
 		int numberOfCell = 0;
 		for(int i = 0; i < tileSpaces.length; i++)
-			for(int j = 0; j < tileSpaces[i].length; i++){
-				if(tileSpaces[i][j] == null)
-					break;
+			for(int j = 0; j < tileSpaces[i].length; i++)
+				if(tileSpaces[i][j] != null)
 				numberOfCell++;
-			}
+			
 		
 				if(numberOfCell == 2){
 					return "two";
@@ -42,17 +41,16 @@ public class Tile {
 				}
 	
 	}
-	public void createTile(){
+	private void createTile(){
 		if(numberCells == 3){
-			tileSpaces[0][1] = "Village";
+			tileSpaces[0][1] = "village";
 			tileSpaces[0][0] = "rice";
 			tileSpaces[1][1] = "rice";
-			tileSpaces[1][0] = "";
+
 		}else if(numberCells == 2){
-			tileSpaces[0][1] = "Village";
+			tileSpaces[0][1] = "village";
 			tileSpaces[0][0] = "rice";
-			tileSpaces[1][1] = "";
-			tileSpaces[1][0] = "";
+
 		}
 	}
 
