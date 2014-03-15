@@ -7,19 +7,27 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class BoardPanel extends JPanel {
-	BufferedImage board;
-	BufferedImage tileImage;
-	BufferedImage developers;
-	BufferedImage tempImage;
-	Graphics2D g2d;
+	private BufferedImage board;
+	private BufferedImage tileImage;
+	private BufferedImage developers;
+	private BufferedImage tempImage;
+	private BufferedImage planningMode;
+	private Graphics2D g2d;
+	private HashMap<String, String> imageSourceHashMap;
 
 	public BoardPanel(){
+
+		initHashMap();
 		getBackgroundImage();
 		Dimension size = new Dimension(board.getWidth(), board.getHeight());
 		setMinimumSize(size);
@@ -32,7 +40,7 @@ public class BoardPanel extends JPanel {
 	}
 	
 	private void getBackgroundImage(){
-		board = getImage("/images/board.png");
+		board = getImage(imageSourceHashMap.get("board"));
 		repaint();
 	}
 	
@@ -46,23 +54,23 @@ public class BoardPanel extends JPanel {
 		return returnImage;
 	}
 	
-	public void placeTile(int xLoc, int yLoc, int elevation, String imageSource){
+	public void placeTile(int xLoc, int yLoc, int elevation, String hashMapKey){
 		clearImage(tempImage);
 		g2d = tileImage.createGraphics();
 		//g2d.rotate(rotationState*Math.PI/2, xLoc+50, yLoc+50);
 		g2d.scale(-0.1*elevation, -0.1*elevation);
-		g2d.drawImage(getImage(imageSource), null, xLoc, yLoc);
+		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
 		g2d.setColor(Color.YELLOW);
 		g2d.drawString(""+elevation, xLoc+35, yLoc+35);
 		g2d.dispose();
 		repaint();
 	}
 	
-	public void moveTile(int xLoc, int yLoc, int rotationState, String imageSource){
+	public void moveTile(int xLoc, int yLoc, int rotationState, String hashMapKey){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
 		g2d.rotate(rotationState*Math.PI/2);
-		g2d.drawImage(getImage(imageSource), null, xLoc, yLoc);
+		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
 //		g2d.setColor(Color.YELLOW);
 //		g2d.setStroke(new BasicStroke(2.0f));
 //		g2d.drawRect(xLoc, yLoc, 50, 50);
@@ -70,11 +78,11 @@ public class BoardPanel extends JPanel {
 		repaint();
 	}
 	
-	public void rotate(int xLoc, int yLoc, int rotationState, String imageSource){
+	public void rotate(int xLoc, int yLoc, int rotationState, String hashMapKey){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
 		g2d.rotate(rotationState*Math.PI/2);
-		g2d.drawImage(getImage(imageSource), null, xLoc, yLoc);
+		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
 		g2d.dispose();
 		repaint();
 	}
@@ -106,7 +114,7 @@ public class BoardPanel extends JPanel {
 	public void placeDeveloper(String playerColor, int xLoc, int yLoc){
 		clearImage(tempImage);
 		g2d = developers.createGraphics();
-		g2d.drawImage(getImage("/images/player_"+playerColor+".png"), null, xLoc, yLoc);
+		g2d.drawImage(getImage(imageSourceHashMap.get("player_"+playerColor)), null, xLoc, yLoc);
 		g2d.dispose();
 		repaint();
 	}
@@ -128,12 +136,12 @@ public class BoardPanel extends JPanel {
 		repaint();
 	}
 	
-	public void selectHighlightedDeveloper(int playerIndex, int xLoc, int yLoc){
+	public void selectHighlightedDeveloper(String playerColor, int xLoc, int yLoc){
 		//this method removes the developer from the buffered image, and places it on the temp image
 		clearDeveloperSpace(xLoc, yLoc, developers);
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
-		g2d.drawImage(getImage("images/player_"+playerIndex+".png"), null, xLoc, yLoc);
+		g2d.drawImage(getImage(imageSourceHashMap.get("player_"+playerColor)), null, xLoc, yLoc);
 		g2d.setColor(Color.YELLOW);
 		g2d.setStroke(new BasicStroke(2.0f));
 		g2d.drawRect(xLoc, yLoc, 50, 50);
@@ -169,5 +177,28 @@ public class BoardPanel extends JPanel {
 		g2d.fillRect(x, y, 50, 50);
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 		g2d.dispose();
+	}
+	
+	private void initHashMap(){
+		// TODO test this
+		File imageSourceFile = null;
+		this.imageSourceHashMap = new HashMap<String, String>();
+		System.out.println("1");
+		try{
+			System.out.println("2");
+			imageSourceFile = new File("bin/files/BoardImageStrings.txt");
+			System.out.println("3");
+			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
+			System.out.println("4");
+			String line = fileReader.readLine();
+			System.out.println("5");
+			String[] hash = line.split(" ");
+			System.out.println("Hash 0: "+hash[0]);
+			System.out.println("Hash 1: "+hash[1]);
+			imageSourceHashMap.put(hash[0], hash[1]);
+		} catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+		System.out.println("File Name: "+imageSourceFile.getName());
 	}
 }
