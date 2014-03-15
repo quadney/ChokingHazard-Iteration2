@@ -15,12 +15,8 @@ public class BoardController {
 	public BoardPanel getBoardPanel(){
 		return this.boardPanel;
 	}
-	
-	public int placePalaceTile() {
-		return boardModel.placePalaceTile();
-	}
 
-	public void selectPalace(int value) {
-		boardPanel.placeTile(xLoc, yLoc, elevation, hashMapKey);
+	public void selectPalaceTile(int value) {
+		boardPanel.moveTile(1, 1, 0, "Palace 2");
 	}
 }

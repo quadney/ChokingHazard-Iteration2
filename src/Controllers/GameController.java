@@ -141,11 +141,11 @@ public class GameController {
 			break;
 		case 80:
 			//TODO ask for value
-			int value = GameFrame.getPalaceValueFromUser();
-			if( shared.hasPalaceTileValue( value ) && players.selectPalaceTile( value, currentGame.getPlayerIndex() ) )
-				board.selectPalace( value );
 			//released P, new palace tile, need to ask for value of Tile
-
+			
+			int value = GameFrame.getPalaceValueFromUser();
+			if( shared.selectPalaceTile( value ) && players.selectPalaceTile( value, currentGame.getPlayerIndex() ) )
+				board.selectPalaceTile( value );
 			break;
 		case 82:
 			//released R, place rice tile
