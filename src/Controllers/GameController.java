@@ -1,7 +1,10 @@
 package Controllers;
 
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import ChokingHazard.GameFrame;
@@ -11,13 +14,13 @@ import Models.JavaPlayer;
 import Views.GameContainerPanel;
 
 public class GameController {
-	GameFrame gameFrame;
-	GameManager gameManager;
-	GameModel currentGame;
-	GameContainerPanel currentGamePanel;
-	//BoardController board;
-	//PlayerController players;
-	//SharedComponentController shared;
+	private GameFrame gameFrame;
+	private GameManager gameManager;
+	private GameModel currentGame;
+	private GameContainerPanel currentGamePanel;
+	private BoardController board;
+	private PlayerController players;
+	private SharedComponentController shared;
 	
 	public GameController(GameFrame frame){
 		//should we just create them here instead of passing it in?
@@ -30,13 +33,13 @@ public class GameController {
 	public void createNewGame(int numPlayers, String[] playerNames, String[] playerColors){
 		//create controllers
 		
-		//currentGame = new GameModel();   ????
-		//board = new BoardController();
-		//players = new PlayerController(numPlayers, playerNames, playerColors);
-		//shared = new SharedComponentController();
+		currentGame = new GameModel(numPlayers);  //?????
+		board = new BoardController();
+		players = new PlayerController(numPlayers, playerNames, playerColors);
+		shared = new SharedComponentController();
 		
-		//currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedPanel());
-		//gameFrame.setFrameContent(currentGamePanel);
+		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
+		gameFrame.setFrameContent(currentGamePanel);
 	}
 	
 	public boolean loadGame(File file){
@@ -183,6 +186,4 @@ public class GameController {
 		}
 	}
 	
-	
-
 }

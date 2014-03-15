@@ -3,6 +3,9 @@ package Views;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -15,11 +18,11 @@ public class SharedComponentPanel extends JPanel{
 	private JLabel threePieceTiles, irrigationTiles, twoPalaceTiles, fourPalaceTiles, sixPalaceTiles, eightPalaceTiles, tenPalaceTiles, festivalCard, palaceDeck;
 	private HashMap<String, String> imageSourceHashMap;
 	
-	public SharedComponentPanel(HashMap<String, String> imageSources){
+	public SharedComponentPanel(){
 		super(new FlowLayout());
 		setPreferredSize(new Dimension(1100, 110));
-		this.imageSourceHashMap = imageSources;
 		
+		initHashMap();
 		initPanel();
 	}
 	
@@ -113,6 +116,24 @@ public class SharedComponentPanel extends JPanel{
 		updateTenPalaceTiles(palaceTiles[4]);
 		updateFestivalCard(festivalCardImage);
 		updatePalaceDeck(palaceDeck);
+	}
+	
+	private void initHashMap(){
+		// TODO test this
+		File imageSourceFile = null;
+		this.imageSourceHashMap = new HashMap<String, String>();
+		try{
+			imageSourceFile = new File("/files/SharedComponentImageStrings.txt");
+			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
+			String line = fileReader.readLine();
+			String[] hash = line.split(" ");
+			imageSourceHashMap.put(hash[0], hash[1]);
+			System.out.println("Hash 0: "+hash[0]);
+			System.out.println("Hash 1: "+hash[1]);
+		} catch(Exception e){
+			
+		}
+		System.out.println("File Name: "+imageSourceFile.getName());
 	}
 	
 }

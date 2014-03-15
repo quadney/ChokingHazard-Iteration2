@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
@@ -25,7 +28,6 @@ public class PlayerPanel extends JPanel{
 		setLayout(new FlowLayout());
 		this.name = name;
 		this.color = color;
-		this.imageSourceHashMap = imageSources;
 		
 		try {
 			Field field = Color.class.getField(color);
@@ -40,6 +42,7 @@ public class PlayerPanel extends JPanel{
         setMaximumSize(new Dimension(270, 335));
         setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         
+        initHashMap();
         initLayout();
         setCurrentPlayer();
 	}
@@ -144,6 +147,24 @@ public class PlayerPanel extends JPanel{
 	
 	public void setNotCurrentPlayer(){
 		this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+	}
+	
+	private void initHashMap(){
+		// TODO test this
+		File imageSourceFile = null;
+		this.imageSourceHashMap = new HashMap<String, String>();
+		try{
+			imageSourceFile = new File("/files/PlayerImageStrings.txt");
+			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
+			String line = fileReader.readLine();
+			String[] hash = line.split(" ");
+			imageSourceHashMap.put(hash[0], hash[1]);
+			System.out.println("Hash 0: "+hash[0]);
+			System.out.println("Hash 1: "+hash[1]);
+		} catch(Exception e){
+			
+		}
+		System.out.println("File Name: "+imageSourceFile.getName());
 	}
 	
 	

@@ -7,6 +7,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -22,14 +25,14 @@ public class BoardPanel extends JPanel {
 	private Graphics2D g2d;
 	private HashMap<String, String> imageSourceHashMap;
 
-	public BoardPanel(HashMap<String, String> imageSources){
+	public BoardPanel(){
 		getBackgroundImage();
 		Dimension size = new Dimension(board.getWidth(), board.getHeight());
 		setMinimumSize(size);
 		setMaximumSize(size);
 		setPreferredSize(size);
 		
-		this.imageSourceHashMap = imageSources;
+		initHashMap();
 		this.tileImage = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		this.developers = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		this.tempImage = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -173,5 +176,23 @@ public class BoardPanel extends JPanel {
 		g2d.fillRect(x, y, 50, 50);
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 		g2d.dispose();
+	}
+	
+	private void initHashMap(){
+		// TODO test this
+		File imageSourceFile = null;
+		this.imageSourceHashMap = new HashMap<String, String>();
+		try{
+			imageSourceFile = new File("/files/BoardImageStrings.txt");
+			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
+			String line = fileReader.readLine();
+			String[] hash = line.split(" ");
+			imageSourceHashMap.put(hash[0], hash[1]);
+			System.out.println("Hash 0: "+hash[0]);
+			System.out.println("Hash 1: "+hash[1]);
+		} catch(Exception e){
+			
+		}
+		System.out.println("File Name: "+imageSourceFile.getName());
 	}
 }
