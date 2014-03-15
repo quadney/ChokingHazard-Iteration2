@@ -31,10 +31,6 @@ public class SharedComponentModel {
 		return numPalaceCards;
 	}
 	
-	public void incrementThreeTile(){
-		//should increment three tiles
-	}
-	
 	public boolean useThreeTile(){
 		//this should attempt to decrement the three tile
 		//return if this is allowed
