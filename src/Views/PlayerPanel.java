@@ -21,10 +21,11 @@ public class PlayerPanel extends JPanel{
 	private String color;
 	private String name;
 	private Color playerColor;
-	private JLabel playerName, famePoints, actionPointsLeft, numDevelopers, numOneTileRice, numOneTileVillage, numTwoTile, numActionTokens;
+	private JLabel playerName, famePoints, actionPointsLeft, developers, oneTileRice, oneTileVillage, twoTile, actionTokens;
+	private JLabel palaceCards;
 	private HashMap<String, String> imageSourceHashMap;
 	
-	public PlayerPanel(String name, String color){
+	public PlayerPanel(String name, String color, int numFamePoints, int numActionPoints, int numDevelopers, int numRiceTile, int numVillageTile, int numTwoTile, int numActionTokens, int numPalaceCards){
 		setLayout(new FlowLayout());
 		this.name = name;
 		this.color = color;
@@ -44,11 +45,10 @@ public class PlayerPanel extends JPanel{
         setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         
         initHashMap();
-        initLayout();
-        setCurrentPlayer();
+        initLayout(numFamePoints, numActionPoints, numDevelopers, numRiceTile, numVillageTile, numTwoTile, numActionTokens, numPalaceCards);
 	}
 	
-	private void initLayout() {
+	private void initLayout(int numFamePoints, int numActionPoints, int numDevelopers, int numRiceTile, int numVillageTile, int numTwoTile, int numActionTokens, int numPalaceCards) {
 		JPanel leftPlayerInfo = new JPanel();
 		leftPlayerInfo.setPreferredSize(new Dimension(86, 60));
 		leftPlayerInfo.setBackground(Color.WHITE);
@@ -60,14 +60,14 @@ public class PlayerPanel extends JPanel{
         playerName.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 5));
         leftPlayerInfo.add(playerName);
         
-        actionPointsLeft = new JLabel();
+        actionPointsLeft = new JLabel(numActionPoints+"");
         actionPointsLeft.setFont(new Font("Lucida Grande", 0, 48)); 
         actionPointsLeft.setHorizontalAlignment(SwingConstants.CENTER);
         actionPointsLeft.setPreferredSize(new Dimension(60, 60));
         actionPointsLeft.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
         this.add(actionPointsLeft);
         
-        famePoints = new JLabel();
+        famePoints = new JLabel(numFamePoints+"");
         famePoints.setFont(new Font("Lucida Grande", 1, 36));
         famePoints.setHorizontalAlignment(SwingConstants.LEFT);
         famePoints.setPreferredSize(new Dimension(80, 32));
@@ -79,28 +79,31 @@ public class PlayerPanel extends JPanel{
         jSeparator1.setPreferredSize(new Dimension(158, 15));
         this.add(jSeparator1);
         
-        numDevelopers = newJLabel(imageSourceHashMap.get("layout_player_"+color)); 
-        this.add(numDevelopers);
+        developers = newJLabel(numDevelopers+"", imageSourceHashMap.get("layout_player_"+color)); 
+        this.add(developers);
 
-        numOneTileRice = newJLabel(imageSourceHashMap.get("layout_riceTile")); 
-        this.add(numOneTileRice);
+        oneTileRice = newJLabel(numRiceTile+"", imageSourceHashMap.get("layout_riceTile")); 
+        this.add(oneTileRice);
         
-        numOneTileVillage = newJLabel(imageSourceHashMap.get("layout_villageTile")); 
-        this.add(numOneTileVillage);
+        oneTileVillage = newJLabel(numVillageTile+"", imageSourceHashMap.get("layout_villageTile")); 
+        this.add(oneTileVillage);
 
-        numTwoTile = newJLabel(imageSourceHashMap.get("layout_twoTile")); 
-        this.add(numTwoTile);
+        twoTile = newJLabel(numTwoTile+"", imageSourceHashMap.get("layout_twoTile")); 
+        this.add(twoTile);
         
-        numActionTokens = newJLabel(imageSourceHashMap.get("layout_actionToken")); 
-        this.add(numActionTokens);
+        actionTokens = newJLabel(numActionTokens+"", imageSourceHashMap.get("layout_actionToken")); 
+        this.add(actionTokens);
+        
+        palaceCards = newJLabel(numPalaceCards+"", imageSourceHashMap.get("layout_palaceDeck"));
+        this.add(palaceCards);
 		
 	}
 	
-	private JLabel newJLabel(String src){
-		JLabel label= new JLabel();
+	private JLabel newJLabel(String value, String src){
+		JLabel label= new JLabel(value);
 		label.setIcon(new ImageIcon(src));
 		label.setFont(new Font("Lucida Grande", 0, 14));
-		label.setPreferredSize(new Dimension(150, 41));
+		label.setPreferredSize(new Dimension(75, 41));
 		label.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		return label;
 	}
@@ -123,27 +126,27 @@ public class PlayerPanel extends JPanel{
 	}
 
 	public void setNumDevelopers(int numDevelopers) {
-		this.numDevelopers.setText(""+numDevelopers);
+		this.developers.setText(""+numDevelopers);
 	}
 
 	public void setNumOneTileRice(int numOneTileRice) {
-		this.numOneTileRice.setText(""+numOneTileRice);
+		this.oneTileRice.setText(""+numOneTileRice);
 	}
 
 	public void setNumOneTileVillage(int numOneTileVillage) {
-		this.numOneTileVillage.setText(""+numOneTileVillage);
+		this.oneTileVillage.setText(""+numOneTileVillage);
 	}
 
 	public void setNumTwoTile(int numTwoTile) {
-		this.numTwoTile.setText(""+numTwoTile);
+		this.twoTile.setText(""+numTwoTile);
 	}
 
 	public void setNumActionTokens(int numActionTokens) {
-		this.numActionTokens.setText(""+numActionTokens);
+		this.actionTokens.setText(""+numActionTokens);
 	}
 	
 	public void setCurrentPlayer(){
-		this.setBorder(BorderFactory.createLineBorder(playerColor));
+		this.setBorder(BorderFactory.createLineBorder(playerColor, 3));
 	}
 	
 	public void setNotCurrentPlayer(){
@@ -151,21 +154,19 @@ public class PlayerPanel extends JPanel{
 	}
 	
 	private void initHashMap(){
-		// TODO test this
 		File imageSourceFile = null;
 		this.imageSourceHashMap = new HashMap<String, String>();
 		try{
-			imageSourceFile = new File("/files/PlayerImageStrings.txt");
+			imageSourceFile = new File("bin/files/PlayerImageStrings.txt");
 			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
-			String line = fileReader.readLine();
-			String[] hash = line.split(" ");
-			imageSourceHashMap.put(hash[0], hash[1]);
-			System.out.println("Hash 0: "+hash[0]);
-			System.out.println("Hash 1: "+hash[1]);
+			String line = "";
+			while((line = fileReader.readLine()) != null){
+				String[] hash = line.split(" ");
+				imageSourceHashMap.put(hash[0], hash[1]);
+			}
 		} catch(Exception e){
-			
+			System.out.println(e.getMessage());
 		}
-		System.out.println("File Name: "+imageSourceFile.getName());
 	}
 	
 	

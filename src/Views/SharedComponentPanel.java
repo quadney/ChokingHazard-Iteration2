@@ -123,17 +123,16 @@ public class SharedComponentPanel extends JPanel{
 		File imageSourceFile = null;
 		this.imageSourceHashMap = new HashMap<String, String>();
 		try{
-			imageSourceFile = new File("/files/SharedComponentImageStrings.txt");
+			imageSourceFile = new File("bin/files/SharedComponentImageStrings.txt");
 			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
-			String line = fileReader.readLine();
-			String[] hash = line.split(" ");
-			imageSourceHashMap.put(hash[0], hash[1]);
-			System.out.println("Hash 0: "+hash[0]);
-			System.out.println("Hash 1: "+hash[1]);
+			String line = "";
+			while((line = fileReader.readLine()) != null){
+				String[] hash = line.split(" ");
+				imageSourceHashMap.put(hash[0], hash[1]);
+			}
 		} catch(Exception e){
-			
+			System.out.println(e.getMessage());
 		}
-		System.out.println("File Name: "+imageSourceFile.getName());
 	}
 	
 }
