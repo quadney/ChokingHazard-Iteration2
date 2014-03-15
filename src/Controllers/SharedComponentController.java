@@ -15,6 +15,14 @@ public class SharedComponentController {
 	public SharedComponentPanel getSharedComponentPanel(){
 		return this.sharedPanel;
 	}
+
+	public boolean selectPalaceTile(int value) {
+		return sharedModel.hasPalaceTile( value );
+	}
+
+	public boolean hasPalaceTileValue(int value) {
+		return sharedModel.hasPalaceTile( value );
+	}
 	
 	//called if the player has placed a three piece tile.
 	//checks to see if there enough three piece tiles to allow this to happen
@@ -26,10 +34,5 @@ public class SharedComponentController {
 		}
 		return false;
 	}
-	
-	
-	
-	
-	
 	
 }

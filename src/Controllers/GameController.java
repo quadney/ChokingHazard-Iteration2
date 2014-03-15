@@ -82,6 +82,7 @@ public class GameController {
 		case 8:
 			//released delete, delete a developer from the board
 
+			break;
 		case 9:
 			//released tab, tab through developers
 
@@ -140,8 +141,12 @@ public class GameController {
 
 			break;
 		case 80:
+			//TODO ask for value
 			//released P, new palace tile, need to ask for value of Tile
-
+			
+			int value = GameFrame.getPalaceValueFromUser();
+			if( shared.selectPalaceTile( value ) && players.selectPalaceTile( value, currentGame.getPlayerIndex() ) )
+				board.selectPalaceTile( value );
 			break;
 		case 82:
 			//released R, place rice tile

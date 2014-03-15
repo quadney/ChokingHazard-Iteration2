@@ -88,4 +88,7 @@ public class GameModel {
 			gameState = GameState.NormalMode;
 	}
 
+	public int getPlayerIndex() {
+		return this.indexOfCurrentPlayer;
+	}
 }

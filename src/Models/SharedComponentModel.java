@@ -37,4 +37,10 @@ public class SharedComponentModel {
 		return false;
 	}
 
+	public boolean hasPalaceTile(int value) {
+		if( value < 0 || value > 4 )
+			return false;
+		return palaceTiles[value] > 0;
+	}
+
 }
