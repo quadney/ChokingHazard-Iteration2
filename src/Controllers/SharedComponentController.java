@@ -23,4 +23,16 @@ public class SharedComponentController {
 	public boolean hasPalaceTileValue(int value) {
 		return sharedModel.hasPalaceTile( value );
 	}
+	
+	//called if the player has placed a three piece tile.
+	//checks to see if there enough three piece tiles to allow this to happen
+	//if it does, it changes the value in the mode and tells the panel to update
+	public boolean useThreeTile(){
+		if(sharedModel.useThreeTile()){
+			sharedPanel.updateThreePieceTiles(sharedModel.getThreeSpaceTiles());
+			return true;
+		}
+		return false;
+	}
+	
 }
