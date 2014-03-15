@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.Scanner;
 
 import Models.GameModel;
-import Models.PlayerModel;
+import Models.JavaPlayer;
 import Views.GameContainerPanel;
 
 public class GameController {

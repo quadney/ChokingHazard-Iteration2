@@ -17,9 +17,9 @@ public class JavaCell extends Cell
       return elevation;
    }
    
-   public String getSpaceType()
+   public String getCellType()
    {
-      return spaceType;
+      return cellType;
    }
    
    public void setElevation(int e)
