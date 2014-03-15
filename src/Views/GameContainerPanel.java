@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import Models.PlayerModel;
+import Models.JavaPlayer;
 
 public class GameContainerPanel extends JPanel {
 	private final static int WIDTH = 1300;
