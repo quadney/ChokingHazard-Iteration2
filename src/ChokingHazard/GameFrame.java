@@ -17,12 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import Controllers.GameController;
 import Views.HelpFrame;
 import Views.NewGameFrame;
 
 public class GameFrame extends JFrame {
 	private final int WIDTH, HEIGHT;
 	NewGameFrame frame;
+	GameController gameController;
 
 	public GameFrame(int width, int height){
 		this.WIDTH = width;
@@ -40,12 +42,12 @@ public class GameFrame extends JFrame {
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				//keyReleased(e);
+				gameController.keyReleased(e);
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				//keyPressed(e);
+				gameController.keyPressed(e);
 			}
 		});
 		setFocusTraversalKeysEnabled(false);
@@ -83,7 +85,7 @@ public class GameFrame extends JFrame {
 					//starts a new thread
 					new Thread(new Runnable(){
 						public void run(){
-							//gm.loadGame(file);
+							gameController.loadGame(file);
 						}
 					}).start();
 				}
@@ -96,12 +98,12 @@ public class GameFrame extends JFrame {
 		saveGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
         saveGame.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event){
-//            	if(gm.saveGame()){
-//            		
-//            	}
-//            	else{
-//            		
-//            	}
+            	if(gameController.saveGame()){
+            		
+            	}
+            	else{
+            		
+            	}
             }
         }); 
         file.add(saveGame);
@@ -149,14 +151,14 @@ public class GameFrame extends JFrame {
 	}
 	
 	private boolean askUserIfWouldLikeToSaveGame(){
-		//JOptionPane.showOptionDialog(this, "Would you like to save this game?", "Save Game", JOptionPane.YES_NO_CANCEL_OPTION);;
+		//JOptionPane.showOptionDialog(this, "Would you like to save this game?", "Save Game", JOptionPane.YES_NO_CANCEL_OPTION);
 		return true;
 	}
 	
 	private void startNewGame(final int numPlayers, final String[] players, final String[] playerColors){
 		new Thread(new Runnable(){
 			public void run(){
-//				gm.createNewGame(numPlayers, players, playerColors);
+				gameController.createNewGame(numPlayers, players, playerColors);
 			}
 		}).start();
 	}
@@ -165,6 +167,10 @@ public class GameFrame extends JFrame {
 		this.setContentPane(panel);
 		this.pack();
 		this.validate();
+	}
+	
+	public void giveGameController(GameController gc){
+		this.gameController = gc;
 	}
 	
 	class StartGameListener implements ActionListener{

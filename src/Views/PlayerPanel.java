@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -18,11 +19,13 @@ public class PlayerPanel extends JPanel{
 	private String name;
 	private Color playerColor;
 	private JLabel playerName, famePoints, actionPointsLeft, numDevelopers, numOneTileRice, numOneTileVillage, numTwoTile, numActionTokens;
+	private HashMap<String, String> imageSourceHashMap;
 	
-	public PlayerPanel(String name, String color){
+	public PlayerPanel(String name, String color, HashMap<String, String> imageSources){
 		setLayout(new FlowLayout());
 		this.name = name;
 		this.color = color;
+		this.imageSourceHashMap = imageSources;
 		
 		try {
 			Field field = Color.class.getField(color);
@@ -72,19 +75,19 @@ public class PlayerPanel extends JPanel{
         jSeparator1.setPreferredSize(new Dimension(158, 15));
         this.add(jSeparator1);
         
-        numDevelopers = newJLabel("bin/images/layout/layout_player_"+color+".png"); 
+        numDevelopers = newJLabel(imageSourceHashMap.get("layout_player_"+color)); 
         this.add(numDevelopers);
 
-        numOneTileRice = newJLabel("bin/images/layout/layout_oneTile_rice.png"); 
+        numOneTileRice = newJLabel(imageSourceHashMap.get("layout_riceTile")); 
         this.add(numOneTileRice);
         
-        numOneTileVillage = newJLabel("bin/images/layout/layout_oneTile_village.png"); 
+        numOneTileVillage = newJLabel(imageSourceHashMap.get("layout_villageTile")); 
         this.add(numOneTileVillage);
 
-        numTwoTile = newJLabel("bin/images/layout/layout_twoTile.png"); 
+        numTwoTile = newJLabel(imageSourceHashMap.get("layout_twoTile")); 
         this.add(numTwoTile);
         
-        numActionTokens = newJLabel("bin/images/layout/layout_actionToken.png"); 
+        numActionTokens = newJLabel(imageSourceHashMap.get("layout_actionToken")); 
         this.add(numActionTokens);
 		
 	}
