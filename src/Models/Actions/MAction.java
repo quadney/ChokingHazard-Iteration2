@@ -15,28 +15,13 @@ import Models.*;
  */
 public abstract class MAction {
 
-	protected int playerIndex;
-
 	/**
 	 * Returns the int which holds the index of the player who created this
 	 * action.
 	 */
-	public int getPlayerIndex() {
-		return playerIndex;
-	}
-
-	public MAction(int playerIndex) {
-		this.playerIndex = playerIndex;
-	}
 	
-	public void pressSpace(){
-		
-	}
+	public abstract void pressSpace();
 	
-	public void pressArrow(int value){
-		
-	}
-
-
+	public abstract void pressArrow(int value);
 	
 }

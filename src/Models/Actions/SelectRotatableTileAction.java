@@ -6,8 +6,8 @@ public abstract class SelectRotatableTileAction extends MAction {
 	int x = 1;
 	int y = 1;
 	
-	public SelectRotatableTileAction(int playerIndex, int x, int y, int rotationState) {
-		super(playerIndex);
+	public SelectRotatableTileAction(int x, int y, int rotationState) {
+		super();
 		// TODO Auto-generated constructor stub
 		
 	}
@@ -16,6 +16,5 @@ public abstract class SelectRotatableTileAction extends MAction {
 		rotationState += 1 % 4;
 	}
 	
-	public abstract void pressCursor();
 	
 }
