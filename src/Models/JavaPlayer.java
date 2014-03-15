@@ -11,6 +11,8 @@ public class JavaPlayer extends Player {
 	private int numActionTokens;
 	private boolean placedThreeTile;
 	//private ArrayList<FestivalCard> festivalCards;
+	private Developer[] developerArray;
+	public int currentlySelectedDeveloper;
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);
@@ -70,5 +72,10 @@ public class JavaPlayer extends Player {
 		}
 		
 		return false;
+	}
+	
+	public void removeDeveloperFromArray()
+	{
+		developerArray[currentlySelectedDeveloper] = null;
 	}
 }
