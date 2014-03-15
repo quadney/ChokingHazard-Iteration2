@@ -1,41 +1,28 @@
 package Views;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-
+import java.util.HashMap;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
-import Models.JavaPlayer;
 
 public class GameContainerPanel extends JPanel {
 	private final static int WIDTH = 1300;
 	private final static int HEIGHT = 840;
-	SharedComponentPanel sharedComponents; 
-	BoardPanel board;
-	PlayerPanel[] players;
 	
-	public GameContainerPanel(int numberOfPlayers){
+	public GameContainerPanel(BoardPanel board, PlayerPanel[] players, SharedComponentPanel shared){
 		super(new BorderLayout());
-		players = new PlayerPanel[numberOfPlayers];
 		
 		setMaximumSize(new Dimension(WIDTH, HEIGHT));
 		setBorder(BorderFactory.createEmptyBorder(0, 25, 30, 25));
 		
-		initPanels(numberOfPlayers);
+		initPanels(board, players, shared);
 	}
 	
-	private void initPanels(int numberOfPlayers){
-		sharedComponents = new SharedComponentPanel();
-		add(sharedComponents, BorderLayout.NORTH);
+	private void initPanels(BoardPanel board, PlayerPanel[] players, SharedComponentPanel shared){
+		add(shared, BorderLayout.NORTH);
 		
-		board = new BoardPanel();
 		add(board, BorderLayout.CENTER);
 		
 		JPanel leftColumn = new JPanel();
@@ -50,8 +37,7 @@ public class GameContainerPanel extends JPanel {
 		rightColumn.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		add(rightColumn, BorderLayout.EAST);
 		
-		for(int i = 0; i < numberOfPlayers; i++){
-			players[i] = new PlayerPanel("Player Name", "red");
+		for(int i = 0; i < players.length; i++){
 			switch(i){
 				case 0:
 					leftColumn.add(players[i], BorderLayout.NORTH);

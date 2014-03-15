@@ -3,6 +3,8 @@ package ChokingHazard;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import Controllers.GameController;
+
 
 public class RunGame {
 	private final static int WIDTH = 1300;
@@ -18,7 +20,8 @@ public class RunGame {
 	}
 	
 	private static void createAndShowGUI(){
-		GameFrame frame = new GameFrame(WIDTH, HEIGHT, new GameManager());
+		GameFrame frame = new GameFrame(WIDTH, HEIGHT);
+		GameController controller = new GameController(frame);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}

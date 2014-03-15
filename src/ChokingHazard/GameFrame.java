@@ -17,19 +17,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import Controllers.GameController;
 import Views.HelpFrame;
 import Views.NewGameFrame;
 
 public class GameFrame extends JFrame {
 	private final int WIDTH, HEIGHT;
-	private GameManager gm;
 	NewGameFrame frame;
+	GameController gameController;
 
-	public GameFrame(int width, int height, GameManager gameManager){
+	public GameFrame(int width, int height){
 		this.WIDTH = width;
 		this.HEIGHT = height;
-		this.gm = gameManager;
-		gm.giveGameFrame(this);
 		
 		setTitle("Java - by Choking Hazard");
 		setSize(WIDTH, HEIGHT);
@@ -43,14 +42,12 @@ public class GameFrame extends JFrame {
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if(gm != null)
-					gm.keyReleased(e);
+				gameController.keyReleased(e);
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(gm != null)
-					gm.keyPressed(e);
+				gameController.keyPressed(e);
 			}
 		});
 		setFocusTraversalKeysEnabled(false);
@@ -88,7 +85,7 @@ public class GameFrame extends JFrame {
 					//starts a new thread
 					new Thread(new Runnable(){
 						public void run(){
-							gm.loadGame(file);
+							gameController.loadGame(file);
 						}
 					}).start();
 				}
@@ -101,7 +98,7 @@ public class GameFrame extends JFrame {
 		saveGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
         saveGame.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event){
-            	if(gm.saveGame()){
+            	if(gameController.saveGame()){
             		
             	}
             	else{
@@ -154,14 +151,14 @@ public class GameFrame extends JFrame {
 	}
 	
 	private boolean askUserIfWouldLikeToSaveGame(){
-		//JOptionPane.showOptionDialog(this, "Would you like to save this game?", "Save Game", JOptionPane.YES_NO_CANCEL_OPTION);;
+		//JOptionPane.showOptionDialog(this, "Would you like to save this game?", "Save Game", JOptionPane.YES_NO_CANCEL_OPTION);
 		return true;
 	}
 	
-	private void startNewGame(final int numPlayers, final String players){
+	private void startNewGame(final int numPlayers, final String[] players, final String[] playerColors){
 		new Thread(new Runnable(){
 			public void run(){
-				gm.createNewGame(numPlayers, players);
+				gameController.createNewGame(numPlayers, players, playerColors);
 			}
 		}).start();
 	}
@@ -170,6 +167,10 @@ public class GameFrame extends JFrame {
 		this.setContentPane(panel);
 		this.pack();
 		this.validate();
+	}
+	
+	public void giveGameController(GameController gc){
+		this.gameController = gc;
 	}
 	
 	class StartGameListener implements ActionListener{
@@ -187,13 +188,15 @@ public class GameFrame extends JFrame {
 				numPlayers += 1;
 				JTextField[] playerNames = frame.getPlayerNames();
 				JComboBox[] playerColors = frame.getColorSelection();
-				String players = "";
+				String[] players = new String[numPlayers];
+				String[] colors = new String[numPlayers];
 				for(int i = 0; i < numPlayers; ++i){
-					players = players+""+playerNames[i].getText()+" "+playerColors[i].getSelectedItem().toString().toLowerCase()+";";
+					players[i] = playerNames[i].getText();
+					colors[i] = playerColors[i].getSelectedItem().toString().toLowerCase();
 				}
 				
 				frame.dispose();
-				startNewGame(numPlayers, players);
+				startNewGame(numPlayers, players, colors);
 			}
 			
 		}
