@@ -96,6 +96,7 @@ public class GameController {
 
 			break;
 		case 32:
+			currentGame.pressSpace();
 			//released the space bar, rotate
 
 			break;

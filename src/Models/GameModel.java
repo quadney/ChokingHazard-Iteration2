@@ -15,6 +15,7 @@ public class GameModel {
 	private JavaPlayer[] players;
 	private int indexOfCurrentPlayer;
 	private boolean isFinalRound;
+	public MAction selectedAction;
 
 	private Stack<Action> actionHistory; // This holds a history of the actions
 											// taken up to the currently held

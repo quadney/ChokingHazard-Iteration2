@@ -30,6 +30,12 @@ public class SharedComponentModel {
 		}
 		return numPalaceCards;
 	}
+	
+	public boolean useThreeTile(){
+		//this should attempt to decrement the three tile
+		//return if this is allowed
+		return false;
+	}
 
 	public boolean hasPalaceTile(int value) {
 		if( value < 0 || value > 4 )
