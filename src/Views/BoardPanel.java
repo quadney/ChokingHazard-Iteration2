@@ -26,13 +26,14 @@ public class BoardPanel extends JPanel {
 	private HashMap<String, String> imageSourceHashMap;
 
 	public BoardPanel(){
+
+		initHashMap();
 		getBackgroundImage();
 		Dimension size = new Dimension(board.getWidth(), board.getHeight());
 		setMinimumSize(size);
 		setMaximumSize(size);
 		setPreferredSize(size);
 		
-		initHashMap();
 		this.tileImage = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		this.developers = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		this.tempImage = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -182,16 +183,21 @@ public class BoardPanel extends JPanel {
 		// TODO test this
 		File imageSourceFile = null;
 		this.imageSourceHashMap = new HashMap<String, String>();
+		System.out.println("1");
 		try{
-			imageSourceFile = new File("/files/BoardImageStrings.txt");
+			System.out.println("2");
+			imageSourceFile = new File("bin/files/BoardImageStrings.txt");
+			System.out.println("3");
 			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
+			System.out.println("4");
 			String line = fileReader.readLine();
+			System.out.println("5");
 			String[] hash = line.split(" ");
-			imageSourceHashMap.put(hash[0], hash[1]);
 			System.out.println("Hash 0: "+hash[0]);
 			System.out.println("Hash 1: "+hash[1]);
+			imageSourceHashMap.put(hash[0], hash[1]);
 		} catch(Exception e){
-			
+			System.out.println(e.getMessage());
 		}
 		System.out.println("File Name: "+imageSourceFile.getName());
 	}

@@ -8,7 +8,8 @@ public class SharedComponentController {
 	private SharedComponentPanel sharedPanel;
 
 	public SharedComponentController(){
-		
+		this.sharedModel = new SharedComponentModel();
+		this.sharedPanel = new SharedComponentPanel();
 	}
 	
 	public SharedComponentPanel getSharedComponentPanel(){
