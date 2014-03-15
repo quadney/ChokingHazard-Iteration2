@@ -1,8 +1,6 @@
 package Models;
 
-public class PlayerModel {
-	private String name;
-	private String color;
+public class JavaPlayer extends Player {
 	private int famePoints;
 	private int actionPoints;
 	private int developersOffBoard;
@@ -13,9 +11,8 @@ public class PlayerModel {
 	private int numActionTokens;
 	//private ArrayList<FestivalCard> festivalCards;
 	
-	public PlayerModel(String name, String color){
-		this.name = name;
-		this.color = color;
+	public JavaPlayer(String name, String color){
+		super(name, color);
 		this.famePoints = 0;
 		this.actionPoints = 6;
 		this.developersOffBoard = 12;
@@ -25,13 +22,7 @@ public class PlayerModel {
 		this.numActionTokens = 3;
 		//this.festivalCards = new ArrayList<FestivalCard>;
 	}
-
-	public String getName() {
-		return name;
-	}
-	public String getColor() {
-		return color;
-	}
+   
 	public int getFamePoints() {
 		return famePoints;
 	}

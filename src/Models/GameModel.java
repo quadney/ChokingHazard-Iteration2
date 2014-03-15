@@ -12,7 +12,7 @@ enum GameState {
 public class GameModel {
 	// VARIABLES
 	private BoardModel gameBoard;
-	private PlayerModel[] players;
+	private JavaPlayer[] players;
 	private int indexOfCurrentPlayer;
 	private boolean isFinalRound;
 
@@ -31,7 +31,7 @@ public class GameModel {
 		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
-		this.players = new PlayerModel[numberPlayers];
+		this.players = new JavaPlayer[numberPlayers];
 		
 		actionHistory = new Stack<Action>();
 		actionReplays = new Stack<Action>();

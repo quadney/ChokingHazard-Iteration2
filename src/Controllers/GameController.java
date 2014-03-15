@@ -7,7 +7,7 @@ import java.util.Scanner;
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
-import Models.PlayerModel;
+import Models.JavaPlayer;
 import Views.GameContainerPanel;
 
 public class GameController {
