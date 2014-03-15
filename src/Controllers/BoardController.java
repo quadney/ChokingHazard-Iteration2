@@ -15,4 +15,8 @@ public class BoardController {
 	public BoardPanel getBoardPanel(){
 		return this.boardPanel;
 	}
+
+	public void selectPalaceTile(int value) {
+		boardPanel.moveTile(1, 1, 0, "Palace 2");
+	}
 }

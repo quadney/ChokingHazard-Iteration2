@@ -19,4 +19,8 @@ public class PlayerController {
 	public PlayerPanel[] getPlayerPanels(){
 		return this.playerPanels;
 	}
+	
+	public boolean selectPalaceTile(int value, int playerIndex) {
+		return playerModels[playerIndex].canUsePalace();
+	}
 }
