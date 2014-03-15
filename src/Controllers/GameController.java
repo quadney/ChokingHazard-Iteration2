@@ -1,16 +1,11 @@
 package Controllers;
 
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Scanner;
 
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
-import Models.JavaPlayer;
 import Views.GameContainerPanel;
 
 public class GameController {
