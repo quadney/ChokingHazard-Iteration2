@@ -94,16 +94,20 @@ public class GameController {
 
 			break;	
 		case 27:
-			//released Esc, cancel action
+			//escapes out of a selected action
+			//tells the current game about the event so that it makes SelectedAction to null
+			//also updates the board panel so that the image is canceled
+			currentGame.pressEsc();
+			board.pressEsc();
 
 			break;
 		case 32:
+			//released the space bar, rotate
+			//tells the current game to tell the selectedAction to do pressSpace()
+			//will only tell the board about the change if it was a rotatable tile action
 			currentGame.pressSpace();
 			if (currentGame.getSelectedAction() instanceof SelectRotatableTileAction)
 				board.updateSelectedAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
-			
-			//released the space bar, rotate
-
 			break;
 			
 	// using these arrow keys for movement of a developer for testing purposes

@@ -23,4 +23,8 @@ public class BoardController {
 	public void updateSelectedAction(int x, int y, String imageKey, int rotationState) {
 		boardPanel.moveTile(x, y, rotationState, imageKey);
 	}
+
+	public void pressEsc() {
+		boardPanel.cancel();
+	}
 }

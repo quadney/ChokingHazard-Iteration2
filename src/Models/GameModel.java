@@ -114,4 +114,8 @@ public class GameModel {
 	public MAction getSelectedAction() {
 		return selectedAction;
 	}
+
+	public void pressEsc() {
+		selectedAction = null;
+	}
 }
