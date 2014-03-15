@@ -42,15 +42,16 @@ public class BoardModel {
 	}
 	
 	private boolean checkValidTilePlacement(int xC, int yC, Tile tile, JavaPlayer player) {
-		int neededActionPoints = checkNeededActionPoints(xC, yC, tile);
+		JavaCell[][] javaCells = createTestMap(xC, yC);
+		int neededActionPoints = checkNeededActionPoints(javaCells, tile);
 		
-		if (checkPalacePlacement(xC, yC, tile) && 
-			checkTilesBelow(xC, yC, tile) && 
-			checkElevation(xC, yC, tile) && 
-			checkIrrigationPlacement(xC, yC, tile) &&
-			checkDeveloperOnCell(xC, yC, tile) && 
-			checkCityConnection(xC, yC, tile) && 
-			checkEdgePlacement(xC, yC, tile) &&
+		if (checkPalacePlacement(javaCells, tile) && 
+			checkTilesBelow(javaCells, tile) && 
+			checkElevation(javaCells, tile) && 
+			checkIrrigationPlacement(javaCells, tile) &&
+			checkDeveloperOnCell(javaCells, tile) && 
+			checkCityConnection(javaCells, tile) && 
+			checkEdgePlacement(javaCells, tile) &&
 			player.decrementNActionPoints(neededActionPoints)) {
 				return true;
 		}
@@ -58,35 +59,64 @@ public class BoardModel {
 		return false;
 	}
 	
-	private int checkNeededActionPoints(int xC, int yC, Tile tile) {
+	private int checkNeededActionPoints(JavaCell[][] javaCells, Tile tile) {
 		return 0;
 	}
 	
-	private boolean checkPalacePlacement(int xC, int yC, Tile tile) {
+	private boolean checkPalacePlacement(JavaCell[][] javaCells, Tile tile) {
 		return true;
 	}
 	
-	private boolean checkTilesBelow(int xC, int yC, Tile tile) {
+	private boolean checkTilesBelow(JavaCell[][] javaCells, Tile tile) {
 		return true;
 	}
 	
-	private boolean checkElevation(int xC, int yC, Tile tile) {
+	private boolean checkElevation(JavaCell[][] javaCells, Tile tile) {
 		return true;
 	}
 	
-	private boolean checkIrrigationPlacement(int xC, int yC, Tile tile) {
+	private boolean checkIrrigationPlacement(JavaCell[][] javaCells, Tile tile) {
+		String[][] tileCells = tile.getTileCells();
+
+		for (int i = 0; i < tileCells.length; i++) {
+			for (int j = 0; j < tileCells[i].length; j++) {
+				if (tileCells[i][j] != null) {
+					if (javaCells[i][j] != null &&
+					    javaCells[i][j].getCellType() != null &&
+					    javaCells[i][j].getCellType() == "irrigation") {
+		
+							return false;
+					}
+				}
+			}
+		}
+		
 		return true;
 	}
 	
-	private boolean checkDeveloperOnCell(int xC, int yC, Tile tile) {
+	private boolean checkDeveloperOnCell(JavaCell[][] javaCells, Tile tile) {
+		String[][] tileCells = tile.getTileCells();
+		
+		for (int i = 0; i < tileCells.length; i++) {
+			for (int j = 0; j < tileCells[i].length; j++) {
+				if (tileCells[i][j] != null) {
+					if (javaCells[i][j] != null &&
+					    javaCells[i][j].hasDeveloper()) {
+		
+							return false;
+					}
+				}
+			}
+		}
+		
 		return true;
 	}
 	
-	private boolean checkCityConnection(int xC, int yC, Tile tile) {
+	private boolean checkCityConnection(JavaCell[][] javaCells, Tile tile) {
 		return true;
 	}
 	
-	private boolean checkEdgePlacement(int xC, int yC, Tile tile) {
+	private boolean checkEdgePlacement(JavaCell[][] javaCells, Tile tile) {
 		return true;
 	}
 }
