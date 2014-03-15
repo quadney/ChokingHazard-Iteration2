@@ -8,26 +8,16 @@ import Models.GameModel;
 import Views.GameContainerPanel;
 
 public class GameManager {
-	GameFrame frame;
 	GameController currentGame;
 	
 	public GameManager(){
 		
 	}
 	
-	private void setGameFrame(GameFrame gf){
-		this.frame = gf;
-	}
-	
-	public void giveGameFrame(GameFrame gf){
-		setGameFrame(gf);
-	}
-	
 	public void createNewGame(int numPlayers, String playersAndTheirNames){
 		//parse the string because that has all the player information
 		//create new players based on it
 		currentGame = new GameController(new GameModel(numPlayers), new GameContainerPanel(numPlayers), playersAndTheirNames, numPlayers);
-		frame.setFrameContent(currentGame.getGamePanel());
 	}
 	
 	public boolean loadGame(File file){
