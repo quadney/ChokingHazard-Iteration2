@@ -1,0 +1,17 @@
+board 			/images/board.png
+threeTile 		/images/threeTile.png
+twoTile 		/images/twoTile.png
+irrigationTile 	/images/oneTile_irrigation.png
+riceTile 		/images/oneTile_rice.png
+villageTile 	/images/oneTile_village.png
+palace2Tile 	/images/oneTile_2.png
+palace4Tile 	/images/oneTile_4.png
+palace6Tile 	/images/oneTile_6.png
+palace8Tile 	/images/oneTile_8.png
+palace10Tile 	/images/oneTile_10.png
+player_red 		/images/player_red.png
+player_orange 	/images/player_orange.png
+player_yellow 	/images/player_yellow.png
+player_green 	/images/player_green.png
+player_blue 	/images/player_blue.png
+player_purple 	/images/player_purple.png

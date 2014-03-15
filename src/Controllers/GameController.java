@@ -1,38 +1,58 @@
 package Controllers;
 
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.HashMap;
 import java.util.Scanner;
 
+import ChokingHazard.GameFrame;
+import ChokingHazard.GameManager;
 import Models.GameModel;
 import Models.JavaPlayer;
 import Views.GameContainerPanel;
 
 public class GameController {
-	GameModel gameModel;
-	GameContainerPanel gamePanel;
+	private GameFrame gameFrame;
+	private GameManager gameManager;
+	private GameModel currentGame;
+	private GameContainerPanel currentGamePanel;
+	private BoardController board;
+	private PlayerController players;
+	private SharedComponentController shared;
 	
-	public GameController(GameModel model, GameContainerPanel view, String playerInformation, int numPlayers){
+	public GameController(GameFrame frame){
 		//should we just create them here instead of passing it in?
-		this.gameModel = model;
-		this.gamePanel = view;
+		this.gameFrame = frame;
+		gameFrame.giveGameController(this);
+		this.gameManager = new GameManager();
 		
-		//parse the player information
-//		String[] players = playerInformation.split(";");
-//		PlayerModel[] playerModels = new PlayerModel[numPlayers];
-//		for(int i = 0; i < players.length; ++i){
-//			String[] playerInfo = players[i].split(" ");
-//			playerModels[i] = new PlayerModel(playerInfo[0], playerInfo[1]);
-//		}
-//		
-//		this.gamePanel.setPlayerPanels(playerModels);
 	}
 	
-	public GameContainerPanel getGamePanel(){
-		return this.gamePanel;
+	public void createNewGame(int numPlayers, String[] playerNames, String[] playerColors){
+		//create controllers
+		
+		currentGame = new GameModel(numPlayers);  //?????
+		board = new BoardController();
+		players = new PlayerController(numPlayers, playerNames, playerColors);
+		shared = new SharedComponentController();
+		
+		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
+		gameFrame.setFrameContent(currentGamePanel);
 	}
 	
-	public GameModel getGameModel(){
-		return this.gameModel;
+	public boolean loadGame(File file){
+		//calls the game manager to do the parsing
+		// Sydney doesn't know how that works so if this us unnecessary feel free to do what you want
+		gameManager.loadGame(file);
+		return true;
+	}
+	
+	public boolean saveGame(){
+		//calls the game manager, see loadGame
+		gameManager.saveGame();
+		return true;
 	}
 	
 	public void userPressedKey(KeyEvent e){
@@ -40,10 +60,26 @@ public class GameController {
 		if(e.getKeyCode() == 70){
 			//the user is pressing (and holding) the F button
 			//display the user's Festival Cards
+			//player.displayFestivalCard(indexOfCurrentPlayer);
 		}
 	}
 	
-	public void userReleasedKey(KeyEvent e){
+	public void keyPressed(KeyEvent e){
+		//this is used only for when users want to show their festival cards
+		//when the key is released, then the festival cards will be hidden once again
+		if(currentGame != null){
+			userPressedKey(e);
+		}
+	}
+	
+	public void keyReleased(KeyEvent e){
+		//key released is when a user lifts their finger from a key
+		if(currentGame != null){
+			userReleasedKey(e);
+		}
+	}
+	
+	private void userReleasedKey(KeyEvent e){
 		System.out.println(e.getKeyCode());
 		//TODO key codes for switching between modes: planning mode, replay mode, and normal mode
 		//TODO key codes for holding a festival, picking up a festival card/palacecard
@@ -150,6 +186,4 @@ public class GameController {
 		}
 	}
 	
-	
-
 }

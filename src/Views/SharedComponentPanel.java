@@ -3,6 +3,9 @@ package Views;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -18,43 +21,44 @@ public class SharedComponentPanel extends JPanel{
 	public SharedComponentPanel(){
 		super(new FlowLayout());
 		setPreferredSize(new Dimension(1100, 110));
-		initHashMap();
 		
+		initHashMap();
 		initPanel();
 	}
 	
 	private void initPanel(){
-		threePieceTiles = newJLabel("bin/images/layout/layout_threeTile.png"); 
+		threePieceTiles = newJLabel(imageSourceHashMap.get("layout_threeTile")); 
 		threePieceTiles.setPreferredSize(new Dimension(70, 90));
         add(threePieceTiles);
         
-        irrigationTiles = newJLabel("bin/images/layout/layout_oneTile_irrigation.png"); 
+        irrigationTiles = newJLabel(imageSourceHashMap.get("layout_irrigationTile")); 
         add(irrigationTiles);
         
-        twoPalaceTiles = newJLabel("bin/images/layout/layout_oneTile_2.png"); 
+        twoPalaceTiles = newJLabel(imageSourceHashMap.get("layout_palace2Tile")); 
         add(twoPalaceTiles);
         
-        fourPalaceTiles = newJLabel("bin/images/layout/layout_oneTile_4.png"); 
+        fourPalaceTiles = newJLabel(imageSourceHashMap.get("layout_palace4Tile")); 
         add(fourPalaceTiles);
         
-        sixPalaceTiles = newJLabel("bin/images/layout/layout_oneTile_6.png"); 
+        sixPalaceTiles = newJLabel(imageSourceHashMap.get("layout_palace6Tile")); 
         add(sixPalaceTiles);
         
-        eightPalaceTiles = newJLabel("bin/images/layout/layout_oneTile_8.png");
+        eightPalaceTiles = newJLabel(imageSourceHashMap.get("layout_palace8Tile"));
         add(eightPalaceTiles);
         
-        tenPalaceTiles = newJLabel("bin/images/layout/layout_oneTile_10.png"); 
+        tenPalaceTiles = newJLabel(imageSourceHashMap.get("layout_palace10Tile")); 
         add(tenPalaceTiles);
 
-        palaceDeck = newJLabel("bin/images/layout/layout_cardDeck.png");
+        palaceDeck = newJLabel(imageSourceHashMap.get("layout_palaceDeck"));
         add(palaceDeck);
         
-        festivalCard = newJLabel("bin/images/layout/layout_festivalCard_DRUM.png");
+        //TODO
+        festivalCard = newJLabel(imageSourceHashMap.get("layout_festival_DRUM"));
         add(festivalCard);
         
 
         JLabel actionSummaryCard = new JLabel();
-        actionSummaryCard.setIcon(new ImageIcon("bin/images/layout/actionSummaryCard.png"));
+        actionSummaryCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_actionSummaryCard")));
         actionSummaryCard.setPreferredSize(new Dimension(473, 77));
         actionSummaryCard.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
         add(actionSummaryCard);
@@ -101,10 +105,7 @@ public class SharedComponentPanel extends JPanel{
 	public void updatePalaceDeck(int num){
 		this.palaceDeck.setText(""+num);
 	}
-	private void initHashMap(){
-		this.imageSourceHashMap = new HashMap();
-		//imageSourceHashMap.put(String )
-	}
+	
 	public void setGlobalTileValues(int threeTiles, int irrigationTiles, int[] palaceTiles, String festivalCardImage, int palaceDeck){
 		updateThreePieceTiles(threeTiles);
 		updateIrrigationTiles(irrigationTiles);
@@ -115,6 +116,24 @@ public class SharedComponentPanel extends JPanel{
 		updateTenPalaceTiles(palaceTiles[4]);
 		updateFestivalCard(festivalCardImage);
 		updatePalaceDeck(palaceDeck);
+	}
+	
+	private void initHashMap(){
+		// TODO test this
+		File imageSourceFile = null;
+		this.imageSourceHashMap = new HashMap<String, String>();
+		try{
+			imageSourceFile = new File("/files/SharedComponentImageStrings.txt");
+			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
+			String line = fileReader.readLine();
+			String[] hash = line.split(" ");
+			imageSourceHashMap.put(hash[0], hash[1]);
+			System.out.println("Hash 0: "+hash[0]);
+			System.out.println("Hash 1: "+hash[1]);
+		} catch(Exception e){
+			
+		}
+		System.out.println("File Name: "+imageSourceFile.getName());
 	}
 	
 }
