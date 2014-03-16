@@ -13,10 +13,10 @@ public class JavaPlayer extends Player {
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
 	private boolean placedThreeTile;
-	
+	public int currentlySelectedDeveloper;	
 	//private ArrayList<FestivalCard> festivalCards;
 	private Developer[] developerArray;
-	public int currentlySelectedDeveloper;
+
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);
