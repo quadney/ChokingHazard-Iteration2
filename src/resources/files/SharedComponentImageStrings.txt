@@ -7,9 +7,10 @@ layout_palace6Tile bin/images/layout/layout_oneTile_6.png
 layout_palace8Tile bin/images/layout/layout_oneTile_8.png
 layout_palace10Tile bin/images/layout/layout_oneTile_10.png
 layout_palaceDeck bin/images/layout/layout_cardDeck.png
-layout_festival_DRUM bin/images/layout/layout_festivalCard_DRUM.png
-layout_festival_MASK bin/images/layout/layout_festivalCard_MASK.png
-layout_festival_PUPPET bin/images/layout/layout_festivalCard_PUPPET.png
-layout_festival_MASK_DRUM bin/images/layout/layout_festivalCard_MASK_DRUM.png
-layout_festival_PUPPET_DRUM bin/images/layout/layout_festivalCard_PUPPET_DRUM.png
-layout_festival_PUPPET_MASK bin/images/layout/layout_festivalCard_PUPPET_MASK.png
+layout_palaceCard_DRUM bin/images/layout/layout_festivalCard_DRUM.png
+layout_palaceCard_MASK bin/images/layout/layout_festivalCard_MASK.png
+layout_palaceCard_PUPPET bin/images/layout/layout_festivalCard_PUPPET.png
+layout_palaceCard_MASK_DRUM bin/images/layout/layout_festivalCard_MASK_DRUM.png
+layout_palaceCard_PUPPET_DRUM bin/images/layout/layout_festivalCard_PUPPET_DRUM.png
+layout_palaceCard_PUPPET_MASK bin/images/layout/layout_festivalCard_PUPPET_MASK.png
+layout_palaceCard_X bin/images/layout/layout_festivalCard_Xplaceholder.png

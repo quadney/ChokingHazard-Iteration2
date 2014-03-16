@@ -25,6 +25,7 @@ public class GameFrame extends JFrame {
 	private final int WIDTH, HEIGHT;
 	NewGameFrame frame;
 	GameController gameController;
+	boolean gameNeedsToBeSaved;
 
 	public GameFrame(int width, int height){
 		this.WIDTH = width;
@@ -43,6 +44,7 @@ public class GameFrame extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				gameController.keyReleased(e);
+				if(!gameNeedsToBeSaved) gameNeedsToBeSaved = true;
 			}
 			
 			@Override
@@ -64,12 +66,33 @@ public class GameFrame extends JFrame {
 		newGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//display the content pane that will allow the user to add players in a nice interface
-				//rather than what it looks like now
-				frame = new NewGameFrame();
-        		frame.setVisible(true);
-        		frame.addStartNewGameListener(new StartGameListener());
-        		//when it returns, it will do the method to start the new game
+				//check if there is already a game running 
+				if(gameController.getCurrentGameExists()){
+					//if there is, then ask if the user would like to save their currentgame
+					if(gameNeedsToBeSaved){
+						int shouldSave = askUserIfWouldLikeToSaveGame();
+	            		if(shouldSave == 0){
+	            			//the user wants to save, save and then create the new game
+	            			gameController.saveGame();
+	                		gameNeedsToBeSaved = false;
+	            			displayNewGameFrame();
+	            		}
+	            		else if(shouldSave == 1){
+	            			//the user does not want to save
+	            			displayNewGameFrame();
+	            		}
+	            		else{
+	            			// the user pressed cancel, do nothing
+	            		}
+					}
+					else{
+						//the game was already saved and the user wants to create a new game
+						displayNewGameFrame();
+					}
+				}
+				else {
+					displayNewGameFrame();	
+				}
 			}
 		});
 		file.add(newGame);
@@ -79,15 +102,36 @@ public class GameFrame extends JFrame {
 		loadGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final File file = getFile();
+				File file = getFile();
 				System.out.println(file);
 				if(file != null){
-					//starts a new thread
-					new Thread(new Runnable(){
-						public void run(){
-							gameController.loadGame(file);
+					//check if there is already a game running 
+					if(gameController.getCurrentGameExists()){
+						//if there is, then ask if the user would like to save their currentgame
+						if(gameNeedsToBeSaved){
+							int shouldSave = askUserIfWouldLikeToSaveGame();
+		            		if(shouldSave == 0){
+		            			//the user wants to save, save and then create the new game
+		            			gameController.saveGame();
+		                		gameNeedsToBeSaved = false;
+		                		loadGame(file);
+		            		}
+		            		else if(shouldSave == 1){
+		            			//the user does not want to save
+		            			loadGame(file);
+		            		}
+		            		else{
+		            			// the user pressed cancel, do nothing
+		            		}
 						}
-					}).start();
+						else{
+							//the game was already saved and the user wants to create a new game
+							loadGame(file);
+						}
+					}
+					else {
+						loadGame(file);	
+					}
 				}
 			}
 		});
@@ -98,11 +142,11 @@ public class GameFrame extends JFrame {
 		saveGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
         saveGame.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event){
-            	if(gameController.saveGame()){
-            		
-            	}
-            	else{
-            		
+            	int shouldSave = askUserIfWouldLikeToSaveGame();
+            	// 0 = yes, 1 = no, 2 = cancel
+            	if(shouldSave == 0){
+            		gameController.saveGame();
+            		gameNeedsToBeSaved = false;
             	}
             }
         }); 
@@ -112,7 +156,23 @@ public class GameFrame extends JFrame {
         saveGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.ALT_MASK));
         exit.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event){
-            	System.exit(0);
+            	if(gameNeedsToBeSaved){
+            		int shouldSave = askUserIfWouldLikeToSaveGame();
+            		if(shouldSave == 0){
+            			//the user wants to save, then quit
+            			gameController.saveGame();
+            			System.exit(0);
+            		}
+            		else if(shouldSave == 1){
+            			//the user does not want to save, continue quitting
+            			System.exit(0);
+            		}
+            		//the user pressed cancel
+            	}
+            	else{
+            		//the game has already been saved so dont prompt user and exit
+            		System.exit(0);
+            	}
             }
         });
         file.add(exit);
@@ -138,6 +198,15 @@ public class GameFrame extends JFrame {
         this.setJMenuBar(menuBar);
 	}
 	
+	private void loadGame(final File file){
+		//starts a new thread
+		new Thread(new Runnable(){
+			public void run(){
+				gameController.loadGame(file);
+			}
+		}).start();
+	}
+	
 	private File getFile(){
 		//this method opens a JFileChooser Dialog so the user
 		//may select which file they would like to load
@@ -150,9 +219,16 @@ public class GameFrame extends JFrame {
 		return file;
 	}
 	
-	private boolean askUserIfWouldLikeToSaveGame(){
-		//JOptionPane.showOptionDialog(this, "Would you like to save this game?", "Save Game", JOptionPane.YES_NO_CANCEL_OPTION);
-		return true;
+	private int askUserIfWouldLikeToSaveGame(){
+		int shouldSave = JOptionPane.showConfirmDialog(null, "Would you like to save?", "Save Game", JOptionPane.YES_NO_CANCEL_OPTION);
+		return shouldSave;
+	}
+	
+	private void displayNewGameFrame(){
+		//display the content pane that will allow the user to add players in a nice interface
+		frame = new NewGameFrame();
+		frame.setVisible(true);
+		frame.addStartNewGameListener(new StartGameListener());
 	}
 	
 	private void startNewGame(final int numPlayers, final String[] players, final String[] playerColors){
@@ -187,7 +263,7 @@ public class GameFrame extends JFrame {
 				//now need to parse through the information that the user submitted
 				numPlayers += 1;
 				JTextField[] playerNames = frame.getPlayerNames();
-				JComboBox[] playerColors = frame.getColorSelection();
+				JComboBox<String>[] playerColors = frame.getColorSelection();
 				String[] players = new String[numPlayers];
 				String[] colors = new String[numPlayers];
 				for(int i = 0; i < numPlayers; ++i){
@@ -200,6 +276,12 @@ public class GameFrame extends JFrame {
 			}
 			
 		}
+	}
+
+	public static int getPalaceValueFromUser() {
+		// TODO Auto-generated method stub
+		// This pop up a window and ask for the palace value
+		return 0;
 	}
 	
 

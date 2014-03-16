@@ -6,6 +6,7 @@ import java.io.File;
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
+import Models.Actions.MActions.*;
 import Views.GameContainerPanel;
 
 public class GameController {
@@ -28,10 +29,15 @@ public class GameController {
 	public void createNewGame(int numPlayers, String[] playerNames, String[] playerColors){
 		//create controllers
 		
-		currentGame = new GameModel(numPlayers);  //?????
+		currentGame = new GameModel(numPlayers);
 		board = new BoardController();
 		players = new PlayerController(numPlayers, playerNames, playerColors);
 		shared = new SharedComponentController();
+		
+		//this initializes the dealing of the palace cards
+		//the shared dealPalaceCards returns the dealt palace cards
+		//and then the player sets those dealt cards as the cards
+		players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
 		
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
@@ -50,13 +56,11 @@ public class GameController {
 		return true;
 	}
 	
-	public void userPressedKey(KeyEvent e){
-		//check if the key that is pressed is the button to show the user's festival card.
-		if(e.getKeyCode() == 70){
-			//the user is pressing (and holding) the F button
-			//display the user's Festival Cards
-			//player.displayFestivalCard(indexOfCurrentPlayer);
+	public boolean getCurrentGameExists(){
+		if (currentGame == null){
+			return false;
 		}
+		return true;
 	}
 	
 	public void keyPressed(KeyEvent e){
@@ -73,111 +77,148 @@ public class GameController {
 			userReleasedKey(e);
 		}
 	}
+
+	public void userPressedKey(KeyEvent e){
+		//check if the key that is pressed is the button to show the user's festival card.
+		if(e.getKeyCode() == 70){
+			//the user is pressing (and holding) the F button
+			//TODO this can only be called if in Play Mode
+			currentGamePanel.displayPalaceCardFrame(this.players.getPlayerAtIndex(0));
+		}
+	}
 	
 	private void userReleasedKey(KeyEvent e){
 		System.out.println(e.getKeyCode());
 		//TODO key codes for switching between modes: planning mode, replay mode, and normal mode
-		//TODO key codes for holding a festival, picking up a festival card/palacecard
+		//TODO key codes for holding a festival, picking up a festival card/palace card
 		switch(e.getKeyCode()){
 		case 8:
 			//released delete, delete a developer from the board
-
+			//need all the type checks and where they are to delete a developer
+			break;
 		case 9:
 			//released tab, tab through developers
 
 			break;
 		case 10:
-			//released enter, place tile/developer onto board. 
+			//released enter, place tile/developer onto board.
+			
 
 			break;	
 		case 27:
-			//released Esc, cancel action
+			//escapes out of a selected action
+			//tells the current game about the event so that it makes SelectedAction to null
+			//also updates the board panel so that the image is canceled
+			currentGame.pressEsc();
+			board.pressEsc();
 
 			break;
 		case 32:
 			//released the space bar, rotate
-
+			//tells the current game to tell the selectedAction to do pressSpace()
+			//will only tell the board about the change if it was a rotatable tile action
+			currentGame.pressSpace();
+				updateBoardControllerWithSelectedAction();
 			break;
 			
-	// using these arrow keys for movement of a developer for testing purposes
+	// using these arrow keys for movement of developers and tiles
 		case 37:
-			//pressed left arrow, move the viewport left
-			//currentGame.moveComponentAroundBoard(-50, 0);
+			if(currentGame.pressLeft())
+				updateBoardControllerWithSelectedAction();
 			break;
 		case 38:
-			//pressed up arrow, move the viewport up
-			//currentGame.moveComponentAroundBoard(0, -50);
+			if(currentGame.pressUp())
+				updateBoardControllerWithSelectedAction();
 			break;
 		case 39:
-			//pressed the right arrow, move the viewport right
-			//currentGame.moveComponentAroundBoard(50, 0);
+			if(currentGame.pressRight())
+				updateBoardControllerWithSelectedAction();
 			break;
 		case 40:
-			//pressed the down arrow, move the viewport down
-			//currentGame.moveComponentAroundBoard(0, 50);
+			if(currentGame.pressDown());
+				updateBoardControllerWithSelectedAction();
 			break;
 	// --------------------------------------------------------------------
 			
-		case 50:
-			//released 2, select two space tile
+		case 50: //released 2, select two space tile
+			//check if the player has enough two tiles and AP to select a two tile action a two tile action
+			//player.checkIfSelectionValid(currentGame.getPlayerIndex(), )
+			if(currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"))){
+				updateBoardControllerWithSelectedAction();
+			}
 
 			break;
-		case 51:
-			//released 3, select three space tile
+		case 51: //released 3, select three space tile
+			//check if player has enough AP and if sharedComponent has any more 3 tiles (I could check game state but we could always change how the game state works...)
+			//if(players.checkIfSelectionValid() && shared.checkIfSelectionValid())
+			if(currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"))){
+				updateBoardControllerWithSelectedAction();
+			}
 
 			break;
-		case 68:
-			//released D, add new developer onto board
+		case 68: //released D, add new developer onto board
+			//currentGame.setSelectedActionDeveloper(new MAction("")); //somehow know the developer hash with the player color
 
 			break;
-		case 70:
-			//released F, now need to hide the user's Festival Cards
-			
-			break;
-		case 73:
-			//released I, add new Irrigation tile
-
+		case 73: //released I, add new Irrigation tile
+			//check if player has enough AP, has enough AP, and if there is enough in shared 
+			if(currentGame.setSelectedAction(new SelectIrrigationTileAction("irrigationTile"))){
+				updateBoardControllerWithSelectedAction();
+			}
 			break;
 		case 80:
+			//TODO ask for value
 			//released P, new palace tile, need to ask for value of Tile
+			
+			//somewhere needs to check if a value if valid
+			//if value <=10, > 0 and %2 between 0 and 5 or just check if its 2, 4, 6 ,8, 10
+			int value = GameFrame.getPalaceValueFromUser();
+			//currentGame.setSelectedAction(new SelectPalaceTileAction("palace" + value + "Tile", value)); //this makes the selected action of getting a tile
+			
 
+			if( shared.selectPalaceTile( value ) && players.selectPalaceTile( value, currentGame.getPlayerIndex() ) )
+				board.selectPalaceTile( value );
 			break;
 		case 82:
 			//released R, place rice tile
-			
+			//TODO check if the player has enough villages and that they have some AP left to do this
+			if(players.checkIfRiceTileSelectionValid(currentGame.getPlayerIndex())){
+				if(currentGame.setSelectedAction(new SelectRiceTileAction("riceTile"))){
+					updateBoardControllerWithSelectedAction();
+				}
+			}
 			break;
 		case 84:
+			//does not become a selected action, just does a regular action!
 			//released T, use action token
 
 			break;
-		case 85:
-			//released U, upgrade palace
-			
-			break;
 		case 86:
 			//released V, place Village
-
+			//TODO check if the player has enough villages and that they have some AP left to do this
+			if(true){
+				if(currentGame.setSelectedAction(new SelectVillageTileAction("villageTile"))){
+					updateBoardControllerWithSelectedAction();
+				}
+			}
 			break;
 		case 88:
+			//check if the player has placed a land tile so they can get out of their turn
 			//released X, end turn
 
 			break;		
-		case 98:
-			//released 2 button numerical key - move developer down
-			//currentGame.moveComponentAroundBoard(0, 50);
-			break;
-		case 100:
-			//released 4 button numerical key - move developer left
-			//currentGame.moveComponentAroundBoard(-50, 0);
-			break;
-		case 102:
-			//released 6 button numerical key - move developer right
-			//currentGame.moveComponentAroundBoard(50, 0);
-			break;
-		case 104:
-			//released 8 button numerical key - move developer up
-			//currentGame.moveComponentAroundBoard(0, -50);
-			break;
+		}
+	}
+	
+	private void updateBoardControllerWithSelectedAction(){
+		if (currentGame.getSelectedAction() instanceof SelectRotatableTileAction){
+			board.updateSelectedTileAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+		}
+		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
+			board.updateSelectedTileAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), 0);
+		}
+		else{//developer
+			//TODO this is to tell the view that the developer path has changed
 		}
 	}
 	
