@@ -6,7 +6,10 @@ import java.io.File;
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
+import Models.Actions.SelectOneSpaceTileAction;
 import Models.Actions.SelectRotatableTileAction;
+import Models.Actions.SelectThreeTileAction;
+import Models.Actions.SelectTwoTileAction;
 import Views.GameContainerPanel;
 
 public class GameController {
@@ -78,11 +81,11 @@ public class GameController {
 	private void userReleasedKey(KeyEvent e){
 		System.out.println(e.getKeyCode());
 		//TODO key codes for switching between modes: planning mode, replay mode, and normal mode
-		//TODO key codes for holding a festival, picking up a festival card/palacecard
+		//TODO key codes for holding a festival, picking up a festival card/palace card
 		switch(e.getKeyCode()){
 		case 8:
 			//released delete, delete a developer from the board
-
+			//need all the type checks and where they are to delete a developer
 			break;
 		case 9:
 			//released tab, tab through developers
@@ -106,38 +109,40 @@ public class GameController {
 			//tells the current game to tell the selectedAction to do pressSpace()
 			//will only tell the board about the change if it was a rotatable tile action
 			currentGame.pressSpace();
-			if (currentGame.getSelectedAction() instanceof SelectRotatableTileAction)
-				board.updateSelectedAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+				updateBoardControllerWithSelectedAction();
 			break;
 			
-	// using these arrow keys for movement of a developer for testing purposes
+	// using these arrow keys for movement of developers and tiles
 		case 37:
-			//pressed left arrow, move the viewport left
-			//currentGame.moveComponentAroundBoard(-50, 0);
+			if(currentGame.pressLeft())
+				updateBoardControllerWithSelectedAction();
 			break;
 		case 38:
-			//pressed up arrow, move the viewport up
-			//currentGame.moveComponentAroundBoard(0, -50);
+			if(currentGame.pressUp())
+				updateBoardControllerWithSelectedAction();
 			break;
 		case 39:
-			//pressed the right arrow, move the viewport right
-			//currentGame.moveComponentAroundBoard(50, 0);
+			if(currentGame.pressRight())
+				updateBoardControllerWithSelectedAction();
 			break;
 		case 40:
-			//pressed the down arrow, move the viewport down
-			//currentGame.moveComponentAroundBoard(0, 50);
+			if(currentGame.pressDown());
+				updateBoardControllerWithSelectedAction();
 			break;
 	// --------------------------------------------------------------------
 			
 		case 50:
 			//released 2, select two space tile
+			currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"));
 
 			break;
 		case 51:
+			currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"));
 			//released 3, select three space tile
 
 			break;
 		case 68:
+			//currentGame.setSelectedActionDeveloper(new MAction("")); //somehow know the developer hash with the player color
 			//released D, add new developer onto board
 
 			break;
@@ -146,6 +151,7 @@ public class GameController {
 			
 			break;
 		case 73:
+			//TODO after creating select irrigation action
 			//released I, add new Irrigation tile
 
 			break;
@@ -177,22 +183,18 @@ public class GameController {
 			//released X, end turn
 
 			break;		
-		case 98:
-			//released 2 button numerical key - move developer down
-			//currentGame.moveComponentAroundBoard(0, 50);
-			break;
-		case 100:
-			//released 4 button numerical key - move developer left
-			//currentGame.moveComponentAroundBoard(-50, 0);
-			break;
-		case 102:
-			//released 6 button numerical key - move developer right
-			//currentGame.moveComponentAroundBoard(50, 0);
-			break;
-		case 104:
-			//released 8 button numerical key - move developer up
-			//currentGame.moveComponentAroundBoard(0, -50);
-			break;
+		}
+	}
+	
+	private void updateBoardControllerWithSelectedAction(){
+		if (currentGame.getSelectedAction() instanceof SelectRotatableTileAction){
+			board.updateSelectedTileAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+		}
+		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
+			board.updateSelectedTileAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), 0);
+		}
+		else{
+			//TODO this is to tell the view that the developer path has changed
 		}
 	}
 	
