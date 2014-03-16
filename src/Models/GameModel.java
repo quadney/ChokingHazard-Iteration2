@@ -338,26 +338,8 @@ public class GameModel implements Serializable<GameModel> {
 			Json.jsonPair("actionIDCounter", Json.jsonValue(actionIDCounter + ""))
 		)));
 	}
-		
-//		// VARIABLES
-//		private BoardModel gameBoard;
-//		private JavaPlayer[] players;
-//		private int indexOfCurrentPlayer;
-//		private boolean isFinalRound;
-//		public MAction selectedAction;
-//
-//		private Stack<Action> actionHistory; // This holds a history of the actions
-//												// taken up to the currently held
-//												// state.
-//		private Stack<Action> actionReplays; // This holds currently undone actions
-//												// for the purposes of Replay Mode
-//
-//		private GameState gameState;
-//		private int actionIDCounter; // Provides unique actionIDs to every action
-//										// created. To be incremented after each
-//										// action instantiation.
-	}
-
+	
+	
 	@Override
 	public GameModel loadObject(JsonObject json) {
 		// TODO Auto-generated method stub
