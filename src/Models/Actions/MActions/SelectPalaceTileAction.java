@@ -1,5 +1,7 @@
 package Models.Actions.MActions;
 
+import Helpers.JsonObject;
+
 public class SelectPalaceTileAction extends SelectOneSpaceTileAction {
 
 	
@@ -15,4 +17,8 @@ public class SelectPalaceTileAction extends SelectOneSpaceTileAction {
 	}
 	
 
+	public SelectPalaceTileAction loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
