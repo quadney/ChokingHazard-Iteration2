@@ -31,16 +31,26 @@ public class SharedComponentModel {
 		return numPalaceCards;
 	}
 	
-	public boolean useThreeTile(){
-		//this should attempt to decrement the three tile
-		//return if this is allowed
-		return false;
+	public boolean hasThreeTile(){
+		//this check if you can use a threeTile (has more than 1 left)
+		//return true if this is allowed
+		return threeSpaceTiles > 0;
 	}
 
 	public boolean hasPalaceTile(int value) {
-		if( value < 0 || value > 4 )
+		//this check if you can use a palace tile with this value (has more than 1 left)
+		//return true if this is allowed
+		if( (value < 2 || value > 10) && value % 2 == 0 ) //by this point it should only be valid values, but that works.
 			return false;
-		return palaceTiles[value] > 0;
+		return palaceTiles[value/2 - 1] > 0;
+	}
+	
+	public boolean hasIrrigationTile(){
+		//this check if you can use a irrigation tile (has more than 1 left)
+		//return true if this is allowed
+		return irrigationTiles > 0;
+		
+		
 	}
 
 }

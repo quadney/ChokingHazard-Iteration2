@@ -131,16 +131,20 @@ public class GameController {
 		case 50: //released 2, select two space tile
 			//check if the player has enough two tiles and AP to select a two tile action a two tile action
 			//player.checkIfSelectionValid(currentGame.getPlayerIndex(), )
-			if(currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"))){
-				updateBoardControllerWithSelectedAction();
+			if(true){
+				if(currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"))){
+					updateBoardControllerWithSelectedAction();
+				}
 			}
 
 			break;
 		case 51: //released 3, select three space tile
 			//check if player has enough AP and if sharedComponent has any more 3 tiles (I could check game state but we could always change how the game state works...)
 			//if(players.checkIfSelectionValid() && shared.checkIfSelectionValid())
-			if(currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"))){
-				updateBoardControllerWithSelectedAction();
+			if(shared.selectThreeTile() && players.selectThreeTile(currentGame.getPlayerIndex())){
+				if(currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"))){
+					updateBoardControllerWithSelectedAction();
+				}
 			}
 
 			break;

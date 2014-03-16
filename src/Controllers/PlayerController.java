@@ -32,4 +32,9 @@ public class PlayerController {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public boolean selectThreeTile(int playerIndex) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
