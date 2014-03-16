@@ -23,4 +23,13 @@ public class PlayerController {
 	public boolean selectPalaceTile(int value, int playerIndex) {
 		return playerModels[playerIndex].canUsePalace();
 	}
+	
+	public boolean selectRiceTile(int playerIndex){
+		return playerModels[playerIndex].canUseRice();
+	}
+
+	public boolean checkIfRiceTileSelectionValid(int i) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
