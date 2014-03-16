@@ -13,11 +13,17 @@ public class JavaPlayer extends Player {
 	private ArrayList<PalaceCard> palaceCards;
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
+<<<<<<< HEAD
 	private boolean placedThreeTile;
 
 	public int currentlySelectedDeveloper;
 	//private ArrayList<FestivalCard> festivalCards;
 	private Developer[] developerArray;
+=======
+	private Developer[] developerArray;
+	public int currentlySelectedDeveloper;
+	private boolean placedLandTile;
+>>>>>>> 2664b230497dede9e6f9e5efa8f6d6ddbdba578f
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);
@@ -29,6 +35,10 @@ public class JavaPlayer extends Player {
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
       	this.palaceCards = new ArrayList<PalaceCard>();
+<<<<<<< HEAD
+=======
+      	this.placedLandTile = false;
+>>>>>>> 2664b230497dede9e6f9e5efa8f6d6ddbdba578f
         this.developersOnBoard = new Developer[12];
         selectedDeveloperIndex = 0;
 	}
@@ -59,7 +69,7 @@ public class JavaPlayer extends Player {
 	}
 	
 	public int getAvailableActionPoints() {
-		if (placedThreeTile) {
+		if (placedLandTile) {
 			return actionPoints;
 		}
 		
@@ -100,8 +110,8 @@ public class JavaPlayer extends Player {
    }
 	  
 	
-	public boolean hasPlacedThreeTile() {
-		return placedThreeTile;
+	public boolean hasPlacedLandTile() {
+		return placedLandTile;
 	}
 	
 	
@@ -123,6 +133,10 @@ public class JavaPlayer extends Player {
 		this.palaceCards.add(card);
 	}
 
+
+	public boolean canUsePalace() {
+		return ( ( this.hasPlacedLandTile() && this.actionPoints >= 1 ) || this.actionPoints >= 2 );
+	}
 	public boolean canUseRice() {
 		// TODO Auto-generated method stub
 		return false;
