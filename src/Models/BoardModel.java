@@ -408,4 +408,37 @@ public class BoardModel {
 
 		return connected;
 	}
+   
+   public ArrayList<JavaCell> getBodyOfWater(JavaCell root) {
+		ArrayList<JavaCell> connected = new ArrayList<JavaCell>();
+		int x = root.getX();
+		int y = root.getY();
+
+		connected.add(root);
+
+		int i = 0;
+		while (i < connected.size()) {
+			Cell temp = connected.get(i);
+			HashSet<JavaCell> adjacent = new HashSet<JavaCell>();
+			if (y < 14 && map[y + 1][x].getCellType().equals("irrigation"))
+				adjacent.add(map[y + 1][x]);
+			if (y > 0 && map[y - 1][x].getCellType().equals("irrigation"))
+				adjacent.add(map[y - 1][x]);
+			if (x < 14 && map[y][x + 1].getCellType().equals("irrigation"))
+				adjacent.add(map[y][x + 1]);
+			if (x > 0 && map[y][x - 1].getCellType().equals("irrigation"))
+				adjacent.add(map[y][x - 1]);
+
+			Iterator<JavaCell> it = adjacent.iterator();
+			while (it.hasNext()) {
+				JavaCell next = (JavaCell) it.next();
+				if (!connected.contains(next))
+					connected.add(next);
+			}
+			i++;
+		}
+
+		return connected;
+	}
+
 }
