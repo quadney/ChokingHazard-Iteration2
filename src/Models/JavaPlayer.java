@@ -125,7 +125,19 @@ public class JavaPlayer extends Player {
 	public void addPalaceCard(PalaceCard card){
 		this.palaceCards.add(card);
 	}
-
+	
+	public boolean endTurn()
+	{
+		if (!hasPlacedLandTile())
+		{
+			//TODO: Alert they haven't placed land
+			return false;
+		}
+		//Otherwise, typical end of turn activities
+		changeFamePoints(1); //TODO: determine correct amount, method?
+		
+		return true;
+	}
 
 	public boolean canUsePalace() {
 		return ( ( this.hasPlacedLandTile() && this.actionPoints >= 1 ) || this.actionPoints >= 2 );

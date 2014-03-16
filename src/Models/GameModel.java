@@ -1,17 +1,17 @@
-package Models;
-
-import Helpers.*;
-import Models.Actions.*;
-import java.util.*;
-import java.util.Stack;
-
-import Models.Actions.MActions.MAction;
-
-// This enum declaration might need to be moved, not sure how accessible it is right now 
-// (needs to be accessible by GameModel and the Controller). #JavaTroubles
-enum GameState {
-	ReplayMode, PlanningMode, NormalMode
-}
+	package Models;
+	
+	import Helpers.*;
+	import Models.Actions.*;
+	import java.util.*;
+	import java.util.Stack;
+	
+	import Models.Actions.MActions.MAction;
+	
+	// This enum declaration might need to be moved, not sure how accessible it is right now 
+	// (needs to be accessible by GameModel and the Controller). #JavaTroubles
+	enum GameState {
+		ReplayMode, PlanningMode, NormalMode
+	}
 
 public class GameModel {
 	// VARIABLES
@@ -67,6 +67,24 @@ public class GameModel {
       }
       return null;
    }
+   
+   public boolean endTurn(){
+	 //TODO only is called when a player can end a turn validly (accounted for in GameController)
+	 //call an end turn in the Player Model for the current player
+	 //change player index
+	 //change whatever else in the models
+	   
+	 JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
+	 if (!currentPlayer.endTurn()) //checks for land tile placement
+		 return false; //TODO: Handle alert, see JavaPlayer TODO
+	 indexOfCurrentPlayer++;
+	 indexOfCurrentPlayer = indexOfCurrentPlayer %  players.length; //tab through players
+	 
+	 
+	 
+	 return true;
+	    }
+   
    
    //Returns an array of players in order from highest to lowest of ranks of players
    //valid on a palace/city
