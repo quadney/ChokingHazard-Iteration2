@@ -16,6 +16,8 @@ public class JavaPlayer extends Player {
 	private ArrayList<PalaceCard> palaceCards;
 	private Developer[] developerArray;
 	public int currentlySelectedDeveloper;
+	private boolean hasPlacedLandTile;
+
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);
@@ -26,10 +28,10 @@ public class JavaPlayer extends Player {
 		this.numOneVillageTile = 2;
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
-      
-      selectedDeveloperIndex = 0;
-      developersOnBoard = new ArrayList<Developer>();
-      this.palaceCards = new ArrayList<PalaceCard>();
+      	this.selectedDeveloperIndex = 0;
+      	this.developersOnBoard = new ArrayList<Developer>();
+      	this.palaceCards = new ArrayList<PalaceCard>();
+      	this.hasPlacedLandTile = false;
 	}
    
 	public int getFamePoints() {
@@ -113,5 +115,9 @@ public class JavaPlayer extends Player {
 	
 	public void addPalaceCard(PalaceCard card){
 		this.palaceCards.add(card);
+	}
+
+	public boolean canUsePalace() {
+		return ( ( this.hasPlacedLandTile && this.actionPoints >= 1 ) || this.actionPoints >= 2 );
 	}
 }

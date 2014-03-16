@@ -277,6 +277,12 @@ public class GameFrame extends JFrame {
 			
 		}
 	}
+
+	public static int getPalaceValueFromUser() {
+		// TODO Auto-generated method stub
+		// This pop up a window and ask for the palace value
+		return 0;
+	}
 	
 
 }

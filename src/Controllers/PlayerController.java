@@ -39,4 +39,8 @@ public class PlayerController {
 			playerPanels[i].updateNumPalaceCards(cards[i].length);
 		}
 	}
+		
+	public boolean selectPalaceTile(int value, int playerIndex) {
+		return playerModels[playerIndex].canUsePalace();
+	}
 }
