@@ -1,25 +1,59 @@
 package Models;
 
 public class Tile {
-
-	private Cell[][] tileSpaces;
+	private String[][] tileCells;
 	private int tileId;
-	private int tileNumber;
+	private int numberCells;
 
-	// String tileType;
 
-	Tile(Cell[][] tileSpaces, int tileId) {
+	public Tile(int numberCells, int tileId) {
 
-		this.tileSpaces = tileSpaces;
+		
 		this.tileId = tileId;
+		this.numberCells = numberCells;
+
+		tileCells = new String[3][3];
+
+		createTile();
 	}
 
-	public Cell[][] getTileSpaces() {
-		return tileSpaces;
+	public String[][] getTileCells() {
+		return tileCells;
 	}
 
-	public void settileSpaces(Cell[][] tileSpaces) {
-		this.tileSpaces = tileSpaces;
+	public void setTileSpaces(String[][] tileCells) {
+		this.tileCells = tileCells;
 	}
+	
+	public String getType(){
+		int numberOfCell = 0;
 
+		for(int i = 0; i < tileCells.length; i++)
+			for(int j = 0; j < tileCells[i].length; i++)
+				if(tileCells[i][j] != null)
+					numberOfCell++;			
+		
+				if(numberOfCell == 2){
+					return "two";
+				}else if(numberOfCell == 3){
+					return "three";
+				}else{
+					return "blank";
+				}
+	
+	}
+	private void createTile(){
+		if(numberCells == 3){
+
+			tileCells[0][1] = "village";
+			tileCells[0][0] = "rice";
+			tileCells[1][1] = "rice";
+		
+		}else if(numberCells == 2){
+			tileCells[0][1] = "village";
+			tileCells[0][0] = "rice";
+
+
+		}
+	}
 }
