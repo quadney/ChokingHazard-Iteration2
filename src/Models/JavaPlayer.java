@@ -10,10 +10,10 @@ public class JavaPlayer extends Player {
 	private int numOneVillageTile;
 	private int numTwoTile;
 	private int numActionTokens;
-   private ArrayList<Developer> developersOnBoard;
-   private int selectedDeveloperIndex;
+	private ArrayList<Developer> developersOnBoard;
+   	private int selectedDeveloperIndex;
 	private boolean placedThreeTile;
-	//private ArrayList<FestivalCard> festivalCards;
+	private ArrayList<PalaceCard> palaceCards;
 	private Developer[] developerArray;
 	public int currentlySelectedDeveloper;
 	
@@ -29,7 +29,7 @@ public class JavaPlayer extends Player {
       
       selectedDeveloperIndex = 0;
       developersOnBoard = new ArrayList<Developer>();
-		//this.festivalCards = new ArrayList<FestivalCard>;
+      this.palaceCards = new ArrayList<PalaceCard>();
 	}
    
 	public int getFamePoints() {
@@ -52,6 +52,9 @@ public class JavaPlayer extends Player {
 	}
 	public int getNumActionTokens() {
 		return numActionTokens;
+	}
+	public ArrayList<PalaceCard> getPalaceCards(){
+		return palaceCards;
 	}
 	
 	public int getAvailableActionPoints() {

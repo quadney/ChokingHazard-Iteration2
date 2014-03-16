@@ -57,15 +57,6 @@ public class GameController {
 		return true;
 	}
 	
-	public void userPressedKey(KeyEvent e){
-		//check if the key that is pressed is the button to show the user's festival card.
-		if(e.getKeyCode() == 70){
-			//the user is pressing (and holding) the F button
-			//display the user's Festival Cards
-			//player.displayFestivalCard(indexOfCurrentPlayer);
-		}
-	}
-	
 	public void keyPressed(KeyEvent e){
 		//this is used only for when users want to show their festival cards
 		//when the key is released, then the festival cards will be hidden once again
@@ -80,9 +71,18 @@ public class GameController {
 			userReleasedKey(e);
 		}
 	}
+
+	public void userPressedKey(KeyEvent e){
+		//check if the key that is pressed is the button to show the user's festival card.
+		if(e.getKeyCode() == 70){
+			//the user is pressing (and holding) the F button
+			System.out.println("Pressed F");
+			currentGamePanel.displayPalaceCardFrame(this.players.getPlayerAtIndex(0));
+		}
+	}
 	
 	private void userReleasedKey(KeyEvent e){
-		System.out.println(e.getKeyCode());
+		//System.out.println(e.getKeyCode());
 		//TODO key codes for switching between modes: planning mode, replay mode, and normal mode
 		//TODO key codes for holding a festival, picking up a festival card/palacecard
 		switch(e.getKeyCode()){
@@ -136,10 +136,6 @@ public class GameController {
 		case 68:
 			//released D, add new developer onto board
 
-			break;
-		case 70:
-			//released F, now need to hide the user's Festival Cards
-			
 			break;
 		case 73:
 			//released I, add new Irrigation tile

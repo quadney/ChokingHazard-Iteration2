@@ -22,4 +22,8 @@ public class PlayerController {
 	public PlayerPanel[] getPlayerPanels(){
 		return this.playerPanels;
 	}
+	
+	public JavaPlayer getPlayerAtIndex(int i){
+		return playerModels[i];
+	}
 }

@@ -53,9 +53,8 @@ public class SharedComponentPanel extends JPanel{
         add(palaceDeck);
         
         //TODO
-        festivalCard = newJLabel("  ", imageSourceHashMap.get("layout_festival_DRUM"));
+        festivalCard = newJLabel("  ", imageSourceHashMap.get("layout_palaceCard_DRUM"));
         add(festivalCard);
-        
 
         JLabel actionSummaryCard = new JLabel();
         actionSummaryCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_actionSummaryCard")));

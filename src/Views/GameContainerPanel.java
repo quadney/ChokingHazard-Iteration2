@@ -2,19 +2,29 @@ package Views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.HashMap;
+
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JComboBox;;
+import javax.swing.JComboBox;
+
+import Models.JavaPlayer;
 
 
 public class GameContainerPanel extends JPanel {
 	private final static int WIDTH = 1300;
 	private final static int HEIGHT = 840;
+	private HashMap<String, String> imageSourceHashMap; 
+	DisplayPlayersPalaceCardsFrame palaceCardFrame;
 	
 	public GameContainerPanel(BoardPanel board, PlayerPanel[] players, SharedComponentPanel shared){
 		super(new BorderLayout());
 		
+		initHashMap();
 		setMaximumSize(new Dimension(WIDTH, HEIGHT));
 		setBorder(BorderFactory.createEmptyBorder(0, 25, 30, 25));
 		
@@ -56,6 +66,22 @@ public class GameContainerPanel extends JPanel {
 		}
 	}
 	
+	private void initHashMap(){
+		File imageSourceFile = null;
+		this.imageSourceHashMap = new HashMap<String, String>();
+		try{
+			imageSourceFile = new File("bin/files/FestivalImageStrings.txt");
+			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
+			String line = "";
+			while((line = fileReader.readLine()) != null){
+				String[] hash = line.split(" ");
+				imageSourceHashMap.put(hash[0], hash[1]);
+			}
+		} catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
+	
 	public int promptUserForPalaceValue(){
 		String[] palaces = {"2", "4", "6", "8", "10"};
 		JComboBox<String> palaceComboBox = new JComboBox<String>(palaces);
@@ -71,6 +97,18 @@ public class GameContainerPanel extends JPanel {
 		if(holdFestival == 1)
 			return true;
 		return false;
+	}
+	
+	public void displayPalaceCardFrame(JavaPlayer player){
+		System.out.println("calling for the frame to be displayed");
+		palaceCardFrame = new DisplayPlayersPalaceCardsFrame(player, imageSourceHashMap);
+		palaceCardFrame.setVisible(true);
+	}
+	
+	public void closePalaceCardFrame(){
+		System.out.println("calling for the frame to be hidden");
+		palaceCardFrame.dispose();
+		palaceCardFrame = null;
 	}
 
 }
