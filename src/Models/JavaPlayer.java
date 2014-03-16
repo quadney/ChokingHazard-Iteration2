@@ -15,7 +15,7 @@ public class JavaPlayer extends Player {
     private int selectedDeveloperIndex;
 
 	private Developer[] developerArray;
-	public int currentlySelectedDeveloper;
+	public int currentlySelectedDeveloper; 	//Index of currently selected developer. CC: Cameron
 	private boolean placedLandTile;
 
 	

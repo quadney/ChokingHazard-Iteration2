@@ -266,7 +266,9 @@ public class BoardModel {
 			return false;
 
 		// Set developer on board
-		return true; // TODO
+		locationCell.setDeveloper();
+		
+		return true; // TODO Specific index?? cc: Cameron
 
 	}
 
@@ -292,8 +294,8 @@ public class BoardModel {
 
 		// Check that player has available AP for this
 		// First determine type of move/cost
-		if (!player.decrementNActionPoints(1)) // TODO: Check lowlands or
-												// mountains
+		int actionPointsCost = getCost(locationCell);
+		if (!player.decrementNActionPoints(actionPointsCost)) 
 			return false;
 
 		return true;
@@ -332,6 +334,17 @@ public class BoardModel {
 			return false;
 		return true;
 	}
+	
+	// Method to determine cost of moving dev onto board: 2 from lowlands, 1 from mountains
+	public int getCost(JavaCell cell)
+	{
+		int x = cell.getX();
+		
+		if (x <= 6)
+			return 2;
+		else
+			return 1;
+	}
 
 	public void removeDeveloper(Point point, JavaPlayer player) {
 		JavaCell pointCell = map[point.getX()][point.getY()];
@@ -339,7 +352,7 @@ public class BoardModel {
 		// Turn off hasDeveloper
 		pointCell.removeDeveloper();
 		// Remove currently selected developer from dev array
-		player.removeDeveloperFromArray(); // TODO: correct indices
+		player.removeDeveloperFromArray(); // Must check that this works later on TODO
 		// Decrement actions points
 		player.decrementNActionPoints(1);
 	}
