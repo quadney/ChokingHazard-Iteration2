@@ -172,7 +172,7 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 				Json.jsonPair("developerArray", Json.serializeArray(developerArray)),
 				Json.jsonPair("selectedDeveloperIndex", Json.jsonValue(selectedDeveloperIndex + "")),
 				Json.jsonPair("currentlySelectedDeveloper", Json.jsonValue(currentlySelectedDeveloper + "")),
-				Json.jsonPair("placedLandTile", Json.jsonValue(placedLandTile + ""))
+				Json.jsonPair("placedLandTile", Json.jsonValue(hasPlacedLandTile + ""))
 		));
 	}
 
