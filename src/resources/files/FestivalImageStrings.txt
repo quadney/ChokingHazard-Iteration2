@@ -1,5 +1,4 @@
-palaceDeck /images/cardDeck.png
-palaceCard_back /images/festivalCard_backOfCard.png
+palaceCard_back /images/festivalCard_cardback.png
 palaceCard_DRUM /images/festivalCard_DRUM.png
 palaceCard_MASK /images/festivalCard_MASK.png
 palaceCard_PUPPET /images/festivalCard_PUPPET.png

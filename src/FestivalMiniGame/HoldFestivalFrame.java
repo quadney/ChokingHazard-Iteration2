@@ -1,5 +1,7 @@
 package FestivalMiniGame;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -15,6 +17,22 @@ public class HoldFestivalFrame extends JFrame {
 		setTitle("Let's Party!");
 		setSize(800, 500);
 		setResizable(false);
+		
+		addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				festController.keyPressed(e);
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		});
 		
 		//make the model, view and controller
 		startFestival(players, indexOfPlayer, festivalCard, selectedPalaceValue);
@@ -48,7 +66,7 @@ public class HoldFestivalFrame extends JFrame {
 		}
 		
 		HoldFestivalModel model = new HoldFestivalModel(festivalPlayers, indexOfPlayer, festivalCard, selectedPalaceValue);
-		HoldFestivalPanel panel = new HoldFestivalPanel();
+		HoldFestivalPanel panel = new HoldFestivalPanel(festivalPlayers, indexOfPlayer, festivalCard.getType(), selectedPalaceValue);
 		festController = new HoldFestivalController(model, panel);
 	}
 
