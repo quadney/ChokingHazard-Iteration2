@@ -18,17 +18,7 @@ public class SharedComponentPanel extends JPanel{
 	private JLabel threeTiles, irrigationTiles, twoPalaceTiles, fourPalaceTiles, sixPalaceTiles, eightPalaceTiles, tenPalaceTiles, festivalCard, palaceDeck;
 	private HashMap<String, String> imageSourceHashMap;
 	
-	public SharedComponentPanel(int numThreeTiles, int numIrrigationTiles, int[] palaceTiles, int numCardsInPalaceDeck){
-		//constructor for when creating a new game
-		super(new FlowLayout());
-		setPreferredSize(new Dimension(1100, 110));
-		
-		initHashMap();
-		initPanel(numThreeTiles, numIrrigationTiles, palaceTiles, numCardsInPalaceDeck, "palaceCard_X");
-	}
-	
 	public SharedComponentPanel(int numThreeTiles, int numIrrigationTiles, int[] palaceTiles, int numCardsInPalaceDeck, String festivalCardHashKey){
-		//constructor for when loading
 		super(new FlowLayout());
 		setPreferredSize(new Dimension(1100, 110));
 		

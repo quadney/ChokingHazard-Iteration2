@@ -5,19 +5,31 @@ public class JavaCell extends Cell
    private int elevation;
    private String cellType;
    private boolean hasDeveLoper;
+   private int cellId;
    
-   public JavaCell(int x, int y, String cellType)
+   public JavaCell(int x, int y, String cellType, int cellId)
    {
       super(x,y);
       elevation = 0;
-      cellType = cellType;
+      this.cellType = cellType;
+      this.cellId = cellId;
    }
    
-   public JavaCell(int x, int y)
+   public JavaCell(int x, int y, int cellId)
    {
       super(x,y);
       elevation = 0;
-      cellType = "BLANK";
+      cellType = "blank";
+      this.cellId = cellId;
+   }
+   
+   public int getCellId()
+   {
+      return cellId;
+   }
+   
+   public void setCellId(int cellId){
+	   this.cellId = cellId;
    }
    
    public int getElevation()

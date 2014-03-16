@@ -13,7 +13,7 @@ public class SharedComponentController {
 		//new game constructor
 		this.sharedModel = new SharedComponentModel();
 		this.sharedPanel = new SharedComponentPanel(sharedModel.getThreeSpaceTiles(), sharedModel.getIrrigationTiles(), 
-				sharedModel.getPalaceTiles(), sharedModel.getNumberPalaceCards());
+				sharedModel.getPalaceTiles(), sharedModel.getNumberPalaceCards(), sharedModel.getFestivalCardType());
 		
 		//there's no festival card for this deck. so when dealPalaceCards(numPlayers) is called, it will create a festival card
 	}
