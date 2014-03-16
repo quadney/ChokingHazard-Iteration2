@@ -1,5 +1,7 @@
 package Models.Actions.MActions;
 
+import Helpers.JsonObject;
+
 
 public class SelectTwoTileAction extends SelectRotatableTileAction {
 
@@ -34,5 +36,9 @@ public class SelectTwoTileAction extends SelectRotatableTileAction {
 		}
 		return true;
 	}
-	
+
+	public SelectTwoTileAction loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
