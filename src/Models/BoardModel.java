@@ -53,7 +53,8 @@ public class BoardModel {
 		JavaCell[][] miniMap = createTestMap(xC, yC);
 
 		int neededActionPoints = checkNeededActionPoints(miniMap, tile);
-
+		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1]); //boolean needed to check the amount of available AP points
+		
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
 				&& checkElevation(miniMap, tile, xC, yC)
@@ -61,7 +62,7 @@ public class BoardModel {
 				&& checkDeveloperOnCell(miniMap, tile)
 				&& checkCityConnection(miniMap, tile)
 				&& checkEdgePlacement(miniMap, tile)
-				&& player.decrementNActionPoints(neededActionPoints)) {
+				&& player.decrementNActionPoints(neededActionPoints, isLandTile)) {
 			return true;
 		}
 
@@ -291,7 +292,7 @@ public class BoardModel {
 
 		// Check that player has available AP for this
 		// First determine type of move/cost
-		if (!player.decrementNActionPoints(1)) // TODO: Check lowlands or
+		if (!player.decrementNActionPoints(1, false)) // TODO: Check lowlands or
 												// mountains
 			return false;
 
@@ -340,7 +341,7 @@ public class BoardModel {
 		// Remove currently selected developer from dev array
 		player.removeDeveloperFromArray(); // TODO: correct indices
 		// Decrement actions points
-		player.decrementNActionPoints(1);
+		player.decrementNActionPoints(1, false);
 	}
 	
 	public boolean hasAdjacentLandSpaceTile(JavaCell cell) {
