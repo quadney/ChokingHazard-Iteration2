@@ -13,17 +13,11 @@ public class JavaPlayer extends Player {
 	private ArrayList<PalaceCard> palaceCards;
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
-<<<<<<< HEAD
-	private boolean placedThreeTile;
 
-	public int currentlySelectedDeveloper;
-	//private ArrayList<FestivalCard> festivalCards;
-	private Developer[] developerArray;
-=======
 	private Developer[] developerArray;
 	public int currentlySelectedDeveloper;
 	private boolean placedLandTile;
->>>>>>> 2664b230497dede9e6f9e5efa8f6d6ddbdba578f
+
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);
@@ -35,10 +29,9 @@ public class JavaPlayer extends Player {
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
       	this.palaceCards = new ArrayList<PalaceCard>();
-<<<<<<< HEAD
-=======
+
       	this.placedLandTile = false;
->>>>>>> 2664b230497dede9e6f9e5efa8f6d6ddbdba578f
+
         this.developersOnBoard = new Developer[12];
         selectedDeveloperIndex = 0;
 	}
