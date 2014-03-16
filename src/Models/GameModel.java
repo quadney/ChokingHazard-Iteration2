@@ -2,6 +2,7 @@ package Models;
 
 import Helpers.*;
 import Models.Actions.*;
+import Models.Actions.MActions.MAction;
 
 // This enum declaration might need to be moved, not sure how accessible it is right now 
 // (needs to be accessible by GameModel and the Controller). #JavaTroubles
@@ -90,5 +91,69 @@ public class GameModel {
 
 	public int getPlayerIndex() {
 		return this.indexOfCurrentPlayer;
+	}
+
+	public void pressSpace() {
+		selectedAction.pressSpace();
+	}
+	
+	//Methods for MAction/selected action traversal that is needed by the controller
+
+	public int getSelectedActionX() {
+		return selectedAction.getX();
+	}
+
+	public int getSelectedActionY() {
+		// TODO Auto-generated method stub
+		return selectedAction.getY();
+	}
+	
+	public String getSelectedActionImageKey() {
+		return selectedAction.getImageKey();
+	}
+
+	public MAction getSelectedAction() {
+		return selectedAction;
+	}
+
+	public void pressEsc() {
+		selectedAction = null;
+	}
+
+	public boolean pressLeft() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(-1,0);
+		}
+		return false;	
+	}
+
+	public boolean pressUp() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(1,0);
+		}
+		return false;
+	}
+
+	public boolean pressRight() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(0,1);
+		}
+		return false;		
+	}
+
+	public boolean pressDown() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(0,-1);
+		}
+		return false;
+	}
+
+	public boolean setSelectedAction(MAction selectedAction) {
+		if(selectedAction == null){
+			this.selectedAction = selectedAction;
+			return true;
+		}
+		return false;
+		
 	}
 }
