@@ -47,9 +47,9 @@ public class GameModel {
 		return gameState;
 	}
 
-//	public void changeFamePoints(int playerIndex, int modifier) {
-//		players[playerIndex].changeFamePoints(modifier);
-//	}
+	public void changeFamePoints(int playerIndex, int modifier) {
+		players[playerIndex].changeFamePoints(modifier);
+	}
 
 	/**
 	 * Backtracks GameModel state to end of current player's previous turn,
@@ -117,5 +117,40 @@ public class GameModel {
 
 	public void pressEsc() {
 		selectedAction = null;
+	}
+
+	public boolean pressLeft() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(-1,0);
+		}
+		return false;	
+	}
+
+	public boolean pressUp() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(1,0);
+		}
+		return false;
+	}
+
+	public boolean pressRight() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(0,1);
+		}
+		return false;		
+	}
+
+	public boolean pressDown() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(0,-1);
+		}
+		return false;
+	}
+
+	public void setSelectedAction(MAction selectedAction) {
+		if(selectedAction == null){
+			this.selectedAction = selectedAction;
+		}
+		
 	}
 }
