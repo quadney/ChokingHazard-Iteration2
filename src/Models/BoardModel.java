@@ -270,7 +270,9 @@ public class BoardModel implements Serializable<BoardModel> {
 			return false;
 
 		// Set developer on board
-		return true; // TODO
+		locationCell.setDeveloper();
+		
+		return true; // TODO Specific index?? cc: Cameron
 
 	}
 
@@ -336,6 +338,17 @@ public class BoardModel implements Serializable<BoardModel> {
 			return false;
 		return true;
 	}
+	
+	// Method to determine cost of moving dev onto board: 2 from lowlands, 1 from mountains
+	public int getCost(JavaCell cell)
+	{
+		int x = cell.getX();
+		
+		if (x <= 6)
+			return 2;
+		else
+			return 1;
+	}
 
 	public void removeDeveloper(Point point, JavaPlayer player) {
 		JavaCell pointCell = map[point.getX()][point.getY()];
@@ -343,9 +356,15 @@ public class BoardModel implements Serializable<BoardModel> {
 		// Turn off hasDeveloper
 		pointCell.removeDeveloper();
 		// Remove currently selected developer from dev array
-		player.removeDeveloperFromArray(); // TODO: correct indices
+		player.removeDeveloperFromArray(); // Must check that this works later on TODO
 		// Decrement actions points
 		player.decrementNActionPoints(1, false);
+	}
+	
+	public boolean moveDeveloper(Player player)
+	{
+		//TODO: Need Cameron's wisdom
+		return true;
 	}
 	
 	public boolean hasAdjacentLandSpaceTile(JavaCell cell) {
@@ -420,7 +439,93 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 
 		return connected;
-	}
+   }
+   
+   public boolean NextToirrigation(int xC, int yC, Tile tile)
+   {
+	    if (yC < 14 && map[xC][yC+1].getCellType().equals("irrigation"))
+	    {
+		   return isIrrigationSurrounded(xC, yC+1);
+	    }
+		if (yC > 0 && map[xC][yC+1].getCellType().equals("irrigation"))
+		{
+			return isIrrigationSurrounded(xC, yC-1);
+		}
+		if (xC < 14 && map[xC+1][yC].getCellType().equals("irrigation"))
+		{	
+			return isIrrigationSurrounded(xC+1, yC);
+		}
+		if (xC > 0 && map[xC+1][yC].getCellType().equals("irrigation"))
+		{	
+			return isIrrigationSurrounded(xC-1, yC);
+		}
+		
+		return false;
+   }
+   
+   public boolean isIrrigationSurrounded(int xC, int yC)
+   {
+	   if (xC < 13 && xC > 0)
+	   {
+
+		   if (map[xC+1][yC].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC+1][yC].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC+1,yC);
+		   }
+		   else 
+			   return true;
+	   }
+	   
+	   if (xC < 14 && xC > 1)
+	   {
+
+		   if (map[xC-1][yC].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC-1][yC].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC-1,yC);
+		   }
+		   else 
+			   return true;
+	   }
+	   
+	   if (yC < 13 && yC > 0)
+	   {
+
+		   if (map[xC][yC+1].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC][yC+1].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC,yC+1);
+		   }
+		   else 
+			   return true;
+	   }
+		 
+	   if (yC < 14 && yC > 1)
+	   {
+
+		   if (map[xC][yC-1].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC][yC-1].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC,yC-1);
+		   }
+		   else 
+			   return true;
+	   }
+	   return false;
+   }
 
 	@Override
 	public String serialize() {
