@@ -23,13 +23,13 @@ public class Simulator {
 		GameRobot.altN();
 		GameRobot.wait(TIME_BETWEEN_MAIN_COMMANDS);
 		GameRobot.type(players.length + "");
-		GameRobot.pressEnter();
-		GameRobot.wait(TIME_BETWEEN_MAIN_COMMANDS);
+		GameRobot.pressTab();
 		for(String player : players) { 
-			GameRobot.wait(TIME_BETWEEN_MAIN_PLAYERS);
 			GameRobot.type(player);
-			GameRobot.pressEnter();
+			GameRobot.pressTab();
+			GameRobot.pressTab();
 		}
+		GameRobot.pressSpace();
 		GameRobot.wait(TIME_BETWEEN_MAIN_COMMANDS);
 	}
 	
