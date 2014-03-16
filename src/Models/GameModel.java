@@ -1,3 +1,4 @@
+
 package Models;
 
 import Helpers.*;
@@ -70,13 +71,22 @@ public class GameModel implements Serializable<GameModel> {
       return null;
    }
    
-   public void endTurn(){
-	   //TODO only is called when a player can end a turn validly (accounted for in GameController)
-	   //call an end turn in the Player Model for the current player
-	   //change player index
-	   //change whatever else in the models
+   public boolean endTurn(){
+	 //TODO only is called when a player can end a turn validly (accounted for in GameController)
+	 //call an end turn in the Player Model for the current player
+	 //change player index
+	 //change whatever else in the models
 	   
-   }
+	 JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
+	 if (!currentPlayer.endTurn()) //checks for land tile placement
+		 return false; //TODO: Handle alert, see JavaPlayer TODO
+	 indexOfCurrentPlayer++;
+	 indexOfCurrentPlayer = indexOfCurrentPlayer %  players.length; //tab through players
+	 
+	 
+	 
+	 return true;
+	    }
    
    //Returns an array of players in order from highest to lowest of ranks of players
    //valid on a palace/city
