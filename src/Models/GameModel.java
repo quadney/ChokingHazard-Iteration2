@@ -2,7 +2,6 @@ package Models;
 
 import Helpers.*;
 import Models.Actions.*;
-import helpers.Json;
 
 import java.util.*;
 import java.util.Stack;
@@ -328,8 +327,7 @@ public class GameModel implements Serializable<GameModel> {
 	public String serialize() {
 		return Json.jsonPair("GameModel", Json.jsonObject(Json.jsonMembers(
 			Json.jsonPair("gameBoard", gameBoard.serialize()),
-			Json.jsonPair("selectedAction", selectedAction.serialize()),
-			Json.jsonPair("gameState", gameState.serialize()),
+			Json.jsonPair("gameState", gameState.toString()),
 			Json.jsonPair("actionHistory", Json.serializeArray(actionHistory)),
 			Json.jsonPair("actionReplays", Json.serializeArray(actionReplays)),
 			Json.jsonPair("players", Json.serializeArray(players)),
