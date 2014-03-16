@@ -109,6 +109,7 @@ public class GameController {
 			//escapes out of a selected action
 			//tells the current game about the event so that it makes SelectedAction to null
 			//also updates the board panel so that the image is canceled
+			System.out.println("(in GameController)Esc was pressed");
 			currentGame.pressEsc();
 			board.pressEsc();
 
@@ -211,20 +212,16 @@ public class GameController {
 			//check if the player has placed a land tile so they can get out of their turn
 			//released X, end turn
 			if(players.selectEndTurn(currentGame.getPlayerIndex())){
-				//need to tell the player panel of the current player to stop outlining their thing - setNotCurrentPlayer
-				
-				if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){
+				players.setNotCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the player panel of the current player to stop outlining their panel
+				if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){ //ask if they wanna have a palace festival
 					//TODO set up palace festival
 					//asks for palace they want to hold a festival at
 					//pass the index and the value of the palace and...
 				}
-				//need to tell the player panel of the current player to stop outlining their thing - setNotCurrentPlayer
-				//ask if they wanna have a palace festival
 				
 				//call this after the prompt to have a palace festival (and after the palace festival if they had one)
-				//increment the current player in the game model
-				currentGame.endTurn(); //increment the current player in the game model
-				
+				currentGame.endTurn(); //increment the current player in the game model, changes all the stuff in player
+				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
 			}
 			break;		
 		}

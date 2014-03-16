@@ -267,7 +267,10 @@ public class GameModel {
 	}
 
 	public void pressSpace() {
-		selectedAction.pressSpace();
+		if(selectedAction != null){
+			selectedAction.pressSpace();
+			System.out.println("(in GameModel pressSpace()) selectedAction is null.");
+		}
 	}
 	
 	//Methods for MAction/selected action traversal that is needed by the controller
