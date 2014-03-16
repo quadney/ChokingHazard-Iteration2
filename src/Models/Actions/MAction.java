@@ -2,8 +2,9 @@ package Models.Actions;
 import Models.*;
 
 /**
+ * MAction, which is a 'momentary' action only used for selection
  * 
- * MAction, which is a momentary action only used for selection
+ * MAction and it's children are created by Meghan and Mauricio
  * 
  */
 public abstract class MAction {
@@ -16,11 +17,13 @@ public abstract class MAction {
 		this.imageKey = imageKey;
 	}
 	
-
+	//Abstract Methods ---------------------------------------------//
 	public abstract void pressSpace();
 	
 	public abstract boolean pressArrow(int xChange, int yChange);
 	
+	
+	//Accessor Methods ---------------------------------------------//
 	public int getX(){
 		return x;
 	}
