@@ -2,6 +2,8 @@ package Models;
 
 import Helpers.*;
 import Models.Actions.*;
+import helpers.Json;
+
 import java.util.*;
 import java.util.Stack;
 
@@ -13,7 +15,7 @@ enum GameState {
 	ReplayMode, PlanningMode, NormalMode
 }
 
-public class GameModel {
+public class GameModel implements Serializable<GameModel> {
 	// VARIABLES
 	private BoardModel gameBoard;
 	private JavaPlayer[] players;
@@ -320,5 +322,45 @@ public class GameModel {
 		}
 		return false;
 		
+	}
+
+	@Override
+	public String serialize() {
+		return Json.jsonPair("GameModel", Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("gameBoard", gameBoard.serialize()),
+			Json.jsonPair("selectedAction", selectedAction.serialize()),
+			Json.jsonPair("gameState", gameState.serialize()),
+			Json.jsonPair("actionHistory", Json.serializeArray(actionHistory)),
+			Json.jsonPair("actionReplays", Json.serializeArray(actionReplays)),
+			Json.jsonPair("players", Json.serializeArray(players)),
+			Json.jsonPair("indexOfCurrentPlayer", Json.jsonValue(indexOfCurrentPlayer + "")),
+			Json.jsonPair("isFinalRound", Json.jsonValue(isFinalRound + "")),
+			Json.jsonPair("actionIDCounter", Json.jsonValue(actionIDCounter + ""))
+		)));
+	}
+		
+//		// VARIABLES
+//		private BoardModel gameBoard;
+//		private JavaPlayer[] players;
+//		private int indexOfCurrentPlayer;
+//		private boolean isFinalRound;
+//		public MAction selectedAction;
+//
+//		private Stack<Action> actionHistory; // This holds a history of the actions
+//												// taken up to the currently held
+//												// state.
+//		private Stack<Action> actionReplays; // This holds currently undone actions
+//												// for the purposes of Replay Mode
+//
+//		private GameState gameState;
+//		private int actionIDCounter; // Provides unique actionIDs to every action
+//										// created. To be incremented after each
+//										// action instantiation.
+	}
+
+	@Override
+	public GameModel loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
