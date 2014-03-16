@@ -53,7 +53,8 @@ public class BoardModel {
 		JavaCell[][] miniMap = createTestMap(xC, yC);
 
 		int neededActionPoints = checkNeededActionPoints(miniMap, tile);
-
+		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1]); //boolean needed to check the amount of available AP points
+		
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
 				&& checkElevation(miniMap, tile, xC, yC)
@@ -61,7 +62,7 @@ public class BoardModel {
 				&& checkDeveloperOnCell(miniMap, tile)
 				&& checkCityConnection(miniMap, tile)
 				&& checkEdgePlacement(miniMap, tile)
-				&& player.decrementNActionPoints(neededActionPoints)) {
+				&& player.decrementNActionPoints(neededActionPoints, isLandTile)) {
 			return true;
 		}
 
@@ -71,6 +72,7 @@ public class BoardModel {
 	private JavaCell[][] createTestMap(int xC, int yC) {
 
 		JavaCell[][] testingMap = new JavaCell[3][3];
+
 
 		for (int i = 0, x = xC - 1; i < 3; i++, x++)
 			for (int j = 0, y = yC - 1; j < 3; j++, y++)
@@ -123,7 +125,6 @@ public class BoardModel {
 	}
 
 	private boolean checkTilesBelow(JavaCell[][] miniMap, Tile tile) {
-
 		return true;
 	}
 
@@ -136,8 +137,7 @@ public class BoardModel {
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				if (tileCells[i][j] != null
-						&& miniMap[i][j].getElevation() != elevation) {
-					return false;
+						&& miniMap[i][j].getElevation() != elevation) {					return false;
 				}
 			}
 		}
@@ -266,7 +266,9 @@ public class BoardModel {
 			return false;
 
 		// Set developer on board
-		return true; // TODO
+		locationCell.setDeveloper();
+		
+		return true; // TODO Specific index?? cc: Cameron
 
 	}
 
@@ -292,7 +294,7 @@ public class BoardModel {
 
 		// Check that player has available AP for this
 		// First determine type of move/cost
-		if (!player.decrementNActionPoints(1)) // TODO: Check lowlands or
+		if (!player.decrementNActionPoints(1, false)) // TODO: Check lowlands or
 												// mountains
 			return false;
 
@@ -332,6 +334,17 @@ public class BoardModel {
 			return false;
 		return true;
 	}
+	
+	// Method to determine cost of moving dev onto board: 2 from lowlands, 1 from mountains
+	public int getCost(JavaCell cell)
+	{
+		int x = cell.getX();
+		
+		if (x <= 6)
+			return 2;
+		else
+			return 1;
+	}
 
 	public void removeDeveloper(Point point, JavaPlayer player) {
 		JavaCell pointCell = map[point.getX()][point.getY()];
@@ -339,9 +352,15 @@ public class BoardModel {
 		// Turn off hasDeveloper
 		pointCell.removeDeveloper();
 		// Remove currently selected developer from dev array
-		player.removeDeveloperFromArray(); // TODO: correct indices
+		player.removeDeveloperFromArray(); // Must check that this works later on TODO
 		// Decrement actions points
-		player.decrementNActionPoints(1);
+		player.decrementNActionPoints(1, false);
+	}
+	
+	public boolean moveDeveloper(Player player)
+	{
+		//TODO: Need Cameron's wisdom
+		return true;
 	}
 	
 	public boolean hasAdjacentLandSpaceTile(JavaCell cell) {
@@ -416,5 +435,92 @@ public class BoardModel {
 		}
 
 		return connected;
-	}
+   }
+   
+   public boolean NextToirrigation(int xC, int yC, Tile tile)
+   {
+	    if (yC < 14 && map[xC][yC+1].getCellType().equals("irrigation"))
+	    {
+		   return isIrrigationSurrounded(xC, yC+1);
+	    }
+		if (yC > 0 && map[xC][yC+1].getCellType().equals("irrigation"))
+		{
+			return isIrrigationSurrounded(xC, yC-1);
+		}
+		if (xC < 14 && map[xC+1][yC].getCellType().equals("irrigation"))
+		{	
+			return isIrrigationSurrounded(xC+1, yC);
+		}
+		if (xC > 0 && map[xC+1][yC].getCellType().equals("irrigation"))
+		{	
+			return isIrrigationSurrounded(xC-1, yC);
+		}
+		
+		return false;
+   }
+   
+   public boolean isIrrigationSurrounded(int xC, int yC)
+   {
+	   if (xC < 13 && xC > 0)
+	   {
+
+		   if (map[xC+1][yC].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC+1][yC].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC+1,yC);
+		   }
+		   else 
+			   return true;
+	   }
+	   
+	   if (xC < 14 && xC > 1)
+	   {
+
+		   if (map[xC-1][yC].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC-1][yC].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC-1,yC);
+		   }
+		   else 
+			   return true;
+	   }
+	   
+	   if (yC < 13 && yC > 0)
+	   {
+
+		   if (map[xC][yC+1].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC][yC+1].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC,yC+1);
+		   }
+		   else 
+			   return true;
+	   }
+		 
+	   if (yC < 14 && yC > 1)
+	   {
+
+		   if (map[xC][yC-1].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC][yC-1].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC,yC-1);
+		   }
+		   else 
+			   return true;
+	   }
+	   return false;
+   }
+
 }

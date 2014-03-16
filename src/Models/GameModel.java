@@ -68,6 +68,14 @@ public class GameModel {
       return null;
    }
    
+   public void endTurn(){
+	   //TODO only is called when a player can end a turn validly (accounted for in GameController)
+	   //call an end turn in the Player Model for the current player
+	   //change player index
+	   //change whatever else in the models
+	   
+   }
+   
    //Returns an array of players in order from highest to lowest of ranks of players
    //valid on a palace/city
    public ArrayList<Player> getPalaceRanks(JavaCell palace)
