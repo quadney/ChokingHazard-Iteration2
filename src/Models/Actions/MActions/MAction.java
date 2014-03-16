@@ -37,10 +37,10 @@ public abstract class MAction implements Serializable<MAction>{
 	
 	@Override
 	public String serialize() {
-		return Json.jsonPair("MAction", Json.jsonObject(Json.jsonMembers(
+		return Json.jsonObject(Json.jsonMembers(
 			Json.jsonPair("x", Json.jsonValue(x + "")),
 			Json.jsonPair("y", Json.jsonValue(y + "")),
 			Json.jsonPair("imageKey", Json.jsonValue(imageKey))
-		)));
+		));
 	}
 }

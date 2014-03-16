@@ -325,7 +325,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	@Override
 	public String serialize() {
-		return Json.jsonPair("GameModel", Json.jsonObject(Json.jsonMembers(
+		return Json.jsonObject(Json.jsonMembers(
 			Json.jsonPair("gameBoard", gameBoard.serialize()),
 			Json.jsonPair("gameState", gameState.toString()),
 			Json.jsonPair("actionHistory", Json.serializeArray(actionHistory)),
@@ -334,7 +334,7 @@ public class GameModel implements Serializable<GameModel> {
 			Json.jsonPair("indexOfCurrentPlayer", Json.jsonValue(indexOfCurrentPlayer + "")),
 			Json.jsonPair("isFinalRound", Json.jsonValue(isFinalRound + "")),
 			Json.jsonPair("actionIDCounter", Json.jsonValue(actionIDCounter + ""))
-		)));
+		));
 	}
 	
 	

@@ -30,7 +30,4 @@ public class SelectOneSpaceTileAction extends SelectNonRotatableTileAction {
 		else
 			return true;
 	}
-
-
-	
 }

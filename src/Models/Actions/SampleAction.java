@@ -36,11 +36,11 @@ public class SampleAction extends Action {
 
 	@Override
 	public String serialize() {
-		return Json.jsonPair("GameModel", Json.jsonObject(Json.jsonMembers(
+		return Json.jsonObject(Json.jsonMembers(
 			Json.jsonPair("famePointsEarned", Json.jsonValue(famePointsEarned + "")),
 			Json.jsonPair("playerIndex", Json.jsonValue(playerIndex + "")),
 			Json.jsonPair("actionID", Json.jsonValue(actionID + ""))
-		)));
+		));
 	}
 
 	@Override

@@ -43,13 +43,11 @@ public abstract class SelectRotatableTileAction extends MAction {
 	
 	@Override
 	public String serialize() {
-		return Json.jsonPair("SelectTwoTileAction", Json.jsonObject(Json.jsonMembers(
+		return Json.jsonObject(Json.jsonMembers(
 			Json.jsonPair("x", Json.jsonValue(x + "")),
 			Json.jsonPair("y", Json.jsonValue(y + "")),
 			Json.jsonPair("rotationState", Json.jsonValue(rotationState + "")),
 			Json.jsonPair("imageKey", Json.jsonValue(imageKey))
-		)));
+		));
 	}
-	
-	
 }

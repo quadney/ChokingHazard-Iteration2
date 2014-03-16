@@ -18,12 +18,12 @@ public class SelectPalaceTileAction extends SelectOneSpaceTileAction {
 
 	@Override
 	public String serialize() {
-		return Json.jsonPair("SelectTwoTileAction", Json.jsonObject(Json.jsonMembers(
+		return Json.jsonObject(Json.jsonMembers(
 			Json.jsonPair("x", Json.jsonValue(x + "")),
 			Json.jsonPair("y", Json.jsonValue(y + "")),
 			Json.jsonPair("value", Json.jsonValue(value + "")),
 			Json.jsonPair("imageKey", Json.jsonValue(imageKey))
-		)));
+		));
 	}
 
 }
