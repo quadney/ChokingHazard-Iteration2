@@ -273,6 +273,7 @@ public class BoardModel {
 	}
 
 	public boolean canPlaceDeveloper(JavaCell locationCell, JavaPlayer player) {
+		
 		// Can only place on village or rice space
 		if (!(isTileOrLand(locationCell.getX(), locationCell.getY())))
 			return false;
@@ -345,26 +346,6 @@ public class BoardModel {
 		// Decrement actions points
 		player.decrementNActionPoints(1);
 	}
-
-	/**************************
-	 * Currently useless code that might be useful later
-	 * ************************/
-
-	/*
-	 * public boolean hasAdjacentLandSpaceTile(JavaCell cell) { int x =
-	 * cell.getX(); int y = cell.getY();
-	 * 
-	 * // Check if the cell is adjacent to any border cells if (x + 1 == 13) {
-	 * if (isTileOrLand(x+1,y)) return true; }
-	 * 
-	 * if (x- 1 == 0) { if (isTileOrLand(x-1,y)) return true; } if (y + 1 == 13)
-	 * { if (isTileOrLand(x,y+1)) return true; } if (y - 1 == 0) { if
-	 * (isTileOrLand(x,y-1)) return true; }
-	 * 
-	 * return false;
-	 * 
-	 * }
-	 */
 
 	public JavaCell[][] getMap() {
 		return map;
