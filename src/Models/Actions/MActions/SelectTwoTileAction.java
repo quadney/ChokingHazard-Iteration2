@@ -38,10 +38,17 @@ public class SelectTwoTileAction extends SelectRotatableTileAction {
 		return true;
 	}
 
+<<<<<<< HEAD
+	public SelectTwoTileAction loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+=======
 	@Override
 	public MAction loadObject(JsonObject json) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+>>>>>>> mauricio
 }

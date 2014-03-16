@@ -1,5 +1,7 @@
 package Models.Actions.MActions;
 
+import Helpers.JsonObject;
+
 public class SelectOneSpaceTileAction extends SelectNonRotatableTileAction {
 	
 	public SelectOneSpaceTileAction(String imageKey) {
@@ -29,5 +31,10 @@ public class SelectOneSpaceTileAction extends SelectNonRotatableTileAction {
 		}
 		else
 			return true;
+	}
+
+	public SelectOneSpaceTileAction loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
