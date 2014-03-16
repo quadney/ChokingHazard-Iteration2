@@ -2,6 +2,7 @@ package Models;
 
 import Helpers.*;
 import Models.Actions.*;
+
 import java.util.*;
 import java.util.Stack;
 
@@ -13,7 +14,7 @@ enum GameState {
 	ReplayMode, PlanningMode, NormalMode
 }
 
-public class GameModel {
+public class GameModel implements Serializable<GameModel> {
 	// VARIABLES
 	private BoardModel gameBoard;
 	private JavaPlayer[] players;
@@ -320,5 +321,26 @@ public class GameModel {
 		}
 		return false;
 		
+	}
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("gameBoard", gameBoard.serialize()),
+			Json.jsonPair("gameState", gameState.toString()),
+			Json.jsonPair("actionHistory", Json.serializeArray(actionHistory)),
+			Json.jsonPair("actionReplays", Json.serializeArray(actionReplays)),
+			Json.jsonPair("players", Json.serializeArray(players)),
+			Json.jsonPair("indexOfCurrentPlayer", Json.jsonValue(indexOfCurrentPlayer + "")),
+			Json.jsonPair("isFinalRound", Json.jsonValue(isFinalRound + "")),
+			Json.jsonPair("actionIDCounter", Json.jsonValue(actionIDCounter + ""))
+		));
+	}
+	
+	
+	@Override
+	public GameModel loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
