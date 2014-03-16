@@ -10,9 +10,10 @@ public class JavaPlayer extends Player {
 	private int numOneVillageTile;
 	private int numTwoTile;
 	private int numActionTokens;
-   private ArrayList<Developer> developersOnBoard;
-   private int selectedDeveloperIndex;
+    private Developer[] developersOnBoard;
+    private int selectedDeveloperIndex;
 	private boolean placedThreeTile;
+	
 	//private ArrayList<FestivalCard> festivalCards;
 	private Developer[] developerArray;
 	public int currentlySelectedDeveloper;
@@ -26,9 +27,9 @@ public class JavaPlayer extends Player {
 		this.numOneVillageTile = 2;
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
-      
-      selectedDeveloperIndex = 0;
-      developersOnBoard = new ArrayList<Developer>();
+        this.developersOnBoard = new Developer[12];
+        selectedDeveloperIndex = 0;
+       // developersOnBoard = new ArrayList<Developer>();
 		//this.festivalCards = new ArrayList<FestivalCard>;
 	}
    
@@ -66,7 +67,7 @@ public class JavaPlayer extends Player {
 		famePoints += modifier;
 	}
    
-   public ArrayList<Developer> getDevelopersOnBoard()
+   public Developer[] getDevelopersOnBoard()
    {
       return developersOnBoard;
    }
@@ -74,20 +75,27 @@ public class JavaPlayer extends Player {
    //Returns the selected developer if there is a valid option (Developers on the board)
    public Developer getSelectedDeveloper()
    {
-      if(developersOnBoard.size() > 0)
-         return developersOnBoard.get(selectedDeveloperIndex);
-      
-      return null;
+      return developersOnBoard[selectedDeveloperIndex];
    }
    
    //Tabs through the collection of developers on the board. If the index is greater than the
    //number of developers, the first developer in the list becomes selected
    public void tabThroughDevelopers()
    {
-      selectedDeveloperIndex++;
-      if(selectedDeveloperIndex >= developersOnBoard.size())
-         selectedDeveloperIndex = 0;
+	  int count = 0;
+	  while (count < developersOnBoard.length) {
+		  selectedDeveloperIndex++;
+		  if(selectedDeveloperIndex >= developersOnBoard.length) {
+		     selectedDeveloperIndex = 0;
+	  	  }
+		  
+		  if (developersOnBoard[selectedDeveloperIndex] != null) {
+			  break;
+		  }
+		  count++;
+	  }
    }
+	  
 	
 	public boolean hasPlacedThreeTile() {
 		return placedThreeTile;
