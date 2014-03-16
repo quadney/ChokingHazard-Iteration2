@@ -124,6 +124,7 @@ public class JavaPlayer extends Player {
 		this.palaceCards.add(card);
 	}
 
+	//Methods needed from Player controller to validate action selections-----------------------------------
 	public boolean canUsePalace() {
 		return ( ( this.hasPlacedLandTile && this.actionPoints >= 1 ) || this.actionPoints >= 2 );
 	}
@@ -132,4 +133,30 @@ public class JavaPlayer extends Player {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public boolean canUseThree() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean canUseTwo() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean canUseActionToken() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean canUseIrrigation() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean canUseVillage() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	//---------------------------------------------------------------------------------------------------------
 }
