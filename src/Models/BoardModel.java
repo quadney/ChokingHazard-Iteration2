@@ -136,8 +136,7 @@ public class BoardModel {
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				if (tileCells[i][j] != null
-						&& miniMap[i][j].getElevation() != elevation) {
-					return false;
+						&& miniMap[i][j].getElevation() != elevation) {					return false;
 				}
 			}
 		}
@@ -417,4 +416,5 @@ public class BoardModel {
 
 		return connected;
 	}
+
 }
