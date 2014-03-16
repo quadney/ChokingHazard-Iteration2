@@ -2,6 +2,7 @@ package Models;
 
 import Helpers.*;
 import Models.Actions.*;
+import Models.Actions.MActions.MAction;
 
 // This enum declaration might need to be moved, not sure how accessible it is right now 
 // (needs to be accessible by GameModel and the Controller). #JavaTroubles
@@ -147,10 +148,12 @@ public class GameModel {
 		return false;
 	}
 
-	public void setSelectedAction(MAction selectedAction) {
+	public boolean setSelectedAction(MAction selectedAction) {
 		if(selectedAction == null){
 			this.selectedAction = selectedAction;
+			return true;
 		}
+		return false;
 		
 	}
 }

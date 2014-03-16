@@ -1,4 +1,4 @@
-package Models.Actions;
+package Models.Actions.MActions;
 import Models.*;
 
 /**
@@ -18,7 +18,7 @@ public abstract class MAction {
 	}
 	
 	//Abstract Methods ---------------------------------------------//
-	public abstract void pressSpace();
+	public abstract boolean pressSpace();
 	
 	public abstract boolean pressArrow(int xChange, int yChange);
 	
