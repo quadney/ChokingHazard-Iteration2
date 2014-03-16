@@ -1,11 +1,15 @@
 package Models;
 
+import Helpers.Json;
+
 import java.util.Stack;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class BoardModel {
+import Helpers.JsonObject;
+
+public class BoardModel implements Serializable<BoardModel> {
 	private JavaCell[][] map;
 	private Stack<JavaCell> path;
 	private ArrayList<JavaCell> connectedPalaces = new ArrayList<JavaCell>();
@@ -415,6 +419,21 @@ public class BoardModel {
 		}
 
 		return connected;
+	}
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("map", Json.serializeArray(map)),
+			Json.jsonPair("path", Json.serializeArray(path)),
+			Json.jsonPair("connectedPalaces", Json.serializeArray(connectedPalaces))
+		));
+	}
+
+	@Override
+	public BoardModel loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
