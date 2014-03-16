@@ -81,8 +81,27 @@ public class BoardModel {
 	
 
 	private int checkNeededActionPoints(JavaCell[][] miniMap, Tile tile) {
-
-		return 0;
+		int outsideCount = 1;
+		int mapRowLength = map.length;
+		int mapColumnSize = map[0].length;
+		String[][] tileCells = tile.getTileCells();
+		
+		for (int i = 0; i < tileCells.length; i++) {
+			for (int j = 0; j < tileCells[i].length; j++) {
+				if (tileCells[i][j] != null) {
+					if (miniMap[i][j] != null &&
+						((i == mapRowLength) ||
+						 (i == mapColumnSize) ||
+						 ((i != 0) && (i != mapColumnSize - 1) && (j == 0)) ||
+						 ((i != 0) && (i != mapColumnSize) && (j == mapRowLength)))) {
+		
+							outsideCount++;
+					}
+				}
+			}
+		}
+		
+		return outsideCount;
 	}
 	
 	private boolean checkPalacePlacement(JavaCell[][] miniMap, Tile tile) {
