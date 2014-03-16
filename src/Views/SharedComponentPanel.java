@@ -19,14 +19,24 @@ public class SharedComponentPanel extends JPanel{
 	private HashMap<String, String> imageSourceHashMap;
 	
 	public SharedComponentPanel(int numThreeTiles, int numIrrigationTiles, int[] palaceTiles, int numCardsInPalaceDeck){
+		//constructor for when creating a new game
 		super(new FlowLayout());
 		setPreferredSize(new Dimension(1100, 110));
 		
 		initHashMap();
-		initPanel(numThreeTiles, numIrrigationTiles, palaceTiles, numCardsInPalaceDeck);
+		initPanel(numThreeTiles, numIrrigationTiles, palaceTiles, numCardsInPalaceDeck, "palaceCard_X");
 	}
 	
-	private void initPanel(int numThreeTiles, int numIrrigationTiles, int[] palaceTiles, int numCardsInPalaceDeck){
+	public SharedComponentPanel(int numThreeTiles, int numIrrigationTiles, int[] palaceTiles, int numCardsInPalaceDeck, String festivalCardHashKey){
+		//constructor for when loading
+		super(new FlowLayout());
+		setPreferredSize(new Dimension(1100, 110));
+		
+		initHashMap();
+		initPanel(numThreeTiles, numIrrigationTiles, palaceTiles, numCardsInPalaceDeck, festivalCardHashKey);
+	}
+	
+	private void initPanel(int numThreeTiles, int numIrrigationTiles, int[] palaceTiles, int numCardsInPalaceDeck, String festivalCardHashKey){
 		threeTiles = newJLabel(numThreeTiles+"", imageSourceHashMap.get("layout_threeTile")); 
 		threeTiles.setPreferredSize(new Dimension(70, 90));
         add(threeTiles);
@@ -52,9 +62,10 @@ public class SharedComponentPanel extends JPanel{
         palaceDeck = newJLabel(numCardsInPalaceDeck+"", imageSourceHashMap.get("layout_palaceDeck"));
         add(palaceDeck);
         
-        //TODO
-        festivalCard = newJLabel("  ", imageSourceHashMap.get("layout_palaceCard_DRUM"));
+        System.out.println("creating festival card");
+        festivalCard = newJLabel(" ", imageSourceHashMap.get("layout_"+festivalCardHashKey));
         add(festivalCard);
+        System.out.println("done");
 
         JLabel actionSummaryCard = new JLabel();
         actionSummaryCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_actionSummaryCard")));
@@ -75,6 +86,8 @@ public class SharedComponentPanel extends JPanel{
 		label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 		return label;
 	}
+	
+	//------------- ACTIONS ------------------
 	
 	public void updateThreePieceTiles(int num){
 		this.threeTiles.setText(""+num);
@@ -97,12 +110,16 @@ public class SharedComponentPanel extends JPanel{
 	public void updateTenPalaceTiles(int num){
 		this.tenPalaceTiles.setText(""+num);
 	}
-	public void updateFestivalCard(String imageSource){
-		this.festivalCard.setIcon(new ImageIcon(imageSource));
-		this.festivalCard.setText(" ");
+	public void drawFromPalaceDeck(int numPalaceCards){
+		this.palaceDeck.setText(""+numPalaceCards);
 	}
-	public void updatePalaceDeck(int num){
-		this.palaceDeck.setText(""+num);
+	public void drawFestivalCard(int numPalaceCards, String newFestivalCardHashKey){
+		System.out.println("drawing Festival card");
+		drawFromPalaceDeck(numPalaceCards);
+		System.out.println("setting the icon hash key: "+newFestivalCardHashKey);
+		System.out.println(imageSourceHashMap.get("layout_"+newFestivalCardHashKey));
+		this.festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_"+newFestivalCardHashKey)));
+		System.out.println("done");
 	}
 	
 	private void initHashMap(){

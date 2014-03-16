@@ -71,11 +71,7 @@ public class DisplayPlayersPalaceCardsFrame extends JFrame {
 		cardsPanel.setLayout(new FlowLayout());
 		palaceCardPanel.add(cardsPanel, BorderLayout.CENTER);
 		
-		//ArrayList<PalaceCard> cards = player.getPalaceCards();
-		ArrayList<PalaceCard> cards = new ArrayList<PalaceCard>(24);
-		for(int i = 0; i < 24; i++){
-			cards.add(new PalaceCard(i % 6 + 1));
-		}
+		ArrayList<PalaceCard> cards = player.getPalaceCards();
 		for(int i = 0; i < cards.size(); i++){
 			JLabel cardLabel = createPalaceCardJLabel(cards.get(i).getType());
 			cardsPanel.add(cardLabel);

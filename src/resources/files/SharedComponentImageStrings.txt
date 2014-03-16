@@ -13,3 +13,4 @@ layout_palaceCard_PUPPET bin/images/layout/layout_festivalCard_PUPPET.png
 layout_palaceCard_MASK_DRUM bin/images/layout/layout_festivalCard_MASK_DRUM.png
 layout_palaceCard_PUPPET_DRUM bin/images/layout/layout_festivalCard_PUPPET_DRUM.png
 layout_palaceCard_PUPPET_MASK bin/images/layout/layout_festivalCard_PUPPET_MASK.png
+layout_palaceCard_X bin/images/layout/layout_festivalCard_Xplaceholder.png

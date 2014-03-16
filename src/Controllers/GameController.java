@@ -33,6 +33,11 @@ public class GameController {
 		players = new PlayerController(numPlayers, playerNames, playerColors);
 		shared = new SharedComponentController();
 		
+		//this initializes the dealing of the palace cards
+		//the shared dealPalaceCards returns the dealt palace cards
+		//and then the player deal Palace cards sets those dealt cards
+		players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
+		
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
 	}

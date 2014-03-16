@@ -108,43 +108,6 @@ public class PlayerPanel extends JPanel{
 		return label;
 	}
 	
-	public void setPlayerName(String playersName){
-		this.playerName.setText(playersName);
-	}
-	
-	public void setPlayerColor(String color){
-		this.color = color;
-		this.playerColor = Color.getColor(color);
-	}
-
-	public void setFamePoints(int famePoints) {
-		this.famePoints.setText(""+famePoints);
-	}
-
-	public void setActionPointsLeft(int actionPointsLeft) {
-		this.actionPointsLeft.setText(""+actionPointsLeft);
-	}
-
-	public void setNumDevelopers(int numDevelopers) {
-		this.developers.setText(""+numDevelopers);
-	}
-
-	public void setNumOneTileRice(int numOneTileRice) {
-		this.oneTileRice.setText(""+numOneTileRice);
-	}
-
-	public void setNumOneTileVillage(int numOneTileVillage) {
-		this.oneTileVillage.setText(""+numOneTileVillage);
-	}
-
-	public void setNumTwoTile(int numTwoTile) {
-		this.twoTile.setText(""+numTwoTile);
-	}
-
-	public void setNumActionTokens(int numActionTokens) {
-		this.actionTokens.setText(""+numActionTokens);
-	}
-	
 	public void setCurrentPlayer(){
 		this.setBorder(BorderFactory.createLineBorder(playerColor, 3));
 	}
@@ -171,40 +134,29 @@ public class PlayerPanel extends JPanel{
 	
 	
 	// ---------- Actions -----------
-	public void updateFamePoints(){
-		
+	public void updateFamePoints(int newFamePoints){
+		this.famePoints.setText(""+newFamePoints);
 	}
-	public void updateActionPoints(){
-		
+	public void updateActionPoints(int actionPoints){
+		this.actionPointsLeft.setText(""+actionPoints);
 	}
-	public void useDeveloper(){
-		
+	public void updateDevelopersOffBoard(int developersOffBoard){
+		this.developers.setText(""+developersOffBoard);
 	}
-	public void removeDeveloperFromBoard(){
-		
+	public void useOneRiceTile(int numRiceTiles){
+		this.oneTileRice.setText(""+numRiceTiles);
 	}
-	public void useOneRiceTile(){
-		
+	public void useOneVillageTile(int numVillageTiles){
+		this.oneTileVillage.setText(""+numVillageTiles);
 	}
-	public void useOneVillageTile(){
-		
+	public void useTwoTile(int numTwoTiles){
+		this.twoTile.setText(""+numTwoTiles);
 	}
-	public void useTwoTile(){
-		
+	public void useActionToken(int numActionTokens, int newNumActionPoints){
+		this.actionTokens.setText(""+numActionTokens);
+		updateActionPoints(newNumActionPoints);
 	}
-	public void useActionToken(){
-		
-	}
-	public void displayPLayerFestivalCards(){
-		
-	}
-	public void hidePlayerFestivalCards(){
-		
-	}
-	public void useFestivalCard(){
-		
-	}
-	public void removeFestivalCard(){
-		
+	public void updateNumPalaceCards(int numPalaceCards){
+		this.palaceCards.setText(""+numPalaceCards);
 	}
 }

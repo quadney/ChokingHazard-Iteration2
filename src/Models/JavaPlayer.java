@@ -110,4 +110,8 @@ public class JavaPlayer extends Player {
 	{
 		developerArray[currentlySelectedDeveloper] = null;
 	}
+	
+	public void addPalaceCard(PalaceCard card){
+		this.palaceCards.add(card);
+	}
 }
