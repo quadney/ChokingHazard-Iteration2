@@ -1,5 +1,7 @@
 package Models.Actions;
 
+import Helpers.Json;
+import Helpers.JsonObject;
 import Models.GameModel;
 
 /**
@@ -30,6 +32,21 @@ public class SampleAction extends Action {
 	public void redo(GameModel game) {
 		game.changeFamePoints(playerIndex, famePointsEarned);
 
+	}
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("famePointsEarned", Json.jsonValue(famePointsEarned + "")),
+			Json.jsonPair("playerIndex", Json.jsonValue(playerIndex + "")),
+			Json.jsonPair("actionID", Json.jsonValue(actionID + ""))
+		));
+	}
+
+	@Override
+	public Action loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

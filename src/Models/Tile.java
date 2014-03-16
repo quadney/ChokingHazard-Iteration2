@@ -1,6 +1,9 @@
 package Models;
 
-public class Tile {
+import Helpers.Json;
+import Helpers.JsonObject;
+
+public class Tile implements Serializable<Tile> {
 	private String[][] tileCells;
 	private int numberCells;
 
@@ -53,5 +56,19 @@ public class Tile {
 
 
 		}
+	}
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("numberCells", Json.jsonValue(numberCells + "")),
+			Json.jsonPair("tileCells", Json.serializeArray(tileCells))
+		));
+	}
+
+	@Override
+	public Tile loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

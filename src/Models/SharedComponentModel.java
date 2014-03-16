@@ -3,8 +3,10 @@ package Models;
 import java.util.ArrayList;
 
 import Helpers.Deck;
+import Helpers.Json;
+import Helpers.JsonObject;
 
-public class SharedComponentModel { 
+public class SharedComponentModel implements Serializable<SharedComponentModel> { 
     private int threeSpaceTiles;
 	private int irrigationTiles;
     private int[] palaceTiles;
@@ -112,6 +114,24 @@ public class SharedComponentModel {
 		return irrigationTiles > 0;
 		
 		
+	}
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("threeSpaceTiles", Json.jsonValue(threeSpaceTiles + "")),
+			Json.jsonPair("irrigationTiles", Json.jsonValue(irrigationTiles + "")),
+			Json.jsonPair("palaceTiles", Json.serializeArray(palaceTiles)),
+			Json.jsonPair("palaceCardDeck", Json.serializeArray(palaceCardDeck)),
+			Json.jsonPair("discardedCardDeck", Json.serializeArray(discardedCardDeck)),
+			Json.jsonPair("festivalCard", festivalCard.serialize())
+		));
+	}
+
+	@Override
+	public SharedComponentModel loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

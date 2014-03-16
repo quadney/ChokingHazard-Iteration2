@@ -1,6 +1,9 @@
 package Models;
 
-public class JavaCell extends Cell
+import Helpers.Json;
+import Helpers.JsonObject;
+
+public class JavaCell extends Cell implements Serializable<JavaCell>
 {
    private int elevation;
    private String cellType;
@@ -99,5 +102,23 @@ public class JavaCell extends Cell
 	   return false;
 		   
    }
+	
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("elevation", Json.jsonValue(elevation + "")),
+			Json.jsonPair("cellType", Json.jsonValue(cellType + "")),
+			Json.jsonPair("hasDeveLoper", Json.jsonValue(hasDeveLoper + "")),
+			Json.jsonPair("cellId", Json.jsonValue(cellId + "")),
+			Json.jsonPair("xVal", Json.jsonValue(xVal + "")),
+			Json.jsonPair("yVal", Json.jsonValue(yVal + ""))
+		));
+	}
+	
+	@Override
+	public JavaCell loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
+	}
    
 }
