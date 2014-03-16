@@ -17,7 +17,6 @@ public class JavaPlayer extends Player {
 	public int currentlySelectedDeveloper;
 	private boolean hasPlacedLandTile;
 	private boolean hasUsedActionToken;
-
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);

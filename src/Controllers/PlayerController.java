@@ -72,7 +72,6 @@ public class PlayerController {
 
 	public boolean selectEndTurn(int playerIndex) {
 		return playerModels[playerIndex].canEndTurn();
-		return false;
 	}
 	//----------------------------------------------------------------------------
 	
