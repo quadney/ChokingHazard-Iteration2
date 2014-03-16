@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.ArrayList;
+
 import Helpers.Deck;
 
 public class SharedComponentModel { 
@@ -7,6 +9,7 @@ public class SharedComponentModel {
 	private int irrigationTiles;
     private int[] palaceTiles;
     private Deck<PalaceCard> palaceCardDeck;
+    private Deck<PalaceCard> discardedCardDeck;
     private PalaceCard festivalCard;
     
     public SharedComponentModel(){
@@ -24,19 +27,18 @@ public class SharedComponentModel {
 			palaceCardDeck.add(new PalaceCard(6));
 		}
 		palaceCardDeck.shuffle();
+		this.festivalCard = palaceCardDeck.draw();
+		this.discardedCardDeck = new Deck<PalaceCard>();
     }
     
-    public SharedComponentModel(int numThreeTiles, int numIrrigation, int[] palaceTiles, Deck<PalaceCard> deck, PalaceCard festivalCard){
+    public SharedComponentModel(int numThreeTiles, int numIrrigation, int[] palaceTiles, Deck<PalaceCard> deck, PalaceCard festivalCard, Deck<PalaceCard> discardDeck){
     	//constructor for loading game
     	this.threeSpaceTiles = numThreeTiles;
     	this.irrigationTiles = numIrrigation;
     	this.palaceTiles = palaceTiles;
     	this.palaceCardDeck = deck;
     	this.festivalCard = festivalCard;
-    }
-    
-    public void initFestivalCard(){
-    	this.festivalCard = palaceCardDeck.draw();
+    	this.discardedCardDeck = discardDeck;
     }
     
 	public int getIrrigationTiles() {
@@ -59,14 +61,35 @@ public class SharedComponentModel {
 	}
 	
 	public PalaceCard drawFromDeck(){
-		return palaceCardDeck.draw();
+		PalaceCard card = palaceCardDeck.draw();
+		checkIfDeckIsEmpty();
+		return card;
 	}
-	
 	public PalaceCard drawFestivalCard(){
 		//return the current festival card, and draw a new card to be the festivalCard
-		PalaceCard card = festivalCard;
+		PalaceCard card = festivalCard.deepCopy();
+		
+		//if the deck is empty, refresh it
+		checkIfDeckIsEmpty();
+		
 		this.festivalCard = drawFromDeck();
 		return card;
+	}
+	
+	public void discardCard(PalaceCard card){
+		discardedCardDeck.add(card);
+	}
+	
+	public void checkIfDeckIsEmpty(){
+		if(palaceCardDeck.size() == 0) 
+			refreshPalaceCardDeck();
+	}
+	
+	public void refreshPalaceCardDeck(){
+		while(discardedCardDeck.size() > 0){
+			palaceCardDeck.add(discardedCardDeck.draw());
+		}
+		palaceCardDeck.shuffle();
 	}
 
 }

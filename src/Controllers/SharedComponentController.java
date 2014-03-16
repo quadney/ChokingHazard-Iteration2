@@ -17,9 +17,9 @@ public class SharedComponentController {
 		
 		//there's no festival card for this deck. so when dealPalaceCards(numPlayers) is called, it will create a festival card
 	}
-	public SharedComponentController(int threeTiles, int irrigationTiles, int[] palaceTiles, Deck<PalaceCard> deck, PalaceCard festivalCard){
+	public SharedComponentController(int threeTiles, int irrigationTiles, int[] palaceTiles, Deck<PalaceCard> deck, PalaceCard festivalCard, Deck<PalaceCard> discardDeck){
 		//load game constructor
-		this.sharedModel = new SharedComponentModel(threeTiles, irrigationTiles, palaceTiles, deck, festivalCard);
+		this.sharedModel = new SharedComponentModel(threeTiles, irrigationTiles, palaceTiles, deck, festivalCard, discardDeck);
 		this.sharedPanel = new SharedComponentPanel(threeTiles, irrigationTiles, palaceTiles, deck.size(), festivalCard.getType());
 	}
 	
@@ -34,13 +34,14 @@ public class SharedComponentController {
 	}
 	
 	public PalaceCard drawFestivalCard(){
-		PalaceCard card = this.sharedModel.getFestivalCard();
+		PalaceCard card = this.sharedModel.getFestivalCard().deepCopy();
 		sharedModel.drawFestivalCard();
 		sharedPanel.drawFestivalCard(sharedModel.getNumberPalaceCards(), sharedModel.getFestivalCardType());
 		return card;
 	}
 	
 	public PalaceCard[][] dealPalaceCards(int numPlayers){
+		//deal the cards to players
 		PalaceCard[][] cards = new PalaceCard[numPlayers][3];
 		for(int i = 0; i < numPlayers; i++){
 			int j = 0;
@@ -49,8 +50,6 @@ public class SharedComponentController {
 				j++;
 			}
 		}
-		sharedModel.initFestivalCard();
-		sharedPanel.drawFestivalCard(sharedModel.getNumberPalaceCards(), sharedModel.getFestivalCardType());
 		return cards;
 	}
 }
