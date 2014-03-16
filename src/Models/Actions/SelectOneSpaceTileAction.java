@@ -13,8 +13,9 @@ public class SelectOneSpaceTileAction extends MAction {
 		//does nothing
 	}
 	
-	public void pressArrow(int value){
+	public boolean pressArrow(int xChange, int yChange){
 		//moves around the whole entire board
+		return false;
 	}
 	
 }

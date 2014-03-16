@@ -19,7 +19,7 @@ public abstract class MAction {
 
 	public abstract void pressSpace();
 	
-	public abstract void pressArrow(int value);
+	public abstract boolean pressArrow(int xChange, int yChange);
 	
 	public int getX(){
 		return x;

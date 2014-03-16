@@ -8,8 +8,9 @@ public class SelectThreeTileAction extends SelectRotatableTileAction{
 		
 	}
 	
-	public void pressArrow(int value){
+	public boolean pressArrow(int xChange, int yChange){
 		//move around most of the board, depending on the rotation state
+		return false;
 	}
 
 
