@@ -94,7 +94,7 @@ public class PlayerPanel extends JPanel{
         twoTile = newJLabel(numTwoTile+"", imageSourceHashMap.get("layout_twoTile"), 160, 45); 
         this.add(twoTile);
         
-        palaceCards = newJLabel(numPalaceCards+"", imageSourceHashMap.get("layout_palaceDeck"), 160, 75);
+        palaceCards = newJLabel(numPalaceCards+"", imageSourceHashMap.get("layout_palaceCardBack"), 160, 75);
         this.add(palaceCards);
 		
 	}
