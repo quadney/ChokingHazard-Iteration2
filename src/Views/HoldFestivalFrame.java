@@ -9,10 +9,12 @@ public class HoldFestivalFrame extends JFrame {
 	//players who are in the city are in the festival
 	//players can drop out of the festival
 	//players play festival cards
-	JButton[] dropPlayerFromFestivalButton;
+	JButton[] dropPlayerFromFestivalButtons;
+	int indexOfPlayerToPlayCard;
 	
-	public HoldFestivalFrame(JavaPlayer[] playersInFestival){
-		
+	public HoldFestivalFrame(JavaPlayer[] playersInFestival, int indexOfPlayer){
+		this.indexOfPlayerToPlayCard = indexOfPlayer;
+		dropPlayerFromFestivalButtons = new JButton[playersInFestival.length];
 	}
 
 }

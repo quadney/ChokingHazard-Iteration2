@@ -81,15 +81,15 @@ public class GameController {
 		//check if the key that is pressed is the button to show the user's festival card.
 		if(e.getKeyCode() == 70){
 			//the user is pressing (and holding) the F button
-			System.out.println("Pressed F");
+			//TODO this can only be called if in Play Mode
 			currentGamePanel.displayPalaceCardFrame(this.players.getPlayerAtIndex(0));
 		}
 	}
 	
 	private void userReleasedKey(KeyEvent e){
 		//System.out.println(e.getKeyCode());
-		//TODO key codes for switching between modes: planning mode, replay mode, and normal mode
-		//TODO key codes for holding a festival, picking up a festival card/palacecard
+		//TODO key codes for switching between modes: planning mode, replay mode, and Play mode
+		//TODO key codes for picking up a festival card/palaceCard
 		switch(e.getKeyCode()){
 		case 8:
 			//released delete, delete a developer from the board

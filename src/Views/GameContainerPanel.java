@@ -2,12 +2,14 @@ package Views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
@@ -20,6 +22,8 @@ public class GameContainerPanel extends JPanel {
 	private final static int HEIGHT = 840;
 	private HashMap<String, String> imageSourceHashMap; 
 	DisplayPlayersPalaceCardsFrame palaceCardFrame;
+	private JButton toggleGameModeButton;
+	private JButton replayModeButton;
 	
 	public GameContainerPanel(BoardPanel board, PlayerPanel[] players, SharedComponentPanel shared){
 		super(new BorderLayout());
@@ -28,10 +32,20 @@ public class GameContainerPanel extends JPanel {
 		setMaximumSize(new Dimension(WIDTH, HEIGHT));
 		setBorder(BorderFactory.createEmptyBorder(0, 25, 30, 25));
 		
+		toggleGameModeButton = new JButton("Play Mode");
+		replayModeButton = new JButton("Replay");
+		
 		initPanels(board, players, shared);
 	}
 	
 	private void initPanels(BoardPanel board, PlayerPanel[] players, SharedComponentPanel shared){
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setMinimumSize(new Dimension(100, shared.getHeight()));
+		buttonPanel.setLayout(new FlowLayout());
+		buttonPanel.add(toggleGameModeButton);
+		buttonPanel.add(replayModeButton);
+		add(buttonPanel, BorderLayout.NORTH);
+		
 		add(shared, BorderLayout.NORTH);
 		
 		add(board, BorderLayout.CENTER);
@@ -92,23 +106,29 @@ public class GameContainerPanel extends JPanel {
 	}
 	
 	public boolean askUserIfWouldLikeToHoldAPalaceFestival(){
-		
 		int holdFestival = JOptionPane.showConfirmDialog(null, "Would you like to hold a Palace Festival?", "Let's Party!", JOptionPane.YES_NO_OPTION);
 		if(holdFestival == 1)
 			return true;
 		return false;
 	}
 	
-	public void displayPalaceCardFrame(JavaPlayer player){
-		System.out.println("calling for the frame to be displayed");
-		palaceCardFrame = new DisplayPlayersPalaceCardsFrame(player, imageSourceHashMap);
-		palaceCardFrame.setVisible(true);
+	public boolean askUserIfWouldLikeToEnterReplayMode(){
+		int replay = JOptionPane.showConfirmDialog(null, "Would you like to enter Replay Mode?", "Replay Mode", JOptionPane.YES_NO_OPTION);
+		if(replay == 1)
+			return true;
+		return false;
 	}
 	
-	public void closePalaceCardFrame(){
-		System.out.println("calling for the frame to be hidden");
-		palaceCardFrame.dispose();
-		palaceCardFrame = null;
+	public boolean askUserIfWouldLikeToSaveChangesFromPlanningMode(){
+		int saveChanges = JOptionPane.showConfirmDialog(null, "Would you like to Play mode to reflect these changes?", "Planning Mode", JOptionPane.YES_NO_OPTION);
+		if(saveChanges == 1)
+			return true;
+		return false;
+	}
+	
+	public void displayPalaceCardFrame(JavaPlayer player){
+		palaceCardFrame = new DisplayPlayersPalaceCardsFrame(player, imageSourceHashMap);
+		palaceCardFrame.setVisible(true);
 	}
 
 }

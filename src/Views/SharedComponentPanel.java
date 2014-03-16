@@ -62,10 +62,8 @@ public class SharedComponentPanel extends JPanel{
         palaceDeck = newJLabel(numCardsInPalaceDeck+"", imageSourceHashMap.get("layout_palaceDeck"));
         add(palaceDeck);
         
-        System.out.println("creating festival card");
         festivalCard = newJLabel(" ", imageSourceHashMap.get("layout_"+festivalCardHashKey));
         add(festivalCard);
-        System.out.println("done");
 
         JLabel actionSummaryCard = new JLabel();
         actionSummaryCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_actionSummaryCard")));
@@ -114,10 +112,7 @@ public class SharedComponentPanel extends JPanel{
 		this.palaceDeck.setText(""+numPalaceCards);
 	}
 	public void drawFestivalCard(int numPalaceCards, String newFestivalCardHashKey){
-		System.out.println("drawing Festival card");
 		drawFromPalaceDeck(numPalaceCards);
-		System.out.println("setting the icon hash key: "+newFestivalCardHashKey);
-		System.out.println(imageSourceHashMap.get("layout_"+newFestivalCardHashKey));
 		this.festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_"+newFestivalCardHashKey)));
 		System.out.println("done");
 	}
