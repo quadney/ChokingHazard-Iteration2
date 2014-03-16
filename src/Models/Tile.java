@@ -1,7 +1,6 @@
 package Models;
 
 public class Tile {
-
 	private String[][] tileCells;
 	private int tileId;
 	private int numberCells;
@@ -57,5 +56,4 @@ public class Tile {
 
 		}
 	}
-
 }
