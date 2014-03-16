@@ -11,7 +11,7 @@ import Models.*;
  * @author Cameron Morrow
  * 
  */
-public abstract class Action {
+public abstract class Action implements Serializable<Action> {
 
 	protected final int actionID;
 
