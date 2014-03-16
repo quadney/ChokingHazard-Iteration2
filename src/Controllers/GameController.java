@@ -29,10 +29,15 @@ public class GameController {
 	public void createNewGame(int numPlayers, String[] playerNames, String[] playerColors){
 		//create controllers
 		
-		currentGame = new GameModel(numPlayers);  //?????
+		currentGame = new GameModel(numPlayers);
 		board = new BoardController();
 		players = new PlayerController(numPlayers, playerNames, playerColors);
 		shared = new SharedComponentController();
+		
+		//this initializes the dealing of the palace cards
+		//the shared dealPalaceCards returns the dealt palace cards
+		//and then the player sets those dealt cards as the cards
+		players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
 		
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
@@ -51,13 +56,11 @@ public class GameController {
 		return true;
 	}
 	
-	public void userPressedKey(KeyEvent e){
-		//check if the key that is pressed is the button to show the user's festival card.
-		if(e.getKeyCode() == 70){
-			//the user is pressing (and holding) the F button
-			//display the user's Festival Cards
-			//player.displayFestivalCard(indexOfCurrentPlayer);
+	public boolean getCurrentGameExists(){
+		if (currentGame == null){
+			return false;
 		}
+		return true;
 	}
 	
 	public void keyPressed(KeyEvent e){
@@ -72,6 +75,15 @@ public class GameController {
 		//key released is when a user lifts their finger from a key
 		if(currentGame != null){
 			userReleasedKey(e);
+		}
+	}
+
+	public void userPressedKey(KeyEvent e){
+		//check if the key that is pressed is the button to show the user's festival card.
+		if(e.getKeyCode() == 70){
+			//the user is pressing (and holding) the F button
+			//TODO this can only be called if in Play Mode
+			currentGamePanel.displayPalaceCardFrame(this.players.getPlayerAtIndex(0));
 		}
 	}
 	
@@ -148,16 +160,11 @@ public class GameController {
 			//currentGame.setSelectedActionDeveloper(new MAction("")); //somehow know the developer hash with the player color
 
 			break;
-		case 70:
-			//released F, now need to hide the user's Festival Cards
-			
-			break;
 		case 73: //released I, add new Irrigation tile
 			//check if player has enough AP, has enough AP, and if there is enough in shared 
 			if(currentGame.setSelectedAction(new SelectIrrigationTileAction("irrigationTile"))){
 				updateBoardControllerWithSelectedAction();
 			}
-
 			break;
 		case 80:
 			//TODO ask for value
