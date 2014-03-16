@@ -23,6 +23,7 @@ public class BoardModel {
 				else if (x >= 7 && (y <= 1 || y >= 12)) {
 					map[x][y] = new JavaCell (x, y);
 				}
+
 				else if (x == 12 || x == 13) {
 					map[x][y] = new JavaCell (x, y);
 				}
