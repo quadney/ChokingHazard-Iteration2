@@ -160,19 +160,21 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	@Override
 	public String serialize() {
 		return Json.jsonObject(Json.jsonMembers(
-				Json.jsonPair("famePoints", Json.jsonValue(famePoints + "")),
-				Json.jsonPair("actionPoints", Json.jsonValue(actionPoints + "")),
-				Json.jsonPair("numOneRiceTile", Json.jsonValue(numOneRiceTile + "")),
-				Json.jsonPair("numOneVillageTile", Json.jsonValue(numOneVillageTile + "")),
-				Json.jsonPair("numTwoTile", Json.jsonValue(numTwoTile + "")),
-				Json.jsonPair("numActionTokens", Json.jsonValue(numActionTokens + "")),
-				Json.jsonPair("developersOffBoard", Json.jsonValue(developersOffBoard + "")),
-				Json.jsonPair("palaceCards", Json.serializeArray(palaceCards)),
-				Json.jsonPair("developersOnBoard", Json.serializeArray(developersOnBoard)),
-				Json.jsonPair("developerArray", Json.serializeArray(developerArray)),
-				Json.jsonPair("selectedDeveloperIndex", Json.jsonValue(selectedDeveloperIndex + "")),
-				Json.jsonPair("currentlySelectedDeveloper", Json.jsonValue(currentlySelectedDeveloper + "")),
-				Json.jsonPair("placedLandTile", Json.jsonValue(hasPlacedLandTile + ""))
+			Json.jsonPair("name", Json.jsonValue(name + "")),
+			Json.jsonPair("color", Json.jsonValue(color + "")),
+			Json.jsonPair("famePoints", Json.jsonValue(famePoints + "")),
+			Json.jsonPair("actionPoints", Json.jsonValue(actionPoints + "")),
+			Json.jsonPair("numOneRiceTile", Json.jsonValue(numOneRiceTile + "")),
+			Json.jsonPair("numOneVillageTile", Json.jsonValue(numOneVillageTile + "")),
+			Json.jsonPair("numTwoTile", Json.jsonValue(numTwoTile + "")),
+			Json.jsonPair("numActionTokens", Json.jsonValue(numActionTokens + "")),
+			Json.jsonPair("developersOffBoard", Json.jsonValue(developersOffBoard + "")),
+			Json.jsonPair("palaceCards", Json.serializeArray(palaceCards)),
+			Json.jsonPair("developersOnBoard", Json.serializeArray(developersOnBoard)),
+			Json.jsonPair("developerArray", Json.serializeArray(developerArray)),
+			Json.jsonPair("selectedDeveloperIndex", Json.jsonValue(selectedDeveloperIndex + "")),
+			Json.jsonPair("currentlySelectedDeveloper", Json.jsonValue(currentlySelectedDeveloper + "")),
+			Json.jsonPair("placedLandTile", Json.jsonValue(hasPlacedLandTile + ""))
 		));
 	}
 

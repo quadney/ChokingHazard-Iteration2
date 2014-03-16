@@ -1,9 +1,9 @@
 package Models;
 
-public abstract class Cell 
+public abstract class Cell
 {
-   private int xVal;
-   private int yVal;   
+   protected int xVal;
+   protected int yVal;   
    
    public Cell(int x, int y)
    {
