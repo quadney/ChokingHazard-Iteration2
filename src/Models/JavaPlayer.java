@@ -13,11 +13,9 @@ public class JavaPlayer extends Player {
 	private ArrayList<PalaceCard> palaceCards;
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
-	private boolean placedThreeTile;
 	private Developer[] developerArray;
 	public int currentlySelectedDeveloper;
-	private boolean hasPlacedLandTile;
-
+	private boolean placedLandTile;
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);
@@ -29,7 +27,7 @@ public class JavaPlayer extends Player {
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
       	this.palaceCards = new ArrayList<PalaceCard>();
-      	this.hasPlacedLandTile = false;
+      	this.placedLandTile = false;
         this.developersOnBoard = new Developer[12];
         selectedDeveloperIndex = 0;
 	}
@@ -60,7 +58,7 @@ public class JavaPlayer extends Player {
 	}
 	
 	public int getAvailableActionPoints() {
-		if (placedThreeTile) {
+		if (placedLandTile) {
 			return actionPoints;
 		}
 		
@@ -101,8 +99,8 @@ public class JavaPlayer extends Player {
    }
 	  
 	
-	public boolean hasPlacedThreeTile() {
-		return placedThreeTile;
+	public boolean hasPlacedLandTile() {
+		return placedLandTile;
 	}
 	
 	
@@ -125,7 +123,7 @@ public class JavaPlayer extends Player {
 	}
 
 	public boolean canUsePalace() {
-		return ( ( this.hasPlacedLandTile && this.actionPoints >= 1 ) || this.actionPoints >= 2 );
+		return ( ( this.hasPlacedLandTile() && this.actionPoints >= 1 ) || this.actionPoints >= 2 );
 	}
 
 	public boolean canUseRice() {
