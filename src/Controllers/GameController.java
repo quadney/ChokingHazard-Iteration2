@@ -211,7 +211,20 @@ public class GameController {
 			//check if the player has placed a land tile so they can get out of their turn
 			//released X, end turn
 			if(players.selectEndTurn(currentGame.getPlayerIndex())){
-				//does end turn stuff
+				//need to tell the player panel of the current player to stop outlining their thing - setNotCurrentPlayer
+				
+				if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){
+					//TODO set up palace festival
+					//asks for palace they want to hold a festival at
+					//pass the index and the value of the palace and...
+				}
+				//need to tell the player panel of the current player to stop outlining their thing - setNotCurrentPlayer
+				//ask if they wanna have a palace festival
+				
+				//call this after the prompt to have a palace festival (and after the palace festival if they had one)
+				//increment the current player in the game model
+				currentGame.endTurn(); //increment the current player in the game model
+				
 			}
 			break;		
 		}
