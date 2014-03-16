@@ -39,7 +39,9 @@ public class PlayerController {
 			playerPanels[i].updateNumPalaceCards(cards[i].length);
 		}
 	}
-		
+	
+	//Methods to validate select actions/key presses--------------------------------
+	
 	public boolean selectPalaceTile(int playerIndex) {
 		return playerModels[playerIndex].canUsePalace();
 	}
@@ -67,5 +69,10 @@ public class PlayerController {
 	public boolean selectVillageTile(int playerIndex) {
 		return playerModels[playerIndex].canUseVillage();
 	}
+
+	public boolean selectEndTurn(int playerIndex) {
+		return playerModels[playerIndex].canEndTurn();
+	}
+	//----------------------------------------------------------------------------
 	
 }
