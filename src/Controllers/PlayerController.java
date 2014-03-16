@@ -39,17 +39,40 @@ public class PlayerController {
 			playerPanels[i].updateNumPalaceCards(cards[i].length);
 		}
 	}
-		
-	public boolean selectPalaceTile(int value, int playerIndex) {
+	
+	//Methods to validate select actions/key presses--------------------------------
+	
+	public boolean selectPalaceTile(int playerIndex) {
 		return playerModels[playerIndex].canUsePalace();
 	}
 	
-	public boolean selectRiceTile(int playerIndex){
+	public boolean selectRiceTile(int playerIndex){ 
 		return playerModels[playerIndex].canUseRice();
 	}
 
-	public boolean checkIfRiceTileSelectionValid(int i) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean selectThreeTile(int playerIndex) {
+		return playerModels[playerIndex].canUseThree();
 	}
+	
+	public boolean selectTwoTile(int playerIndex) {
+		return playerModels[playerIndex].canUseTwo(); 
+	}
+	
+	public boolean selectActionToken(int playerIndex) {
+		return playerModels[playerIndex].canUseActionToken();
+	}
+	
+	public boolean selectIrrigationTile(int playerIndex) {
+		return playerModels[playerIndex].canUseIrrigation();
+	}
+	
+	public boolean selectVillageTile(int playerIndex) {
+		return playerModels[playerIndex].canUseVillage();
+	}
+
+	public boolean selectEndTurn(int playerIndex) {
+		return playerModels[playerIndex].canEndTurn();
+	}
+	//----------------------------------------------------------------------------
+	
 }

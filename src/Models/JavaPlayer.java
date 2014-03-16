@@ -15,9 +15,9 @@ public class JavaPlayer extends Player {
     private int selectedDeveloperIndex;
 
 	private Developer[] developerArray;
-	public int currentlySelectedDeveloper; 	//Index of currently selected developer. CC: Cameron
-	private boolean placedLandTile;
-
+	public int currentlySelectedDeveloper;
+	private boolean hasPlacedLandTile;
+	private boolean hasUsedActionToken;
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);
@@ -29,11 +29,10 @@ public class JavaPlayer extends Player {
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
       	this.palaceCards = new ArrayList<PalaceCard>();
-
-      	this.placedLandTile = false;
-
+      	this.hasPlacedLandTile = false;
         this.developersOnBoard = new Developer[12];
-        selectedDeveloperIndex = 0;
+        this.selectedDeveloperIndex = 0;
+        this.hasUsedActionToken = false;
 	}
    
 	public int getFamePoints() {
@@ -61,8 +60,8 @@ public class JavaPlayer extends Player {
 		return palaceCards;
 	}
 	
-	public int getAvailableActionPoints() {
-		if (placedLandTile) {
+	public int getAvailableActionPoints(boolean isLandTile) {
+		if (hasPlacedLandTile || isLandTile) {
 			return actionPoints;
 		}
 		
@@ -101,15 +100,9 @@ public class JavaPlayer extends Player {
 		  count++;
 	  }
    }
-	  
 	
-	public boolean hasPlacedLandTile() {
-		return placedLandTile;
-	}
-	
-	
-	public boolean decrementNActionPoints(int n) {
-		if (getAvailableActionPoints() >= n) {
+	public boolean decrementNActionPoints(int n, boolean isLandTile) {
+		if (getAvailableActionPoints(isLandTile) >= n) {
 			actionPoints -= n;
 			return true;
 		}
@@ -126,12 +119,38 @@ public class JavaPlayer extends Player {
 		this.palaceCards.add(card);
 	}
 
+	//Methods needed from Player controller to validate action selections-----------------------------------
+	public boolean canUsePalace() { //checks if the player has the AP
+		return getAvailableActionPoints(false) > 0;
+	}
 
-	public boolean canUsePalace() {
-		return ( ( this.hasPlacedLandTile() && this.actionPoints >= 1 ) || this.actionPoints >= 2 );
+	public boolean canUseRice() { //checks if the player has enough plus has the AP
+		return numOneRiceTile > 0 && getAvailableActionPoints(true) > 0;
 	}
-	public boolean canUseRice() {
-		// TODO Auto-generated method stub
-		return false;
+
+	public boolean canUseThree() { //checks if the player has the AP
+		return getAvailableActionPoints(false) > 0;
 	}
+
+	public boolean canUseTwo() { //checks if the player has enough plus has the AP
+		return numTwoTile > 0 && getAvailableActionPoints(true) > 0;
+	}
+
+	public boolean canUseActionToken() { //checks if the player has not used an action token yet
+		return !hasUsedActionToken;
+	}
+
+	public boolean canUseIrrigation() { //checks if the player has the AP
+		return getAvailableActionPoints(false) > 0;
+	}
+
+	public boolean canUseVillage() { //checks if the player has enough plus has the AP
+		return numOneVillageTile > 0 && getAvailableActionPoints(true) > 0;
+	}
+
+	public boolean canEndTurn() { //checks if the player has placed a land tile
+		return hasPlacedLandTile;
+	}
+	
+	//---------------------------------------------------------------------------------------------------------
 }

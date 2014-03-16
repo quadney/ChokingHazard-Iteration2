@@ -141,18 +141,22 @@ public class GameController {
 	// --------------------------------------------------------------------
 			
 		case 50: //released 2, select two space tile
-			//check if the player has enough two tiles and AP to select a two tile action a two tile action
+			//TODO check if the player has enough two tiles and AP to select a two tile action a two tile action
 			//player.checkIfSelectionValid(currentGame.getPlayerIndex(), )
-			if(currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"))){
-				updateBoardControllerWithSelectedAction();
+			if(players.selectTwoTile(currentGame.getPlayerIndex())){
+				if(currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"))){
+					updateBoardControllerWithSelectedAction();
+				}
 			}
 
 			break;
 		case 51: //released 3, select three space tile
 			//check if player has enough AP and if sharedComponent has any more 3 tiles (I could check game state but we could always change how the game state works...)
 			//if(players.checkIfSelectionValid() && shared.checkIfSelectionValid())
-			if(currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"))){
-				updateBoardControllerWithSelectedAction();
+			if(players.selectThreeTile(currentGame.getPlayerIndex()) && shared.selectThreeTile()){
+				if(currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"))){
+					updateBoardControllerWithSelectedAction();
+				}
 			}
 
 			break;
@@ -161,28 +165,29 @@ public class GameController {
 
 			break;
 		case 73: //released I, add new Irrigation tile
-			//check if player has enough AP, has enough AP, and if there is enough in shared 
-			if(currentGame.setSelectedAction(new SelectIrrigationTileAction("irrigationTile"))){
-				updateBoardControllerWithSelectedAction();
+			//check if player has enough AP, and if there is enough in shared
+			if(players.selectThreeTile(currentGame.getPlayerIndex()) && shared.selectThreeTile()){
+				if(currentGame.setSelectedAction(new SelectIrrigationTileAction("irrigationTile"))){
+					updateBoardControllerWithSelectedAction();
+				}
 			}
 			break;
-		case 80:
-			//TODO ask for value
-			//released P, new palace tile, need to ask for value of Tile
+		case 80://released P, new palace tile, need to ask for value of Tile
 			
-			//somewhere needs to check if a value if valid
-			//if value <=10, > 0 and %2 between 0 and 5 or just check if its 2, 4, 6 ,8, 10
-			int value = GameFrame.getPalaceValueFromUser();
-			//currentGame.setSelectedAction(new SelectPalaceTileAction("palace" + value + "Tile", value)); //this makes the selected action of getting a tile
+			//is valid due to the view being awesome
+			int value = currentGamePanel.promptUserForPalaceValue();
 			
-
-			if( shared.selectPalaceTile( value ) && players.selectPalaceTile( value, currentGame.getPlayerIndex() ) )
-				board.selectPalaceTile( value );
+			//check player to see if they have enough AP and check shared to see if there are enough
+			if( players.selectPalaceTile(currentGame.getPlayerIndex()) && shared.selectPalaceTile(value)){
+				if(currentGame.setSelectedAction(new SelectPalaceTileAction("palace" + value + "Tile", value))){
+					updateBoardControllerWithSelectedAction();
+				}
+			}
 			break;
 		case 82:
 			//released R, place rice tile
-			//TODO check if the player has enough villages and that they have some AP left to do this
-			if(players.checkIfRiceTileSelectionValid(currentGame.getPlayerIndex())){
+			//TODO check if the player has enough rice and that they have some AP left to do this
+			if(players.selectRiceTile(currentGame.getPlayerIndex())){
 				if(currentGame.setSelectedAction(new SelectRiceTileAction("riceTile"))){
 					updateBoardControllerWithSelectedAction();
 				}
@@ -196,7 +201,7 @@ public class GameController {
 		case 86:
 			//released V, place Village
 			//TODO check if the player has enough villages and that they have some AP left to do this
-			if(true){
+			if(players.selectVillageTile(currentGame.getPlayerIndex())){
 				if(currentGame.setSelectedAction(new SelectVillageTileAction("villageTile"))){
 					updateBoardControllerWithSelectedAction();
 				}
@@ -205,7 +210,22 @@ public class GameController {
 		case 88:
 			//check if the player has placed a land tile so they can get out of their turn
 			//released X, end turn
-
+			if(players.selectEndTurn(currentGame.getPlayerIndex())){
+				//need to tell the player panel of the current player to stop outlining their thing - setNotCurrentPlayer
+				
+				if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){
+					//TODO set up palace festival
+					//asks for palace they want to hold a festival at
+					//pass the index and the value of the palace and...
+				}
+				//need to tell the player panel of the current player to stop outlining their thing - setNotCurrentPlayer
+				//ask if they wanna have a palace festival
+				
+				//call this after the prompt to have a palace festival (and after the palace festival if they had one)
+				//increment the current player in the game model
+				currentGame.endTurn(); //increment the current player in the game model
+				
+			}
 			break;		
 		}
 	}

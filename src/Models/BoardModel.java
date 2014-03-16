@@ -53,7 +53,8 @@ public class BoardModel {
 		JavaCell[][] miniMap = createTestMap(xC, yC);
 
 		int neededActionPoints = checkNeededActionPoints(miniMap, tile);
-
+		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1]); //boolean needed to check the amount of available AP points
+		
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
 				&& checkElevation(miniMap, tile, xC, yC)
@@ -61,7 +62,7 @@ public class BoardModel {
 				&& checkDeveloperOnCell(miniMap, tile)
 				&& checkCityConnection(miniMap, tile)
 				&& checkEdgePlacement(miniMap, tile)
-				&& player.decrementNActionPoints(neededActionPoints)) {
+				&& player.decrementNActionPoints(neededActionPoints, isLandTile)) {
 			return true;
 		}
 
@@ -71,6 +72,7 @@ public class BoardModel {
 	private JavaCell[][] createTestMap(int xC, int yC) {
 
 		JavaCell[][] testingMap = new JavaCell[3][3];
+
 
 		for (int i = 0, x = xC - 1; i < 3; i++, x++)
 			for (int j = 0, y = yC - 1; j < 3; j++, y++)
@@ -123,7 +125,6 @@ public class BoardModel {
 	}
 
 	private boolean checkTilesBelow(JavaCell[][] miniMap, Tile tile) {
-
 		return true;
 	}
 
@@ -136,8 +137,7 @@ public class BoardModel {
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				if (tileCells[i][j] != null
-						&& miniMap[i][j].getElevation() != elevation) {
-					return false;
+						&& miniMap[i][j].getElevation() != elevation) {					return false;
 				}
 			}
 		}
@@ -294,8 +294,8 @@ public class BoardModel {
 
 		// Check that player has available AP for this
 		// First determine type of move/cost
-		int actionPointsCost = getCost(locationCell);
-		if (!player.decrementNActionPoints(actionPointsCost)) 
+		if (!player.decrementNActionPoints(1, false)) // TODO: Check lowlands or
+												// mountains
 			return false;
 
 		return true;
@@ -354,7 +354,7 @@ public class BoardModel {
 		// Remove currently selected developer from dev array
 		player.removeDeveloperFromArray(); // Must check that this works later on TODO
 		// Decrement actions points
-		player.decrementNActionPoints(1);
+		player.decrementNActionPoints(1, false);
 	}
 	
 	public boolean moveDeveloper(Player player)
@@ -522,4 +522,5 @@ public class BoardModel {
 	   }
 	   return false;
    }
+
 }
