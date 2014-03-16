@@ -120,4 +120,9 @@ public class JavaPlayer extends Player {
 	public boolean canUsePalace() {
 		return ( ( this.hasPlacedLandTile && this.actionPoints >= 1 ) || this.actionPoints >= 2 );
 	}
+
+	public boolean canUseRice() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
