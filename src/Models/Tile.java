@@ -2,14 +2,12 @@ package Models;
 
 public class Tile {
 	private String[][] tileCells;
-	private int tileId;
 	private int numberCells;
 
 
-	public Tile(int numberCells, int tileId) {
+	public Tile(int numberCells) {
 
 		
-		this.tileId = tileId;
 		this.numberCells = numberCells;
 
 		tileCells = new String[3][3];
