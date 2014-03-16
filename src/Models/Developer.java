@@ -1,6 +1,9 @@
 package Models;
 
-public class Developer
+import Helpers.Json;
+import Helpers.JsonObject;
+
+public class Developer implements Serializable<Developer>
 {
    private Cell location;
    private JavaPlayer owner;
@@ -31,4 +34,19 @@ public class Developer
    {
       return owner;
    }
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("location-x", Json.jsonValue(location.xVal + "")),
+			Json.jsonPair("location-y", Json.jsonValue(location.yVal + "")),
+			Json.jsonPair("owner", Json.jsonValue(owner.name + ""))
+		));
+	}
+	
+	@Override
+	public Developer loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
