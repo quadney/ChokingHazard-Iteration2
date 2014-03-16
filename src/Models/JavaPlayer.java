@@ -13,9 +13,11 @@ public class JavaPlayer extends Player {
 	private ArrayList<PalaceCard> palaceCards;
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
+
 	private Developer[] developerArray;
-	public int currentlySelectedDeveloper;
+	public int currentlySelectedDeveloper; 	//Index of currently selected developer. CC: Cameron
 	private boolean placedLandTile;
+
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);
@@ -27,7 +29,9 @@ public class JavaPlayer extends Player {
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
       	this.palaceCards = new ArrayList<PalaceCard>();
+
       	this.placedLandTile = false;
+
         this.developersOnBoard = new Developer[12];
         selectedDeveloperIndex = 0;
 	}
@@ -122,10 +126,10 @@ public class JavaPlayer extends Player {
 		this.palaceCards.add(card);
 	}
 
+
 	public boolean canUsePalace() {
 		return ( ( this.hasPlacedLandTile() && this.actionPoints >= 1 ) || this.actionPoints >= 2 );
 	}
-
 	public boolean canUseRice() {
 		// TODO Auto-generated method stub
 		return false;
