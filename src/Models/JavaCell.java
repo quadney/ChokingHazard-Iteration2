@@ -62,7 +62,7 @@ public class JavaCell extends Cell
 	   int x = this.getX();
 	   int y = this.getY();
 	  /* 
-	   if (x + 1 == 14)
+	   if ((x + 1) == 14)
 	   {
 		   if (map.isTileOrLand(x+1,y))
 			   return true;
@@ -70,12 +70,12 @@ public class JavaCell extends Cell
 	   
 	   if (x- 1 == 0)
 	   {
-		   if (board.isTileOrLand(x-1,y))
+		   if (map.isTileOrLand(x-1,y))
 			   return true;
 	   }
 	   if (y + 1 == 14)
 	   {
-		   if (board.isTileOrLand(x,y+1))
+		   if (map.isTileOrLand(x,y+1))
 			   return true;
 	   }
 	   if (y - 1 == 0)
