@@ -357,6 +357,12 @@ public class BoardModel {
 		player.decrementNActionPoints(1);
 	}
 	
+	public boolean moveDeveloper(Player player)
+	{
+		//TODO: Need Cameron's wisdom
+		return true;
+	}
+	
 	public boolean hasAdjacentLandSpaceTile(JavaCell cell) {
 		int x = cell.getX();
 		int y = cell.getY();
