@@ -47,6 +47,11 @@ public class HoldFestivalModel {
 		indexOfCurrentPlayer = (indexOfCurrentPlayer + 1) %players.length;
 	}
 	
+	public int dropCurrentPlayer(){
+		players[indexOfCurrentPlayer].dropPlayerFromFestival();
+		return indexOfCurrentPlayer;
+	}
+	
 	public boolean isThereOnlyOnePlayerLeft(){
 		int numPlayers = 0;
 		for(int i = 0; i < players.length; i++){
@@ -56,6 +61,10 @@ public class HoldFestivalModel {
 				return false;;
 		}
 		return true;
+	}
+	
+	public void endFestival(){
+		//TODO
 	}
 
 }

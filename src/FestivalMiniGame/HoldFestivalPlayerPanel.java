@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class HoldFestivalPlayerPanel extends JPanel {
-	private JButton dropSelfFromFestivalButton;
 	private HashMap<String, String> imageSourceHashMap;
 	private Color playerColor;
 	JLabel cards;

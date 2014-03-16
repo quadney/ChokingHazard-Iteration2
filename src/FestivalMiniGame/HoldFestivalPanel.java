@@ -2,6 +2,8 @@ package FestivalMiniGame;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -16,6 +19,8 @@ public class HoldFestivalPanel extends JPanel{
 	private HashMap<String, String> imageSourceHashMap;
 	private HoldFestivalPlayerPanel[] players;
 	private JPanel centerPanel;
+	private HoldFestivalController controller;
+	private JButton dropFromFestival;
 	
 	public HoldFestivalPanel(JavaFestivalPlayer[] festivalPlayers, int currentPlayerIndex, String festivalHashKey, int palaceValue){
 		super(new BorderLayout());
@@ -23,6 +28,15 @@ public class HoldFestivalPanel extends JPanel{
 		initHashMap();
 		setMaximumSize(new Dimension(800, 800));
 		setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+		
+		dropFromFestival = new JButton("Drop Out of Festival");
+		dropFromFestival.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.dropPlayerFromFestival();
+			}
+		});
 		
 		initPanels(festivalPlayers, currentPlayerIndex, festivalHashKey);
 	}
@@ -63,6 +77,10 @@ public class HoldFestivalPanel extends JPanel{
 		players[currentPlayerIndex].setCurrentPlayer(true);
 	}
 	
+	public void setFestivalController(HoldFestivalController c){
+		this.controller = c;
+	}
+	
 	private JLabel palaceLabel(String src){
 		JLabel label= new JLabel();
 		label.setIcon(new ImageIcon(imageSourceHashMap.get(src)));
@@ -85,6 +103,10 @@ public class HoldFestivalPanel extends JPanel{
 	public void playPalaceCardAtIndex(int indexOfPlayer, String hashKey, int newNumCards){
 		players[indexOfPlayer].clearSelectedCard(newNumCards);
 		addCardToCenterPanelWithImage(hashKey, newNumCards);
+	}
+	
+	public void dropCurrentPlayer(int index){
+		players[index].setVisible(false);
 	}
 	
 	private void addCardToCenterPanelWithImage(String imageHashKey, int indexOfPlayer){

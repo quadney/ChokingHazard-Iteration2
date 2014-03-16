@@ -11,11 +11,27 @@ public class HoldFestivalController {
 	public HoldFestivalController(HoldFestivalModel model, HoldFestivalPanel panel){
 		this.festModel = model;
 		this.festPanel = panel;
+		festPanel.setFestivalController(this);
 	}
 	
 	public void keyPressed(KeyEvent e){
-		//tab
-		//enter
+		switch(e.getKeyCode()){
+			case 9:
+				//tab
+				tabThroughPalaceCards();
+				break;
+			case 10:
+				//enter
+				playSelectedPalaceCard();
+				break;
+			case 27:
+				//pressed esc
+				cancelTabbing();
+				break;
+			case 88:
+				//finish turn, X
+				finishTurn();
+		}
 	}
 	
 	public JPanel getFestivalPanel(){
@@ -23,14 +39,21 @@ public class HoldFestivalController {
 	}
 	
 	public void finishTurn(){
-		//check the validity of some shit
-			//set the border of the current player to white
-			festPanel.endPlayerTurn(festModel.getCurrentPlayer());
-			
+		//set the border of the current player to white
+		festPanel.endPlayerTurn(festModel.getCurrentPlayer());
+		
+		//TODO check logic of this
+		if(!festModel.isThereOnlyOnePlayerLeft()){
 			//increment index and reflect the next player's turn in the panel
 			festPanel.startPlayerTurn(festModel.endTurn());
 			//call start turn in order to see if a full cycle has happened
 			startTurn();
+		}
+		else{
+			//TODO
+			festModel.endFestival();
+			//finishFestival();
+		}
 	}
 	
 	private void startTurn(){
@@ -57,7 +80,16 @@ public class HoldFestivalController {
 		
 	}
 	
-	public void dropPlayerFromFestival(int index){
+	public void dropPlayerFromFestival(){
+		//drop the current player
+		int index = festModel.dropCurrentPlayer();
+		
+		//hide his information from this
+		festPanel.dropCurrentPlayer(index);
+		finishTurn();
+	}
+	
+	public void cancelTabbing(){
 		
 	}
 

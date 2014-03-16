@@ -38,6 +38,10 @@ public class JavaFestivalPlayer {
 		tabCount = (tabCount + 1) % palaceCards.size();
 	}
 	
+	public void dropPlayerFromFestival(){
+		this.isInFestival = false;
+	}
+	
 	public PalaceCard getSelectedPalaceCard(){
 		//this should only be called if the player is valid
 		PalaceCard selectedCard = palaceCards.get(tabCount);
