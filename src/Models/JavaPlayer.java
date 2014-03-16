@@ -123,6 +123,19 @@ public class JavaPlayer extends Player {
 	public boolean canUsePalace() { //checks if the player has the AP
 		return getAvailableActionPoints(false) > 0;
 	}
+	
+	public boolean endTurn()
+	{
+		if (!hasPlacedLandTile())
+		{
+			//TODO: Alert they haven't placed land
+			return false;
+		}
+		//Otherwise, typical end of turn activities
+		changeFamePoints(1); //TODO: determine correct amount, method?
+		
+		return true;
+	}
 
 	public boolean canUseRice() { //checks if the player has enough plus has the AP
 		return numOneRiceTile > 0 && getAvailableActionPoints(true) > 0;
