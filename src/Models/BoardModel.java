@@ -416,5 +416,91 @@ public class BoardModel {
 		}
 
 		return connected;
-	}
+   }
+   
+   public boolean NextToirrigation(int xC, int yC, Tile tile)
+   {
+	    if (yC < 14 && map[xC][yC+1].getCellType().equals("irrigation"))
+	    {
+		   return isIrrigationSurrounded(xC, yC+1);
+	    }
+		if (yC > 0 && map[xC][yC+1].getCellType().equals("irrigation"))
+		{
+			return isIrrigationSurrounded(xC, yC-1);
+		}
+		if (xC < 14 && map[xC+1][yC].getCellType().equals("irrigation"))
+		{	
+			return isIrrigationSurrounded(xC+1, yC);
+		}
+		if (xC > 0 && map[xC+1][yC].getCellType().equals("irrigation"))
+		{	
+			return isIrrigationSurrounded(xC-1, yC);
+		}
+		
+		return false;
+   }
+   
+   public boolean isIrrigationSurrounded(int xC, int yC)
+   {
+	   if (xC < 13 && xC > 0)
+	   {
+
+		   if (map[xC+1][yC].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC+1][yC].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC+1,yC);
+		   }
+		   else 
+			   return true;
+	   }
+	   
+	   if (xC < 14 && xC > 1)
+	   {
+
+		   if (map[xC-1][yC].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC-1][yC].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC-1,yC);
+		   }
+		   else 
+			   return true;
+	   }
+	   
+	   if (yC < 13 && yC > 0)
+	   {
+
+		   if (map[xC][yC+1].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC][yC+1].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC,yC+1);
+		   }
+		   else 
+			   return true;
+	   }
+		 
+	   if (yC < 14 && yC > 1)
+	   {
+
+		   if (map[xC][yC-1].getCellType().equals("blank"))
+		   {
+			   return false;
+		   }
+		   else if (map[xC][yC-1].getCellType().equals("irrigation")) 
+		   {
+			   return isIrrigationSurrounded(xC,yC-1);
+		   }
+		   else 
+			   return true;
+	   }
+	   return false;
+   }
 }
