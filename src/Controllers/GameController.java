@@ -182,7 +182,7 @@ public class GameController {
 		case 82:
 			//released R, place rice tile
 			//TODO check if the player has enough villages and that they have some AP left to do this
-			if(true){
+			if(players.checkIfRiceTileSelectionValid(currentGame.getPlayerIndex())){
 				if(currentGame.setSelectedAction(new SelectRiceTileAction("riceTile"))){
 					updateBoardControllerWithSelectedAction();
 				}
