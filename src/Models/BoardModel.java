@@ -37,9 +37,14 @@ public class BoardModel {
 		
 	}
 	
-	public boolean placeTile(Cell[][] cells, Tile tile) {
+	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player) {
+		if (checkValidTilePlacement(xC, yC, tile, player)) {
+			
+			
+			return true;
+		}
 		
-		return true;
+		return false;
 	}
 	
 	private boolean checkValidTilePlacement(int xC, int yC, Tile tile, JavaPlayer player) {
@@ -111,13 +116,13 @@ public class BoardModel {
 		
 		int elevation = map[xC][yC].getElevation();
 		
-		for (int i = 0; i < tileCells.length; i++) 
+		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				if (tileCells[i][j] != null && miniMap[i][j].getElevation() != elevation ){
 					return false;
 				}
 			}
-		
+		}
 		
 		return true;
 	}
