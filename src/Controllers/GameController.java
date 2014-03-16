@@ -118,8 +118,9 @@ public class GameController {
 			//released the space bar, rotate
 			//tells the current game to tell the selectedAction to do pressSpace()
 			//will only tell the board about the change if it was a rotatable tile action
+			System.out.println("(in GameController)Space was pressed");
 			currentGame.pressSpace();
-				updateBoardControllerWithSelectedAction();
+			updateBoardControllerWithSelectedAction();
 			break;
 			
 	// using these arrow keys for movement of developers and tiles
@@ -229,10 +230,10 @@ public class GameController {
 	
 	private void updateBoardControllerWithSelectedAction(){
 		if (currentGame.getSelectedAction() instanceof SelectRotatableTileAction){
-			board.updateSelectedTileAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
 		}
 		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
-			board.updateSelectedTileAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), 0);
+			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
 		else{//developer
 			//TODO this is to tell the view that the developer path has changed

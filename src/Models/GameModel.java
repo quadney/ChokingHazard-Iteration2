@@ -41,6 +41,7 @@ public class GameModel implements Serializable<GameModel> {
 		
 		actionHistory = new Stack<Action>();
 		actionReplays = new Stack<Action>();
+		selectedAction = null;
 	}
 
 	// This method is to be used by the controller to determine which buttons
@@ -270,8 +271,9 @@ public class GameModel implements Serializable<GameModel> {
 	public void pressSpace() {
 		if(selectedAction != null){
 			selectedAction.pressSpace();
-			System.out.println("(in GameModel pressSpace()) selectedAction is null.");
+			System.out.println("(in GameModel pressSpace()) selectedAction pressSpace() was called");
 		}
+		System.out.println("(in GameModel pressSpace()) selectedAction pressSpace() was called");
 	}
 	
 	//Methods for MAction/selected action traversal that is needed by the controller
@@ -306,30 +308,32 @@ public class GameModel implements Serializable<GameModel> {
 
 	public boolean pressUp() {
 		if(selectedAction != null){
-			return selectedAction.pressArrow(1,0);
+			return selectedAction.pressArrow(0,-1);
 		}
 		return false;
 	}
 
 	public boolean pressRight() {
 		if(selectedAction != null){
-			return selectedAction.pressArrow(0,1);
+			return selectedAction.pressArrow(1,0);
 		}
 		return false;		
 	}
 
 	public boolean pressDown() {
 		if(selectedAction != null){
-			return selectedAction.pressArrow(0,-1);
+			return selectedAction.pressArrow(0,1);
 		}
 		return false;
 	}
 
 	public boolean setSelectedAction(MAction selectedAction) {
-		if(selectedAction == null){
+		if(this.selectedAction == null){
+			System.out.println("(in GameModel setSelectedACtion()) setSelectedAction set the new MAction");
 			this.selectedAction = selectedAction;
 			return true;
 		}
+		System.out.println("(in GameModel setSelectedACtion()) setSelectedAction already had an MAction");
 		return false;
 		
 	}
