@@ -103,7 +103,7 @@ public class GameController {
 			break;
 		case 9:
 			//released tab, tab through developers
-
+			
 			break;
 		case 10:
 			//released enter, place tile/developer onto board.
@@ -237,12 +237,12 @@ public class GameController {
 	}
 	
 	private void updateBoardControllerWithSelectedAction(){
-		if (currentGame.getSelectedAction() instanceof SelectRotatableTileAction){
+		if (currentGame.getSelectedAction() instanceof SelectTwoTileAction || currentGame.getSelectedAction() instanceof SelectThreeTileAction){
 			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");
 			//System.out.println(" This is the rotation state: " + ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
-			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableComponentAction)currentGame.getSelectedAction()).getRotationState());
 		}
-		else if(currentGame.getSelectedAction() instanceof SelectNonRotatableTileAction){
+		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
 			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
 			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
