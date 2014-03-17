@@ -38,6 +38,9 @@ public class Tile implements Serializable<Tile> {
 					return "two";
 				}else if(numberOfCell == 3){
 					return "three";
+					
+				}else if(numberOfCell == 1){
+					return "one";
 				}else{
 					return "blank";
 				}
@@ -46,13 +49,13 @@ public class Tile implements Serializable<Tile> {
 	private void createTile(){
 		if(numberCells == 3){
 
-			tileCells[0][1] = "village";
-			tileCells[0][0] = "rice";
-			tileCells[1][1] = "rice";
+			tileCells[1][1] = "village";
+			tileCells[1][2] = "rice";
+			tileCells[2][1] = "rice";
 		
 		}else if(numberCells == 2){
-			tileCells[0][1] = "village";
-			tileCells[0][0] = "rice";
+			tileCells[1][1] = "village";
+			tileCells[1][2] = "rice";
 
 
 		}
