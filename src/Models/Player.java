@@ -2,8 +2,8 @@ package Models;
 
 public abstract class Player
 {
-   private String name;
-   private String color;
+   protected String name;
+   protected String color;
    
    public Player(String nm, String c)
    {

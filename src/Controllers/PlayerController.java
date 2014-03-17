@@ -78,5 +78,17 @@ public class PlayerController {
 		return playerModels[playerIndex].canEndTurn();
 	}
 	//----------------------------------------------------------------------------
+	//Select Final turn method - only occurs if this is valid to do
+	public void setNotCurrentPlayerinPlayerPanel(int playerIndex) {
+		playerPanels[playerIndex].setNotCurrentPlayer();
+		
+	}
+
+	public void setCurrentPlayerinPlayerPanel(int playerIndex) {
+		// TODO Auto-generated method stub
+		playerPanels[playerIndex].setCurrentPlayer();
+	}
+	
+	//---------------------------------------------------------------------------
 	
 }

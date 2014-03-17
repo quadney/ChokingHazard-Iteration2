@@ -1,12 +1,15 @@
 package Models;
 import java.util.*;
 
-public class PalaceCard{
+import Helpers.Json;
+import Helpers.JsonObject;
+
+public class PalaceCard implements Serializable<PalaceCard> {
    private ArrayList<Integer> symbols;
    private int numSymbols;
    private String cardType;
    
-   public PalaceCard(int cardType){
+   public PalaceCard(int cardType) {
       symbols = new ArrayList<Integer>();
       
       switch(cardType){
@@ -80,4 +83,19 @@ public class PalaceCard{
    public PalaceCard deepCopy(){
 	   return new PalaceCard(this.symbols, this.numSymbols, this.cardType);
    }
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("symbols", Json.serializeArray(symbols)),
+			Json.jsonPair("numSymbols", Json.jsonValue(numSymbols + "")),
+			Json.jsonPair("cardType", Json.jsonValue(cardType + ""))
+		));
+	}
+	
+	@Override
+	public PalaceCard loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

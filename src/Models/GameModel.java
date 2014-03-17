@@ -2,6 +2,7 @@ package Models;
 
 import Helpers.*;
 import Models.Actions.*;
+
 import java.util.*;
 import java.util.Stack;
 
@@ -13,7 +14,7 @@ enum GameState {
 	ReplayMode, PlanningMode, NormalMode
 }
 
-public class GameModel {
+public class GameModel implements Serializable<GameModel> {
 	// VARIABLES
 	private BoardModel gameBoard;
 	private JavaPlayer[] players;
@@ -40,6 +41,7 @@ public class GameModel {
 		
 		actionHistory = new Stack<Action>();
 		actionReplays = new Stack<Action>();
+		selectedAction = null;
 	}
 
 	// This method is to be used by the controller to determine which buttons
@@ -68,13 +70,22 @@ public class GameModel {
       return null;
    }
    
-   public void endTurn(){
-	   //TODO only is called when a player can end a turn validly (accounted for in GameController)
-	   //call an end turn in the Player Model for the current player
-	   //change player index
-	   //change whatever else in the models
+   public boolean endTurn(){
+	 //TODO only is called when a player can end a turn validly (accounted for in GameController)
+	 //call an end turn in the Player Model for the current player
+	 //change player index
+	 //change whatever else in the models
 	   
-   }
+	 JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
+	 if (!currentPlayer.endTurn()) //checks for land tile placement
+		 return false; //TODO: Handle alert, see JavaPlayer TODO
+	 indexOfCurrentPlayer++;
+	 indexOfCurrentPlayer = indexOfCurrentPlayer %  players.length; //tab through players
+	 
+	 
+	 
+	 return true;
+	    }
    
    //Returns an array of players in order from highest to lowest of ranks of players
    //valid on a palace/city
@@ -267,7 +278,11 @@ public class GameModel {
 	}
 
 	public void pressSpace() {
-		selectedAction.pressSpace();
+		if(selectedAction != null){
+			selectedAction.pressSpace();
+			System.out.println("(in GameModel pressSpace()) selectedAction pressSpace() was called");
+		}
+		System.out.println("(in GameModel pressSpace()) selectedAction pressSpace() was called");
 	}
 	
 	//Methods for MAction/selected action traversal that is needed by the controller
@@ -302,31 +317,54 @@ public class GameModel {
 
 	public boolean pressUp() {
 		if(selectedAction != null){
-			return selectedAction.pressArrow(1,0);
+			return selectedAction.pressArrow(0,-1);
 		}
 		return false;
 	}
 
 	public boolean pressRight() {
 		if(selectedAction != null){
-			return selectedAction.pressArrow(0,1);
+			return selectedAction.pressArrow(1,0);
 		}
 		return false;		
 	}
 
 	public boolean pressDown() {
 		if(selectedAction != null){
-			return selectedAction.pressArrow(0,-1);
+			return selectedAction.pressArrow(0,1);
 		}
 		return false;
 	}
 
 	public boolean setSelectedAction(MAction selectedAction) {
-		if(selectedAction == null){
+		if(this.selectedAction == null){
+			System.out.println("(in GameModel setSelectedACtion()) setSelectedAction set the new MAction");
 			this.selectedAction = selectedAction;
 			return true;
 		}
+		System.out.println("(in GameModel setSelectedACtion()) setSelectedAction already had an MAction");
 		return false;
 		
+	}
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("gameBoard", gameBoard.serialize()),
+			Json.jsonPair("gameState", gameState.toString()),
+			Json.jsonPair("actionHistory", Json.serializeArray(actionHistory)),
+			Json.jsonPair("actionReplays", Json.serializeArray(actionReplays)),
+			Json.jsonPair("players", Json.serializeArray(players)),
+			Json.jsonPair("indexOfCurrentPlayer", Json.jsonValue(indexOfCurrentPlayer + "")),
+			Json.jsonPair("isFinalRound", Json.jsonValue(isFinalRound + "")),
+			Json.jsonPair("actionIDCounter", Json.jsonValue(actionIDCounter + ""))
+		));
+	}
+	
+	
+	@Override
+	public GameModel loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

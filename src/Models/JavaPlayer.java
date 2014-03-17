@@ -1,7 +1,11 @@
 package Models;
+import Helpers.Json;
+
 import java.util.*;
 
-public class JavaPlayer extends Player {
+import Helpers.JsonObject;
+
+public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	private int famePoints;
 	private int actionPoints;
 	private int developersOffBoard;
@@ -123,6 +127,19 @@ public class JavaPlayer extends Player {
 	public boolean canUsePalace() { //checks if the player has the AP
 		return getAvailableActionPoints(false) > 0;
 	}
+	
+	public boolean endTurn()
+	{
+		if (!hasPlacedLandTile)
+		{
+			//TODO: Alert they haven't placed land
+			return false;
+		}
+		//Otherwise, typical end of turn activities
+		changeFamePoints(1); //TODO: determine correct amount, method?
+		
+		return true;
+	}
 
 	public boolean canUseRice() { //checks if the player has enough plus has the AP
 		return numOneRiceTile > 0 && getAvailableActionPoints(true) > 0;
@@ -153,4 +170,31 @@ public class JavaPlayer extends Player {
 	}
 	
 	//---------------------------------------------------------------------------------------------------------
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("name", Json.jsonValue(name + "")),
+			Json.jsonPair("color", Json.jsonValue(color + "")),
+			Json.jsonPair("famePoints", Json.jsonValue(famePoints + "")),
+			Json.jsonPair("actionPoints", Json.jsonValue(actionPoints + "")),
+			Json.jsonPair("numOneRiceTile", Json.jsonValue(numOneRiceTile + "")),
+			Json.jsonPair("numOneVillageTile", Json.jsonValue(numOneVillageTile + "")),
+			Json.jsonPair("numTwoTile", Json.jsonValue(numTwoTile + "")),
+			Json.jsonPair("numActionTokens", Json.jsonValue(numActionTokens + "")),
+			Json.jsonPair("developersOffBoard", Json.jsonValue(developersOffBoard + "")),
+			Json.jsonPair("palaceCards", Json.serializeArray(palaceCards)),
+			Json.jsonPair("developersOnBoard", Json.serializeArray(developersOnBoard)),
+			Json.jsonPair("developerArray", Json.serializeArray(developerArray)),
+			Json.jsonPair("selectedDeveloperIndex", Json.jsonValue(selectedDeveloperIndex + "")),
+			Json.jsonPair("currentlySelectedDeveloper", Json.jsonValue(currentlySelectedDeveloper + "")),
+			Json.jsonPair("placedLandTile", Json.jsonValue(hasPlacedLandTile + ""))
+		));
+	}
+
+	@Override
+	public JavaPlayer loadObject(JsonObject json) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
