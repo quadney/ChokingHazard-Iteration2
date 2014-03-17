@@ -16,12 +16,13 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 	private BufferedImage board;
 	private BufferedImage tileImage;
 	private BufferedImage developers;
 	private BufferedImage tempImage;
-	private BufferedImage planningMode;
+	//private BufferedImage planningMode;
 	private Graphics2D g2d;
 	private HashMap<String, String> imageSourceHashMap;
 
@@ -197,6 +198,7 @@ public class BoardPanel extends JPanel {
 				String[] hash = line.split(" ");
 				imageSourceHashMap.put(hash[0], hash[1]);
 			}
+			fileReader.close();
 		} catch(Exception e){
 			System.out.println(e.getMessage());
 		}

@@ -395,7 +395,7 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		int i = 0;
 		while (i < connected.size()) {
-			Cell temp = connected.get(i);
+			//Cell temp = connected.get(i);
 			HashSet<JavaCell> adjacent = new HashSet<JavaCell>();
 			if (y < 14 && map[y + 1][x].getCellType().equals("village")
 					|| map[y + 1][x].getCellType().equals("palace"))

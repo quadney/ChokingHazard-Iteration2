@@ -74,9 +74,9 @@ public class JavaCell extends Cell implements Serializable<JavaCell>
    
    public boolean hasAdjacentLandSpaceTile()	//TODO: finish brett
    {
+	   /* 
 	   int x = this.getX();
 	   int y = this.getY();
-	  /* 
 	   if (x + 1 == 14)
 	   {
 		   if (map.isTileOrLand(x+1,y))

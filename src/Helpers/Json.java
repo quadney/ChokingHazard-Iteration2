@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
 
-import Models.BoardModel;
 import Models.GameModel;
 import Models.Serializable;
 
@@ -20,7 +19,7 @@ public class Json {
 	 * Just for testing
 	 */
 	public static void main(String[] args) throws IOException {
-		/*Game game = new Game();
+		GameModel game;
 		Scanner in = new Scanner(new File("in"));
 		String str = "";
 		while(in.hasNextLine()) {
@@ -31,10 +30,9 @@ public class Json {
 		FileWriter fw = new FileWriter(new File("out"));
 		JsonObject json = new JsonObject(str);
 		//System.out.println(JsonObject.toString(json));
-		game = new Game(2).loadObject(json);
+		game = new GameModel(2).loadObject(json);
 		fw.write(game.serialize());
-		fw.close();*/
-		
+		fw.close();		
 	}
 
 	/**

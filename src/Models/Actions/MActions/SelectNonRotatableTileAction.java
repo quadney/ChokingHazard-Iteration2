@@ -1,12 +1,10 @@
 package Models.Actions.MActions;
 
-
 public abstract class SelectNonRotatableTileAction extends MAction {
 
 	public SelectNonRotatableTileAction(String imageKey) {
 		super(imageKey);
 	}
-
 
 	public boolean pressSpace() { //should do nothing.
 		return false;
@@ -26,8 +24,5 @@ public abstract class SelectNonRotatableTileAction extends MAction {
 	}
 	
 	public abstract boolean isNonRotatableComponentOnBoard(int x, int y);
-
-
-	
 	
 }
