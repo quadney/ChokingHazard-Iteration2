@@ -1,6 +1,8 @@
 package Models;
 
-import Helpers.Deck;
+import java.util.Collections;
+import java.util.LinkedList;
+
 import Helpers.Json;
 import Helpers.JsonObject;
 
@@ -8,8 +10,8 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
     private int threeSpaceTiles;
 	private int irrigationTiles;
     private int[] palaceTiles;
-    private Deck<PalaceCard> palaceCardDeck;
-    private Deck<PalaceCard> discardedCardDeck;
+    private LinkedList<PalaceCard> palaceCardDeck;
+    private LinkedList<PalaceCard> discardedCardDeck;
     private PalaceCard festivalCard;
     
     public SharedComponentModel(){
@@ -17,21 +19,21 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 		this.threeSpaceTiles = 56;
 		this.irrigationTiles = 10;
 		this.palaceTiles = new int[]{6, 7, 8, 9, 10};
-		palaceCardDeck = new Deck<PalaceCard>();
+		palaceCardDeck = new LinkedList<PalaceCard>();
 		for(int i = 0; i < 5; i++){
-			palaceCardDeck.add(new PalaceCard(1));
-			palaceCardDeck.add(new PalaceCard(2));
-			palaceCardDeck.add(new PalaceCard(3));
-			palaceCardDeck.add(new PalaceCard(4));
-			palaceCardDeck.add(new PalaceCard(5));
-			palaceCardDeck.add(new PalaceCard(6));
+			palaceCardDeck.push(new PalaceCard(1));
+			palaceCardDeck.push(new PalaceCard(2));
+			palaceCardDeck.push(new PalaceCard(3));
+			palaceCardDeck.push(new PalaceCard(4));
+			palaceCardDeck.push(new PalaceCard(5));
+			palaceCardDeck.push(new PalaceCard(6));
 		}
-		palaceCardDeck.shuffle();
-		this.festivalCard = palaceCardDeck.draw();
-		this.discardedCardDeck = new Deck<PalaceCard>();
+		Collections.shuffle(palaceCardDeck);
+		this.festivalCard = palaceCardDeck.pop();
+		this.discardedCardDeck = new LinkedList<PalaceCard>();
     }
     
-    public SharedComponentModel(int numThreeTiles, int numIrrigation, int[] palaceTiles, Deck<PalaceCard> deck, PalaceCard festivalCard, Deck<PalaceCard> discardDeck){
+    public SharedComponentModel(int numThreeTiles, int numIrrigation, int[] palaceTiles, LinkedList<PalaceCard> deck, PalaceCard festivalCard, LinkedList<PalaceCard> discardDeck){
     	//constructor for loading game
     	this.threeSpaceTiles = numThreeTiles;
     	this.irrigationTiles = numIrrigation;
@@ -61,7 +63,7 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 	}
 	
 	public PalaceCard drawFromDeck(){
-		PalaceCard card = palaceCardDeck.draw();
+		PalaceCard card = palaceCardDeck.pop();
 		checkIfDeckIsEmpty();
 		return card;
 	}
@@ -77,7 +79,7 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 	}
 	
 	public void discardCard(PalaceCard card){
-		discardedCardDeck.add(card);
+		discardedCardDeck.push(card);
 	}
 	
 	public void checkIfDeckIsEmpty(){
@@ -87,9 +89,9 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 	
 	public void refreshPalaceCardDeck(){
 		while(discardedCardDeck.size() > 0){
-			palaceCardDeck.add(discardedCardDeck.draw());
+			palaceCardDeck.push(discardedCardDeck.pop());
 		}
-		palaceCardDeck.shuffle();
+		Collections.shuffle(palaceCardDeck);
 	}
 	
 	public boolean hasThreeTile(){
