@@ -1,5 +1,6 @@
 package Models;
 
+import java.util.HashMap;
 import java.util.Stack;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,10 +10,13 @@ public class BoardModel {
 	private JavaCell[][] map;
 	private Stack<JavaCell> path;
 	private ArrayList<JavaCell> connectedPalaces = new ArrayList<JavaCell>();
+	private JavaCell[] outerCells;
 
 	public BoardModel() {
 		this.map = new JavaCell[14][14];
 		this.path = new Stack<JavaCell>();
+		outerCells = new JavaCell[44];
+		int k = 0;
 
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
@@ -32,6 +36,15 @@ public class BoardModel {
 					map[x][y] = new JavaCell(x, y, 0); // this creates Cell
 														// objects for the rest
 														// of central Java
+				}
+				
+				// outsideInnerCells
+				if ((x == 1 || x == 12) && (y != 0 && y != 13)) {
+					outerCells[k] = map[x][y];
+					k++;
+				} else if ((y == 1 || y == 12) && (x != 0 && x != 13)) {
+					outerCells[k] = map[x][y];
+					k++;
 				}
 			}
 		}
@@ -111,7 +124,7 @@ public class BoardModel {
 				if (tileCells[i][j] != null) {
 					if (miniMap[i][j] != null
 							&& miniMap[i][j].getCellType() != null
-							&& miniMap[i][j].getCellType() == "irrigation") {
+							&& miniMap[i][j].getCellType() == "palace") {
 
 						return false;
 					}
@@ -123,12 +136,34 @@ public class BoardModel {
 	}
 
 	private boolean checkTilesBelow(JavaCell[][] miniMap, Tile tile) {
+		String[][] tileCells = tile.getTileCells();
+		int numberOfTilesBelow = 0;
+		int testId = -1;
 
-		return true;
+		
+		for (int i = 0; i < tileCells.length; i++) {
+			for (int j = 0; j < tileCells[i].length; j++) {
+				if (tileCells[i][j] != null && miniMap[i][j].getElevation() != 0 ) {
+					if(testId == -1)
+						testId = miniMap[i][j].getCellId();
+					else{
+						if(testId != miniMap[i][j].getCellId())
+							return true;
+						else
+							numberOfTilesBelow++;
+					}
+				}
+			}
+		}
+		
+		
+		if(Integer.parseInt(tile.getType()) == numberOfTilesBelow)
+			return false;
+		else 
+			return true;
 	}
 
-	private boolean checkElevation(JavaCell[][] miniMap, Tile tile, int xC,
-			int yC) {
+	private boolean checkElevation(JavaCell[][] miniMap, Tile tile, int xC, int yC) {
 		String[][] tileCells = tile.getTileCells();
 
 		int elevation = map[xC][yC].getElevation();
@@ -254,6 +289,27 @@ public class BoardModel {
 
 	private boolean checkEdgePlacement(JavaCell[][] miniMap, Tile tile) {
 		
+		String[][] tileCells = tile.getTileCells();
+		JavaCell[] cells = new JavaCell[4];
+		int count = 0;
+		
+		for (int i = 0; i < miniMap.length; i++) 
+			for (int j = 0; j < miniMap[i].length; j++) 
+				if (tileCells[i][j] != null) 
+					cells[i] = miniMap[i][j];
+		
+		
+		
+		for(int i = 0; i < outerCells.length; i++)
+			for(int j = 0; j < cells.length; j++){
+			if(cells[j] != null &&  cells[j].getX() == outerCells[i].getX() && cells[0].getY() == outerCells[i].getY())
+				count++;
+			if(count == Integer.parseInt(tile.getType()))
+				return false;
+			}
+
+		
+					
 		return true;
 	}
 
