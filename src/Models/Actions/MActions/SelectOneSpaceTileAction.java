@@ -14,7 +14,9 @@ public class SelectOneSpaceTileAction extends SelectNonRotatableTileAction {
 		int newX = x + xChange;
 		int newY = y + yChange;
 		if(isNonRotatableComponentOnBoard(newX, newY)){
-			
+			x = newX;
+			y = newY;
+			return true;
 		}
 		return false;
 	}

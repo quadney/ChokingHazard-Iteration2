@@ -21,6 +21,7 @@ public abstract class MAction {
 	
 	public abstract boolean pressArrow(int xChange, int yChange);
 	
+	//public abstract boolean pressTab();
 	
 	//Accessor Methods ---------------------------------------------//
 	public int getX(){

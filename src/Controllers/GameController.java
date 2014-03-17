@@ -109,6 +109,7 @@ public class GameController {
 			//escapes out of a selected action
 			//tells the current game about the event so that it makes SelectedAction to null
 			//also updates the board panel so that the image is canceled
+			System.out.println("(in GameController)Esc was pressed");
 			currentGame.pressEsc();
 			board.pressEsc();
 
@@ -117,8 +118,9 @@ public class GameController {
 			//released the space bar, rotate
 			//tells the current game to tell the selectedAction to do pressSpace()
 			//will only tell the board about the change if it was a rotatable tile action
+			System.out.println("(in GameController)Space was pressed");
 			currentGame.pressSpace();
-				updateBoardControllerWithSelectedAction();
+			updateBoardControllerWithSelectedAction();
 			break;
 			
 	// using these arrow keys for movement of developers and tiles
@@ -211,7 +213,16 @@ public class GameController {
 			//check if the player has placed a land tile so they can get out of their turn
 			//released X, end turn
 			if(players.selectEndTurn(currentGame.getPlayerIndex())){
-				//does end turn stuff
+				players.setNotCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the player panel of the current player to stop outlining their panel
+				if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){ //ask if they wanna have a palace festival
+					//TODO set up palace festival
+					//asks for palace they want to hold a festival at
+					//pass the index and the value of the palace and...
+				}
+				
+				//call this after the prompt to have a palace festival (and after the palace festival if they had one)
+				currentGame.endTurn(); //increment the current player in the game model, changes all the stuff in player
+				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
 			}
 			break;		
 		}
@@ -219,10 +230,10 @@ public class GameController {
 	
 	private void updateBoardControllerWithSelectedAction(){
 		if (currentGame.getSelectedAction() instanceof SelectRotatableTileAction){
-			board.updateSelectedTileAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
 		}
 		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
-			board.updateSelectedTileAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), 0);
+			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
 		else{//developer
 			//TODO this is to tell the view that the developer path has changed
