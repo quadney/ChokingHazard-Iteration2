@@ -93,7 +93,7 @@ public class GameController {
 	}
 	
 	private void userReleasedKey(KeyEvent e){
-		System.out.println(e.getKeyCode());
+		//System.out.println(e.getKeyCode());
 		//TODO key codes for switching between modes: planning mode, replay mode, and normal mode
 		//TODO key codes for holding a festival, picking up a festival card/palace card
 		switch(e.getKeyCode()){
@@ -107,6 +107,7 @@ public class GameController {
 			break;
 		case 10:
 			//released enter, place tile/developer onto board.
+			System.out.println("(in GameController)Enter was pressed");
 			
 
 			break;	
@@ -124,8 +125,10 @@ public class GameController {
 			//tells the current game to tell the selectedAction to do pressSpace()
 			//will only tell the board about the change if it was a rotatable tile action
 			System.out.println("(in GameController)Space was pressed");
-			currentGame.pressSpace();
-			updateBoardControllerWithSelectedAction();
+			if(currentGame.pressSpace()){
+				updateBoardControllerWithSelectedAction();
+				//System.out.println("(in GameController)Space was valid and attempted to updateBoardController");
+			}
 			break;
 			
 	// using these arrow keys for movement of developers and tiles
@@ -235,9 +238,12 @@ public class GameController {
 	
 	private void updateBoardControllerWithSelectedAction(){
 		if (currentGame.getSelectedAction() instanceof SelectRotatableTileAction){
+			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");
+			//System.out.println(" This is the rotation state: " + ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
 			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
 		}
-		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
+		else if(currentGame.getSelectedAction() instanceof SelectNonRotatableTileAction){
+			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
 			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
 		else{//developer

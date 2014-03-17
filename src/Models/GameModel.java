@@ -276,12 +276,11 @@ public class GameModel implements Serializable<GameModel> {
 		return this.indexOfCurrentPlayer;
 	}
 
-	public void pressSpace() {
+	public boolean pressSpace() {
 		if(selectedAction != null){
-			selectedAction.pressSpace();
-			System.out.println("(in GameModel pressSpace()) selectedAction pressSpace() was called");
+			return selectedAction.pressSpace();
 		}
-		System.out.println("(in GameModel pressSpace()) selectedAction pressSpace() was called");
+		return false;
 	}
 	
 	//Methods for MAction/selected action traversal that is needed by the controller
@@ -336,13 +335,13 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public boolean setSelectedAction(MAction selectedAction) {
-		if(this.selectedAction == null){
-			System.out.println("(in GameModel setSelectedACtion()) setSelectedAction set the new MAction");
+		//if(this.selectedAction == null){
+			//System.out.println("(in GameModel setSelectedACtion()) setSelectedAction set the new MAction");
 			this.selectedAction = selectedAction;
 			return true;
-		}
-		System.out.println("(in GameModel setSelectedACtion()) setSelectedAction already had an MAction");
-		return false;
+		//}
+		//System.out.println("(in GameModel setSelectedACtion()) setSelectedAction already had an MAction");
+		//return false;
 		
 	}
 
