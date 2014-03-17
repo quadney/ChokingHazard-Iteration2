@@ -433,8 +433,19 @@ public class BoardModel implements Serializable<BoardModel> {
 
 	@Override
 	public BoardModel loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		map = new JavaCell[json.getJsonObjectArray("map").length][(((JsonObject[][])json.getObject("map"))[0]).length];
+		for(int x = 0; x < json.getJsonObjectArray("map").length; ++x)
+			for(int y = 0; y < ((JsonObject[])(Object)json.getJsonObjectArray("map")[0]).length; ++y)
+				map[x][y] = (new JavaCell(-1, -1, -1)).loadObject(((JsonObject[][])json.getObject("map"))[x][y]);
+		
+		path = new Stack<JavaCell>();
+		for(JsonObject cell : json.getJsonObjectArray("path"))
+			path.push(map[(new JavaCell(-1, -1, -1)).loadObject(cell).xVal][(new JavaCell(-1, -1, -1)).loadObject(cell).yVal]);
+
+		connectedPalaces = new ArrayList<JavaCell>();
+		for(JsonObject cell : json.getJsonObjectArray("connectedPalaces"))
+			connectedPalaces.add(map[(new JavaCell(-1, -1, -1)).loadObject(cell).xVal][(new JavaCell(-1, -1, -1)).loadObject(cell).yVal]);
+		return this;
 	}
 
 }
