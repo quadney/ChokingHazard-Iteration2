@@ -130,7 +130,7 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	
 	public boolean endTurn()
 	{
-		if (!hasPlacedLandTile())
+		if (!hasPlacedLandTile)
 		{
 			//TODO: Alert they haven't placed land
 			return false;
