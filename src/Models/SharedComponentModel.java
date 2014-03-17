@@ -130,8 +130,24 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 
 	@Override
 	public SharedComponentModel loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		threeSpaceTiles = Integer.parseInt(json.getString("threeSpaceTiles"));
+		irrigationTiles = Integer.parseInt(json.getString("irrigationTiles"));
+		
+		palaceTiles = new int[json.getStringArray("palaceTiles").length];
+		for(int x = 0; x < palaceTiles.length; ++x) 
+			palaceTiles[x] = Integer.parseInt(json.getStringArray("palaceTiles")[x]);
+
+		palaceCardDeck = new LinkedList<PalaceCard>();
+		for(JsonObject card : json.getJsonObjectArray("palaceCardDeck")) 
+			palaceCardDeck.push((new PalaceCard(-1)).loadObject(card));
+
+		discardedCardDeck = new LinkedList<PalaceCard>();
+		for(JsonObject card : json.getJsonObjectArray("discardedCardDeck")) 
+			discardedCardDeck.push((new PalaceCard(-1)).loadObject(card));
+		
+		festivalCard = (new PalaceCard(-1)).loadObject(json.getJsonObject("festivalCard"));
+		
+		return this;
 	}
 
 }
