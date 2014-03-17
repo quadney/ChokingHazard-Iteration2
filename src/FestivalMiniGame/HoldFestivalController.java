@@ -10,9 +10,9 @@ public class HoldFestivalController {
 	private HoldFestivalPanel festPanel;
 	private HoldFestivalModel festModel;
 	
-	public HoldFestivalController(HoldFestivalModel model, HoldFestivalPanel panel){
-		this.festModel = model;
-		this.festPanel = panel;
+	public HoldFestivalController(JavaFestivalPlayer[] festivalPlayers, int currentPlayerIndex, PalaceCard festCard, int palaceValue){
+		this.festModel = new HoldFestivalModel(festivalPlayers, currentPlayerIndex, festCard, palaceValue);
+		this.festPanel = new HoldFestivalPanel(festivalPlayers, currentPlayerIndex, festCard.getType(), palaceValue);
 		festPanel.setFestivalController(this);
 	}
 	

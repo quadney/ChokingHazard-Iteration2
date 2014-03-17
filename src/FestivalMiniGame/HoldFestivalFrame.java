@@ -43,7 +43,6 @@ public class HoldFestivalFrame extends JFrame {
 	}
 	
 	private void startFestival(JavaPlayer[] players, int indexOfPlayer, PalaceCard festivalCard, int selectedPalaceValue){
-		System.out.println("festival card type: "+festivalCard.getType());
 		//get the valid players and make their festival cards
 		JavaFestivalPlayer[] festivalPlayers = new JavaFestivalPlayer[players.length];
 		
@@ -67,10 +66,7 @@ public class HoldFestivalFrame extends JFrame {
 			}
 			festivalPlayers[i] = new JavaFestivalPlayer(players[i], validPalaceCards);
 		}
-		
-		HoldFestivalModel model = new HoldFestivalModel(festivalPlayers, indexOfPlayer, festivalCard, selectedPalaceValue);
-		HoldFestivalPanel panel = new HoldFestivalPanel(festivalPlayers, indexOfPlayer, festivalCard.getType(), selectedPalaceValue);
-		festController = new HoldFestivalController(model, panel);
+		festController = new HoldFestivalController(festivalPlayers, indexOfPlayer, festivalCard, selectedPalaceValue);
 	}
 
 }

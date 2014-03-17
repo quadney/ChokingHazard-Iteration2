@@ -30,6 +30,7 @@ public class HoldFestivalPanel extends JPanel{
 		initHashMap();
 		setPreferredSize(new Dimension(750, 750));
 		setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+		setBackground(Color.WHITE);
 		
 		dropFromFestival = new JButton("Drop Out of Festival");
 		dropFromFestival.addActionListener(new ActionListener() {
@@ -46,18 +47,11 @@ public class HoldFestivalPanel extends JPanel{
 	private void initPanels(JavaFestivalPlayer[] festivalPlayers, int currentPlayerIndex, String festivalHashKey){
 		centerPanel = new JPanel();
 		centerPanel.setPreferredSize(new Dimension(550, 550));
-		//centerPanel.setBackground(Color.WHITE);
+		centerPanel.setBackground(Color.WHITE);
 		centerPanel.setLayout(new BorderLayout());
 		add(centerPanel, BorderLayout.CENTER);
 		
-		System.out.println(festivalHashKey);
-		System.out.println(imageSourceHashMap.get(festivalHashKey));
-		
-		JLabel festLabel = palaceLabel(festivalHashKey);
-		festLabel.setText("Hello world");
-		festLabel.setBackground(Color.GREEN);
-		centerPanel.add(festLabel, BorderLayout.CENTER);
-		//centerPanel.add(palaceLabel(festivalHashKey), BorderLayout.CENTER);
+		centerPanel.add(palaceLabel(imageSourceHashMap.get("label_"+festivalHashKey)), BorderLayout.CENTER);
 		
 //		add(dropFromFestival);
 //		dropFromFestival.setVisible(false);
@@ -75,18 +69,22 @@ public class HoldFestivalPanel extends JPanel{
 				playedCardsPanels[i] = new JPanel();
 				if(i == 0){
 					add(players[i], BorderLayout.NORTH);
+					playedCardsPanels[i].setPreferredSize(new Dimension(500, 100));
 					centerPanel.add(playedCardsPanels[i], BorderLayout.NORTH);
 				}
 				else if (i == 1){
 					add(players[i], BorderLayout.EAST);
+					playedCardsPanels[i].setPreferredSize(new Dimension(100, 500));
 					centerPanel.add(playedCardsPanels[i], BorderLayout.EAST);
 				}
 				else if (i == 2){
 					add(players[i], BorderLayout.SOUTH);
+					playedCardsPanels[i].setPreferredSize(new Dimension(500, 100));
 					centerPanel.add(playedCardsPanels[i], BorderLayout.SOUTH);
 				}
 				else{
 					add(players[i], BorderLayout.WEST);
+					playedCardsPanels[i].setPreferredSize(new Dimension(100, 500));
 					centerPanel.add(playedCardsPanels[i], BorderLayout.WEST);
 				}
 			}

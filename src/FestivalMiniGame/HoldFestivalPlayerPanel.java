@@ -3,8 +3,10 @@ package FestivalMiniGame;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -20,8 +22,9 @@ import javax.swing.JPanel;
 public class HoldFestivalPlayerPanel extends JPanel {
 	private HashMap<String, String> imageSourceHashMap;
 	private Color playerColor;
-	JLabel cards;
 	boolean isEvenLayout;
+	BufferedImage cardBack;
+	JLabel cards;
 	
 	public HoldFestivalPlayerPanel(int index, String name, String color, int numFestivalCards, HashMap<String, String> imageHash){
 		super(new FlowLayout());
@@ -35,6 +38,7 @@ public class HoldFestivalPlayerPanel extends JPanel {
 		} 
 		
 		this.imageSourceHashMap = imageHash;
+		this.cardBack = getBufferedImageFromSource(imageSourceHashMap.get("palaceCard_back"));
 		
 		initPanel(index, name, numFestivalCards);
 	}
@@ -43,6 +47,8 @@ public class HoldFestivalPlayerPanel extends JPanel {
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		
 		cards = new JLabel();
+		add(cards);
+		
 		if(indexOnPanel % 2 == 0){
 			//if its even
 			isEvenLayout = true;
@@ -92,13 +98,12 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	}
 	
 	public void clearSelectedCard(int numCards){
-		this.cards.setIcon(new ImageIcon(drawPalaceCardBacks(numCards)));
+		cards.setIcon(new ImageIcon(drawPalaceCardBacks(numCards)));
 	}
 	
 	private BufferedImage drawPalaceCardBacks(int numPalaceCards){
 		int spacing = getCardSpacing(numPalaceCards);
 		BufferedImage cards = new BufferedImage(getPreferredWidth(), getPreferredHeight(), BufferedImage.TYPE_INT_ARGB);
-		BufferedImage cardBack = getBufferedImageFromSource(imageSourceHashMap.get("palaceCard_back"));
 		
 		Graphics2D g2d = cards.createGraphics();
 		for(int i = 0; i <numPalaceCards; ++i){
@@ -121,9 +126,19 @@ public class HoldFestivalPlayerPanel extends JPanel {
 			BufferedImage image = ImageIO.read(this.getClass().getResource(src));
 			return image;
 		}catch(IOException e){
-				System.out.println(e);
+			System.out.println("there was an error");
+			System.out.println(e);
 		}
-		System.out.println("there was an error");
 		return null;
+	}
+	
+	private void saveImage(BufferedImage image){
+		System.out.println("saving image");
+		try{
+			File outputfile = new File("image.png");
+		    ImageIO.write(image, "png", outputfile);
+		} catch (IOException e) {
+		    System.out.println(e);
+		}
 	}
 }
