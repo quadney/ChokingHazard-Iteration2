@@ -4,7 +4,6 @@ import Helpers.*;
 import Models.Actions.*;
 
 import java.util.*;
-import java.util.Stack;
 
 import Models.Actions.MActions.MAction;
 
@@ -353,12 +352,12 @@ public class GameModel implements Serializable<GameModel> {
 			this.players[x] = (new JavaPlayer("temp", "temp")).loadObject(json.getJsonObjectArray("players")[x]);
 
 		this.actionHistory = new Stack<Action>();
-		for(int x = 0; x < json.getJsonObjectArray("actionHistory").length; ++x) 
-			this.actionHistory.push(Action.loadAction(json.getJsonObjectArray("actionHistory")[x]));
+		for(JsonObject obj : json.getJsonObjectArray("actionHistory"))
+			this.actionHistory.push(Action.loadAction(obj));
 		
 		this.actionReplays = new Stack<Action>();
-		for(int x = 0; x < json.getJsonObjectArray("actionReplays").length; ++x) 
-			this.actionReplays.push(Action.loadAction(json.getJsonObjectArray("actionReplays")[x]));
+		for(JsonObject obj : json.getJsonObjectArray("actionReplays"))
+			this.actionReplays.push(Action.loadAction(obj));
 
 		return this;
 	}
