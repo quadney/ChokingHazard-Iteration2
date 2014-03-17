@@ -38,17 +38,16 @@ public class Developer implements Serializable<Developer>
 	@Override
 	public String serialize() {
 		return Json.jsonObject(Json.jsonMembers(
-			Json.jsonPair("location-x", Json.jsonValue(location.xVal + "")),
-			Json.jsonPair("location-y", Json.jsonValue(location.yVal + "")),
+			Json.jsonPair("x", Json.jsonValue(location.xVal + "")),
+			Json.jsonPair("y", Json.jsonValue(location.yVal + "")),
 			Json.jsonPair("owner", Json.jsonValue(owner.name + ""))
 		));
 	}
 	
 	@Override
 	public Developer loadObject(JsonObject json) {
-		if(owner == null)
-			// TODO Auto-generated method stub
-			System.out.println("FJDSKL");
+		location = ((Cell[][]) json.getObject("map"))[Integer.parseInt(json.getString("x"))][Integer.parseInt(json.getString("y"))];
+		// TODO check to make sure player is getting set
 		return this;
 	}
 }

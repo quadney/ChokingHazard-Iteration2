@@ -200,9 +200,12 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 			this.palaceCards.add((new PalaceCard(-1)).loadObject(obj));
 
 		this.developersOnBoard = new Developer[json.getJsonObjectArray("developersOnBoard").length];
-		for(int x = 0; x < this.developersOnBoard.length; ++x) 
+		for(int x = 0; x < this.developersOnBoard.length; ++x) {
+			json.getJsonObjectArray("developersOnBoard")[x].addKeyManually("map", json.getObject("map"));
 			this.developersOnBoard[x] = (new Developer(this)).loadObject(json.getJsonObjectArray("developersOnBoard")[x]);
+		}
 		
+		// TODO check if these are distinct or from developersOnBoard (or vice-versa)
 		this.developerArray = new Developer[json.getJsonObjectArray("developerArray").length];
 		for(int x = 0; x < this.developerArray.length; ++x) 
 			this.developerArray[x] = (new Developer(this)).loadObject(json.getJsonObjectArray("developerArray")[x]);

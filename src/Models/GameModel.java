@@ -341,23 +341,25 @@ public class GameModel implements Serializable<GameModel> {
 	
 	@Override
 	public GameModel loadObject(JsonObject json) {
-		this.gameState = GameState.valueOf(json.getString("gameState"));
-		this.gameBoard = (new BoardModel()).loadObject(json.getJsonObject("gameBoard"));
-		this.indexOfCurrentPlayer = Integer.parseInt(json.getString("indexOfCurrentPlayer"));
-		this.isFinalRound = Boolean.parseBoolean(json.getString("isFinalRound"));
-		this.actionIDCounter = Integer.parseInt(json.getString("actionIDCounter"));
+		gameState = GameState.valueOf(json.getString("gameState"));
+		gameBoard = (new BoardModel()).loadObject(json.getJsonObject("gameBoard"));
+		indexOfCurrentPlayer = Integer.parseInt(json.getString("indexOfCurrentPlayer"));
+		isFinalRound = Boolean.parseBoolean(json.getString("isFinalRound"));
+		actionIDCounter = Integer.parseInt(json.getString("actionIDCounter"));
 		
 		this.players = new JavaPlayer[json.getJsonObjectArray("players").length];
-		for(int x = 0; x < players.length; ++x) 
-			this.players[x] = (new JavaPlayer("temp", "temp")).loadObject(json.getJsonObjectArray("players")[x]);
+		for(int x = 0; x < players.length; ++x) {
+			json.getJsonObjectArray("players")[x].addKeyManually("map", gameBoard.getMap());
+			players[x] = (new JavaPlayer("temp", "temp")).loadObject(json.getJsonObjectArray("players")[x]);
+		}
 
 		this.actionHistory = new Stack<Action>();
 		for(JsonObject obj : json.getJsonObjectArray("actionHistory"))
-			this.actionHistory.push(Action.loadAction(obj));
+			actionHistory.push(Action.loadAction(obj));
 		
 		this.actionReplays = new Stack<Action>();
 		for(JsonObject obj : json.getJsonObjectArray("actionReplays"))
-			this.actionReplays.push(Action.loadAction(obj));
+			actionReplays.push(Action.loadAction(obj));
 
 		return this;
 	}
