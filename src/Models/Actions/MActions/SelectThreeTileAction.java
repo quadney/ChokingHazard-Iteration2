@@ -1,6 +1,6 @@
 package Models.Actions.MActions;
 
-public class SelectThreeTileAction extends SelectRotatableTileAction{
+public class SelectThreeTileAction extends SelectRotatableComponentAction{
 
 	
 	public SelectThreeTileAction(String imageKey) {

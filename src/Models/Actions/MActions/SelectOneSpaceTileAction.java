@@ -1,6 +1,6 @@
 package Models.Actions.MActions;
 
-public class SelectOneSpaceTileAction extends SelectNonRotatableTileAction {
+public class SelectOneSpaceTileAction extends SelectNonRotatableComponentAction {
 	
 	public SelectOneSpaceTileAction(String imageKey) {
 		super(imageKey);

@@ -1,8 +1,8 @@
 package Models.Actions.MActions;
 
-public abstract class SelectNonRotatableTileAction extends MAction {
+public abstract class SelectNonRotatableComponentAction extends MAction {
 
-	public SelectNonRotatableTileAction(String imageKey) {
+	public SelectNonRotatableComponentAction(String imageKey) {
 		super(imageKey);
 	}
 
@@ -24,5 +24,5 @@ public abstract class SelectNonRotatableTileAction extends MAction {
 	}
 	
 	public abstract boolean isNonRotatableComponentOnBoard(int x, int y);
-	
+
 }
