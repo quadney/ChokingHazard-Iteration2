@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class HoldFestivalPlayerPanel extends JPanel {
 	private HashMap<String, String> imageSourceHashMap;
 	private Color playerColor;

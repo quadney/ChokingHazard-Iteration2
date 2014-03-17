@@ -17,6 +17,7 @@ import javax.swing.JComboBox;
 import Models.JavaPlayer;
 
 
+@SuppressWarnings("serial")
 public class GameContainerPanel extends JPanel {
 	private final static int WIDTH = 1300;
 	private final static int HEIGHT = 840;
@@ -91,6 +92,7 @@ public class GameContainerPanel extends JPanel {
 				String[] hash = line.split(" ");
 				imageSourceHashMap.put(hash[0], hash[1]);
 			}
+			fileReader.close();
 		} catch(Exception e){
 			System.out.println(e.getMessage());
 		}

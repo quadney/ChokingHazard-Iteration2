@@ -1,8 +1,5 @@
 package Models.Actions.MActions;
 
-import Helpers.Json;
-
-
 public abstract class SelectRotatableTileAction extends MAction {
 
 	int rotationState = 0;
@@ -43,15 +40,5 @@ public abstract class SelectRotatableTileAction extends MAction {
 	
 	public int getRotationState(){
 		return rotationState;
-	}
-	
-	@Override
-	public String serialize() {
-		return Json.jsonObject(Json.jsonMembers(
-			Json.jsonPair("x", Json.jsonValue(x + "")),
-			Json.jsonPair("y", Json.jsonValue(y + "")),
-			Json.jsonPair("rotationState", Json.jsonValue(rotationState + "")),
-			Json.jsonPair("imageKey", Json.jsonValue(imageKey))
-		));
 	}
 }
