@@ -323,6 +323,8 @@ public class GameModel implements Serializable<GameModel> {
 		
 	}
 
+	//---------------------------------------------------------------------------
+	
 	@Override
 	public String serialize() {
 		return Json.jsonObject(Json.jsonMembers(
@@ -340,7 +342,24 @@ public class GameModel implements Serializable<GameModel> {
 	
 	@Override
 	public GameModel loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		this.gameState = GameState.valueOf(json.getString("gameState"));
+		this.gameBoard = (new BoardModel()).loadObject(json.getJsonObject("gameBoard"));
+		this.indexOfCurrentPlayer = Integer.parseInt(json.getString("indexOfCurrentPlayer"));
+		this.isFinalRound = Boolean.parseBoolean(json.getString("isFinalRound"));
+		this.actionIDCounter = Integer.parseInt(json.getString("actionIDCounter"));
+		
+		this.players = new JavaPlayer[json.getJsonObjectArray("players").length];
+		for(int x = 0; x < players.length; ++x) 
+			this.players[x] = (new JavaPlayer("temp", "temp")).loadObject(json.getJsonObjectArray("players")[x]);
+
+		this.actionHistory = new Stack<Action>();
+		for(int x = 0; x < json.getJsonObjectArray("actionHistory").length; ++x) 
+			this.actionHistory.push(Action.loadAction(json.getJsonObjectArray("actionHistory")[x]));
+		
+		this.actionReplays = new Stack<Action>();
+		for(int x = 0; x < json.getJsonObjectArray("actionReplays").length; ++x) 
+			this.actionReplays.push(Action.loadAction(json.getJsonObjectArray("actionReplays")[x]));
+
+		return this;
 	}
 }

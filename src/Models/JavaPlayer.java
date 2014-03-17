@@ -180,7 +180,8 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 
 	@Override
 	public JavaPlayer loadObject(JsonObject json) {
+		
 		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 }

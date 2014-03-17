@@ -1,5 +1,6 @@
 package Models.Actions;
 
+import Helpers.JsonObject;
 import Models.*;
 
 /**
@@ -53,5 +54,12 @@ public abstract class Action implements Serializable<Action> {
 	 *            The game upon which the action took place.
 	 */
 	public abstract void redo(GameModel game);
+	
+	//------------------------------------------------------
+	
+	public static Action loadAction(JsonObject json) {
+		// TODO this will return the correct Action based on subactions
+		return new SampleAction(-1, -1, -1);
+	}
 
 }
