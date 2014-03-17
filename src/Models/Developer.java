@@ -46,7 +46,9 @@ public class Developer implements Serializable<Developer>
 	
 	@Override
 	public Developer loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		if(owner == null)
+			// TODO Auto-generated method stub
+			System.out.println("FJDSKL");
+		return this;
 	}
 }
