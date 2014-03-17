@@ -21,6 +21,18 @@ public class HoldFestivalModel {
 		return this.indexOfCurrentPlayer;
 	}
 	
+	public int getCurrentPlayerNumOfPalaceCards(){
+		return this.players[indexOfCurrentPlayer].getNumPalaceCards();
+	}
+	
+	public int getCurrentPlayerTabCount(){
+		return this.players[indexOfCurrentPlayer].getTabCount();
+	}
+	
+	public String getTabbedHashKey(){
+		return this.players[indexOfCurrentPlayer].getTabbedImageString();
+	}
+	
 	public int endTurn(){
 		players[indexOfCurrentPlayer].endTurn();
 		incrementPlayer();
@@ -29,7 +41,7 @@ public class HoldFestivalModel {
 		return indexOfCurrentPlayer;
 	}
 	
-	public boolean startTurn(){
+	public boolean ifHadFullCycleTurnCheck(){
 		return (indexOfCurrentPlayer == indexOfPlayerWhoStartedFestival);
 	}
 	
@@ -41,6 +53,10 @@ public class HoldFestivalModel {
 	public PalaceCard selectPalaceCard(){
 		PalaceCard selectedCard = players[indexOfCurrentPlayer].getSelectedPalaceCard();
 		return selectedCard;
+	}
+	
+	public void endTabbing(){
+		players[indexOfCurrentPlayer].cancelTabbing();
 	}
 	
 	private void incrementPlayer(){

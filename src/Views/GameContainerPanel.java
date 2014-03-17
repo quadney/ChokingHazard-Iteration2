@@ -14,7 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 
+import FestivalMiniGame.HoldFestivalFrame;
 import Models.JavaPlayer;
+import Models.PalaceCard;
 
 
 @SuppressWarnings("serial")
@@ -23,6 +25,7 @@ public class GameContainerPanel extends JPanel {
 	private final static int HEIGHT = 840;
 	private HashMap<String, String> imageSourceHashMap; 
 	DisplayPlayersPalaceCardsFrame palaceCardFrame;
+	HoldFestivalFrame festivalFrame;
 	private JButton toggleGameModeButton;
 	private JButton replayModeButton;
 	
@@ -40,13 +43,6 @@ public class GameContainerPanel extends JPanel {
 	}
 	
 	private void initPanels(BoardPanel board, PlayerPanel[] players, SharedComponentPanel shared){
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setMinimumSize(new Dimension(100, shared.getHeight()));
-		buttonPanel.setLayout(new FlowLayout());
-		buttonPanel.add(toggleGameModeButton);
-		buttonPanel.add(replayModeButton);
-		add(buttonPanel, BorderLayout.NORTH);
-		
 		add(shared, BorderLayout.NORTH);
 		
 		add(board, BorderLayout.CENTER);
@@ -109,21 +105,21 @@ public class GameContainerPanel extends JPanel {
 	
 	public boolean askUserIfWouldLikeToHoldAPalaceFestival(){
 		int holdFestival = JOptionPane.showConfirmDialog(null, "Would you like to hold a Palace Festival?", "Let's Party!", JOptionPane.YES_NO_OPTION);
-		if(holdFestival == 1)
+		if(holdFestival == 0)
 			return true;
 		return false;
 	}
 	
 	public boolean askUserIfWouldLikeToEnterReplayMode(){
 		int replay = JOptionPane.showConfirmDialog(null, "Would you like to enter Replay Mode?", "Replay Mode", JOptionPane.YES_NO_OPTION);
-		if(replay == 1)
+		if(replay == 0)
 			return true;
 		return false;
 	}
 	
 	public boolean askUserIfWouldLikeToSaveChangesFromPlanningMode(){
 		int saveChanges = JOptionPane.showConfirmDialog(null, "Would you like to Play mode to reflect these changes?", "Planning Mode", JOptionPane.YES_NO_OPTION);
-		if(saveChanges == 1)
+		if(saveChanges == 0)
 			return true;
 		return false;
 	}
@@ -131,6 +127,12 @@ public class GameContainerPanel extends JPanel {
 	public void displayPalaceCardFrame(JavaPlayer player){
 		palaceCardFrame = new DisplayPlayersPalaceCardsFrame(player, imageSourceHashMap);
 		palaceCardFrame.setVisible(true);
+	}
+	
+	public void displayHoldFestivalFrame(JavaPlayer[] players, int indexOfPlayerHoldingFestival, PalaceCard festivalCard, int selectedPalaceValue){
+		System.out.println("displaying festival frame");
+		festivalFrame = new HoldFestivalFrame(players, indexOfPlayerHoldingFestival, festivalCard, selectedPalaceValue);
+		festivalFrame.setVisible(true);
 	}
 
 }
