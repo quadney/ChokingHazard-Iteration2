@@ -13,8 +13,12 @@ public class JsonObject {
 		System.out.println(toString(obj));
 	}
 	
-	public HashMap<String, Object> getMap() {
-		return map;
+	/*
+	 * For passing references of existing objects 
+	 * for the creation of other objects
+	 */
+	public void addKeyManually(String key, Object value) {
+		map.put(key, value);
 	}
 	
 	/**
@@ -42,7 +46,7 @@ public class JsonObject {
 			ret += (String) obj + "*" + (obj == null ? "*NULL*" : obj.getClass().getSimpleName() )+ "*";
 		return ret;
 	}
-	
+
 	public JsonObject (String serial) { 
 		map = new HashMap<String, Object>();
 		loadSerial(serial);
@@ -173,6 +177,10 @@ public class JsonObject {
 		if(lastIndex != serial.length() - 1)
 			list.add(serial.substring(lastIndex).trim());
 		return list.toArray((new String[list.size()]));
+	}
+	
+	private HashMap<String, Object> getMap() {
+		return map;
 	}
 
 }

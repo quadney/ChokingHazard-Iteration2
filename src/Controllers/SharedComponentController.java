@@ -1,6 +1,7 @@
 package Controllers;
 
-import Helpers.Deck;
+import java.util.LinkedList;
+
 import Models.PalaceCard;
 import Models.SharedComponentModel;
 import Views.SharedComponentPanel;
@@ -17,7 +18,7 @@ public class SharedComponentController {
 		
 		//there's no festival card for this deck. so when dealPalaceCards(numPlayers) is called, it will create a festival card
 	}
-	public SharedComponentController(int threeTiles, int irrigationTiles, int[] palaceTiles, Deck<PalaceCard> deck, PalaceCard festivalCard, Deck<PalaceCard> discardDeck){
+	public SharedComponentController(int threeTiles, int irrigationTiles, int[] palaceTiles, LinkedList<PalaceCard> deck, PalaceCard festivalCard, LinkedList<PalaceCard> discardDeck){
 		//load game constructor
 		this.sharedModel = new SharedComponentModel(threeTiles, irrigationTiles, palaceTiles, deck, festivalCard, discardDeck);
 		this.sharedPanel = new SharedComponentPanel(threeTiles, irrigationTiles, palaceTiles, deck.size(), festivalCard.getType());
