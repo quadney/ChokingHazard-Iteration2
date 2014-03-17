@@ -10,12 +10,14 @@ public class JavaPlayer extends Player {
 	private int numOneVillageTile;
 	private int numTwoTile;
 	private int numActionTokens;
+	private ArrayList<PalaceCard> palaceCards;
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
-	private boolean placedThreeTile;
-	public int currentlySelectedDeveloper;
-	//private ArrayList<FestivalCard> festivalCards;
+
 	private Developer[] developerArray;
+	public int currentlySelectedDeveloper; 	//Index of currently selected developer. CC: Cameron
+	private boolean placedLandTile;
+
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);
@@ -26,10 +28,12 @@ public class JavaPlayer extends Player {
 		this.numOneVillageTile = 2;
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
+      	this.palaceCards = new ArrayList<PalaceCard>();
+
+      	this.placedLandTile = false;
+
         this.developersOnBoard = new Developer[12];
         selectedDeveloperIndex = 0;
-       // developersOnBoard = new ArrayList<Developer>();
-		//this.festivalCards = new ArrayList<FestivalCard>;
 	}
    
 	public int getFamePoints() {
@@ -53,9 +57,12 @@ public class JavaPlayer extends Player {
 	public int getNumActionTokens() {
 		return numActionTokens;
 	}
+	public ArrayList<PalaceCard> getPalaceCards(){
+		return palaceCards;
+	}
 	
 	public int getAvailableActionPoints() {
-		if (placedThreeTile) {
+		if (placedLandTile) {
 			return actionPoints;
 		}
 		
@@ -96,8 +103,8 @@ public class JavaPlayer extends Player {
    }
 	  
 	
-	public boolean hasPlacedThreeTile() {
-		return placedThreeTile;
+	public boolean hasPlacedLandTile() {
+		return placedLandTile;
 	}
 	
 	
@@ -113,5 +120,30 @@ public class JavaPlayer extends Player {
 	public void removeDeveloperFromArray()
 	{
 		developerArray[currentlySelectedDeveloper] = null;
+	}
+	
+	public void addPalaceCard(PalaceCard card){
+		this.palaceCards.add(card);
+	}
+	
+	public boolean endTurn()
+	{
+		if (!hasPlacedLandTile())
+		{
+			//TODO: Alert they haven't placed land
+			return false;
+		}
+		//Otherwise, typical end of turn activities
+		changeFamePoints(1); //TODO: determine correct amount, method?
+		
+		return true;
+	}
+
+	public boolean canUsePalace() {
+		return ( ( this.hasPlacedLandTile() && this.actionPoints >= 1 ) || this.actionPoints >= 2 );
+	}
+	public boolean canUseRice() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

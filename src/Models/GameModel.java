@@ -1,15 +1,17 @@
-package Models;
-
-import Helpers.*;
-import Models.Actions.*;
-import java.util.*;
-import java.util.Stack;
-
-// This enum declaration might need to be moved, not sure how accessible it is right now 
-// (needs to be accessible by GameModel and the Controller). #JavaTroubles
-enum GameState {
-	ReplayMode, PlanningMode, NormalMode
-}
+	package Models;
+	
+	import Helpers.*;
+	import Models.Actions.*;
+	import java.util.*;
+	import java.util.Stack;
+	
+	import Models.Actions.MActions.MAction;
+	
+	// This enum declaration might need to be moved, not sure how accessible it is right now 
+	// (needs to be accessible by GameModel and the Controller). #JavaTroubles
+	enum GameState {
+		ReplayMode, PlanningMode, NormalMode
+	}
 
 public class GameModel {
 	// VARIABLES
@@ -17,6 +19,7 @@ public class GameModel {
 	private JavaPlayer[] players;
 	private int indexOfCurrentPlayer;
 	private boolean isFinalRound;
+	public MAction selectedAction;
 
 	private Stack<Action> actionHistory; // This holds a history of the actions
 											// taken up to the currently held
@@ -64,6 +67,24 @@ public class GameModel {
       }
       return null;
    }
+   
+   public boolean endTurn(){
+	 //TODO only is called when a player can end a turn validly (accounted for in GameController)
+	 //call an end turn in the Player Model for the current player
+	 //change player index
+	 //change whatever else in the models
+	   
+	 JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
+	 if (!currentPlayer.endTurn()) //checks for land tile placement
+		 return false; //TODO: Handle alert, see JavaPlayer TODO
+	 indexOfCurrentPlayer++;
+	 indexOfCurrentPlayer = indexOfCurrentPlayer %  players.length; //tab through players
+	 
+	 
+	 
+	 return true;
+	    }
+   
    
    //Returns an array of players in order from highest to lowest of ranks of players
    //valid on a palace/city
@@ -249,5 +270,73 @@ public class GameModel {
 
 		if (actionReplays.isEmpty())
 			gameState = GameState.NormalMode;
+	}
+
+	public int getPlayerIndex() {
+		return this.indexOfCurrentPlayer;
+	}
+
+	public void pressSpace() {
+		selectedAction.pressSpace();
+	}
+	
+	//Methods for MAction/selected action traversal that is needed by the controller
+
+	public int getSelectedActionX() {
+		return selectedAction.getX();
+	}
+
+	public int getSelectedActionY() {
+		// TODO Auto-generated method stub
+		return selectedAction.getY();
+	}
+	
+	public String getSelectedActionImageKey() {
+		return selectedAction.getImageKey();
+	}
+
+	public MAction getSelectedAction() {
+		return selectedAction;
+	}
+
+	public void pressEsc() {
+		selectedAction = null;
+	}
+
+	public boolean pressLeft() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(-1,0);
+		}
+		return false;	
+	}
+
+	public boolean pressUp() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(1,0);
+		}
+		return false;
+	}
+
+	public boolean pressRight() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(0,1);
+		}
+		return false;		
+	}
+
+	public boolean pressDown() {
+		if(selectedAction != null){
+			return selectedAction.pressArrow(0,-1);
+		}
+		return false;
+	}
+
+	public boolean setSelectedAction(MAction selectedAction) {
+		if(selectedAction == null){
+			this.selectedAction = selectedAction;
+			return true;
+		}
+		return false;
+		
 	}
 }
