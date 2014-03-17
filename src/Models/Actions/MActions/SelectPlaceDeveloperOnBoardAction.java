@@ -7,6 +7,4 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 		// TODO Auto-generated constructor stub
 	}
 
-	
-
 }
