@@ -117,7 +117,12 @@ public class JavaCell extends Cell implements Serializable<JavaCell>
 	
 	@Override
 	public JavaCell loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
+		elevation = Integer.parseInt(json.getString("elevation"));
+		cellType = json.getString("cellType");
+		hasDeveLoper = Boolean.parseBoolean(json.getString("hasDeveLoper"));
+		cellId = Integer.parseInt(json.getString("cellId"));
+		xVal = Integer.parseInt(json.getString("xVal"));
+		yVal = Integer.parseInt(json.getString("yVal"));
 		return null;
 	}
    
