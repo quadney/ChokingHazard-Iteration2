@@ -174,14 +174,39 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 			Json.jsonPair("developerArray", Json.serializeArray(developerArray)),
 			Json.jsonPair("selectedDeveloperIndex", Json.jsonValue(selectedDeveloperIndex + "")),
 			Json.jsonPair("currentlySelectedDeveloper", Json.jsonValue(currentlySelectedDeveloper + "")),
-			Json.jsonPair("placedLandTile", Json.jsonValue(hasPlacedLandTile + ""))
+			Json.jsonPair("hasPlacedLandTile", Json.jsonValue(hasPlacedLandTile + "")),
+			Json.jsonPair("hasUsedActionToken", Json.jsonValue(hasUsedActionToken + ""))
 		));
 	}
 
 	@Override
 	public JavaPlayer loadObject(JsonObject json) {
+		this.name = json.getString("name");
+		this.color = json.getString("color");
+		this.famePoints = Integer.parseInt(json.getString("famePoints"));
+		this.actionPoints = Integer.parseInt(json.getString("actionPoints"));
+		this.numOneRiceTile = Integer.parseInt(json.getString("numOneRiceTile"));
+		this.numOneVillageTile = Integer.parseInt(json.getString("numOneVillageTile"));
+		this.numTwoTile = Integer.parseInt(json.getString("numTwoTile"));
+		this.numActionTokens = Integer.parseInt(json.getString("numActionTokens"));
+		this.developersOffBoard = Integer.parseInt(json.getString("developersOffBoard"));
+		this.selectedDeveloperIndex = Integer.parseInt(json.getString("selectedDeveloperIndex"));
+		this.currentlySelectedDeveloper = Integer.parseInt(json.getString("currentlySelectedDeveloper"));
+		this.hasPlacedLandTile = Boolean.parseBoolean(json.getString("hasPlacedLandTile"));
+		this.hasUsedActionToken = Boolean.parseBoolean(json.getString("hasUsedActionToken"));
 		
-		// TODO Auto-generated method stub
+		this.palaceCards = new ArrayList<PalaceCard>();
+		for(JsonObject obj : json.getJsonObjectArray("palaceCards"))
+			this.palaceCards.add((new PalaceCard(-1)).loadObject(obj));
+
+		this.developersOnBoard = new Developer[json.getJsonObjectArray("developersOnBoard").length];
+		for(int x = 0; x < this.developersOnBoard.length; ++x) 
+			this.developersOnBoard[x] = (new Developer(this)).loadObject(json.getJsonObjectArray("developersOnBoard")[x]);
+		
+		this.developerArray = new Developer[json.getJsonObjectArray("developerArray").length];
+		for(int x = 0; x < this.developerArray.length; ++x) 
+			this.developerArray[x] = (new Developer(this)).loadObject(json.getJsonObjectArray("developerArray")[x]);
+
 		return this;
 	}
 }
