@@ -123,7 +123,7 @@ public class JavaCell extends Cell implements Serializable<JavaCell>
 		cellId = Integer.parseInt(json.getString("cellId"));
 		xVal = Integer.parseInt(json.getString("xVal"));
 		yVal = Integer.parseInt(json.getString("yVal"));
-		return null;
+		return this;
 	}
    
 }
