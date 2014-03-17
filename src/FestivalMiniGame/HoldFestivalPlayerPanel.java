@@ -31,7 +31,6 @@ public class HoldFestivalPlayerPanel extends JPanel {
 			Field field = Color.class.getField(color);
 			this.playerColor = (Color)field.get(null);
 		} catch (Exception e) {
-			System.out.println("There was an image parseing the color string to a color");
 			this.playerColor = Color.black;
 		} 
 		
@@ -58,17 +57,18 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	private int getPreferredWidth(){
 		if(isEvenLayout)
 			return 550;
-		return 125;
+		return 100;
 	}
 	
 	private int getPreferredHeight(){
 		if(isEvenLayout){
-			return 125;
+			return 100;
 		}
-		return 650;
+		return 550;
 	}
 	
 	private int getCardSpacing(int numCards){
+		if(numCards == 0) return 0;
 		if(isEvenLayout){
 			return (getPreferredWidth() - (60*numCards))/numCards;
 		}

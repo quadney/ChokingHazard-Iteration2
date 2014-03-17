@@ -29,6 +29,9 @@ public class JavaFestivalPlayer {
 	public int getNumPalaceCards(){
 		return this.palaceCards.size();
 	}
+	public int getTabCount(){
+		return this.tabCount;
+	}
 	
 	public boolean checkIfInFestival(){
 		return this.isInFestival;
@@ -52,6 +55,14 @@ public class JavaFestivalPlayer {
 	
 	public PalaceCard getTabbedPalaceCard(){
 		return palaceCards.get(tabCount);
+	}
+	
+	public String getTabbedImageString(){
+		return palaceCards.get(tabCount).getType();
+	}
+	
+	public void cancelTabbing(){
+		tabCount = 0;
 	}
 
 	public void endTurn(){

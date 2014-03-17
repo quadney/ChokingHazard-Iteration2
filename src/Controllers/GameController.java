@@ -41,6 +41,11 @@ public class GameController {
 		
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
+		
+		boolean fest = currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival();
+		if(fest){
+			currentGamePanel.displayHoldFestivalFrame(players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), 2);
+		}
 	}
 	
 	public boolean loadGame(File file){
