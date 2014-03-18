@@ -41,6 +41,11 @@ public class GameController {
 		
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
+		
+		boolean fest = currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival();
+		if(fest){
+			currentGamePanel.displayHoldFestivalFrame(players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), 2);
+		}
 	}
 	
 	public boolean loadGame(File file){
@@ -88,7 +93,7 @@ public class GameController {
 	}
 	
 	private void userReleasedKey(KeyEvent e){
-		System.out.println(e.getKeyCode());
+		//System.out.println(e.getKeyCode());
 		//TODO key codes for switching between modes: planning mode, replay mode, and normal mode
 		//TODO key codes for holding a festival, picking up a festival card/palace card
 		switch(e.getKeyCode()){
@@ -98,10 +103,11 @@ public class GameController {
 			break;
 		case 9:
 			//released tab, tab through developers
-
+			
 			break;
 		case 10:
 			//released enter, place tile/developer onto board.
+			System.out.println("(in GameController)Enter was pressed");
 			
 
 			break;	
@@ -109,6 +115,7 @@ public class GameController {
 			//escapes out of a selected action
 			//tells the current game about the event so that it makes SelectedAction to null
 			//also updates the board panel so that the image is canceled
+			System.out.println("(in GameController)Esc was pressed");
 			currentGame.pressEsc();
 			board.pressEsc();
 
@@ -117,8 +124,11 @@ public class GameController {
 			//released the space bar, rotate
 			//tells the current game to tell the selectedAction to do pressSpace()
 			//will only tell the board about the change if it was a rotatable tile action
-			currentGame.pressSpace();
+			System.out.println("(in GameController)Space was pressed");
+			if(currentGame.pressSpace()){
 				updateBoardControllerWithSelectedAction();
+				//System.out.println("(in GameController)Space was valid and attempted to updateBoardController");
+			}
 			break;
 			
 	// using these arrow keys for movement of developers and tiles
@@ -141,18 +151,22 @@ public class GameController {
 	// --------------------------------------------------------------------
 			
 		case 50: //released 2, select two space tile
-			//check if the player has enough two tiles and AP to select a two tile action a two tile action
+			//TODO check if the player has enough two tiles and AP to select a two tile action a two tile action
 			//player.checkIfSelectionValid(currentGame.getPlayerIndex(), )
-			if(currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"))){
-				updateBoardControllerWithSelectedAction();
+			if(players.selectTwoTile(currentGame.getPlayerIndex())){
+				if(currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"))){
+					updateBoardControllerWithSelectedAction();
+				}
 			}
 
 			break;
 		case 51: //released 3, select three space tile
 			//check if player has enough AP and if sharedComponent has any more 3 tiles (I could check game state but we could always change how the game state works...)
 			//if(players.checkIfSelectionValid() && shared.checkIfSelectionValid())
-			if(currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"))){
-				updateBoardControllerWithSelectedAction();
+			if(players.selectThreeTile(currentGame.getPlayerIndex()) && shared.selectThreeTile()){
+				if(currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"))){
+					updateBoardControllerWithSelectedAction();
+				}
 			}
 
 			break;
@@ -161,28 +175,29 @@ public class GameController {
 
 			break;
 		case 73: //released I, add new Irrigation tile
-			//check if player has enough AP, has enough AP, and if there is enough in shared 
-			if(currentGame.setSelectedAction(new SelectIrrigationTileAction("irrigationTile"))){
-				updateBoardControllerWithSelectedAction();
+			//check if player has enough AP, and if there is enough in shared
+			if(players.selectThreeTile(currentGame.getPlayerIndex()) && shared.selectThreeTile()){
+				if(currentGame.setSelectedAction(new SelectIrrigationTileAction("irrigationTile"))){
+					updateBoardControllerWithSelectedAction();
+				}
 			}
 			break;
-		case 80:
-			//TODO ask for value
-			//released P, new palace tile, need to ask for value of Tile
+		case 80://released P, new palace tile, need to ask for value of Tile
 			
-			//somewhere needs to check if a value if valid
-			//if value <=10, > 0 and %2 between 0 and 5 or just check if its 2, 4, 6 ,8, 10
-			int value = GameFrame.getPalaceValueFromUser();
-			//currentGame.setSelectedAction(new SelectPalaceTileAction("palace" + value + "Tile", value)); //this makes the selected action of getting a tile
+			//is valid due to the view being awesome
+			int value = currentGamePanel.promptUserForPalaceValue();
 			
-
-			if( shared.selectPalaceTile( value ) && players.selectPalaceTile( value, currentGame.getPlayerIndex() ) )
-				board.selectPalaceTile( value );
+			//check player to see if they have enough AP and check shared to see if there are enough
+			if( players.selectPalaceTile(currentGame.getPlayerIndex()) && shared.selectPalaceTile(value)){
+				if(currentGame.setSelectedAction(new SelectPalaceTileAction("palace" + value + "Tile", value))){
+					updateBoardControllerWithSelectedAction();
+				}
+			}
 			break;
 		case 82:
 			//released R, place rice tile
-			//TODO check if the player has enough villages and that they have some AP left to do this
-			if(players.checkIfRiceTileSelectionValid(currentGame.getPlayerIndex())){
+			//TODO check if the player has enough rice and that they have some AP left to do this
+			if(players.selectRiceTile(currentGame.getPlayerIndex())){
 				if(currentGame.setSelectedAction(new SelectRiceTileAction("riceTile"))){
 					updateBoardControllerWithSelectedAction();
 				}
@@ -196,7 +211,7 @@ public class GameController {
 		case 86:
 			//released V, place Village
 			//TODO check if the player has enough villages and that they have some AP left to do this
-			if(true){
+			if(players.selectVillageTile(currentGame.getPlayerIndex())){
 				if(currentGame.setSelectedAction(new SelectVillageTileAction("villageTile"))){
 					updateBoardControllerWithSelectedAction();
 				}
@@ -205,17 +220,31 @@ public class GameController {
 		case 88:
 			//check if the player has placed a land tile so they can get out of their turn
 			//released X, end turn
-
+			if(players.selectEndTurn(currentGame.getPlayerIndex())){
+				players.setNotCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the player panel of the current player to stop outlining their panel
+				if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){ //ask if they wanna have a palace festival
+					//TODO set up palace festival
+					//asks for palace they want to hold a festival at
+					//pass the index and the value of the palace and...
+				}
+				
+				//call this after the prompt to have a palace festival (and after the palace festival if they had one)
+				currentGame.endTurn(); //increment the current player in the game model, changes all the stuff in player
+				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
+			}
 			break;		
 		}
 	}
 	
 	private void updateBoardControllerWithSelectedAction(){
-		if (currentGame.getSelectedAction() instanceof SelectRotatableTileAction){
-			board.updateSelectedTileAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+		if (currentGame.getSelectedAction() instanceof SelectTwoTileAction || currentGame.getSelectedAction() instanceof SelectThreeTileAction){
+			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");
+			//System.out.println(" This is the rotation state: " + ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableComponentAction)currentGame.getSelectedAction()).getRotationState());
 		}
 		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
-			board.updateSelectedTileAction(currentGame.getSelectedActionX(), currentGame.getSelectedActionY(), currentGame.getSelectedActionImageKey(), 0);
+			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
+			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
 		else{//developer
 			//TODO this is to tell the view that the developer path has changed

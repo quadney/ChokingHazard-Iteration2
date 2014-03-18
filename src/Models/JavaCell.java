@@ -1,6 +1,9 @@
 package Models;
 
-public class JavaCell extends Cell
+import Helpers.Json;
+import Helpers.JsonObject;
+
+public class JavaCell extends Cell implements Serializable<JavaCell>
 {
    private int elevation;
    private String cellType;
@@ -71,9 +74,9 @@ public class JavaCell extends Cell
    
    public boolean hasAdjacentLandSpaceTile()	//TODO: finish brett
    {
+	   /* 
 	   int x = this.getX();
 	   int y = this.getY();
-	  /* 
 	   if (x + 1 == 14)
 	   {
 		   if (map.isTileOrLand(x+1,y))
@@ -99,5 +102,28 @@ public class JavaCell extends Cell
 	   return false;
 		   
    }
+	
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("elevation", Json.jsonValue(elevation + "")),
+			Json.jsonPair("cellType", Json.jsonValue(cellType + "")),
+			Json.jsonPair("hasDeveLoper", Json.jsonValue(hasDeveLoper + "")),
+			Json.jsonPair("cellId", Json.jsonValue(cellId + "")),
+			Json.jsonPair("xVal", Json.jsonValue(xVal + "")),
+			Json.jsonPair("yVal", Json.jsonValue(yVal + ""))
+		));
+	}
+	
+	@Override
+	public JavaCell loadObject(JsonObject json) {
+		elevation = Integer.parseInt(json.getString("elevation"));
+		cellType = json.getString("cellType");
+		hasDeveLoper = Boolean.parseBoolean(json.getString("hasDeveLoper"));
+		cellId = Integer.parseInt(json.getString("cellId"));
+		xVal = Integer.parseInt(json.getString("xVal"));
+		yVal = Integer.parseInt(json.getString("yVal"));
+		return this;
+	}
    
 }

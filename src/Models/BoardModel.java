@@ -1,11 +1,18 @@
 package Models;
 
+
+import Helpers.Json;
+import java.util.HashMap;
+import java.util.Stack;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Stack;
 
-public class BoardModel {
+import Helpers.JsonObject;
+
+public class BoardModel implements Serializable<BoardModel> {
 	private JavaCell[][] map;
 	private Stack<JavaCell> path;
 	private ArrayList<JavaCell> connectedPalaces = new ArrayList<JavaCell>();
@@ -80,15 +87,8 @@ public class BoardModel {
 		//JavaCell[][] miniMap = createTestMap(xC, yC);
 
 		int neededActionPoints = checkNeededActionPoints(miniMap, tile);
-		
-		System.out.println("Palace: " +checkPalacePlacement(miniMap, tile));
-		System.out.println("tileBelow: " +checkTilesBelow(miniMap, tile));
-		System.out.println("elevation: " +checkElevation(miniMap, tile, xC, yC));
-		System.out.println("irrigation: " +checkIrrigationPlacement(miniMap, tile));
-		System.out.println("developeronCell: " +checkDeveloperOnCell(miniMap, tile));
-		System.out.println("cityConnection: " +checkCityConnection(miniMap, tile));
-		System.out.println("edgePlacement: " +checkEdgePlacement(miniMap, tile));
-		System.out.println("player: " +player.decrementNActionPoints(neededActionPoints));
+
+		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1]); //boolean needed to check the amount of available AP points
 
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
@@ -97,7 +97,7 @@ public class BoardModel {
 				&& checkDeveloperOnCell(miniMap, tile)
 				&& checkCityConnection(miniMap, tile)
 				&& checkEdgePlacement(miniMap, tile)
-				&& player.decrementNActionPoints(neededActionPoints)) {
+				&& player.decrementNActionPoints(neededActionPoints, isLandTile)) {
 			return true;
 		}
 
@@ -107,6 +107,7 @@ public class BoardModel {
 	private JavaCell[][] createTestMap(int xC, int yC) {
 
 		JavaCell[][] testingMap = new JavaCell[3][3];
+
 
 		for (int i = 0, x = xC - 1; i < 3; i++, x++)
 			for (int j = 0, y = yC - 1; j < 3; j++, y++)
@@ -204,8 +205,7 @@ public class BoardModel {
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				if (tileCells[i][j] != null
-						&& miniMap[i][j].getElevation() != elevation) {
-					return false;
+						&& miniMap[i][j].getElevation() != elevation) {					return false;
 				}
 			}
 		}
@@ -401,8 +401,8 @@ public class BoardModel {
 
 		// Check that player has available AP for this
 		// First determine type of move/cost
-		int actionPointsCost = getCost(locationCell);
-		if (!player.decrementNActionPoints(actionPointsCost)) 
+		if (!player.decrementNActionPoints(1, false)) // TODO: Check lowlands or
+												// mountains
 			return false;
 
 		return true;
@@ -461,7 +461,7 @@ public class BoardModel {
 		// Remove currently selected developer from dev array
 		player.removeDeveloperFromArray(); // Must check that this works later on TODO
 		// Decrement actions points
-		player.decrementNActionPoints(1);
+		player.decrementNActionPoints(1, false);
 	}
 	
 	public boolean moveDeveloper(Player player)
@@ -517,7 +517,7 @@ public class BoardModel {
 
 		int i = 0;
 		while (i < connected.size()) {
-			Cell temp = connected.get(i);
+			//Cell temp = connected.get(i);
 			HashSet<JavaCell> adjacent = new HashSet<JavaCell>();
 			if (y < 14 && map[y + 1][x].getCellType().equals("village")
 					|| map[y + 1][x].getCellType().equals("palace"))
@@ -629,17 +629,32 @@ public class BoardModel {
 	   }
 	   return false;
    }
-   
-   public String toString(){ //for testing purposes 
-	   
-   
-	  String maze = "";
-	  
-	  	for(int i = 0; i < map.length; i++){
-	  		for(int j = 0; j < map.length; j++)
-	  			maze += "  " + map[i][j].getElevation();
-	  		maze += "\n";
-	  	}
-	  	return maze;
-   }
+
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("map", Json.serializeArray(map)),
+			Json.jsonPair("path", Json.serializeArray(path)),
+			Json.jsonPair("connectedPalaces", Json.serializeArray(connectedPalaces))
+		));
+	}
+
+	@Override
+	public BoardModel loadObject(JsonObject json) {
+		map = new JavaCell[json.getJsonObjectArray("map").length][(((JsonObject[][])json.getObject("map"))[0]).length];
+		for(int x = 0; x < json.getJsonObjectArray("map").length; ++x)
+			for(int y = 0; y < ((JsonObject[])(Object)json.getJsonObjectArray("map")[0]).length; ++y)
+				map[x][y] = (new JavaCell(-1, -1, -1)).loadObject(((JsonObject[][])json.getObject("map"))[x][y]);
+		
+		path = new Stack<JavaCell>();
+		for(JsonObject cell : json.getJsonObjectArray("path"))
+			path.push(map[(new JavaCell(-1, -1, -1)).loadObject(cell).xVal][(new JavaCell(-1, -1, -1)).loadObject(cell).yVal]);
+
+		connectedPalaces = new ArrayList<JavaCell>();
+		for(JsonObject cell : json.getJsonObjectArray("connectedPalaces"))
+			connectedPalaces.add(map[(new JavaCell(-1, -1, -1)).loadObject(cell).xVal][(new JavaCell(-1, -1, -1)).loadObject(cell).yVal]);
+		return this;
+	}
+
 }

@@ -1,5 +1,4 @@
-package Models.Actions.MActions;
-import Models.*;
+package Models.Actions.MActions; 
 
 /**
  * MAction, which is a 'momentary' action only used for selection
@@ -22,6 +21,7 @@ public abstract class MAction {
 	
 	public abstract boolean pressArrow(int xChange, int yChange);
 	
+	//public abstract boolean pressTab();
 	
 	//Accessor Methods ---------------------------------------------//
 	public int getX(){
@@ -33,5 +33,4 @@ public abstract class MAction {
 	public String getImageKey(){
 		return imageKey;
 	}
-	
 }

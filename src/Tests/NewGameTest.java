@@ -5,12 +5,15 @@ import java.awt.AWTException;
 import ChokingHazard.RunGame;
 
 public class NewGameTest {
+	public static void main(String[] args) throws AWTException, InterruptedException {
+		test();
+	}
 	public static void test() throws InterruptedException, AWTException {
 		@SuppressWarnings("unused")
 		RunGame game = new RunGame();
 		
-		Simulator.newGame("player1", "computer2", "computer3", "computer4");
-		Simulator.placeDeveloper(3, 3);
+		Simulator.newGame("p", "c");
+		/*Simulator.placeDeveloper(3, 3);
 		Simulator.placeDeveloper(4, 4);
 		Simulator.placeDeveloper(1, 5);
 		Simulator.placeDeveloper(1, 6);
@@ -44,10 +47,7 @@ public class NewGameTest {
 
 //		Simulator.saveGame("jkl");
 //		Simulator.quitGame(null);
-		Simulator.saveAndCompareGames("jkl");
+		Simulator.saveAndCompareGames("jkl");*/
 	}
 	
-	public static void main(String[] args) throws AWTException, InterruptedException {
-		test();
-	}
 }

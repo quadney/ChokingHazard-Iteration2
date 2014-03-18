@@ -13,6 +13,4 @@ public class SelectPalaceTileAction extends SelectOneSpaceTileAction {
 	public int getValue(){
 		return value;
 	}
-	
-
 }

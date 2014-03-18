@@ -1,14 +1,11 @@
 package Models.Actions.MActions;
 
-
-public abstract class SelectRotatableTileAction extends MAction {
+public abstract class SelectRotatableComponentAction extends MAction {
 
 	int rotationState = 0;
 	
-	public SelectRotatableTileAction(String imageKey) {
+	public SelectRotatableComponentAction(String imageKey) {
 		super(imageKey);
-		// TODO Auto-generated constructor stub
-		
 	}
 
 	public boolean pressSpace() {
@@ -17,6 +14,8 @@ public abstract class SelectRotatableTileAction extends MAction {
 			rotationState = newRotationState;
 			return true;
 		}
+
+		
 		return false;
 	}
 	
@@ -38,6 +37,4 @@ public abstract class SelectRotatableTileAction extends MAction {
 	public int getRotationState(){
 		return rotationState;
 	}
-	
-	
 }

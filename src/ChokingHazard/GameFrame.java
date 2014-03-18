@@ -21,6 +21,7 @@ import Controllers.GameController;
 import Views.HelpFrame;
 import Views.NewGameFrame;
 
+@SuppressWarnings("serial")
 public class GameFrame extends JFrame {
 	private final int WIDTH, HEIGHT;
 	NewGameFrame frame;

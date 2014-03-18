@@ -6,5 +6,4 @@ public class SelectVillageTileAction extends SelectOneSpaceTileAction {
 		super(imageKey);
 		// TODO Auto-generated constructor stub
 	}
-
 }

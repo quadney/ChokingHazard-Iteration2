@@ -1,19 +1,19 @@
-	package Models;
-	
-	import Helpers.*;
-	import Models.Actions.*;
-	import java.util.*;
-	import java.util.Stack;
-	
-	import Models.Actions.MActions.MAction;
-	
-	// This enum declaration might need to be moved, not sure how accessible it is right now 
-	// (needs to be accessible by GameModel and the Controller). #JavaTroubles
-	enum GameState {
-		ReplayMode, PlanningMode, NormalMode
-	}
+package Models;
 
-public class GameModel {
+import Helpers.*;
+import Models.Actions.*;
+
+import java.util.*;
+
+import Models.Actions.MActions.MAction;
+
+// This enum declaration might need to be moved, not sure how accessible it is right now 
+// (needs to be accessible by GameModel and the Controller). #JavaTroubles
+enum GameState {
+	ReplayMode, PlanningMode, NormalMode
+}
+
+public class GameModel implements Serializable<GameModel> {
 	// VARIABLES
 	private BoardModel gameBoard;
 	private JavaPlayer[] players;
@@ -40,6 +40,7 @@ public class GameModel {
 		
 		actionHistory = new Stack<Action>();
 		actionReplays = new Stack<Action>();
+		selectedAction = null;
 	}
 
 	// This method is to be used by the controller to determine which buttons
@@ -84,7 +85,6 @@ public class GameModel {
 	 
 	 return true;
 	    }
-   
    
    //Returns an array of players in order from highest to lowest of ranks of players
    //valid on a palace/city
@@ -276,8 +276,11 @@ public class GameModel {
 		return this.indexOfCurrentPlayer;
 	}
 
-	public void pressSpace() {
-		selectedAction.pressSpace();
+	public boolean pressSpace() {
+		if(selectedAction != null){
+			return selectedAction.pressSpace();
+		}
+		return false;
 	}
 	
 	//Methods for MAction/selected action traversal that is needed by the controller
@@ -312,31 +315,75 @@ public class GameModel {
 
 	public boolean pressUp() {
 		if(selectedAction != null){
-			return selectedAction.pressArrow(1,0);
+			return selectedAction.pressArrow(0,-1);
 		}
 		return false;
 	}
 
 	public boolean pressRight() {
 		if(selectedAction != null){
-			return selectedAction.pressArrow(0,1);
+			return selectedAction.pressArrow(1,0);
 		}
 		return false;		
 	}
 
 	public boolean pressDown() {
 		if(selectedAction != null){
-			return selectedAction.pressArrow(0,-1);
+			return selectedAction.pressArrow(0,1);
 		}
 		return false;
 	}
 
 	public boolean setSelectedAction(MAction selectedAction) {
-		if(selectedAction == null){
+		//if(this.selectedAction == null){
+			//System.out.println("(in GameModel setSelectedACtion()) setSelectedAction set the new MAction");
 			this.selectedAction = selectedAction;
 			return true;
-		}
-		return false;
+		//}
+		//System.out.println("(in GameModel setSelectedACtion()) setSelectedAction already had an MAction");
+		//return false;
 		
+	}
+
+	//---------------------------------------------------------------------------
+	
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("gameBoard", gameBoard.serialize()),
+			Json.jsonPair("gameState", gameState.toString()),
+			Json.jsonPair("actionHistory", Json.serializeArray(actionHistory)),
+			Json.jsonPair("actionReplays", Json.serializeArray(actionReplays)),
+			Json.jsonPair("players", Json.serializeArray(players)),
+			Json.jsonPair("indexOfCurrentPlayer", Json.jsonValue(indexOfCurrentPlayer + "")),
+			Json.jsonPair("isFinalRound", Json.jsonValue(isFinalRound + "")),
+			Json.jsonPair("actionIDCounter", Json.jsonValue(actionIDCounter + ""))
+		));
+	}
+	
+	
+	@Override
+	public GameModel loadObject(JsonObject json) {
+		gameState = GameState.valueOf(json.getString("gameState"));
+		gameBoard = (new BoardModel()).loadObject(json.getJsonObject("gameBoard"));
+		indexOfCurrentPlayer = Integer.parseInt(json.getString("indexOfCurrentPlayer"));
+		isFinalRound = Boolean.parseBoolean(json.getString("isFinalRound"));
+		actionIDCounter = Integer.parseInt(json.getString("actionIDCounter"));
+		
+		this.players = new JavaPlayer[json.getJsonObjectArray("players").length];
+		for(int x = 0; x < players.length; ++x) {
+			json.getJsonObjectArray("players")[x].addKeyManually("map", gameBoard.getMap());
+			players[x] = (new JavaPlayer("temp", "temp")).loadObject(json.getJsonObjectArray("players")[x]);
+		}
+
+		this.actionHistory = new Stack<Action>();
+		for(JsonObject obj : json.getJsonObjectArray("actionHistory"))
+			actionHistory.push(Action.loadAction(obj));
+		
+		this.actionReplays = new Stack<Action>();
+		for(JsonObject obj : json.getJsonObjectArray("actionReplays"))
+			actionReplays.push(Action.loadAction(obj));
+
+		return this;
 	}
 }

@@ -1,8 +1,14 @@
-palaceDeck /images/cardDeck.png
-palaceCard_back /images/festivalCard_backOfCard.png
+palaceCard_back /images/festivalCard_cardback.png
 palaceCard_DRUM /images/festivalCard_DRUM.png
 palaceCard_MASK /images/festivalCard_MASK.png
 palaceCard_PUPPET /images/festivalCard_PUPPET.png
 palaceCard_MASK_DRUM /images/festivalCard_MASK_DRUM.png
 palaceCard_PUPPET_DRUM /images/festivalCard_PUPPET_DRUM.png
 palaceCard_PUPPET_MASK /images/festivalCard_PUPPET_MASK.png
+label_palaceCard_back bin/images/festivalCard_cardback.png
+label_palaceCard_DRUM bin/images/festivalCard_DRUM.png
+label_palaceCard_MASK bin/images/festivalCard_MASK.png
+label_palaceCard_PUPPET bin/images/festivalCard_PUPPET.png
+label_palaceCard_MASK_DRUM bin/images/festivalCard_MASK_DRUM.png
+label_palaceCard_PUPPET_DRUM bin/images/festivalCard_PUPPET_DRUM.png
+label_palaceCard_PUPPET_MASK bin/images/festivalCard_PUPPET_MASK.png

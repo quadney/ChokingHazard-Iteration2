@@ -1,11 +1,8 @@
 package ChokingHazard;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
 
 import Controllers.GameController;
-import Models.GameModel;
-import Views.GameContainerPanel;
 
 public class GameManager {
 	GameController currentGame;

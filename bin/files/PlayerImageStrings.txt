@@ -8,4 +8,4 @@ layout_player_yellow bin/images/layout/layout_player_yellow.png
 layout_player_green bin/images/layout/layout_player_green.png
 layout_player_blue bin/images/layout/layout_player_blue.png
 layout_player_purple bin/images/layout/layout_player_purple.png
-layout_palaceDeck bin/images/layout/layout_cardDeck.png
+layout_palaceCard_back bin/images/layout/layout_festivalCard_cardback.png

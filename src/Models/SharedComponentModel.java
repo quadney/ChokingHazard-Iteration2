@@ -1,15 +1,17 @@
 package Models;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 
-import Helpers.Deck;
+import Helpers.Json;
+import Helpers.JsonObject;
 
-public class SharedComponentModel { 
+public class SharedComponentModel implements Serializable<SharedComponentModel> { 
     private int threeSpaceTiles;
 	private int irrigationTiles;
     private int[] palaceTiles;
-    private Deck<PalaceCard> palaceCardDeck;
-    private Deck<PalaceCard> discardedCardDeck;
+    private LinkedList<PalaceCard> palaceCardDeck;
+    private LinkedList<PalaceCard> discardedCardDeck;
     private PalaceCard festivalCard;
     
     public SharedComponentModel(){
@@ -17,21 +19,21 @@ public class SharedComponentModel {
 		this.threeSpaceTiles = 56;
 		this.irrigationTiles = 10;
 		this.palaceTiles = new int[]{6, 7, 8, 9, 10};
-		palaceCardDeck = new Deck<PalaceCard>();
+		palaceCardDeck = new LinkedList<PalaceCard>();
 		for(int i = 0; i < 5; i++){
-			palaceCardDeck.add(new PalaceCard(1));
-			palaceCardDeck.add(new PalaceCard(2));
-			palaceCardDeck.add(new PalaceCard(3));
-			palaceCardDeck.add(new PalaceCard(4));
-			palaceCardDeck.add(new PalaceCard(5));
-			palaceCardDeck.add(new PalaceCard(6));
+			palaceCardDeck.push(new PalaceCard(1));
+			palaceCardDeck.push(new PalaceCard(2));
+			palaceCardDeck.push(new PalaceCard(3));
+			palaceCardDeck.push(new PalaceCard(4));
+			palaceCardDeck.push(new PalaceCard(5));
+			palaceCardDeck.push(new PalaceCard(6));
 		}
-		palaceCardDeck.shuffle();
-		this.festivalCard = palaceCardDeck.draw();
-		this.discardedCardDeck = new Deck<PalaceCard>();
+		Collections.shuffle(palaceCardDeck);
+		this.festivalCard = palaceCardDeck.pop();
+		this.discardedCardDeck = new LinkedList<PalaceCard>();
     }
     
-    public SharedComponentModel(int numThreeTiles, int numIrrigation, int[] palaceTiles, Deck<PalaceCard> deck, PalaceCard festivalCard, Deck<PalaceCard> discardDeck){
+    public SharedComponentModel(int numThreeTiles, int numIrrigation, int[] palaceTiles, LinkedList<PalaceCard> deck, PalaceCard festivalCard, LinkedList<PalaceCard> discardDeck){
     	//constructor for loading game
     	this.threeSpaceTiles = numThreeTiles;
     	this.irrigationTiles = numIrrigation;
@@ -61,7 +63,7 @@ public class SharedComponentModel {
 	}
 	
 	public PalaceCard drawFromDeck(){
-		PalaceCard card = palaceCardDeck.draw();
+		PalaceCard card = palaceCardDeck.pop();
 		checkIfDeckIsEmpty();
 		return card;
 	}
@@ -77,7 +79,7 @@ public class SharedComponentModel {
 	}
 	
 	public void discardCard(PalaceCard card){
-		discardedCardDeck.add(card);
+		discardedCardDeck.push(card);
 	}
 	
 	public void checkIfDeckIsEmpty(){
@@ -87,21 +89,65 @@ public class SharedComponentModel {
 	
 	public void refreshPalaceCardDeck(){
 		while(discardedCardDeck.size() > 0){
-			palaceCardDeck.add(discardedCardDeck.draw());
+			palaceCardDeck.push(discardedCardDeck.pop());
 		}
-		palaceCardDeck.shuffle();
+		Collections.shuffle(palaceCardDeck);
 	}
 	
-	public boolean useThreeTile(){
-		//this should attempt to decrement the three tile
-		//return if this is allowed
-		return false;
+	public boolean hasThreeTile(){
+		//this check if you can use a threeTile (has more than 1 left)
+		//return true if this is allowed
+		return threeSpaceTiles > 0;
 	}
 
 	public boolean hasPalaceTile(int value) {
-		if( value < 0 || value > 4 )
+		//this check if you can use a palace tile with this value (has more than 1 left)
+		//return true if this is allowed
+		if( (value < 2 || value > 10) && value % 2 == 0 ) //by this point it should only be valid values, but that works.
 			return false;
-		return palaceTiles[value] > 0;
+		return palaceTiles[value/2 - 1] > 0;
+	}
+	
+	public boolean hasIrrigationTile(){
+		//this check if you can use a irrigation tile (has more than 1 left)
+		//return true if this is allowed
+		return irrigationTiles > 0;
+		
+		
+	}
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("threeSpaceTiles", Json.jsonValue(threeSpaceTiles + "")),
+			Json.jsonPair("irrigationTiles", Json.jsonValue(irrigationTiles + "")),
+			Json.jsonPair("palaceTiles", Json.serializeArray(palaceTiles)),
+			Json.jsonPair("palaceCardDeck", Json.serializeArray(palaceCardDeck)),
+			Json.jsonPair("discardedCardDeck", Json.serializeArray(discardedCardDeck)),
+			Json.jsonPair("festivalCard", festivalCard.serialize())
+		));
+	}
+
+	@Override
+	public SharedComponentModel loadObject(JsonObject json) {
+		threeSpaceTiles = Integer.parseInt(json.getString("threeSpaceTiles"));
+		irrigationTiles = Integer.parseInt(json.getString("irrigationTiles"));
+		
+		palaceTiles = new int[json.getStringArray("palaceTiles").length];
+		for(int x = 0; x < palaceTiles.length; ++x) 
+			palaceTiles[x] = Integer.parseInt(json.getStringArray("palaceTiles")[x]);
+
+		palaceCardDeck = new LinkedList<PalaceCard>();
+		for(JsonObject card : json.getJsonObjectArray("palaceCardDeck")) 
+			palaceCardDeck.push((new PalaceCard(-1)).loadObject(card));
+
+		discardedCardDeck = new LinkedList<PalaceCard>();
+		for(JsonObject card : json.getJsonObjectArray("discardedCardDeck")) 
+			discardedCardDeck.push((new PalaceCard(-1)).loadObject(card));
+		
+		festivalCard = (new PalaceCard(-1)).loadObject(json.getJsonObject("festivalCard"));
+		
+		return this;
 	}
 
 }

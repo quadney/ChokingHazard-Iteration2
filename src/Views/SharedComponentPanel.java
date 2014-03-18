@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class SharedComponentPanel extends JPanel{
 	private JLabel threeTiles, irrigationTiles, twoPalaceTiles, fourPalaceTiles, sixPalaceTiles, eightPalaceTiles, tenPalaceTiles, festivalCard, palaceDeck;
 	private HashMap<String, String> imageSourceHashMap;
@@ -118,6 +119,7 @@ public class SharedComponentPanel extends JPanel{
 				String[] hash = line.split(" ");
 				imageSourceHashMap.put(hash[0], hash[1]);
 			}
+			fileReader.close();
 		} catch(Exception e){
 			System.out.println(e.getMessage());
 		}

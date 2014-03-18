@@ -6,5 +6,4 @@ public class SelectIrrigationTileAction extends SelectOneSpaceTileAction {
 		super(imageKey);
 		// TODO Auto-generated constructor stub
 	}
-
 }

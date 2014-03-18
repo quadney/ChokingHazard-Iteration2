@@ -1,6 +1,7 @@
 package Controllers;
 
-import Helpers.Deck;
+import java.util.LinkedList;
+
 import Models.PalaceCard;
 import Models.SharedComponentModel;
 import Views.SharedComponentPanel;
@@ -17,7 +18,7 @@ public class SharedComponentController {
 		
 		//there's no festival card for this deck. so when dealPalaceCards(numPlayers) is called, it will create a festival card
 	}
-	public SharedComponentController(int threeTiles, int irrigationTiles, int[] palaceTiles, Deck<PalaceCard> deck, PalaceCard festivalCard, Deck<PalaceCard> discardDeck){
+	public SharedComponentController(int threeTiles, int irrigationTiles, int[] palaceTiles, LinkedList<PalaceCard> deck, PalaceCard festivalCard, LinkedList<PalaceCard> discardDeck){
 		//load game constructor
 		this.sharedModel = new SharedComponentModel(threeTiles, irrigationTiles, palaceTiles, deck, festivalCard, discardDeck);
 		this.sharedPanel = new SharedComponentPanel(threeTiles, irrigationTiles, palaceTiles, deck.size(), festivalCard.getType());
@@ -40,6 +41,10 @@ public class SharedComponentController {
 		return card;
 	}
 	
+	public PalaceCard getCurrentFestivalCard(){
+		return sharedModel.getFestivalCard();
+	}
+	
 	public PalaceCard[][] dealPalaceCards(int numPlayers){
 		//deal the cards to players
 		PalaceCard[][] cards = new PalaceCard[numPlayers][3];
@@ -53,22 +58,27 @@ public class SharedComponentController {
 		return cards;
 	}
 
+	//called if the player has selected a palace tile.
+	//checks to see if there enough palace tiles to allow this to happen
+	//if it does, tells the main controller true [doesn't change values in the model yet]
+	//if else, false
 	public boolean selectPalaceTile(int value) {
 		return sharedModel.hasPalaceTile( value );
 	}
-
-	public boolean hasPalaceTileValue(int value) {
-		return sharedModel.hasPalaceTile( value );
+	
+	//called if the player has selected a three piece tile.
+	//checks to see if there enough three piece tiles to allow this to happen
+	//if it does, tells the main controller true [doesn't change values in the model yet]
+		//if else, false
+	public boolean selectThreeTile(){
+		return sharedModel.hasThreeTile();
 	}
 	
-	//called if the player has placed a three piece tile.
-	//checks to see if there enough three piece tiles to allow this to happen
-	//if it does, it changes the value in the mode and tells the panel to update
-	public boolean useThreeTile(){
-		if(sharedModel.useThreeTile()){
-			sharedPanel.updateThreePieceTiles(sharedModel.getThreeSpaceTiles());
-			return true;
-		}
-		return false;
+	//called if the player has selected a irrigation tile.
+	//checks to see if there enough irrigation tiles to allow this to happen
+	//if it does, tells the main controller true [doesn't change values in the model yet]
+	//if else, false
+	public boolean selectIrrigationTile(){
+		return sharedModel.hasIrrigationTile();
 	}
 }

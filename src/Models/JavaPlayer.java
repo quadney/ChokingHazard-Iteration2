@@ -1,7 +1,11 @@
 package Models;
+import Helpers.Json;
+
 import java.util.*;
 
-public class JavaPlayer extends Player {
+import Helpers.JsonObject;
+
+public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	private int famePoints;
 	private int actionPoints;
 	private int developersOffBoard;
@@ -14,9 +18,9 @@ public class JavaPlayer extends Player {
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
 	private Developer[] developerArray;
-	public int currentlySelectedDeveloper; 	//Index of currently selected developer. CC: Cameron
-	private boolean placedLandTile;
-
+	public int currentlySelectedDeveloper;
+	private boolean hasPlacedLandTile;
+	private boolean hasUsedActionToken;
 	
 	public JavaPlayer(String name, String color){
 		super(name, color);
@@ -28,11 +32,10 @@ public class JavaPlayer extends Player {
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
       	this.palaceCards = new ArrayList<PalaceCard>();
-
-      	this.placedLandTile = false;
-
+      	this.hasPlacedLandTile = false;
         this.developersOnBoard = new Developer[12];
-        selectedDeveloperIndex = 0;
+        this.selectedDeveloperIndex = 0;
+        this.hasUsedActionToken = false;
 	}
    
 	public int getFamePoints() {
@@ -60,8 +63,8 @@ public class JavaPlayer extends Player {
 		return palaceCards;
 	}
 	
-	public int getAvailableActionPoints() {
-		if (placedLandTile) {
+	public int getAvailableActionPoints(boolean isLandTile) {
+		if (hasPlacedLandTile || isLandTile) {
 			return actionPoints;
 		}
 		
@@ -100,15 +103,9 @@ public class JavaPlayer extends Player {
 		  count++;
 	  }
    }
-	  
 	
-	public boolean hasPlacedLandTile() {
-		return placedLandTile;
-	}
-	
-	
-	public boolean decrementNActionPoints(int n) {
-		if (getAvailableActionPoints() >= n) {
+	public boolean decrementNActionPoints(int n, boolean isLandTile) {
+		if (getAvailableActionPoints(isLandTile) >= n) {
 			actionPoints -= n;
 			return true;
 		}
@@ -124,10 +121,15 @@ public class JavaPlayer extends Player {
 	public void addPalaceCard(PalaceCard card){
 		this.palaceCards.add(card);
 	}
+
+	//Methods needed from Player controller to validate action selections-----------------------------------
+	public boolean canUsePalace() { //checks if the player has the AP
+		return getAvailableActionPoints(false) > 0;
+	}
 	
 	public boolean endTurn()
 	{
-		if (!hasPlacedLandTile())
+		if (!hasPlacedLandTile)
 		{
 			//TODO: Alert they haven't placed land
 			return false;
@@ -138,11 +140,89 @@ public class JavaPlayer extends Player {
 		return true;
 	}
 
-	public boolean canUsePalace() {
-		return ( ( this.hasPlacedLandTile() && this.actionPoints >= 1 ) || this.actionPoints >= 2 );
+	public boolean canUseRice() { //checks if the player has enough plus has the AP
+		return numOneRiceTile > 0 && getAvailableActionPoints(true) > 0;
 	}
-	public boolean canUseRice() {
-		// TODO Auto-generated method stub
-		return false;
+
+	public boolean canUseThree() { //checks if the player has the AP
+		return getAvailableActionPoints(false) > 0;
+	}
+
+	public boolean canUseTwo() { //checks if the player has enough plus has the AP
+		return numTwoTile > 0 && getAvailableActionPoints(true) > 0;
+	}
+
+	public boolean canUseActionToken() { //checks if the player has not used an action token yet
+		return !hasUsedActionToken;
+	}
+
+	public boolean canUseIrrigation() { //checks if the player has the AP
+		return getAvailableActionPoints(false) > 0;
+	}
+
+	public boolean canUseVillage() { //checks if the player has enough plus has the AP
+		return numOneVillageTile > 0 && getAvailableActionPoints(true) > 0;
+	}
+
+	public boolean canEndTurn() { //checks if the player has placed a land tile
+		return hasPlacedLandTile;
+	}
+	
+	//---------------------------------------------------------------------------------------------------------
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+			Json.jsonPair("name", Json.jsonValue(name + "")),
+			Json.jsonPair("color", Json.jsonValue(color + "")),
+			Json.jsonPair("famePoints", Json.jsonValue(famePoints + "")),
+			Json.jsonPair("actionPoints", Json.jsonValue(actionPoints + "")),
+			Json.jsonPair("numOneRiceTile", Json.jsonValue(numOneRiceTile + "")),
+			Json.jsonPair("numOneVillageTile", Json.jsonValue(numOneVillageTile + "")),
+			Json.jsonPair("numTwoTile", Json.jsonValue(numTwoTile + "")),
+			Json.jsonPair("numActionTokens", Json.jsonValue(numActionTokens + "")),
+			Json.jsonPair("developersOffBoard", Json.jsonValue(developersOffBoard + "")),
+			Json.jsonPair("palaceCards", Json.serializeArray(palaceCards)),
+			Json.jsonPair("developersOnBoard", Json.serializeArray(developersOnBoard)),
+			Json.jsonPair("developerArray", Json.serializeArray(developerArray)),
+			Json.jsonPair("selectedDeveloperIndex", Json.jsonValue(selectedDeveloperIndex + "")),
+			Json.jsonPair("currentlySelectedDeveloper", Json.jsonValue(currentlySelectedDeveloper + "")),
+			Json.jsonPair("hasPlacedLandTile", Json.jsonValue(hasPlacedLandTile + "")),
+			Json.jsonPair("hasUsedActionToken", Json.jsonValue(hasUsedActionToken + ""))
+		));
+	}
+
+	@Override
+	public JavaPlayer loadObject(JsonObject json) {
+		this.name = json.getString("name");
+		this.color = json.getString("color");
+		this.famePoints = Integer.parseInt(json.getString("famePoints"));
+		this.actionPoints = Integer.parseInt(json.getString("actionPoints"));
+		this.numOneRiceTile = Integer.parseInt(json.getString("numOneRiceTile"));
+		this.numOneVillageTile = Integer.parseInt(json.getString("numOneVillageTile"));
+		this.numTwoTile = Integer.parseInt(json.getString("numTwoTile"));
+		this.numActionTokens = Integer.parseInt(json.getString("numActionTokens"));
+		this.developersOffBoard = Integer.parseInt(json.getString("developersOffBoard"));
+		this.selectedDeveloperIndex = Integer.parseInt(json.getString("selectedDeveloperIndex"));
+		this.currentlySelectedDeveloper = Integer.parseInt(json.getString("currentlySelectedDeveloper"));
+		this.hasPlacedLandTile = Boolean.parseBoolean(json.getString("hasPlacedLandTile"));
+		this.hasUsedActionToken = Boolean.parseBoolean(json.getString("hasUsedActionToken"));
+		
+		this.palaceCards = new ArrayList<PalaceCard>();
+		for(JsonObject obj : json.getJsonObjectArray("palaceCards"))
+			this.palaceCards.add((new PalaceCard(-1)).loadObject(obj));
+
+		this.developersOnBoard = new Developer[json.getJsonObjectArray("developersOnBoard").length];
+		for(int x = 0; x < this.developersOnBoard.length; ++x) {
+			json.getJsonObjectArray("developersOnBoard")[x].addKeyManually("map", json.getObject("map"));
+			this.developersOnBoard[x] = (new Developer(this)).loadObject(json.getJsonObjectArray("developersOnBoard")[x]);
+		}
+		
+		// TODO check if these are distinct or from developersOnBoard (or vice-versa)
+		this.developerArray = new Developer[json.getJsonObjectArray("developerArray").length];
+		for(int x = 0; x < this.developerArray.length; ++x) 
+			this.developerArray[x] = (new Developer(this)).loadObject(json.getJsonObjectArray("developerArray")[x]);
+
+		return this;
 	}
 }
