@@ -8,9 +8,10 @@ public class ThreeTileAction extends RotatableComponentAction {
 
 	public boolean isFinalRound;
 
-	public ThreeTileAction(int actionID, String beforeImageKey,	String afterImageKey, int famePointsEarned, int x, int y, int rotationState, boolean isFinalRound, int elevation, JavaCell[] cell) {
-		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState, elevation,  cell);
+	public ThreeTileAction(int actionID, int famePointsEarned, int x, int y, int rotationState, boolean isFinalRound, int elevation, JavaCell[] cell) {
+		super(actionID, famePointsEarned, x, y, rotationState, elevation,  cell);
 		this.isFinalRound = isFinalRound;
+		this.imageKey = "threeTile";
 	}
 	
 	@Override

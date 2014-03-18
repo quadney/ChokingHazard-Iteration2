@@ -2,11 +2,6 @@ package Controllers;
 
 import Models.JavaPlayer;
 import Models.PalaceCard;
-import Models.Actions.Action;
-import Models.Actions.RiceTileAction;
-import Models.Actions.TwoTileAction;
-import Models.Actions.UseActionTokenAction;
-import Models.Actions.VillageTileAction;
 import Views.PlayerPanel;
 
 public class PlayerController {
