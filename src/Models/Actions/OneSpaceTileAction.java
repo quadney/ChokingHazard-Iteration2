@@ -8,9 +8,8 @@ public class OneSpaceTileAction extends NonRotatableComponentAction {
 
 	public JavaCell cell;
 
-	public OneSpaceTileAction(int actionID, int famePointsEarned, int actionPointsEarned, int x, int y, JavaCell cell) {
-		super(actionID, famePointsEarned, actionPointsEarned, x, y);
-		this.cell = cell;
+	public OneSpaceTileAction(int actionID, int x, int y) {
+		super(actionID, x, y);
 	}
 
 	@Override

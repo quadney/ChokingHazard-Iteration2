@@ -4,8 +4,8 @@ public abstract class NonRotatableComponentAction extends Action {
 
 	public int x;
 	public int y;
-	public NonRotatableComponentAction(int actionID, int famePointsEarned, int actionPointsCost, int x, int y) {
-		super(actionID, famePointsEarned, actionPointsCost);
+	public NonRotatableComponentAction(int actionID, int x, int y) {
+		super(actionID);
 		this.x = x;
 		this.y = y;
 	}

@@ -6,15 +6,14 @@ import Models.GameModel;
 
 public class UseActionTokenAction extends Action {
 
-	public UseActionTokenAction(int actionID, int famePointsEarned) {
-		super(actionID, famePointsEarned, 0);
+	public UseActionTokenAction(int actionID) {
+		super(actionID);
 	}
 
 	@Override
 	public String serialize() {
 		return Json.jsonObject(Json.jsonElements(
-			Json.jsonPair("actionID", actionID + ""),
-			Json.jsonPair("famePointsEarned", famePointsEarned + "")
+			Json.jsonPair("actionID", actionID + "")
 		));
 	}
 

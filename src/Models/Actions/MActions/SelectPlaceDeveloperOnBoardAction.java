@@ -1,6 +1,5 @@
 package Models.Actions.MActions;
 
-import Models.GameModel;
 import Models.Actions.Action;
 import Models.Actions.PlaceDeveloperOnBoardAction;
 
@@ -36,7 +35,7 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectNonRotatableCompone
 
 	@Override
 	public Action pressEnter() {
-		return new PlaceDeveloperOnBoardAction(-1, 0, 0, x, y); //this will change
+		return new PlaceDeveloperOnBoardAction(-1, x, y);
 		// TODO Auto-generated method stub
 	}
 

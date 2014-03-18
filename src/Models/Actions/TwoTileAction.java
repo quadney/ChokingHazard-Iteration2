@@ -5,12 +5,13 @@ import Models.GameModel;
 import Models.JavaCell;
 import Models.JavaPlayer;
 import Models.Tile;
+import Models.Tile.TileType;
 
 public class TwoTileAction extends RotatableComponentAction {
 	
 
-	public TwoTileAction(int actionID, int famePointsEarned, int actionPointsEarned, int x, int y,	int rotationState, int elevation, JavaCell[] cell) {
-		super(actionID, famePointsEarned, actionPointsEarned, x, y, rotationState, elevation, cell);
+	public TwoTileAction(int actionID, int x, int y, int rotationState) {
+		super(actionID, x, y, rotationState);
 		System.out.println("Two Tile constructor end");
 		this.imageKey = "twoTile";
 	}
@@ -29,7 +30,8 @@ public class TwoTileAction extends RotatableComponentAction {
 
 	@Override
 	public void redo(GameModel game) {
-		game.placeTile(x, y, new Tile(2), game.getCurrentPlayer());
+		game.placeTileOnBoard(y, x, new Tile(TileType.twotile, rotationState));
+		System.out.println(x + "," + y +"Center " + game.getBoard().getMap()[x][y].getCellType());
 		
 		System.out.println(x + "," + y +"Center " + game.getBoard().getMap()[x][y].getCellType());
 		System.out.println("Down " + game.getBoard().getMap()[x + 1][y].getCellType());

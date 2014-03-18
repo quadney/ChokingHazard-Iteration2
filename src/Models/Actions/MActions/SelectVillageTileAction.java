@@ -11,6 +11,6 @@ public class SelectVillageTileAction extends SelectOneSpaceTileAction {
 	}
 	
 	public Action pressEnter() {
-		return new VillageTileAction(-1, 0, 1, x, y, null);
+		return new VillageTileAction(-1, x, y);
 	}
 }

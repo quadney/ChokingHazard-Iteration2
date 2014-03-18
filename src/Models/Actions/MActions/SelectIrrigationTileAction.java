@@ -1,6 +1,5 @@
 package Models.Actions.MActions;
 
-import Models.JavaCell;
 import Models.Actions.Action;
 import Models.Actions.IrrigationTileAction;
 
@@ -12,6 +11,6 @@ public class SelectIrrigationTileAction extends SelectOneSpaceTileAction {
 	}
 	
 	public Action pressEnter() {
-		return new IrrigationTileAction(-1, 0, 1, x, y, null);
+		return new IrrigationTileAction(-1, x, y);
 	}
 }

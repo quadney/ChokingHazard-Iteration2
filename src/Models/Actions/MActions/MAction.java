@@ -1,6 +1,5 @@
 package Models.Actions.MActions; 
 
-import Models.GameModel;
 import Models.Actions.Action;
 
 /**

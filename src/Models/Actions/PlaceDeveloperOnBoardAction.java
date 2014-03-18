@@ -6,8 +6,8 @@ import Models.GameModel;
 public class PlaceDeveloperOnBoardAction extends NonRotatableComponentAction {
 
 
-	public PlaceDeveloperOnBoardAction(int actionID, int famePointsEarned, int actionPointsEarned, int x, int y) {
-		super(actionID, famePointsEarned, actionPointsEarned, x, y);
+	public PlaceDeveloperOnBoardAction(int actionID, int x, int y) {
+		super(actionID, x, y);
 	}
 
 	@Override
