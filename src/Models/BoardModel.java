@@ -1,11 +1,13 @@
 package Models;
 
+
 import Helpers.Json;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Stack;
 
 import Helpers.JsonObject;
 
@@ -14,11 +16,13 @@ public class BoardModel implements Serializable<BoardModel> {
 	private LinkedList<JavaCell> path;
 	private ArrayList<JavaCell> connectedPalaces = new ArrayList<JavaCell>();
 	private JavaCell[] outerCells;
+	private int cellId;
 
 	public BoardModel() {
 		this.map = new JavaCell[14][14];
 		this.path = new LinkedList<JavaCell>();
 		int k = 0;
+		cellId = 0;
 
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
@@ -47,23 +51,36 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 
 	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player) {
-		if (checkValidTilePlacement(xC, yC, tile, player)) {
-
+		JavaCell[][] miniMap = createTestMap(xC, yC);
+		String[][] tileCells = tile.getTileCells();
+		
+		
+		
+		if (checkValidTilePlacement(xC, yC, tile, player, miniMap)) {
+			/*are we going to be creating the tile here? if we are then
+			we need to increase cellId here.*/
+			cellId++;
+			for (int i = 0; i < tileCells.length; i++) 
+				for (int j = 0; j < tileCells[i].length; j++)
+						if(tileCells[i][j] != null){
+							map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellType(tileCells[i][j]);
+							map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellId(cellId);
+							map[miniMap[i][j].getX()][miniMap[i][j].getY()].setElevation(map[miniMap[i][j].getX()][miniMap[i][j].getY()].getElevation()+1);
+						}
 			return true;
 		}
 
 		return false;
 	}
 
-	private boolean checkValidTilePlacement(int xC, int yC, Tile tile,
-			JavaPlayer player) {
+	private boolean checkValidTilePlacement(int xC, int yC, Tile tile, JavaPlayer player, JavaCell[][] miniMap ) {
 		// creating a small map with the cells we need to compare
-		JavaCell[][] miniMap = createTestMap(xC, yC);
+		//JavaCell[][] miniMap = createTestMap(xC, yC);
 
 		int neededActionPoints = checkNeededActionPoints(miniMap, tile);
 		
-		// needed to check the amount of available AP points
-		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1]);
+		//boolean needed to check the amount of available AP points
+		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1]); 
 
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
@@ -154,11 +171,31 @@ public class BoardModel implements Serializable<BoardModel> {
 				}
 			}
 		}
-
-		if (Integer.parseInt(tile.getType()) == numberOfTilesBelow)
+		
+		int number;
+		if(tile.getType() == "two") {
+			number = 2;
+		}
+		
+		else if(tile.getType() == "three") {
+			number = 3;	
+		}
+		
+		else if(tile.getType() == "one") {
+			number = 1;
+		}
+		
+		else{
+			number = 0;
+		}
+		
+		if(number == numberOfTilesBelow) {
 			return false;
-		else
+		}
+		
+		else {
 			return true;
+		}
 	}
 
 	private boolean checkElevation(JavaCell[][] miniMap, Tile tile, int xC,
@@ -296,14 +333,38 @@ public class BoardModel implements Serializable<BoardModel> {
 			for (int j = 0; j < miniMap[i].length; j++)
 				if (tileCells[i][j] != null)
 					cells[i] = miniMap[i][j];
-
-		for (int i = 0; i < outerCells.length; i++)
-			for (int j = 0; j < cells.length; j++) {
-				if (cells[j] != null && cells[j].getX() == outerCells[i].getX()
-						&& cells[0].getY() == outerCells[i].getY())
-					count++;
-				if (count == Integer.parseInt(tile.getType()))
-					return false;
+		
+		int number;
+		if (tile.getType() == "two") {
+			number = 2;
+		}
+		
+		else if(tile.getType() == "three") {
+			number = 3;
+		} 
+		
+		else if(tile.getType() == "one") {
+			number = 1;
+		} 
+		
+		else{
+			number = 0;
+		}
+		
+		for(int i = 0; i < outerCells.length; i++){
+			
+			if(cells[0] != null && outerCells[i] != null && cells[0].getX() == outerCells[i].getX() && cells[0].getY() == outerCells[i].getY())
+				count++;
+			if(cells[1] != null && outerCells[i] != null && cells[1].getX() == outerCells[i].getX() && cells[1].getY() == outerCells[i].getY())
+				count++;
+			if(cells[2] != null && outerCells[i] != null && cells[2].getX() == outerCells[i].getX() && cells[2].getY() == outerCells[i].getY())
+				count++;
+			if(cells[3] != null && outerCells[i] != null && cells[3].getX() == outerCells[i].getX() && cells[3].getY() == outerCells[i].getY())
+				count++;
+		}
+		
+			if(count == number) {
+				return false;
 			}
 
 		return true;
@@ -632,6 +693,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		
 		return false;
 	}
+
 
 	@Override
 	public String serialize() {

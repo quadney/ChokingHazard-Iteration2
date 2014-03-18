@@ -28,13 +28,18 @@ public class Tile implements Serializable<Tile> {
 	
 	public String getType(){
 		int numberOfCell = 0;
+		
+		
 
 		for(int i = 0; i < tileCells.length; i++)
-			for(int j = 0; j < tileCells[i].length; i++)
+			
+			for(int j = 0; j < tileCells.length; j++)
 				if(tileCells[i][j] != null)
-					numberOfCell++;			
+				numberOfCell++;	
+			
 		
 				if(numberOfCell == 2){
+				
 					return "two";
 				}else if(numberOfCell == 3){
 					return "three";
@@ -42,10 +47,12 @@ public class Tile implements Serializable<Tile> {
 				}else if(numberOfCell == 1){
 					return "one";
 				}else{
+
 					return "blank";
 				}
 	
 	}
+
 	private void createTile(){
 		if(numberCells == 3){
 
