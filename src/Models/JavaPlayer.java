@@ -17,6 +17,7 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	private ArrayList<PalaceCard> palaceCards;
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
+    private int[][] palacesInteractedWith;
 
 	private Developer[] developerArray;
 	public int currentlySelectedDeveloper;
@@ -37,6 +38,10 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
         this.developersOnBoard = new Developer[12];
         this.selectedDeveloperIndex = 0;
         this.hasUsedActionToken = false;
+		int[][] palacesInteractedWith = new int[40][2]; // this accounts for the
+														// fact that a player
+														// can only interact with a palace once per turn.
+														// Can either build or upgrade a palace
 	}
    
 	public int getFamePoints() {
@@ -126,19 +131,6 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	//Methods needed from Player controller to validate action selections-----------------------------------
 	public boolean canUsePalace() { //checks if the player has the AP
 		return getAvailableActionPoints(false) > 0;
-	}
-	
-	public boolean endTurn()
-	{
-		if (!hasPlacedLandTile)
-		{
-			//TODO: Alert they haven't placed land
-			return false;
-		}
-		//Otherwise, typical end of turn activities
-		changeFamePoints(1); //TODO: determine correct amount, method?
-		
-		return true;
 	}
 
 	public boolean canUseRice() { //checks if the player has enough plus has the AP

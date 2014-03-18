@@ -21,10 +21,10 @@ public class GameModel implements Serializable<GameModel> {
 	private boolean isFinalRound;
 	public MAction selectedAction;
 
-	private Stack<Action> actionHistory; // This holds a history of the actions
+	private Stack<Event> actionHistory; // This holds a history of the actions
 											// taken up to the currently held
 											// state.
-	private Stack<Action> actionReplays; // This holds currently undone actions
+	private Stack<Event> actionReplays; // This holds currently undone actions
 											// for the purposes of Replay Mode
 
 	private GameState gameState;
@@ -38,8 +38,8 @@ public class GameModel implements Serializable<GameModel> {
 		this.gameBoard = new BoardModel();
 		this.players = new JavaPlayer[numberPlayers];
 		
-		actionHistory = new Stack<Action>();
-		actionReplays = new Stack<Action>();
+		actionHistory = new Stack<Event>();
+		actionReplays = new Stack<Event>();
 		selectedAction = null;
 	}
 
@@ -69,52 +69,44 @@ public class GameModel implements Serializable<GameModel> {
       return null;
    }
    
-   public boolean endTurn(){
-	 //TODO only is called when a player can end a turn validly (accounted for in GameController)
-	 //call an end turn in the Player Model for the current player
-	 //change player index
-	 //change whatever else in the models
-	   
-	 JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
-	 if (!currentPlayer.endTurn()) //checks for land tile placement
-		 return false; //TODO: Handle alert, see JavaPlayer TODO
-	 indexOfCurrentPlayer++;
-	 indexOfCurrentPlayer = indexOfCurrentPlayer %  players.length; //tab through players
-	 
-	 
-	 
-	 return true;
-	    }
+	public boolean endTurn() {
+		// TODO only is called when a player can end a turn validly (accounted
+		// for in GameController)
+		// call an end turn in the Player Model for the current player
+		// change player index
+		// change whatever else in the models
+
+		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
+		if (!currentPlayer.canEndTurn()) { // checks for land tile placement
+			return false;
+		}
+		//create 
+		return true;
+	}
    
    //Returns an array of players in order from highest to lowest of ranks of players
    //valid on a palace/city
-   public ArrayList<Player> getPalaceRanks(JavaCell palace)
-   {
-      ArrayList<JavaCell> city = gameBoard.getCityFromRootCell(palace);
-      
-      HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
-      
-      for(JavaCell c : city)
-      {
-         if(getDeveloperOnCell(c) != null)
-         {
-            Developer d = getDeveloperOnCell(c);
-            Player p = d.getOwner();
-            int rank = c.getElevation();
-            
-            if(!scores.containsKey(p))
-            {
-               scores.put(p, rank);
-            }
-            else
-            {
-               int newRank = c.getElevation();
-               if(newRank > rank)
-                  scores.put(p, newRank);
-            }
-         }
-      }
-      
+	public ArrayList<Player> getPalaceRanks(JavaCell palace) {
+		ArrayList<JavaCell> city = gameBoard.getCityFromRootCell(palace);
+
+		HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
+
+		for (JavaCell c : city) {
+			if (getDeveloperOnCell(c) != null) {
+				Developer d = getDeveloperOnCell(c);
+				Player p = d.getOwner();
+				int rank = c.getElevation();
+
+				if (!scores.containsKey(p)) {
+					scores.put(p, rank);
+				} else {
+					int newRank = c.getElevation();
+					if (newRank > rank)
+						scores.put(p, newRank);
+				}
+			}
+		}
+
       //we now have each player mapped to their rank or not mapped if they don't have a developer 
       //on the city.
       
@@ -344,6 +336,14 @@ public class GameModel implements Serializable<GameModel> {
 		//return false;
 		
 	}
+	
+	// Method used in Event-----------------------------------------------------
+	
+	public void setIsFinalRound(boolean b) { //used in TriggeredFinalRound
+		this.isFinalRound = b;
+	}
+	
+	
 
 	//---------------------------------------------------------------------------
 	
@@ -376,14 +376,15 @@ public class GameModel implements Serializable<GameModel> {
 			players[x] = (new JavaPlayer("temp", "temp")).loadObject(json.getJsonObjectArray("players")[x]);
 		}
 
-		this.actionHistory = new Stack<Action>();
+		this.actionHistory = new Stack<Event>();
 		for(JsonObject obj : json.getJsonObjectArray("actionHistory"))
 			actionHistory.push(Action.loadAction(obj));
 		
-		this.actionReplays = new Stack<Action>();
+		this.actionReplays = new Stack<Event>();
 		for(JsonObject obj : json.getJsonObjectArray("actionReplays"))
 			actionReplays.push(Action.loadAction(obj));
 
 		return this;
 	}
+
 }
