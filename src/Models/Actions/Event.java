@@ -13,6 +13,10 @@ public abstract class Event {
 	public abstract void undo(GameModel game);
 
 	public abstract void redo(GameModel game);
+	
+	public void doAction(GameModel game){
+		redo(game);
+	}
 
 	public int getPlayerIndex() {
 		// TODO Auto-generated method stub

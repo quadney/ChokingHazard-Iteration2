@@ -2,12 +2,15 @@ package Models.Actions;
 
 import Helpers.JsonObject;
 import Models.GameModel;
+import Models.JavaCell;
+import Models.Tile;
 
 public class TwoTileAction extends RotatableComponentAction {
+	
 
-	public TwoTileAction(int actionID, int playerIndex, int rotationState) {
-		super(actionID, playerIndex, rotationState);
-		// TODO Auto-generated constructor stub
+	public TwoTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y,	int rotationState, int elevation, JavaCell[] cell) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState, elevation, cell);
+		System.out.println("Two Tile constructor end");
 	}
 
 	@Override
@@ -30,9 +33,13 @@ public class TwoTileAction extends RotatableComponentAction {
 
 	@Override
 	public void redo(GameModel game) {
-		// TODO Auto-generated method stub
+		game.placeTileOnBoard(y, x, new Tile(2));
+		System.out.println(x + "," + y +"Center " + game.getBoard().getMap()[x][y].getCellType());
 		
+		System.out.println("Down " + game.getBoard().getMap()[x + 1][y].getCellType());
+		System.out.println("Up " + game.getBoard().getMap()[x - 1][y].getCellType());
+		System.out.println("Right " + game.getBoard().getMap()[x][y + 1].getCellType());
+		System.out.println("Left " + game.getBoard().getMap()[x][y - 1].getCellType());
 	}
-
 		
 }

@@ -6,6 +6,18 @@ import java.io.File;
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
+import Models.Actions.Action;
+import Models.Actions.DrawPalaceCardAction;
+import Models.Actions.IrrigationTileAction;
+import Models.Actions.MoveDeveloperAction;
+import Models.Actions.PalaceTileAction;
+import Models.Actions.PlaceDeveloperOnBoardAction;
+import Models.Actions.RiceTileAction;
+import Models.Actions.TakeDeveloperOffBoardAction;
+import Models.Actions.ThreeTileAction;
+import Models.Actions.TwoTileAction;
+import Models.Actions.UseActionTokenAction;
+import Models.Actions.VillageTileAction;
 import Models.Actions.MActions.*;
 import Views.GameContainerPanel;
 
@@ -30,7 +42,7 @@ public class GameController {
 		//create controllers
 		
 		currentGame = new GameModel(numPlayers);
-		board = new BoardController();
+		board = new BoardController(currentGame.getBoard());
 		players = new PlayerController(numPlayers, playerNames, playerColors);
 		shared = new SharedComponentController();
 		
@@ -100,23 +112,29 @@ public class GameController {
 		case 8:
 			//released delete, delete a developer from the board
 			//need all the type checks and where they are to delete a developer
-			updateBoardControllerWithSelectedAction();
 			break;
 		case 9:
 			//released tab, tab through developers
 			
 			break;
 		case 10:
+			
 			//released enter, place tile/developer onto board.
 			System.out.println("(in GameController)Enter was pressed");
-			
-
+			Action action = currentGame.pressEnter();
+			if(action != null){
+				System.out.println("action != null in GCtrl");
+				currentGame.addToActionHistory(action);
+				currentGame.doLastActionInHistory();
+				currentGame.setSelectedAction(null);
+				updateControllersWithAction(action);
+			}
 			break;	
 		case 27:
 			//escapes out of a selected action
 			//tells the current game about the event so that it makes SelectedAction to null
 			//also updates the board panel so that the image is canceled
-			System.out.println("(in GameController)Esc was pressed");
+			//System.out.println("(in GameController)Esc was pressed");
 			currentGame.pressEsc();
 			board.pressEsc();
 
@@ -125,7 +143,7 @@ public class GameController {
 			//released the space bar, rotate
 			//tells the current game to tell the selectedAction to do pressSpace()
 			//will only tell the board about the change if it was a rotatable tile action
-			System.out.println("(in GameController)Space was pressed");
+			//System.out.println("(in GameController)Space was pressed");
 			if(currentGame.pressSpace()){
 				updateBoardControllerWithSelectedAction();
 				//System.out.println("(in GameController)Space was valid and attempted to updateBoardController");
@@ -146,8 +164,10 @@ public class GameController {
 				updateBoardControllerWithSelectedAction();
 			break;
 		case 40:
-			if(currentGame.pressDown());
+			if(currentGame.pressDown()){
+				//System.out.println("(In GCtrl) pressed down");
 				updateBoardControllerWithSelectedAction();
+			}
 			break;
 	// --------------------------------------------------------------------
 			
@@ -173,14 +193,18 @@ public class GameController {
 			break;
 		case 68: //released D, add new developer onto board
 			//currentGame.setSelectedActionDeveloper(new MAction("")); //somehow know the developer hash with the player color
-
+			if(players.selectDeveloper(currentGame.getPlayerIndex())){
+				System.out.println("red is the (hard coded) current player color.");
+				//currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("developer_" + players.getColorOfPlayer(currentGame.getPlayerIndex())));
+				currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("red"));
+				updateBoardControllerWithSelectedAction();
+			}
 			break;
 		case 73: //released I, add new Irrigation tile
 			//check if player has enough AP, and if there is enough in shared
 			if(players.selectThreeTile(currentGame.getPlayerIndex()) && shared.selectThreeTile()){
-				if(currentGame.setSelectedAction(new SelectIrrigationTileAction("irrigationTile"))){
-					updateBoardControllerWithSelectedAction();
-				}
+				currentGame.setSelectedAction(new SelectIrrigationTileAction("irrigationTile"));
+				updateBoardControllerWithSelectedAction();
 			}
 			break;
 		case 80://released P, new palace tile, need to ask for value of Tile
@@ -207,6 +231,11 @@ public class GameController {
 		case 84:
 			//does not become a selected action, just does a regular action!
 			//released T, use action token
+			if(players.selectActionToken(currentGame.getPlayerIndex())){
+				UseActionTokenAction actionTokenAction = new UseActionTokenAction(-1,null,null,0);
+				currentGame.addToActionHistory(actionTokenAction);
+				updateControllersWithAction(actionTokenAction);
+			}
 
 			break;
 		case 86:
@@ -223,11 +252,11 @@ public class GameController {
 			//released X, end turn
 			if(players.selectEndTurn(currentGame.getPlayerIndex())){
 				players.setNotCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the player panel of the current player to stop outlining their panel
-				if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){ //ask if they wanna have a palace festival
+				//if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){ //ask if they wanna have a palace festival
 					//TODO set up palace festival
 					//asks for palace they want to hold a festival at
 					//pass the index and the value of the palace and...
-				}
+				//}
 				
 				//call this after the prompt to have a palace festival (and after the palace festival if they had one)
 				currentGame.endTurn(); //increment the current player in the game model, changes all the stuff in player
@@ -235,6 +264,18 @@ public class GameController {
 			}
 			break;		
 		}
+	}
+	
+	private void updateControllersWithAction(Action action){
+		// TODO turn all into permanent actions instead of momentary
+		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || 
+		action instanceof ThreeTileAction || action instanceof DrawPalaceCardAction)
+			shared.updateSharedPanel(action);
+		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction
+		|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
+		|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)
+			board.updateBoardPanel(action);
+		players.updatePlayerPanel(currentGame.getPlayerIndex());
 	}
 	
 	private void updateBoardControllerWithSelectedAction(){
@@ -248,7 +289,8 @@ public class GameController {
 			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
 		else{//developer
-			//TODO this is to tell the view that the developer path has changed
+			//System.out.println("(In GCtrl) updating Board panel when developer action is selected");
+			board.updateSelectedDeveloperAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50,currentGame.getSelectedActionImageKey());
 		}
 	}
 	

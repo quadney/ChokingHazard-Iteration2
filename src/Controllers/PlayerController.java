@@ -2,6 +2,11 @@ package Controllers;
 
 import Models.JavaPlayer;
 import Models.PalaceCard;
+import Models.Actions.Action;
+import Models.Actions.RiceTileAction;
+import Models.Actions.TwoTileAction;
+import Models.Actions.UseActionTokenAction;
+import Models.Actions.VillageTileAction;
 import Views.PlayerPanel;
 
 public class PlayerController {
@@ -85,10 +90,45 @@ public class PlayerController {
 	}
 
 	public void setCurrentPlayerinPlayerPanel(int playerIndex) {
-		// TODO Auto-generated method stub
 		playerPanels[playerIndex].setCurrentPlayer();
 	}
+
+	public boolean selectDeveloper(int playerIndex) {
+		return playerModels[playerIndex].canPlaceDeveloperOnBoard();
+	}
+
+	public String getColorOfPlayer(int playerIndex) {
+		playerModels[playerIndex].getColor();
+		return null;
+	}
+
 	
 	//---------------------------------------------------------------------------
+	
+	public void updatePlayerPanel(int playerIndex) {
+		//given a player index, the corresponding player panel will update with all the information.
+		
+		//tells the player their fame points
+		playerPanels[playerIndex].updateFamePoints(playerModels[playerIndex].getFamePoints());
+		
+		//tells the player panel the number of palace cards
+		playerPanels[playerIndex].updateNumPalaceCards(playerModels[playerIndex].getNumPalaceCards());
+		
+		// tells the player panel the number of rice tiles
+		playerPanels[playerIndex].useOneRiceTile(playerModels[playerIndex].getNumOneRiceTile());
+		
+		// tells the player panel the number of village tiles
+		playerPanels[playerIndex].useOneVillageTile(playerModels[playerIndex].getNumOneVillageTile());
+		
+		// tells the player panel the number of two tiles
+		playerPanels[playerIndex].useTwoTile(playerModels[playerIndex].getNumTwoTile());
+		
+		// tells the player panel the number of action tokens
+		playerPanels[playerIndex].useActionToken(playerModels[playerIndex].getNumActionTokens(),playerModels[playerIndex].getActionPoints());
+		
+		// tells the player their action points
+		playerPanels[playerIndex].updateActionPoints(playerModels[playerIndex].getActionPoints());
+	}
+	
 	
 }

@@ -1,5 +1,8 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+import Models.Actions.PalaceTileAction;
+
 public class SelectPalaceTileAction extends SelectOneSpaceTileAction {
 
 	
@@ -12,5 +15,9 @@ public class SelectPalaceTileAction extends SelectOneSpaceTileAction {
 
 	public int getValue(){
 		return value;
+	}
+	
+	public Action pressEnter() {
+		return new PalaceTileAction(-1, null, null, 0, x, y, value, null);
 	}
 }

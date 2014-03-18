@@ -54,6 +54,11 @@ public class GameModel implements Serializable<GameModel> {
 	public void changeFamePoints(int playerIndex, int modifier) {
 		players[playerIndex].changeFamePoints(modifier);
 	}
+	
+	//Used for testing the Actions
+	public void placeTileOnBoard(int x, int y, Tile tile){
+		gameBoard.placeTileOnBoard(x, y, tile);
+	}
 
 	public boolean endTurn() {
 		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
@@ -279,8 +284,14 @@ public class GameModel implements Serializable<GameModel> {
 		return false;
 	}
 
-	// Methods for MAction/selected action traversal that is needed by the
-	// controller
+	public Action pressEnter() {
+		if(selectedAction != null){
+			return selectedAction.pressEnter();
+		}
+		return null;
+	}
+	
+	//Methods for MAction/selected action traversal that is needed by the controller
 
 	public int getSelectedActionX() {
 		return selectedAction.getX();
@@ -394,4 +405,22 @@ public class GameModel implements Serializable<GameModel> {
 		return this;
 	}
 
+	public void addToActionHistory(Action action) {
+		actionHistory.add(action);
+	}
+	
+	public JavaPlayer getCurrentPlayer() {
+		return players[indexOfCurrentPlayer];
+	}
+
+	public BoardModel getBoard() {
+		return gameBoard;
+	}
+
+	public void doLastActionInHistory() {
+		System.out.println("in doLactActionInHistory");
+		if(actionHistory.size() > 0){
+			actionHistory.peek().redo(this);
+		}
+	}
 }

@@ -1,12 +1,17 @@
 package Models.Actions;
 
-public class PalaceTileAction extends OneSpaceTileAction {
+import Models.JavaCell;
 
-	int value;
+public class PalaceTileAction extends OneSpaceTileAction {
 	
-	public PalaceTileAction(int actionID, int playerIndex, int value) {
-		super(actionID, playerIndex);
+	int value;
+
+	public PalaceTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y, int value, JavaCell cell) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, cell);
 		this.value = value;
-		// TODO Auto-generated constructor stub
+	}
+
+	public int getValueOfPalace() {
+		return value;
 	}
 }

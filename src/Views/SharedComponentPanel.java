@@ -99,6 +99,32 @@ public class SharedComponentPanel extends JPanel{
 	public void updateTenPalaceTiles(int num){
 		this.tenPalaceTiles.setText(""+num);
 	}
+	public void updateNumPalaceCards(int num){
+		//You're welcome Sydney --mrrow
+		this.palaceDeck.setText(""+num);
+	}
+	
+	
+	public void updatePalaceTiles(int num, int value){
+		if(value == 2){
+			updateTwoPalaceTiles(num);
+		}
+		else if(value == 4){
+			updateFourPalaceTiles(num);
+		}
+		else if(value == 6){
+			updateSixPalaceTiles(num);
+		}
+		else if(value == 8){
+			updateEightPalaceTiles(num);
+		}
+		else if(value == 10){
+			updateTenPalaceTiles(num);
+		}
+		
+	}
+	
+	
 	public void drawFromPalaceDeck(int numPalaceCards){
 		this.palaceDeck.setText(""+numPalaceCards);
 	}

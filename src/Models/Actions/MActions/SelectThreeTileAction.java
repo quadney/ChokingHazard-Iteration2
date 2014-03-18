@@ -1,5 +1,8 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+import Models.Actions.ThreeTileAction;
+
 public class SelectThreeTileAction extends SelectRotatableComponentAction{
 
 	
@@ -41,5 +44,10 @@ public class SelectThreeTileAction extends SelectRotatableComponentAction{
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public Action pressEnter() {
+		return new ThreeTileAction(-1, null, null, 0, x, y, rotationState, false, 0, null);
 	}
 }

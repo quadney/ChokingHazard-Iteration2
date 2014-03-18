@@ -193,9 +193,8 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return numTwoTile > 0 && getAvailableActionPoints(true) > 0;
 	}
 
-	// checks if the player has not used an action token yet
-	public boolean canUseActionToken() {
-		return !hasUsedActionToken;
+	public boolean canUseActionToken() { //checks if the player has not used an action token yet
+		return !hasUsedActionToken && numActionTokens > 0;
 	}
 
 	// checks if the player has the AP
@@ -212,8 +211,50 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	public boolean canEndTurn() {
 		return hasPlacedLandTile;
 	}
-
-	// ---------------------------------------------------------------------------------------------------------
+	
+	public boolean canPlaceDeveloperOnBoard() {
+		return getDevelopersOffBoard() > 0 && getAvailableActionPoints(true) > 0;
+	}
+	
+	//--------used for doAction in PlayerController----------------------------------------------------------------------
+	
+	public void incrementRice(){
+		numOneRiceTile++;
+	}
+	
+	public void incrementVillage(){
+		numOneVillageTile++;
+	}
+	
+	public void incrememntTwo(){
+		numTwoTile++;
+	}
+	
+	public void useActionToken(){
+		hasUsedActionToken = true;
+		numActionTokens--;
+		actionPoints++;
+	}
+	
+	public void decrementRice(){
+		numOneRiceTile--;
+	}
+	
+	public void decrementVillage(){
+		numOneVillageTile--;
+	}
+	
+	public void decrementTwo(){
+		numTwoTile--;
+	}
+	
+	public void unuseActionToken(){
+		hasUsedActionToken = false;
+		numActionTokens++;
+		actionPoints--;
+	}
+	
+	//----------------------------------------
 
 	@Override
 	public String serialize() {
@@ -272,4 +313,9 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 
 		return this;
 	}
+
+	public int getNumPalaceCards() {
+		return palaceCards.size();
+	}
+
 }
