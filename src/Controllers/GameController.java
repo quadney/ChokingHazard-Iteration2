@@ -40,7 +40,6 @@ public class GameController {
 	
 	public void createNewGame(int numPlayers, String[] playerNames, String[] playerColors){
 		//create controllers
-		
 		currentGame = new GameModel(numPlayers, playerNames, playerColors);
 		board = new BoardController(currentGame.getBoard());
 		players = new PlayerController(numPlayers, currentGame.getPlayers()); //change player controller to query the model for the player info
@@ -50,7 +49,6 @@ public class GameController {
 		//the shared dealPalaceCards returns the dealt palace cards
 		//and then the player sets those dealt cards as the cards
 		players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
-		
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
 		

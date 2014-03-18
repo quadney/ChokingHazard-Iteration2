@@ -51,22 +51,6 @@ public class BoardModel implements Serializable<BoardModel> {
 			}
 		}
 	}
-	
-	public boolean placeTileOnBoard(int x, int y, Tile tile){
-		JavaCell[][] miniMap = createTestMap(x, y);
-		String[][] tileCells = tile.getTileCells();
-		
-		for (int i = 0; i < tileCells.length; i++) 
-			for (int j = 0; j < tileCells[i].length; j++)
-					if(tileCells[i][j] != null){
-						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellType(tileCells[i][j]);
-						System.out.println(i + "," + j + " " + map[miniMap[i][j].getX()][miniMap[i][j].getY()].getCellType());
-						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellId(-1);
-						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setElevation(map[miniMap[i][j].getX()][miniMap[i][j].getY()].getElevation()+1);
-					}
-		System.out.println("in BoardModel placeTileOnBoard");
-		return true;
-	}
 
 	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player) {
 		JavaCell[][] miniMap = createTestMap(xC, yC);
