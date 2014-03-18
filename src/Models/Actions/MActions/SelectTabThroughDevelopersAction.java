@@ -34,7 +34,7 @@ public abstract class SelectTabThroughDevelopersAction extends MAction {
 		return false;
 	}
 	
-	public MAction pressDelete(){
+	public Action pressDelete(){
 		//this creates a new select action 
 		return null;
 	}

@@ -44,7 +44,7 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 	}
 
 	@Override
-	public MAction pressDelete() {
+	public Action pressDelete() {
 		// TODO Auto-generated method stub
 		return null;
 	}

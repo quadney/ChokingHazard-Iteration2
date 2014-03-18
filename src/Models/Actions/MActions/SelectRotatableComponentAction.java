@@ -1,5 +1,7 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+
 public abstract class SelectRotatableComponentAction extends MAction {
 
 	int rotationState = 0;
@@ -12,7 +14,7 @@ public abstract class SelectRotatableComponentAction extends MAction {
 		return false;
 	}
 	
-	public MAction pressDelete(){
+	public Action pressDelete(){
 		return null;
 	}
 

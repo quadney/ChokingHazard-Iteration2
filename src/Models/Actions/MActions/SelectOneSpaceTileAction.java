@@ -14,7 +14,7 @@ public abstract class SelectOneSpaceTileAction extends SelectOneSpaceComponentAc
 		return false;
 	}
 	
-	public MAction pressDelete(){
+	public Action pressDelete(){
 		return null;
 	}
 	
