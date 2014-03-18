@@ -110,6 +110,10 @@ public class GameController {
 		case 8:
 			//released delete, delete a developer from the board
 			//need all the type checks and where they are to delete a developer
+//			if(currentGame.pressDelete()){
+//				board.pressDelete();
+//				players[currentGame.getPlayerIndex()].pressDelete();
+//			}
 			break;
 		case 9:
 			//released tab, tab through developers
