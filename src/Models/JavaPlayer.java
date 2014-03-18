@@ -1,4 +1,5 @@
 package Models;
+
 import Helpers.Json;
 
 import java.util.*;
@@ -6,171 +7,189 @@ import java.util.*;
 import Helpers.JsonObject;
 import Views.GameContainerPanel;
 
-public class JavaPlayer implements Serializable<JavaPlayer>{
+public class JavaPlayer implements Serializable<JavaPlayer> {
+	public String name;
+	private String color;
 	private int famePoints;
 	private int actionPoints;
-	private int developersOffBoard;
-	//private int developersOnBoard;
 	private int numOneRiceTile;
 	private int numOneVillageTile;
 	private int numTwoTile;
 	private int numActionTokens;
 	private ArrayList<PalaceCard> palaceCards;
-    private Developer[] developersOnBoard;
-    private int selectedDeveloperIndex;
-    //private int[][] palacesInteractedWith;
-
-	private Developer[] developerArray;
-	public int currentlySelectedDeveloper;
+	private int selectedDeveloperIndex;
+	// private int[][] palacesInteractedWith;
+	private Developer[] developersArray;
 	private boolean hasPlacedLandTile;
 	private boolean hasUsedActionToken;
-	public String name; 
-	private String color;
-	
-	public JavaPlayer(String name, String color){
+
+	public JavaPlayer(String name, String color) {
 		this.name = name;
 		this.color = color;
 		this.famePoints = 0;
 		this.actionPoints = 6;
-		this.developersOffBoard = 12;
 		this.numOneRiceTile = 3;
 		this.numOneVillageTile = 2;
 		this.numTwoTile = 5;
 		this.numActionTokens = 3;
-      	this.palaceCards = new ArrayList<PalaceCard>();
-      	this.hasPlacedLandTile = false;
-        this.developersOnBoard = new Developer[12];
-        this.selectedDeveloperIndex = 0;
-        this.hasUsedActionToken = false;
-		//int[][] palacesInteractedWith = new int[40][2]; // this accounts for the
-														// fact that a player
-														// can only interact with a palace once per turn.
-														// Can either build or upgrade a palace
+		this.palaceCards = new ArrayList<PalaceCard>();
+		this.hasPlacedLandTile = false;
+		this.selectedDeveloperIndex = 0;
+		this.hasUsedActionToken = false;
+		this.developersArray = new Developer[12];
+		// this accounts for the fact that a player can only interact with a
+		// palace once per turn. Can either build or upgrade a palace
+		// int[][] palacesInteractedWith = new int[40][2];
 	}
 
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public String getColor() {
 		return this.color;
 	}
-   
+
 	public int getFamePoints() {
 		return famePoints;
 	}
+
 	public int getActionPoints() {
 		return actionPoints;
 	}
+
 	public int getDevelopersOffBoard() {
-		return developersOffBoard;
+		int developersOnBoard = 0;
+		for (int i = 0; i < developersArray.length; i++) {
+			if (developersArray[i] != null) {
+				developersOnBoard++;
+			}
+		}
+
+		return developersArray.length - developersOnBoard;
 	}
+
 	public int getNumOneRiceTile() {
 		return numOneRiceTile;
 	}
+
 	public int getNumOneVillageTile() {
 		return numOneVillageTile;
 	}
+
 	public int getNumTwoTile() {
 		return numTwoTile;
 	}
+
 	public int getNumActionTokens() {
 		return numActionTokens;
 	}
-	public ArrayList<PalaceCard> getPalaceCards(){
+
+	public ArrayList<PalaceCard> getPalaceCards() {
 		return palaceCards;
 	}
-	
+
 	public int getAvailableActionPoints(boolean isLandTile) {
 		if (hasPlacedLandTile || isLandTile) {
 			return actionPoints;
 		}
-		
+
 		return actionPoints - 1;
 	}
-	
-	public void setDeveloperCell(JavaCell jc) {
-		developerArray[selectedDeveloperIndex].setLocation(jc);
-	}
-	
-	public void changeFamePoints(int modifier){
+
+	public void changeFamePoints(int modifier) {
 		famePoints += modifier;
 	}
-   
-   public Developer[] getDevelopersOnBoard()
-   {
-      return developersOnBoard;
-   }
-   
-   //Returns the selected developer if there is a valid option (Developers on the board)
-   public Developer getSelectedDeveloper()
-   {
-      return developersOnBoard[selectedDeveloperIndex];
-   }
-   
-   //Tabs through the collection of developers on the board. If the index is greater than the
-   //number of developers, the first developer in the list becomes selected
-   public void tabThroughDevelopers()
-   {
-	  int count = 0;
-	  while (count < developersOnBoard.length) {
-		  selectedDeveloperIndex++;
-		  if(selectedDeveloperIndex >= developersOnBoard.length) {
-		     selectedDeveloperIndex = 0;
-	  	  }
-		  
-		  if (developersOnBoard[selectedDeveloperIndex] != null) {
-			  break;
-		  }
-		  count++;
-	  }
-   }
-	
+
+	public Developer[] getDevelopersOnBoard() {
+		ArrayList<Developer> temp = new ArrayList<Developer>();
+		for (int i = 0; i < developersArray.length; i++) {
+			if (developersArray[i] != null) {
+				temp.add(developersArray[i]);
+			}
+		}
+
+		return temp.toArray(new Developer[1]);
+	}
+
+	// Returns the selected developer if there is a valid option (Developers on
+	// the board)
+	public Developer getSelectedDeveloper() {
+		return developersArray[selectedDeveloperIndex];
+	}
+
+	// Tabs through the collection of developers on the board. If the index is
+	// greater than the
+	// number of developers, the first developer in the list becomes selected
+	public void tabThroughDevelopers() {
+		int count = 0;
+		while (count < developersArray.length) {
+			selectedDeveloperIndex++;
+			if (selectedDeveloperIndex >= developersArray.length) {
+				selectedDeveloperIndex = 0;
+			}
+
+			if (developersArray[selectedDeveloperIndex] != null) {
+				break;
+			}
+
+			count++;
+		}
+	}
+
+	public void associateDeveloperWithCell(JavaCell jc) {
+		developersArray[selectedDeveloperIndex].setLocation(jc);
+		jc.setDeveloper();
+	}
+
 	public boolean decrementNActionPoints(int n, boolean isLandTile) {
 		if (getAvailableActionPoints(isLandTile) >= n) {
 			actionPoints -= n;
 			return true;
 		}
-		
+
 		return false;
 	}
-	
-	public void removeDeveloperFromArray()
-	{
-		developerArray[currentlySelectedDeveloper] = null;
+
+	public void removeDeveloperFromArray() {
+		developersArray[selectedDeveloperIndex] = null;
 	}
-	
-	public void addPalaceCard(PalaceCard card){
+
+	public void addPalaceCard(PalaceCard card) {
 		this.palaceCards.add(card);
 	}
 
-	//Methods needed from Player controller to validate action selections-----------------------------------
-	public boolean canUsePalace() { //checks if the player has the AP
+	// Methods needed from Player controller to validate action
+	// selections-------------------------------
+	// checks if the player has the AP
+	public boolean canUsePalace() {
 		return getAvailableActionPoints(false) > 0;
 	}
-	
-	public boolean endTurn()
-	{
-		if (!hasPlacedLandTile)
-		{
-			GameContainerPanel.tellPeopleTheyAintPlacedNoLandTile(); //TODO: Make sure this works
+
+	// TODO Make sure this works
+	public boolean endTurn() {
+		if (!hasPlacedLandTile) {
+			GameContainerPanel.tellPeopleTheyAintPlacedNoLandTile();
 			return false;
 		}
-		//Otherwise, typical end of turn activities
-		changeFamePoints(1); //TODO: determine correct amount, method?
-		
+
+		// Otherwise, typical end of turn activities
+		changeFamePoints(1); // TODO: determine correct amount, method?
 		return true;
 	}
 
-	public boolean canUseRice() { //checks if the player has enough plus has the AP
+	// checks if the player has enough plus has the AP
+	public boolean canUseRice() {
 		return numOneRiceTile > 0 && getAvailableActionPoints(true) > 0;
 	}
 
-	public boolean canUseThree() { //checks if the player has the AP
+	// checks if the player has the AP
+	public boolean canUseThree() {
 		return getAvailableActionPoints(false) > 0;
 	}
 
-	public boolean canUseTwo() { //checks if the player has enough plus has the AP
+	// checks if the player has enough plus has the AP
+	public boolean canUseTwo() {
 		return numTwoTile > 0 && getAvailableActionPoints(true) > 0;
 	}
 
@@ -178,20 +197,23 @@ public class JavaPlayer implements Serializable<JavaPlayer>{
 		return !hasUsedActionToken && numActionTokens > 0;
 	}
 
-	public boolean canUseIrrigation() { //checks if the player has the AP
+	// checks if the player has the AP
+	public boolean canUseIrrigation() {
 		return getAvailableActionPoints(false) > 0;
 	}
 
-	public boolean canUseVillage() { //checks if the player has enough plus has the AP
+	// checks if the player has enough plus has the AP
+	public boolean canUseVillage() {
 		return numOneVillageTile > 0 && getAvailableActionPoints(true) > 0;
 	}
 
-	public boolean canEndTurn() { //checks if the player has placed a land tile
+	// checks if the player has placed a land tile
+	public boolean canEndTurn() {
 		return hasPlacedLandTile;
 	}
 	
 	public boolean canPlaceDeveloperOnBoard() {
-		return developersOffBoard > 0 && getAvailableActionPoints(true) > 0;
+		return getDevelopersOffBoard() > 0 && getAvailableActionPoints(true) > 0;
 	}
 	
 	//--------used for doAction in PlayerController----------------------------------------------------------------------
@@ -233,29 +255,28 @@ public class JavaPlayer implements Serializable<JavaPlayer>{
 	}
 	
 	//----------------------------------------
-	
-	
 
 	@Override
 	public String serialize() {
-		return Json.jsonObject(Json.jsonMembers(
-			Json.jsonPair("name", Json.jsonValue(name + "")),
-			Json.jsonPair("color", Json.jsonValue(color + "")),
-			Json.jsonPair("famePoints", Json.jsonValue(famePoints + "")),
-			Json.jsonPair("actionPoints", Json.jsonValue(actionPoints + "")),
-			Json.jsonPair("numOneRiceTile", Json.jsonValue(numOneRiceTile + "")),
-			Json.jsonPair("numOneVillageTile", Json.jsonValue(numOneVillageTile + "")),
-			Json.jsonPair("numTwoTile", Json.jsonValue(numTwoTile + "")),
-			Json.jsonPair("numActionTokens", Json.jsonValue(numActionTokens + "")),
-			Json.jsonPair("developersOffBoard", Json.jsonValue(developersOffBoard + "")),
-			Json.jsonPair("palaceCards", Json.serializeArray(palaceCards)),
-			Json.jsonPair("developersOnBoard", Json.serializeArray(developersOnBoard)),
-			Json.jsonPair("developerArray", Json.serializeArray(developerArray)),
-			Json.jsonPair("selectedDeveloperIndex", Json.jsonValue(selectedDeveloperIndex + "")),
-			Json.jsonPair("currentlySelectedDeveloper", Json.jsonValue(currentlySelectedDeveloper + "")),
-			Json.jsonPair("hasPlacedLandTile", Json.jsonValue(hasPlacedLandTile + "")),
-			Json.jsonPair("hasUsedActionToken", Json.jsonValue(hasUsedActionToken + ""))
-		));
+		return Json.jsonObject(Json.jsonMembers(Json.jsonPair("name",
+				Json.jsonValue(name + "")), Json.jsonPair("color",
+				Json.jsonValue(color + "")), Json.jsonPair("famePoints",
+				Json.jsonValue(famePoints + "")), Json.jsonPair("actionPoints",
+				Json.jsonValue(actionPoints + "")), Json.jsonPair(
+				"numOneRiceTile", Json.jsonValue(numOneRiceTile + "")), Json
+				.jsonPair("numOneVillageTile",
+						Json.jsonValue(numOneVillageTile + "")), Json.jsonPair(
+				"numTwoTile", Json.jsonValue(numTwoTile + "")), Json.jsonPair(
+				"numActionTokens", Json.jsonValue(numActionTokens + "")), Json
+				.jsonPair("palaceCards", Json.serializeArray(palaceCards)),
+				Json.jsonPair("developerArray",
+						Json.serializeArray(developersArray)), Json.jsonPair(
+						"selectedDeveloperIndex",
+						Json.jsonValue(selectedDeveloperIndex + "")), Json
+						.jsonPair("hasPlacedLandTile",
+								Json.jsonValue(hasPlacedLandTile + "")), Json
+						.jsonPair("hasUsedActionToken",
+								Json.jsonValue(hasUsedActionToken + ""))));
 	}
 
 	@Override
@@ -264,30 +285,31 @@ public class JavaPlayer implements Serializable<JavaPlayer>{
 		this.color = json.getString("color");
 		this.famePoints = Integer.parseInt(json.getString("famePoints"));
 		this.actionPoints = Integer.parseInt(json.getString("actionPoints"));
-		this.numOneRiceTile = Integer.parseInt(json.getString("numOneRiceTile"));
-		this.numOneVillageTile = Integer.parseInt(json.getString("numOneVillageTile"));
+		this.numOneRiceTile = Integer
+				.parseInt(json.getString("numOneRiceTile"));
+		this.numOneVillageTile = Integer.parseInt(json
+				.getString("numOneVillageTile"));
 		this.numTwoTile = Integer.parseInt(json.getString("numTwoTile"));
-		this.numActionTokens = Integer.parseInt(json.getString("numActionTokens"));
-		this.developersOffBoard = Integer.parseInt(json.getString("developersOffBoard"));
-		this.selectedDeveloperIndex = Integer.parseInt(json.getString("selectedDeveloperIndex"));
-		this.currentlySelectedDeveloper = Integer.parseInt(json.getString("currentlySelectedDeveloper"));
-		this.hasPlacedLandTile = Boolean.parseBoolean(json.getString("hasPlacedLandTile"));
-		this.hasUsedActionToken = Boolean.parseBoolean(json.getString("hasUsedActionToken"));
-		
+		this.numActionTokens = Integer.parseInt(json
+				.getString("numActionTokens"));
+		this.selectedDeveloperIndex = Integer.parseInt(json
+				.getString("selectedDeveloperIndex"));
+		this.hasPlacedLandTile = Boolean.parseBoolean(json
+				.getString("hasPlacedLandTile"));
+		this.hasUsedActionToken = Boolean.parseBoolean(json
+				.getString("hasUsedActionToken"));
+
 		this.palaceCards = new ArrayList<PalaceCard>();
-		for(JsonObject obj : json.getJsonObjectArray("palaceCards"))
+		for (JsonObject obj : json.getJsonObjectArray("palaceCards"))
 			this.palaceCards.add((new PalaceCard(-1)).loadObject(obj));
 
-		this.developersOnBoard = new Developer[json.getJsonObjectArray("developersOnBoard").length];
-		for(int x = 0; x < this.developersOnBoard.length; ++x) {
-			json.getJsonObjectArray("developersOnBoard")[x].addKeyManually("map", json.getObject("map"));
-			this.developersOnBoard[x] = (new Developer(this)).loadObject(json.getJsonObjectArray("developersOnBoard")[x]);
-		}
-		
-		// TODO check if these are distinct or from developersOnBoard (or vice-versa)
-		this.developerArray = new Developer[json.getJsonObjectArray("developerArray").length];
-		for(int x = 0; x < this.developerArray.length; ++x) 
-			this.developerArray[x] = (new Developer(this)).loadObject(json.getJsonObjectArray("developerArray")[x]);
+		// TODO check if these are distinct or from developersOnBoard (or
+		// vice-versa)
+		this.developersArray = new Developer[json
+				.getJsonObjectArray("developerArray").length];
+		for (int x = 0; x < this.developersArray.length; ++x)
+			this.developersArray[x] = (new Developer(this)).loadObject(json
+					.getJsonObjectArray("developerArray")[x]);
 
 		return this;
 	}
