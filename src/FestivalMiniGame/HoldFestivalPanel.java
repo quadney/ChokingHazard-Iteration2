@@ -145,6 +145,26 @@ public class HoldFestivalPanel extends JPanel{
 		return false;
 	}
 	
+	public void displayWinner(ArrayList<JavaFestivalPlayer> players, int pointsWon){
+		System.out.println("this is being called");
+		String names = players.get(0).getName();
+		if(players.size() > 1){
+			for(int i = 1; i < players.size(); i++){
+				if(i == (players.size()-1)){
+					names = names+" and "+players.get(i).getName();
+				}
+				else{
+					names = names +", "+players.get(i).getName();
+				}
+			}
+			JOptionPane.showMessageDialog(null, "Congrats! Players "+names+" have won this festival", "End of Festival", JOptionPane.INFORMATION_MESSAGE);
+
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "Congrats! Player "+names+" has won this festival", "End of Festival", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+	
 	public void tellUserThatHeHasToPlayAPalaceCardOrDropOut(){
 		JOptionPane.showMessageDialog(null, "You need to either play a Palace card or drop out of the festival", "Error", JOptionPane.ERROR_MESSAGE);
 	}

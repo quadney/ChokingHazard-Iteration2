@@ -97,10 +97,6 @@ public class PalaceCard implements Serializable<PalaceCard> {
 	   }
 	   return points;
    }
-   
-   public PalaceCard deepCopy(){
-	   return new PalaceCard(this.symbols, this.numSymbols, this.cardType);
-   }
 
 	@Override
 	public String serialize() {

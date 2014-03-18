@@ -127,9 +127,11 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	}
 	
 	public void dropPlayer(){
-		JPanel pieceOfShit = new JPanel();
-		pieceOfShit.setPreferredSize(new Dimension(getPreferredWidth(), getPreferredHeight()));
-		add(pieceOfShit);
+		JPanel clearPanel = new JPanel();
+		clearPanel.setBackground(Color.BLACK);
+		setBorder(BorderFactory.createEmptyBorder(20,20, 20, 20));
+		clearPanel.setPreferredSize(new Dimension(getPreferredWidth(), getPreferredHeight()));
+		add(clearPanel);
 	}
 	
 	private BufferedImage drawPalaceCardBacks(int numPalaceCards){

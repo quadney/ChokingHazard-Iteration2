@@ -57,8 +57,9 @@ public class HoldFestivalModel {
 		return -1;
 	}
 	
-	
 	public boolean canEndTurn(){
+		if(highestBid == 0)
+			return false;
 		return highestBid <= players.get(indexOfCurrentPlayer).getFestivalBid();
 	}
 	
@@ -72,8 +73,10 @@ public class HoldFestivalModel {
 	
 	public boolean ifHadFullCycleTurnCheck(){
 		if(players.get(indexOfCurrentPlayer).startedFestival()){
-			highestBid = 0;
-			return true;
+			if(highestBid != 0){
+				highestBid = 0;
+				return true;
+			}
 		}
 		return false;
 	}
@@ -105,6 +108,19 @@ public class HoldFestivalModel {
 	
 	public int dropCurrentPlayer(){
 		players.get(indexOfCurrentPlayer).dropPlayerFromFestival();
+		if(players.get(indexOfCurrentPlayer).startedFestival()){
+			//the player who has started the festival dropped out, like a dumb ass
+			//set as the next available person to be the started festival person
+			int i = indexOfCurrentPlayer;
+			i = (i + 1) % players.size();
+			while(i != indexOfCurrentPlayer){
+				if(players.get(i).checkIfInFestival()){
+					//get the next player who is in the festival
+					players.get(i).changeStartedFestivalStatus(true);
+				}
+				i = (i + 1) % players.size();
+			}
+		}
 		return endTurn();
 	}
 	
@@ -123,20 +139,36 @@ public class HoldFestivalModel {
 		//returns true if everyone is out of cards
 		//if everyone is out of cards then the game ends and a winner is calculated
 		for(JavaFestivalPlayer player : players){
-			if(player.getNumPalaceCards() < 0)
-				return false;
+			if(player.checkIfInFestival()){
+				if(player.getNumPalaceCards() > 0)
+					return false;
+			}
 		}
 		return true;
 	}
 	
 	public int getNumWinners(){
 		//checks for a tie
+		calculateHighestBid();
 		int numWinningPlayers = 0;
 		for(JavaFestivalPlayer player : players){
-			if(player.getFestivalBid() == highestBid)
-				numWinningPlayers++;
+			if(player.checkIfInFestival()){
+				if(player.getFestivalBid() == highestBid)
+					numWinningPlayers++;
+			}
 		}
 		return numWinningPlayers;
+	}
+	
+	private void calculateHighestBid(){
+		for(JavaFestivalPlayer player : players){
+			//check if they are in the festival
+			if(player.checkIfInFestival()){
+				if(highestBid < player.getFestivalBid()){
+					highestBid = player.getFestivalBid();
+				}
+			}
+		}
 	}
 	
 	public ArrayList<JavaFestivalPlayer> getWinners(){
@@ -157,9 +189,6 @@ public class HoldFestivalModel {
 	}
 	
 	public int getFamePointsWon(boolean ifTie){
-		System.out.println("Value of Palace city: "+valueOfPalaceCity);
-		System.out.println("Fame points won: "+famePointsAwarded.get(valueOfPalaceCity+""));
-		System.out.println("Fame points won, with tie: "+famePointsAwarded.get(valueOfPalaceCity+"_tie"));
 		if(ifTie){
 			return famePointsAwarded.get(valueOfPalaceCity+"_tie");
 		}

@@ -131,7 +131,10 @@ public class GameContainerPanel extends JPanel {
 	
 	public void displayHoldFestivalFrame(GameController game, JavaPlayer[] players, int indexOfPlayerHoldingFestival, PalaceCard festivalCard, int selectedPalaceValue){
 		festivalFrame = new HoldFestivalFrame(game, players, indexOfPlayerHoldingFestival, festivalCard, selectedPalaceValue);
-		festivalFrame.setVisible(true);
+	}
+	
+	public void closeFestivalFrame(){
+		festivalFrame.dispose();
 	}
 	
 	public static void tellPeopleTheyAintPlacedNoLandTile()

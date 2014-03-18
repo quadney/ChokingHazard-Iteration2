@@ -66,7 +66,7 @@ public class HoldFestivalFrame extends JFrame {
 					if(playerPalaceCards.get(j).compareNumSymbols(festivalCard)){
 						if(playerPalaceCards.get(j).compareHasSymbols(festivalCard)){
 							// add a copy of the card
-							validPalaceCards.add(playerPalaceCards.get(j).deepCopy());
+							validPalaceCards.add(playerPalaceCards.get(j));
 						}
 					}
 				}
@@ -90,6 +90,7 @@ public class HoldFestivalFrame extends JFrame {
 			festController = new HoldFestivalController(this, festivalPlayers, festivalCard, selectedPalaceValue);
 			//set the content pane
 			setContentPane(festController.getFestivalPanel());
+			setVisible(true);
 		}
 	}
 	

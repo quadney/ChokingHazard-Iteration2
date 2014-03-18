@@ -105,4 +105,8 @@ public class JavaFestivalPlayer {
 	public void endTurn(){
 		tabCount = -1;
 	}
+	
+	public void changeStartedFestivalStatus(boolean status){
+		this.startedFestival = status;
+	}
 }

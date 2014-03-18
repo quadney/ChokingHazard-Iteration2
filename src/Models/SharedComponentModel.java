@@ -73,12 +73,13 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 	}
 	public PalaceCard drawFestivalCard(){
 		//return the current festival card, and draw a new card to be the festivalCard
-		PalaceCard card = festivalCard.deepCopy();
+		PalaceCard card = festivalCard;
 		
 		//if the deck is empty, refresh it
 		checkIfDeckIsEmpty();
 		
 		this.festivalCard = drawFromDeck();
+		
 		return card;
 	}
 	

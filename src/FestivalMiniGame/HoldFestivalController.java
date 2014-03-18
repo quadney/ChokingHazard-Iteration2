@@ -15,13 +15,11 @@ public class HoldFestivalController {
 	public HoldFestivalController(HoldFestivalFrame frame, ArrayList<JavaFestivalPlayer> festivalPlayers, PalaceCard festCard, int palaceValue){
 		this.festFrame = frame;
 		this.festModel = new HoldFestivalModel(festivalPlayers, festCard, palaceValue);
-		System.out.println("Current Player: "+festModel.getCurrentPlayer()+" numplayers: "+festivalPlayers.size());
 		this.festPanel = new HoldFestivalPanel(festivalPlayers, festModel.getCurrentPlayer(), festCard.getType(), palaceValue);
 		festPanel.setFestivalController(this);
 	}
 	
 	public void keyPressed(KeyEvent e){
-		System.out.println(e.getKeyCode());
 		switch(e.getKeyCode()){
 			case 9:
 				//tab
@@ -84,29 +82,36 @@ public class HoldFestivalController {
 		System.out.println("There is only one player left: "+festModel.isThereOnlyOnePlayerLeft());
 		System.out.println("Everyone is out of Cards: "+festModel.checkIfEveryoneIsOutOfCards());
 		System.out.println("Num of Winners: "+festModel.getNumWinners());
-		if(festModel.isThereOnlyOnePlayerLeft() || festModel.checkIfEveryoneIsOutOfCards() || (festModel.getNumWinners() > 1)){
-			System.out.println("ending the festival...");
-			//if there is only one player left
-			//if there is a ti
-			//if there is more than one player, but there's no tie, but everyone is out of cards
-			//get the winner(s)
-			if(festModel.getNumWinners() > 1){
-				if(festPanel.askIfWouldLikeToSpiltWinnings()){
-					endFestival(true);
-				}
+		boolean noCardsLeft = festModel.checkIfEveryoneIsOutOfCards();
+		if(!noCardsLeft){
+			//if there is someone with more cards that they can play, then dont end the festival. Because they need to play it
+		}
+		else if(festModel.getNumWinners() > 1){
+			//check if there is a tie
+			if(noCardsLeft){
+				//they are all out of cards, so they have to end the festival
+				endFestival(true);
 			}
-			else
-				endFestival(false);
+			else if(festPanel.askIfWouldLikeToSpiltWinnings()){
+				endFestival(true);
+			}
+			
+			//there is a tie and they want to continue playing. let them
+		}
+		else if(festModel.isThereOnlyOnePlayerLeft() || noCardsLeft){
+			//if there is only one player left
+			//if there is a tie
+			endFestival(false);
 		}
 	}
 	
 	private void endFestival(boolean thereIsTie){
 		System.out.println("ending festival, is there a tie? "+thereIsTie);
-		//festPanel.displayWinner(winnerIndex);
 		//get the winners
 		//get the points per winner
 		festModel.endFestival(thereIsTie);
 		System.out.println("festival has ended");
+		festPanel.displayWinner(festModel.getWinners(), festModel.getFamePointsWon(thereIsTie));
 		festFrame.festivalDidReturn(festModel.getDiscardedPalaceCards());
 	}
 	
@@ -123,13 +128,14 @@ public class HoldFestivalController {
 	
 	public void dropPlayerFromFestival(){
 		System.out.println("dropping player from festival...");
-		//TODO
-		
 		//hide his information from this
+		//set this to be empty
+		//TODO
 		festPanel.dropCurrentPlayer(festModel.getCurrentPlayer());
 		
 		int index = festModel.dropCurrentPlayer();
 		festPanel.startPlayerTurn(index);
+		startTurn();
 		System.out.println("completed dropping");
 	}
 	
