@@ -44,7 +44,7 @@ public class GameController {
 		currentGame = new GameModel(numPlayers, playerNames, playerColors);
 		board = new BoardController(currentGame.getBoard());
 		players = new PlayerController(numPlayers, currentGame.getPlayers()); //change player controller to query the model for the player info
-		shared = new SharedComponentController(); //change this to work
+		shared = new SharedComponentController(currentGame.getShared()); //change this to work
 		
 		//this initializes the dealing of the palace cards
 		//the shared dealPalaceCards returns the dealt palace cards
@@ -270,7 +270,7 @@ public class GameController {
 		// TODO turn all into permanent actions instead of momentary
 		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || 
 		action instanceof ThreeTileAction || action instanceof DrawPalaceCardAction)
-			shared.updateSharedPanel(action);
+			shared.updateSharedPanel();
 		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction
 		|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
 		|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)

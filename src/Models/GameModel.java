@@ -17,6 +17,7 @@ public class GameModel implements Serializable<GameModel> {
 	// VARIABLES
 	private BoardModel gameBoard;
 	private JavaPlayer[] players;
+	private SharedComponentModel shared;
 	private int indexOfCurrentPlayer;
 	private boolean isFinalRound;
 	public MAction selectedAction;
@@ -37,6 +38,7 @@ public class GameModel implements Serializable<GameModel> {
 		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
+		this.shared = new SharedComponentModel();
 		this.players = new JavaPlayer[numberPlayers];
 		for (int i = 0; i < players.length; i++) {
 			players[i] = new JavaPlayer(playerNames[i], playerColors[i]);
@@ -442,5 +444,9 @@ public class GameModel implements Serializable<GameModel> {
 
 	public JavaPlayer[] getPlayers() {
 		return players;
+	}
+
+	public SharedComponentModel getShared() {
+		return shared;
 	}
 }
