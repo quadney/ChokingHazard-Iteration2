@@ -16,10 +16,6 @@ public class BoardController {
 		return this.boardPanel;
 	}
 
-	public void selectPalaceTile(int value) {
-		
-	}
-
 	public void updateSelectedTileAction(int x, int y, String imageKey, int rotationState) {
 		boardPanel.moveTile(x, y, rotationState, imageKey);
 	}

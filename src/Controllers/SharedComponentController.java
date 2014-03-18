@@ -41,6 +41,10 @@ public class SharedComponentController {
 		return card;
 	}
 	
+	public PalaceCard getCurrentFestivalCard(){
+		return sharedModel.getFestivalCard();
+	}
+	
 	public PalaceCard[][] dealPalaceCards(int numPlayers){
 		//deal the cards to players
 		PalaceCard[][] cards = new PalaceCard[numPlayers][3];

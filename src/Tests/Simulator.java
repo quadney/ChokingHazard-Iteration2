@@ -15,7 +15,7 @@ public class Simulator {
 	public static int PLACE_START_Y = 1;
 	public static int THROTTLE = 100;
 	public static int TIME_BETWEEN_MAIN_PLAYERS = 150;
-	public static int TIME_BETWEEN_MAIN_COMMANDS = 400;
+	public static int TIME_BETWEEN_MAIN_COMMANDS = 100;
 	public static int GAME_LOAD_WAIT_TIME = 2000;
 	
 	public static void newGame(String... players) {
