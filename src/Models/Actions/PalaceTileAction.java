@@ -9,4 +9,7 @@ public class PalaceTileAction extends OneSpaceTileAction {
 		this.value = value;
 	}
 
+	public int getValueOfPalace() {
+		return value;
+	}
 }
