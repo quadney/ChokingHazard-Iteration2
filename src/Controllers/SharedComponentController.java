@@ -102,5 +102,6 @@ public class SharedComponentController {
 			sharedModel.decrementIrrigationTiles();
 			sharedPanel.updateIrrigationTiles(sharedModel.getIrrigationTiles());
 		}
+		//do else for palace card shit
 	}
 }

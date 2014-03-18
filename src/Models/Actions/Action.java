@@ -26,4 +26,8 @@ public abstract class Action extends Event implements Serializable<Action> {
 		return null;
 	}
 
+	public int getEarnedFamePoints() {
+		return 0; //return earned fame points;
+	}
+
 }
