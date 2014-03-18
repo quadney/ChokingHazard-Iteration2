@@ -5,7 +5,7 @@ import Helpers.JsonObject;
 
 public class Developer implements Serializable<Developer>
 {
-   private Cell location;
+   private JavaCell location;
    private JavaPlayer owner;
    
    public Developer(JavaPlayer p)
@@ -15,7 +15,7 @@ public class Developer implements Serializable<Developer>
       owner = p;
    }
    
-   public void setLocation(Cell c)
+   public void setLocation(JavaCell c)
    {
       location = c;
    }
@@ -25,11 +25,21 @@ public class Developer implements Serializable<Developer>
       owner = p;
    }
    
-   public Cell getLocation()
+   public JavaCell getLocation()
    {
       return location;
    }
    
+   //accessor methods needed for SeectTabThroughDeveloperAction------
+   
+   public int getX(){
+	   return location.getX();
+   }
+   
+   public int getY(){
+	   return location.getY();
+   }
+   //------------------------------------------------------------------
    public JavaPlayer getOwner()
    {
       return owner;
@@ -46,7 +56,7 @@ public class Developer implements Serializable<Developer>
 	
 	@Override
 	public Developer loadObject(JsonObject json) {
-		location = ((Cell[][]) json.getObject("map"))[Integer.parseInt(json.getString("x"))][Integer.parseInt(json.getString("y"))];
+		location = ((JavaCell[][]) json.getObject("map"))[Integer.parseInt(json.getString("x"))][Integer.parseInt(json.getString("y"))];
 		// TODO check to make sure player is getting set
 		return this;
 	}

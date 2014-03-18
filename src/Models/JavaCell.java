@@ -3,26 +3,39 @@ package Models;
 import Helpers.Json;
 import Helpers.JsonObject;
 
-public class JavaCell extends Cell implements Serializable<JavaCell> {
+public class JavaCell implements Serializable<JavaCell> {
    private int elevation;
    private String cellType;
    private boolean hasDeveLoper;
    private int cellId;
+   public int xVal;
+   public int yVal;
    
    public JavaCell(int x, int y, String cellType, int cellId) {
-      super(x,y);
-      elevation = 0;
-      this.cellType = cellType;
-      this.cellId = cellId;
+	   this.xVal = x;
+	   this.yVal = y;
+	   elevation = 0;
+	   this.cellType = cellType;
+	   this.cellId = cellId;
    }
    
    public JavaCell(int x, int y, int cellId) {
-      super(x,y);
-      elevation = 0;
-      cellType = "blank";
-      this.cellId = cellId;
+	  this.xVal = x;
+	  this.yVal = y;
+	  elevation = 0;
+	  cellType = "blank";
+	  this.cellId = cellId;
    }
-   
+
+
+	public int getX() {
+		return xVal;
+	}
+
+	public int getY() {
+		return yVal;
+	}
+	
    public int getCellId() {
       return cellId;
    }

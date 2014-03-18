@@ -13,6 +13,8 @@ public class NewGameTest {
 		RunGame game = new RunGame();
 		
 		Simulator.newGame("p", "c");
+		Thread.sleep(1000);
+		GameRobot.pressEscape();
 		/*Simulator.placeDeveloper(3, 3);
 		Simulator.placeDeveloper(4, 4);
 		Simulator.placeDeveloper(1, 5);

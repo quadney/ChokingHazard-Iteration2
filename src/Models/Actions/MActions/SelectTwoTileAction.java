@@ -1,5 +1,8 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+import Models.Actions.TwoTileAction;
+
 public class SelectTwoTileAction extends SelectRotatableComponentAction {
 
 	public SelectTwoTileAction(String imageKey) {
@@ -37,5 +40,11 @@ public class SelectTwoTileAction extends SelectRotatableComponentAction {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public Action pressEnter() {
+		System.out.println("Created TwoTileAction");
+		return new TwoTileAction(-1, 0, x, y, rotationState, 1, null); //hard coded elevation for now
 	}
 }

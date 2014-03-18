@@ -2,12 +2,10 @@ package Models;
 
 
 import Helpers.Json;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Stack;
 
 import Helpers.JsonObject;
 
@@ -21,33 +19,53 @@ public class BoardModel implements Serializable<BoardModel> {
 	public BoardModel() {
 		this.map = new JavaCell[14][14];
 		this.path = new LinkedList<JavaCell>();
-		int k = 0;
 		cellId = 0;
 
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
-				if (x == 0 || x == 1) {
-					map[x][y] = new JavaCell(x, y, 0);
-				}
-
-				else if (x <= 6 && (y <= 1 || y >= 12)) {
-					map[x][y] = new JavaCell(x, y, 0);
-				}
-
-				else if (x >= 7 && (y <= 1 || y >= 12)) {
-					map[x][y] = new JavaCell(x, y, 0);
-				} 
-				
-				else if (x == 12 || x == 13) {
-					map[x][y] = new JavaCell(x, y, 0);
-				} 
+//				if (x == 0 || x == 1) {
+//					map[x][y] = new JavaCell(x, y, 0);
+//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
+//				}
+//
+//				else if (x <= 6 && (y <= 1 || y >= 12)) {
+//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
+//					map[x][y] = new JavaCell(x, y, 0);
+//				}
+//
+//				else if (x >= 7 && (y <= 1 || y >= 12)) {
+//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
+//					map[x][y] = new JavaCell(x, y, 0);
+//				} 
+//				
+//				else if (x == 12 || x == 13) {
+//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
+//					map[x][y] = new JavaCell(x, y, 0);
+//				} 
 				
 				// this creates Cell objects for the rest of central Java
-				else {
+//				else {
 					map[x][y] = new JavaCell(x, y, 0); 
-				}
+					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
+//				}
 			}
 		}
+	}
+	
+	public boolean placeTileOnBoard(int x, int y, Tile tile){
+		JavaCell[][] miniMap = createTestMap(x, y);
+		String[][] tileCells = tile.getTileCells();
+		
+		for (int i = 0; i < tileCells.length; i++) 
+			for (int j = 0; j < tileCells[i].length; j++)
+					if(tileCells[i][j] != null){
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellType(tileCells[i][j]);
+						System.out.println(i + "," + j + " " + map[miniMap[i][j].getX()][miniMap[i][j].getY()].getCellType());
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellId(-1);
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setElevation(map[miniMap[i][j].getX()][miniMap[i][j].getY()].getElevation()+1);
+					}
+		System.out.println("in BoardModel placeTileOnBoard");
+		return true;
 	}
 
 	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player) {
@@ -370,17 +388,13 @@ public class BoardModel implements Serializable<BoardModel> {
 		return true;
 	}
 
-	public boolean placeDeveloper(Point location, JavaPlayer player) {
-		// Set the point equal to the cell on the board
-		JavaCell locationCell = map[location.getX()][location.getY()];
-
+	public boolean placeDeveloper(JavaCell jc, JavaPlayer player) {
 		// Check with validity method first
-		if (!canPlaceDeveloper(locationCell, player))
+		if (!canPlaceDeveloper(jc, player))
 			return false;
 
 		// Set developer on board
-		locationCell.setDeveloper();
-
+		player.associateDeveloperWithCell(jc);
 		return true; // TODO Specific index?? cc: Cameron
 
 	}
@@ -490,7 +504,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 		
 		if (player.decrementNActionPoints(actionPoints, false)) {
-			player.setDeveloperCell(nextCell);
+			player.associateDeveloperWithCell(nextCell);
 			return true;
 		}
 		

@@ -10,25 +10,18 @@ public abstract class SelectOneSpaceComponentAction extends SelectNonRotatableCo
 		//assuming the size of the board is 14x14
 		//OneSpace tiles have the ability to hovered over any space on the board
 		//(does not mean that it is valid)
+		System.out.println("(In Sel1CompAction) in pressArrow()");
 		int newX = x + xChange;
 		int newY = y + yChange;
 		if(isNonRotatableComponentOnBoard(newX, newY)){
+			System.out.println("(In Sel1CompAction) changes (x,y) " + x + "," +y + " to " + newX + "," + newY);
 			x = newX;
 			y = newY;
 			return true;
+			
 		}
 		return false;
 	}
 
-	
-	public boolean isNonRotatableComponentOnBoard(int x, int y) {
-		if(x < 0 || x > 13){ //check if changes in x are invalid
-			return false;
-		}
-		else if(y < 0 || y > 13){ //check if changes in y are invalid
-			return false;
-		}
-		else
-			return true;
-	}
+
 }

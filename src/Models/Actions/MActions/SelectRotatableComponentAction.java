@@ -1,11 +1,21 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+
 public abstract class SelectRotatableComponentAction extends MAction {
 
 	int rotationState = 0;
 	
 	public SelectRotatableComponentAction(String imageKey) {
 		super(imageKey);
+	}
+	
+	public boolean pressTab(){
+		return false;
+	}
+	
+	public Action pressDelete(){
+		return null;
 	}
 
 	public boolean pressSpace() {
@@ -14,8 +24,6 @@ public abstract class SelectRotatableComponentAction extends MAction {
 			rotationState = newRotationState;
 			return true;
 		}
-
-		
 		return false;
 	}
 	

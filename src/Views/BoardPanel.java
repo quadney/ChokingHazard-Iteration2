@@ -27,6 +27,8 @@ public class BoardPanel extends JPanel {
 	private HashMap<String, String> imageSourceHashMap;
 
 	public BoardPanel(){
+		System.out.println("Board Panel is created.");
+		
 		initHashMap();
 		getBackgroundImage();
 		Dimension size = new Dimension(board.getWidth(), board.getHeight());

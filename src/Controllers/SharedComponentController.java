@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import Models.PalaceCard;
 import Models.SharedComponentModel;
+import Models.Actions.Action;
 import Views.SharedComponentPanel;
 
 public class SharedComponentController {
@@ -90,5 +91,24 @@ public class SharedComponentController {
 	//if else, false
 	public boolean selectIrrigationTile(){
 		return sharedModel.hasIrrigationTile();
+	}
+	
+	//takes the action from the GameController and updates the components needed in the SharedComponentPanel/Model
+	//this assumes that the only actions that can change this panel/model are valid Palace/Three/Irrigation actions
+	public void updateSharedPanel(Action action) {
+		
+		//updates each of the palace card stacks with the number
+		for(int i = 0; i < 5; i++){
+			sharedPanel.updatePalaceTiles(sharedModel.getNumPalaceTiles((i+1)*2),(i+1)*2);
+		}
+		
+		//updates the number of three piece tiles
+		sharedPanel.updateThreePieceTiles(sharedModel.getThreeSpaceTiles());
+		
+		//updates the number of irrigation tiles
+		sharedPanel.updateIrrigationTiles(sharedModel.getIrrigationTiles());
+		
+		//do more for palace card shit
+		sharedPanel.updateNumPalaceCards(sharedModel.getNumberPalaceCards());
 	}
 }

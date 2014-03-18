@@ -11,19 +11,15 @@ public class PlayerController {
 	private JavaPlayer[] playerModels;
 	private PlayerPanel[] playerPanels;
 	
-	public PlayerController(int numPlayers, String[] playerNames, String[] playerColors){
-		// create new game constructor
-		this.playerModels = new JavaPlayer[numPlayers];
+	public PlayerController(int numPlayers, JavaPlayer[] players) {
+		this.playerModels = players;
 		this.playerPanels = new PlayerPanel[numPlayers];
-		for(int i = 0; i < playerModels.length; ++i){
-			playerModels[i] = new JavaPlayer(playerNames[i], playerColors[i]);
-			playerPanels[i] = new PlayerPanel(playerNames[i], playerColors[i], playerModels[i].getFamePoints(), 
-					playerModels[i].getActionPoints(), playerModels[i].getDevelopersOffBoard(), 
-					playerModels[i].getNumOneRiceTile(), playerModels[i].getNumOneVillageTile(), 
-					playerModels[i].getNumTwoTile(), playerModels[i].getNumActionTokens(), 0);
+		for(int i = 0; i < numPlayers ; i++){
+			playerPanels[i] = new PlayerPanel(players[i].getName(), players[i].getColor());
+			updatePlayerPanel(i);
 		}
 	}
-	
+
 	public PlayerPanel[] getPlayerPanels(){
 		return this.playerPanels;
 	}
@@ -88,9 +84,18 @@ public class PlayerController {
 	}
 
 	public void setCurrentPlayerinPlayerPanel(int playerIndex) {
-		// TODO Auto-generated method stub
 		playerPanels[playerIndex].setCurrentPlayer();
 	}
+
+	public boolean selectDeveloper(int playerIndex) {
+		return playerModels[playerIndex].canPlaceDeveloperOnBoard();
+	}
+
+	public String getColorOfPlayer(int playerIndex) {
+		playerModels[playerIndex].getColor();
+		return null;
+	}
+
 	
 	//---------------------------------------------------------------------------
 	
@@ -101,6 +106,34 @@ public class PlayerController {
 			playerPanels[i].updateNumPalaceCards(playerModels[i].getPalaceCards().size());
 		}
 
+	}
+
+	public void updatePlayerPanel(int playerIndex) {
+		//given a player index, the corresponding player panel will update with all the information.
+		
+		//tells the player their fame points
+		playerPanels[playerIndex].updateFamePoints(playerModels[playerIndex].getFamePoints());
+		
+		//tells the player panel the number of palace cards
+		playerPanels[playerIndex].updateNumPalaceCards(playerModels[playerIndex].getNumPalaceCards());
+		
+		// tells the player panel the number of rice tiles
+		playerPanels[playerIndex].useOneRiceTile(playerModels[playerIndex].getNumOneRiceTile());
+		
+		// tells the player panel the number of village tiles
+		playerPanels[playerIndex].useOneVillageTile(playerModels[playerIndex].getNumOneVillageTile());
+		
+		// tells the player panel the number of two tiles
+		playerPanels[playerIndex].useTwoTile(playerModels[playerIndex].getNumTwoTile());
+		
+		// tells the player panel the number of action tokens
+		playerPanels[playerIndex].useActionToken(playerModels[playerIndex].getNumActionTokens(),playerModels[playerIndex].getActionPoints());
+		
+		// tells the player their action points
+		playerPanels[playerIndex].updateActionPoints(playerModels[playerIndex].getActionPoints());
+		
+		// tells the panel the number of developers off the board
+		playerPanels[playerIndex].updateDevelopersOffBoard(playerModels[playerIndex].getDevelopersOffBoard());
 	}
 	
 }
