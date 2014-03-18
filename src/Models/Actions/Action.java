@@ -8,10 +8,12 @@ public abstract class Action extends Event implements Serializable<Action> {
 	public final int actionID;
 	public String imageKey;
 	public int famePointsEarned;
+	public int actionPointsCost;
 	
-	public Action(int actionID, int famePointsEarned) {
+	public Action(int actionID, int famePointsEarned, int actionPointsCost) {
 		this.actionID = actionID;
 		this.famePointsEarned = famePointsEarned;
+		this.actionPointsCost = actionPointsCost;
 	}
 	
 	public int getActionID() {
@@ -24,7 +26,11 @@ public abstract class Action extends Event implements Serializable<Action> {
 	}
 
 	public int getEarnedFamePoints() {
-		return 0; //return earned fame points;
+		return famePointsEarned; //return earned fame points;
+	}
+	
+	public int getActionPointsCost(){
+		return actionPointsCost; 
 	}
 
 }

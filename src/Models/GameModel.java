@@ -73,9 +73,6 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	// Used for testing the Actions
-	public void placeTileOnBoard(int x, int y, Tile tile) {
-		gameBoard.placeTileOnBoard(x, y, tile);
-	}
 
 	public boolean endTurn() {
 		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
@@ -87,6 +84,10 @@ public class GameModel implements Serializable<GameModel> {
 																		// players
 
 		return true;
+	}
+	
+	public void placeTile(int x, int y, Tile tile, JavaPlayer player){
+		gameBoard.placeTile(x, y, tile, player);
 	}
 
 	// Returns an array of players in order from highest to lowest of ranks of
@@ -448,5 +449,10 @@ public class GameModel implements Serializable<GameModel> {
 
 	public SharedComponentModel getShared() {
 		return shared;
+	}
+
+	public void placeDeveloperOnBoard(int x, int y) {
+		gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
+		
 	}
 }

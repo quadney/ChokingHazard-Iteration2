@@ -9,9 +9,9 @@ public abstract class RotatableComponentAction extends Action {
 	JavaCell cell[];
 	protected int elevation; //Should be in a subclass called RotatableTileAction but whatever
 
-	public RotatableComponentAction(int actionID, int famePointsEarned, int x, int y, int rotationState, int elevation, JavaCell[] cell) {
+	public RotatableComponentAction(int actionID, int famePointsEarned, int actionPointsCost, int x, int y, int rotationState, int elevation, JavaCell[] cell) {
 
-		super(actionID, famePointsEarned);
+		super(actionID, famePointsEarned, actionPointsCost);
 		this.x = x; 
 		this.y = y;
 		this.rotationState = rotationState;

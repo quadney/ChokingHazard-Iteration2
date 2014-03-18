@@ -3,11 +3,11 @@ package Models.Actions;
 import Helpers.JsonObject;
 import Models.GameModel;
 
-public class PlaceDeveloperOnBoardAction extends OneSpaceComponentAction {
+public class PlaceDeveloperOnBoardAction extends NonRotatableComponentAction {
 
 
-	public PlaceDeveloperOnBoardAction(int actionID, int famePointsEarned) {
-		super(actionID, famePointsEarned);
+	public PlaceDeveloperOnBoardAction(int actionID, int famePointsEarned, int actionPointsEarned, int x, int y) {
+		super(actionID, famePointsEarned, actionPointsEarned, x, y);
 	}
 
 	@Override
@@ -24,7 +24,6 @@ public class PlaceDeveloperOnBoardAction extends OneSpaceComponentAction {
 
 	@Override
 	public void redo(GameModel game) {
-		// TODO Auto-generated method stub
-		
+		 game.placeDeveloperOnBoard(x, y);
 	}
 }

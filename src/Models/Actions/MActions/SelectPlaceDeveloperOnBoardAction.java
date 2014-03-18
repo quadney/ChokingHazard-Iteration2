@@ -1,10 +1,13 @@
 package Models.Actions.MActions;
 
+import Models.GameModel;
 import Models.Actions.Action;
 import Models.Actions.PlaceDeveloperOnBoardAction;
 
-public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAction {
+public class SelectPlaceDeveloperOnBoardAction extends SelectNonRotatableComponentAction {
 
+	//int x; in SelectNonRotatableComponentAction (which also acts as SelectOneSpaceNonRotatableComponentAction class)
+	//int y; in SelectNonRotatableComponent (which also acts as SelectOneSpaceNonRotatableComponentAction class)
 	public SelectPlaceDeveloperOnBoardAction(String imageKey) {
 		super(imageKey);
 	}
@@ -33,7 +36,7 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 
 	@Override
 	public Action pressEnter() {
-		return new PlaceDeveloperOnBoardAction(-1, 0);
+		return new PlaceDeveloperOnBoardAction(-1, 0, 0, x, y); //this will change
 		// TODO Auto-generated method stub
 	}
 
