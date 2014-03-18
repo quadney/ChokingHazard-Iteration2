@@ -56,7 +56,7 @@ public class GameModel implements Serializable<GameModel> {
 		players[playerIndex].changeFamePoints(modifier);
 	}
    
-   public Developer getDeveloperOnCell(Cell c)
+   public Developer getDeveloperOnCell(JavaCell c)
    {
       for(int i = 0; i < players.length; i++)
       {
@@ -86,15 +86,15 @@ public class GameModel implements Serializable<GameModel> {
    
    //Returns an array of players in order from highest to lowest of ranks of players
    //valid on a palace/city
-	public ArrayList<Player> getPalaceRanks(JavaCell palace) {
+	public ArrayList<JavaPlayer> getPalaceRanks(JavaCell palace) {
 		ArrayList<JavaCell> city = gameBoard.getCityFromRootCell(palace);
 
-		HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
+		HashMap<JavaPlayer, Integer> scores = new HashMap<JavaPlayer, Integer>();
 
 		for (JavaCell c : city) {
 			if (getDeveloperOnCell(c) != null) {
 				Developer d = getDeveloperOnCell(c);
-				Player p = d.getOwner();
+				JavaPlayer p = d.getOwner();
 				int rank = c.getElevation();
 
 				if (!scores.containsKey(p)) {
@@ -115,11 +115,11 @@ public class GameModel implements Serializable<GameModel> {
          values.add(i);
       Collections.sort(values);
       
-      ArrayList<Player> players = new ArrayList<Player>();
+      ArrayList<JavaPlayer> players = new ArrayList<JavaPlayer>();
       
       for(Integer i:values)
       {
-         for(Player p : scores.keySet())
+         for(JavaPlayer p : scores.keySet())
          {
             if(scores.get(p) == i)
                players.add(p);
@@ -130,12 +130,12 @@ public class GameModel implements Serializable<GameModel> {
 
    }
    
-   public ArrayList<Player> getIrrigationRanks(JavaCell cell)
+   public ArrayList<JavaPlayer> getIrrigationRanks(JavaCell cell)
    {
       int x = cell.getX();
       int y = cell.getY();
       
-      HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
+      HashMap<JavaPlayer, Integer> scores = new HashMap<JavaPlayer, Integer>();
 
       JavaCell[][] map = gameBoard.getMap();
       
@@ -143,7 +143,7 @@ public class GameModel implements Serializable<GameModel> {
 		{
          JavaCell c = map[y + 1][x];
          Developer d = getDeveloperOnCell(map[y + 1][x]);
-         Player p = d.getOwner();
+         JavaPlayer p = d.getOwner();
          int rank = c.getElevation();
          if(!scores.containsKey(p))
          {
@@ -160,7 +160,7 @@ public class GameModel implements Serializable<GameModel> {
 		{
          JavaCell c = map[y - 1][x];
          Developer d = getDeveloperOnCell(map[y - 1][x]);
-			Player p = d.getOwner();
+			JavaPlayer p = d.getOwner();
          int rank = cell.getElevation();
          if(!scores.containsKey(p))
          {
@@ -177,7 +177,7 @@ public class GameModel implements Serializable<GameModel> {
 		{
          JavaCell c = map[y][x+1];
          Developer d = getDeveloperOnCell(map[y][x + 1]);
-         Player p = d.getOwner();
+         JavaPlayer p = d.getOwner();
          int rank = c.getElevation();
          if(!scores.containsKey(p))
          {
@@ -194,7 +194,7 @@ public class GameModel implements Serializable<GameModel> {
 		{ 
          JavaCell c = map[y][x-1];
          Developer d = getDeveloperOnCell(map[y][x - 1]);
-         Player p = d.getOwner();
+         JavaPlayer p = d.getOwner();
          int rank = cell.getElevation();
          if(!scores.containsKey(p))
          {
@@ -213,11 +213,11 @@ public class GameModel implements Serializable<GameModel> {
          values.add(i);
       Collections.sort(values);
       
-      ArrayList<Player> players = new ArrayList<Player>();
+      ArrayList<JavaPlayer> players = new ArrayList<JavaPlayer>();
       
       for(Integer i:values)
       {
-         for(Player p : scores.keySet())
+         for(JavaPlayer p : scores.keySet())
          {
             if(scores.get(p) == i)
                players.add(p);

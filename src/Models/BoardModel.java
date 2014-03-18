@@ -2,12 +2,10 @@ package Models;
 
 
 import Helpers.Json;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Stack;
 
 import Helpers.JsonObject;
 
@@ -21,7 +19,6 @@ public class BoardModel implements Serializable<BoardModel> {
 	public BoardModel() {
 		this.map = new JavaCell[14][14];
 		this.path = new LinkedList<JavaCell>();
-		int k = 0;
 		cellId = 0;
 
 		for (int x = 0; x < map.length; x++) {
