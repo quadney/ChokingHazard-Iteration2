@@ -2,15 +2,15 @@ package Models.Actions;
 
 import Helpers.JsonObject;
 import Models.GameModel;
-import Models.JavaCell;
+import Models.Tile;
+import Models.Tile.TileType;
 
 public class ThreeTileAction extends RotatableComponentAction {
 
 	public boolean isFinalRound;
 
-	public ThreeTileAction(int actionID, int famePointsEarned, int x, int y, int rotationState, boolean isFinalRound, int elevation, JavaCell[] cell) {
-		super(actionID, famePointsEarned, x, y, rotationState, elevation,  cell);
-		this.isFinalRound = isFinalRound;
+	public ThreeTileAction(int actionID, int x, int y, int rotationState) {
+		super(actionID, x, y, rotationState);
 		this.imageKey = "threeTile";
 	}
 	
@@ -28,7 +28,7 @@ public class ThreeTileAction extends RotatableComponentAction {
 
 	@Override
 	public void redo(GameModel game) {
-		// TODO Auto-generated method stub
-		
+		game.getBoard().placeTile(x, y, new Tile(TileType.threetile, rotationState), game.getCurrentPlayer());
+		game.getShared().decrementThreeSpaceTiles();
 	}
 }

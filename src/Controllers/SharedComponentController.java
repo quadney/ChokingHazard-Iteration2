@@ -1,10 +1,7 @@
 package Controllers;
 
-import java.util.LinkedList;
-
 import Models.PalaceCard;
 import Models.SharedComponentModel;
-import Models.Actions.Action;
 import Views.SharedComponentPanel;
 
 public class SharedComponentController {

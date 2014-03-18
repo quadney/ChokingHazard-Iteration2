@@ -2,6 +2,7 @@ package Models;
 
 import Helpers.Json;
 import Helpers.JsonObject;
+import Models.Tile.TileType;
 
 public class JavaCell implements Serializable<JavaCell> {
    private int elevation;
@@ -10,6 +11,13 @@ public class JavaCell implements Serializable<JavaCell> {
    private int cellId;
    public int xVal;
    public int yVal;
+   public JavaCell(int x, int y, String cellType, int cellId, int elevation) {
+	   this.xVal = x;
+	   this.yVal = y;
+	   this.cellType = cellType;
+	   this.cellId = cellId;
+	   this.elevation = elevation;
+   }
    
    public JavaCell(int x, int y, String cellType, int cellId) {
 	   this.xVal = x;
@@ -56,8 +64,8 @@ public class JavaCell implements Serializable<JavaCell> {
       elevation = e;
    }
    
-   public void setCellType(String ct) {
-      cellType = ct;
+   public void setCellType(TileType tileCells) {
+      cellType = tileCells.toString();
    }
    
    public void setDeveloper() {

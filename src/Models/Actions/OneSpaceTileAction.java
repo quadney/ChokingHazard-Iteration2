@@ -4,17 +4,12 @@ import Helpers.JsonObject;
 import Models.GameModel;
 import Models.JavaCell;
 
-public class OneSpaceTileAction extends OneSpaceComponentAction {
+public class OneSpaceTileAction extends NonRotatableComponentAction {
 
-	public int x;
-	public int y;
 	public JavaCell cell;
 
-	public OneSpaceTileAction(int actionID, int famePointsEarned, int x, int y, JavaCell cell) {
-		super(actionID, famePointsEarned);
-		this.x = x; 
-		this.y = y;
-		this.cell = cell;
+	public OneSpaceTileAction(int actionID, int x, int y) {
+		super(actionID, x, y);
 	}
 
 	@Override

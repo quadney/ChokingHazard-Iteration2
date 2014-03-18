@@ -450,4 +450,12 @@ public class GameModel implements Serializable<GameModel> {
 	public SharedComponentModel getShared() {
 		return shared;
 	}
+
+	public int getNextCellId() {
+		return gameBoard.getNextCellId();
+	}
+
+	public void placeDeveloperOnBoard(int x, int y) {
+		gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
+	}
 }
