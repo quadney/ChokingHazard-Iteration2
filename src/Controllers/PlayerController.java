@@ -2,30 +2,21 @@ package Controllers;
 
 import Models.JavaPlayer;
 import Models.PalaceCard;
-import Models.Actions.Action;
-import Models.Actions.RiceTileAction;
-import Models.Actions.TwoTileAction;
-import Models.Actions.UseActionTokenAction;
-import Models.Actions.VillageTileAction;
 import Views.PlayerPanel;
 
 public class PlayerController {
 	private JavaPlayer[] playerModels;
 	private PlayerPanel[] playerPanels;
 	
-	public PlayerController(int numPlayers, String[] playerNames, String[] playerColors){
-		// create new game constructor
-		this.playerModels = new JavaPlayer[numPlayers];
+	public PlayerController(int numPlayers, JavaPlayer[] players) {
+		this.playerModels = players;
 		this.playerPanels = new PlayerPanel[numPlayers];
-		for(int i = 0; i < playerModels.length; ++i){
-			playerModels[i] = new JavaPlayer(playerNames[i], playerColors[i]);
-			playerPanels[i] = new PlayerPanel(playerNames[i], playerColors[i], playerModels[i].getFamePoints(), 
-					playerModels[i].getActionPoints(), playerModels[i].getDevelopersOffBoard(), 
-					playerModels[i].getNumOneRiceTile(), playerModels[i].getNumOneVillageTile(), 
-					playerModels[i].getNumTwoTile(), playerModels[i].getNumActionTokens(), 0);
+		for(int i = 0; i < numPlayers ; i++){
+			playerPanels[i] = new PlayerPanel(players[i].getName(), players[i].getColor());
+			updatePlayerPanel(i);
 		}
 	}
-	
+
 	public PlayerPanel[] getPlayerPanels(){
 		return this.playerPanels;
 	}
@@ -128,6 +119,9 @@ public class PlayerController {
 		
 		// tells the player their action points
 		playerPanels[playerIndex].updateActionPoints(playerModels[playerIndex].getActionPoints());
+		
+		// tells the panel the number of developers off the board
+		playerPanels[playerIndex].updateDevelopersOffBoard(playerModels[playerIndex].getDevelopersOffBoard());
 	}
 	
 	

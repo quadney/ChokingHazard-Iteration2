@@ -43,7 +43,7 @@ public class GameController {
 		
 		currentGame = new GameModel(numPlayers, playerNames, playerColors);
 		board = new BoardController(currentGame.getBoard());
-		players = new PlayerController(numPlayers, null, null); //change player controller to query the model for the player info
+		players = new PlayerController(numPlayers, currentGame.getPlayers()); //change player controller to query the model for the player info
 		shared = new SharedComponentController(); //change this to work
 		
 		//this initializes the dealing of the palace cards
@@ -232,7 +232,7 @@ public class GameController {
 			//does not become a selected action, just does a regular action!
 			//released T, use action token
 			if(players.selectActionToken(currentGame.getPlayerIndex())){
-				UseActionTokenAction actionTokenAction = new UseActionTokenAction(-1,null,null,0);
+				UseActionTokenAction actionTokenAction = new UseActionTokenAction(-1, 0);
 				currentGame.addToActionHistory(actionTokenAction);
 				updateControllersWithAction(actionTokenAction);
 			}

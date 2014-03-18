@@ -1,5 +1,5 @@
 package Views;
-
+  
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -26,7 +26,7 @@ public class PlayerPanel extends JPanel{
 	private JLabel palaceCards;
 	private HashMap<String, String> imageSourceHashMap;
 	
-	public PlayerPanel(String name, String color, int numFamePoints, int numActionPoints, int numDevelopers, int numRiceTile, int numVillageTile, int numTwoTile, int numActionTokens, int numPalaceCards){
+	public PlayerPanel(String name, String color){
 		setLayout(new FlowLayout());
 		this.name = name;
 		this.color = color;
@@ -46,10 +46,10 @@ public class PlayerPanel extends JPanel{
         setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         
         initHashMap();
-        initLayout(numFamePoints, numActionPoints, numDevelopers, numRiceTile, numVillageTile, numTwoTile, numActionTokens, numPalaceCards);
+        initLayout();
 	}
 	
-	private void initLayout(int numFamePoints, int numActionPoints, int numDevelopers, int numRiceTile, int numVillageTile, int numTwoTile, int numActionTokens, int numPalaceCards) {
+	private void initLayout() {
 		JPanel leftPlayerInfo = new JPanel();
 		leftPlayerInfo.setPreferredSize(new Dimension(115, 60));
 		leftPlayerInfo.setBackground(Color.WHITE);
@@ -61,14 +61,14 @@ public class PlayerPanel extends JPanel{
         playerName.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         leftPlayerInfo.add(playerName);
         
-        actionPointsLeft = new JLabel(numActionPoints+"");
+        actionPointsLeft = new JLabel("");
         actionPointsLeft.setFont(new Font("Lucida Grande", 0, 48)); 
         actionPointsLeft.setHorizontalAlignment(SwingConstants.CENTER);
         actionPointsLeft.setPreferredSize(new Dimension(60, 60));
         actionPointsLeft.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
         this.add(actionPointsLeft);
         
-        famePoints = new JLabel(numFamePoints+"");
+        famePoints = new JLabel("");
         famePoints.setFont(new Font("Lucida Grande", 1, 36));
         famePoints.setHorizontalAlignment(SwingConstants.LEFT);
         famePoints.setPreferredSize(new Dimension(110, 32));
@@ -80,22 +80,22 @@ public class PlayerPanel extends JPanel{
         jSeparator1.setPreferredSize(new Dimension(180, 15));
         this.add(jSeparator1);
         
-        developers = newJLabel(numDevelopers+"", imageSourceHashMap.get("layout_player_"+color), 80, 45); 
+        developers = newJLabel("", imageSourceHashMap.get("layout_player_"+color), 80, 45); 
         this.add(developers);
         
-        actionTokens = newJLabel(numActionTokens+"", imageSourceHashMap.get("layout_actionToken"), 80, 45); 
+        actionTokens = newJLabel("", imageSourceHashMap.get("layout_actionToken"), 80, 45); 
         this.add(actionTokens);
 
-        oneTileRice = newJLabel(numRiceTile+"", imageSourceHashMap.get("layout_riceTile"), 80, 45); 
+        oneTileRice = newJLabel("", imageSourceHashMap.get("layout_riceTile"), 80, 45); 
         this.add(oneTileRice);
         
-        oneTileVillage = newJLabel(numVillageTile+"", imageSourceHashMap.get("layout_villageTile"), 80, 45); 
+        oneTileVillage = newJLabel("", imageSourceHashMap.get("layout_villageTile"), 80, 45); 
         this.add(oneTileVillage);
 
-        twoTile = newJLabel(numTwoTile+"", imageSourceHashMap.get("layout_twoTile"), 160, 45); 
+        twoTile = newJLabel("", imageSourceHashMap.get("layout_twoTile"), 160, 45); 
         this.add(twoTile);
         
-        palaceCards = newJLabel(numPalaceCards+"", imageSourceHashMap.get("layout_palaceCard_back"), 160, 75);
+        palaceCards = newJLabel("", imageSourceHashMap.get("layout_palaceCard_back"), 160, 75);
         this.add(palaceCards);
 		
 	}
