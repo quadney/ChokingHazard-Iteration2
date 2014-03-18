@@ -42,4 +42,10 @@ public class SelectThreeTileAction extends SelectRotatableComponentAction{
 		}
 		return true;
 	}
+
+	@Override
+	public boolean pressEnter() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

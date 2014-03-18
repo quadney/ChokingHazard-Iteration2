@@ -22,4 +22,10 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 			return true;
 	}
 
+	@Override
+	public boolean pressEnter() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

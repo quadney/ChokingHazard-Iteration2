@@ -38,4 +38,10 @@ public class SelectTwoTileAction extends SelectRotatableComponentAction {
 		}
 		return true;
 	}
+
+	@Override
+	public boolean pressEnter() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

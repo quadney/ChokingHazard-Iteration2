@@ -17,6 +17,12 @@ public class SelectOneSpaceTileAction extends SelectOneSpaceComponentAction {
 		else
 			return true;
 	}
+
+	@Override
+	public boolean pressEnter() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }
    
