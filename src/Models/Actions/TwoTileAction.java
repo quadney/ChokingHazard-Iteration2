@@ -2,11 +2,12 @@ package Models.Actions;
 
 import Helpers.JsonObject;
 import Models.GameModel;
+import Models.JavaCell;
 
 public class TwoTileAction extends RotatableComponentAction {
 
-	public TwoTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y,	int rotationState) {
-		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState);
+	public TwoTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y,	int rotationState, JavaCell[] cell) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState, cell);
 	}
 
 	@Override

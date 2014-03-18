@@ -48,6 +48,6 @@ public class SelectThreeTileAction extends SelectRotatableComponentAction{
 
 	@Override
 	public Action pressEnter() {
-		return new ThreeTileAction(-1, null, null, 0, x, y, rotationState, false);
+		return new ThreeTileAction(-1, null, null, 0, x, y, rotationState, false, null);
 	}
 }

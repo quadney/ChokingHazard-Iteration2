@@ -403,6 +403,14 @@ public class GameModel implements Serializable<GameModel> {
 	public void addToActionHistory(Action action) {
 		actionHistory.add(action);
 	}
+	
+	public JavaPlayer getCurrentPlayer() {
+		return players[indexOfCurrentPlayer];
+	}
+
+	public BoardModel getBoard() {
+		return gameBoard;
+	}
 
 	public JavaPlayer getCurrentPlayer() {
 		return players[indexOfCurrentPlayer];

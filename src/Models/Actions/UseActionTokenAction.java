@@ -23,14 +23,11 @@ public class UseActionTokenAction extends Action {
 
 	@Override
 	public void undo(GameModel game) {
-		// TODO Auto-generated method stub
-		
+		game.getCurrentPlayer().unuseActionToken();
 	}
 
 	@Override
 	public void redo(GameModel game) {
-		// TODO Auto-generated method stub
-		
+		game.getCurrentPlayer().useActionToken();
 	}
-
 }

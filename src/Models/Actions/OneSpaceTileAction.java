@@ -2,16 +2,19 @@ package Models.Actions;
 
 import Helpers.JsonObject;
 import Models.GameModel;
+import Models.JavaCell;
 
 public class OneSpaceTileAction extends OneSpaceComponentAction {
 
 	public int x;
 	public int y;
+	public JavaCell cell;
 
-	public OneSpaceTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y) {
+	public OneSpaceTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y, JavaCell cell) {
 		super(actionID, beforeImageKey, afterImageKey, famePointsEarned);
 		this.x = x; 
 		this.y = y;
+		this.cell = cell;
 	}
 
 	@Override
