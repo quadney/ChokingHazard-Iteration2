@@ -17,8 +17,6 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	private ArrayList<PalaceCard> palaceCards;
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
-
-
 	private Developer[] developerArray;
 	public int currentlySelectedDeveloper;
 	private boolean hasPlacedLandTile;
@@ -71,6 +69,10 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 		}
 		
 		return actionPoints - 1;
+	}
+	
+	public void setDeveloperCell(JavaCell jc) {
+		developerArray[selectedDeveloperIndex].setLocation(jc);
 	}
 	
 	public void changeFamePoints(int modifier){
