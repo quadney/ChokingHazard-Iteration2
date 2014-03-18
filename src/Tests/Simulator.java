@@ -13,7 +13,7 @@ public class Simulator {
 	public static int QUIT_POS_Y = 140;
 	public static int PLACE_START_X = 1;
 	public static int PLACE_START_Y = 1;
-	public static int THROTTLE = 100;
+	public static int THROTTLE = 30;
 	public static int TIME_BETWEEN_MAIN_PLAYERS = 150;
 	public static int TIME_BETWEEN_MAIN_COMMANDS = 100;
 	public static int GAME_LOAD_WAIT_TIME = 2000;
