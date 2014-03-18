@@ -7,6 +7,7 @@ public class VillageTileAction extends OneSpaceTileAction {
 
 	public VillageTileAction(int actionID, int famePointsEarned, int x, int y, JavaCell cell) {
 		super(actionID, famePointsEarned, x, y, cell);
+		this.imageKey = "village";
 	}
 
 	@Override

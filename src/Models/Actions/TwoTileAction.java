@@ -11,6 +11,7 @@ public class TwoTileAction extends RotatableComponentAction {
 	public TwoTileAction(int actionID, int famePointsEarned, int x, int y,	int rotationState, int elevation, JavaCell[] cell) {
 		super(actionID, famePointsEarned, x, y, rotationState, elevation, cell);
 		System.out.println("Two Tile constructor end");
+		this.imageKey = "twotile";
 	}
 
 	@Override

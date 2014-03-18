@@ -11,6 +11,7 @@ public class ThreeTileAction extends RotatableComponentAction {
 	public ThreeTileAction(int actionID, int famePointsEarned, int x, int y, int rotationState, boolean isFinalRound, int elevation, JavaCell[] cell) {
 		super(actionID, famePointsEarned, x, y, rotationState, elevation,  cell);
 		this.isFinalRound = isFinalRound;
+		this.imageKey = "threetile";
 	}
 	
 	@Override
