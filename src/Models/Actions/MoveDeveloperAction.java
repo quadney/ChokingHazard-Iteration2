@@ -5,8 +5,8 @@ import Models.GameModel;
 
 public class MoveDeveloperAction extends NonRotatableComponentAction {
 
-	public MoveDeveloperAction(int actionID, int famePointsEarned, int actionPointsEarned) {
-		super(actionID, famePointsEarned, actionPointsEarned);
+	public MoveDeveloperAction(int actionID, int famePointsEarned, int actionPointsEarned, int x, int y) {
+		super(actionID, famePointsEarned, actionPointsEarned, x, y);
 	}
 
 	@Override

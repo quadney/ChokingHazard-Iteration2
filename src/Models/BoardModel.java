@@ -349,6 +349,10 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		return true;
 	}
+	
+	public JavaCell getCellAtXY(int x, int y){
+		return map[x][y];
+	}
 
 	public boolean placeDeveloper(JavaCell jc, JavaPlayer player) {
 		// Check with validity method first

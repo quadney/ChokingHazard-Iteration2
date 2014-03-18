@@ -2,7 +2,7 @@ package Models.Actions.MActions;
 
 import Models.Actions.Action;
 
-public abstract class SelectOneSpaceTileAction extends SelectOneSpaceComponentAction {
+public abstract class SelectOneSpaceTileAction extends SelectNonRotatableComponentAction {
 
 	
 	public SelectOneSpaceTileAction(String imageKey) {
