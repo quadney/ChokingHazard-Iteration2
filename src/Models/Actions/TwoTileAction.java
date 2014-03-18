@@ -27,12 +27,6 @@ public class TwoTileAction extends RotatableComponentAction {
 	}
 
 	@Override
-	public void undo(GameModel game) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void redo(GameModel game) {
 		game.placeTile(x, y, new Tile(2), game.getPlayerIndex());
 		

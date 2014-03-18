@@ -6,7 +6,6 @@ import Models.Actions.*;
 import java.util.*;
 
 import Models.Actions.MActions.MAction;
-import Views.PlayerPanel;
 
 // This enum declaration might need to be moved, not sure how accessible it is right now 
 // (needs to be accessible by GameModel and the Controller). #JavaTroubles
