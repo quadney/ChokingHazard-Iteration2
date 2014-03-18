@@ -44,6 +44,6 @@ public class SelectTwoTileAction extends SelectRotatableComponentAction {
 
 	@Override
 	public Action pressEnter() {
-		return new TwoTileAction(x, y, rotationState);
+		return new TwoTileAction(-1, null, null, 0, x, y, rotationState);
 	}
 }

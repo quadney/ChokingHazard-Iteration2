@@ -5,8 +5,8 @@ import Models.GameModel;
 
 public class DrawPalaceCardAction extends Action {
 
-	public DrawPalaceCardAction(int actionID, int playerIndex) {
-		super(actionID, playerIndex);
+	public DrawPalaceCardAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned);
 	}
 
 	@Override

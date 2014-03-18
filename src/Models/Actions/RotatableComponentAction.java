@@ -1,11 +1,14 @@
 package Models.Actions;
 
 public abstract class RotatableComponentAction extends Action {
-
 	int rotationState = 0;
-	
-	public RotatableComponentAction(int actionID, int playerIndex, int rotationState) {
-		super(actionID, playerIndex);
+	protected int x; 
+	protected int y;
+
+	public RotatableComponentAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y, int rotationState) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned);
+		this.x = x; 
+		this.y = y;
 		this.rotationState = rotationState;
 	}
 

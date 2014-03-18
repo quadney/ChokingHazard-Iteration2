@@ -5,11 +5,13 @@ import Models.GameModel;
 
 public class ThreeTileAction extends RotatableComponentAction {
 
-	public ThreeTileAction(int actionID, int playerIndex, int rotationState) {
-		super(actionID, playerIndex, rotationState);
-		// TODO Auto-generated constructor stub
-	}
+	public boolean isFinalRound;
 
+	public ThreeTileAction(int actionID, String beforeImageKey,	String afterImageKey, int famePointsEarned, int x, int y, int rotationState, boolean isFinalRound) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState);
+		this.isFinalRound = isFinalRound;
+	}
+	
 	@Override
 	public String serialize() {
 		// TODO Auto-generated method stub

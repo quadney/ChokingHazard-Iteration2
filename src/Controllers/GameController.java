@@ -261,15 +261,13 @@ public class GameController {
 	private void updateControllersWithAction(Action action){
 		// TODO turn all into permanent actions instead of momentary
 		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || 
-			action instanceof ThreeTileAction || action instanceof DrawPalaceCardAction)
+		action instanceof ThreeTileAction || action instanceof DrawPalaceCardAction)
 			shared.doAction(action);
 		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction
-			|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
-			|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)
+		|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
+		|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)
 			board.doAction(action);
-		if (action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
-			|| action instanceof RiceTileAction || action instanceof VillageTileAction || action instanceof UseActionTokenAction)
-			players.doAction(action);
+		players.doAction(action);
 	}
 	
 	private void updateBoardControllerWithSelectedAction(){
