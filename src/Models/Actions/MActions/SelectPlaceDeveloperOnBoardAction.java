@@ -34,4 +34,16 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 		return false;
 	}
 
+	@Override
+	public boolean pressTab() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean pressDelete() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
