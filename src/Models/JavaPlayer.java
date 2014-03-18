@@ -1,9 +1,8 @@
 package Models;
 import Helpers.Json;
-
 import java.util.*;
-
 import Helpers.JsonObject;
+import Views.GameContainerPanel;
 
 public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	private int famePoints;
@@ -119,7 +118,7 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	
 	public void removeDeveloperFromArray()
 	{
-		developerArray[currentlySelectedDeveloper] = null;
+		developerArray[currentlySelectedDeveloper] = false;
 	}
 	
 	public void addPalaceCard(PalaceCard card){
@@ -135,7 +134,7 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	{
 		if (!hasPlacedLandTile)
 		{
-			//TODO: Alert they haven't placed land
+			GameContainerPanel.tellPeopleTheyAintPlacedNoLandTile(); //TODO: Make sure this works
 			return false;
 		}
 		//Otherwise, typical end of turn activities
