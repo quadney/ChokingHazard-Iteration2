@@ -55,6 +55,10 @@ public class GameModel implements Serializable<GameModel> {
 	public void changeFamePoints(int playerIndex, int modifier) {
 		players[playerIndex].changeFamePoints(modifier);
 	}
+	
+	public void placeTileOnBoard(int x, int y, Tile tile){
+		gameBoard.placeTileOnBoard(x, y, tile);
+	}
    
    public Developer getDeveloperOnCell(JavaCell c)
    {
@@ -328,7 +332,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	public boolean pressDown() {
 		if(selectedAction != null){
-			System.out.println("(In GModel)pressDown selectedAction != null ");
+			//System.out.println("(In GModel)pressDown selectedAction != null ");
 			return selectedAction.pressArrow(0,1);
 		}
 		return false;
@@ -401,5 +405,12 @@ public class GameModel implements Serializable<GameModel> {
 
 	public JavaPlayer getCurrentPlayer() {
 		return players[indexOfCurrentPlayer];
+	}
+
+	public void doLastActionInHistory() {
+		System.out.println("in doLactActionInHistory");
+		if(actionHistory.size() > 0){
+			actionHistory.peek().redo(this);
+		}
 	}
 }
