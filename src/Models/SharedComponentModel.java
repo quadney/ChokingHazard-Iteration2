@@ -62,6 +62,10 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 		return palaceCardDeck.size();
 	}
 	
+	public int getNumPalaceTiles(int value){
+		return palaceTiles[value/2 - 1];
+	}
+	
 	public PalaceCard drawFromDeck(){
 		PalaceCard card = palaceCardDeck.pop();
 		checkIfDeckIsEmpty();
@@ -112,8 +116,30 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 		//this check if you can use a irrigation tile (has more than 1 left)
 		//return true if this is allowed
 		return irrigationTiles > 0;
-		
-		
+	}
+	
+	public void incrementIrrigationTile(){
+		irrigationTiles++;
+	}
+	
+	public void incrementPalaceTile(int value){
+		palaceTiles[value/2 - 1]++;
+	}
+	
+	public void incrementThreeSpaceTiles(){
+		threeSpaceTiles++;
+	}
+	
+	public void decrementIrrigationTiles(){
+		irrigationTiles--;
+	}
+	
+	public void decrementPalaceTiles(int value){
+		palaceTiles[value/2 - 1]--;
+	}
+	
+	public void decrementThreeSpaceTiles(){
+		threeSpaceTiles--;
 	}
 
 	@Override
