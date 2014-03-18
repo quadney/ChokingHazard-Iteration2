@@ -134,5 +134,10 @@ public class GameContainerPanel extends JPanel {
 		festivalFrame = new HoldFestivalFrame(players, indexOfPlayerHoldingFestival, festivalCard, selectedPalaceValue);
 		festivalFrame.setVisible(true);
 	}
+	
+	public static void tellPeopleTheyAintPlacedNoLandTile()
+	{
+		JOptionPane.showMessageDialog( null, "You haven't placed a land tile :(");
+	}
 
 }
