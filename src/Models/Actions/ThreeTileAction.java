@@ -8,7 +8,7 @@ public class ThreeTileAction extends RotatableComponentAction {
 	public boolean isFinalRound;
 
 	public ThreeTileAction(int actionID, String beforeImageKey,	String afterImageKey, int famePointsEarned, int x, int y, int rotationState, boolean isFinalRound) {
-		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState);
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState, 0); //TODO hard coded elevation value
 		this.isFinalRound = isFinalRound;
 	}
 	
