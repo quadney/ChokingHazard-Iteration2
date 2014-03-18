@@ -109,8 +109,9 @@ public class GameController {
 		case 10:
 			//released enter, place tile/developer onto board.
 			System.out.println("(in GameController)Enter was pressed");
-			
-
+			if(currentGame.pressEnter()){
+				updateBoardControllerWithAction();
+			}
 			break;	
 		case 27:
 			//escapes out of a selected action
@@ -234,6 +235,22 @@ public class GameController {
 				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
 			}
 			break;		
+		}
+	}
+	
+	private void updateBoardControllerWithAction(){
+		// TODO turn all into permanent actions instead of momentary
+		if (currentGame.getSelectedAction() instanceof SelectTwoTileAction || currentGame.getSelectedAction() instanceof SelectThreeTileAction){
+			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");
+			//System.out.println(" This is the rotation state: " + ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableComponentAction)currentGame.getSelectedAction()).getRotationState());
+		}
+		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
+			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
+			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), 0);
+		}
+		else{//developer
+			//TODO this is to tell the view that the developer path has changed
 		}
 	}
 	
