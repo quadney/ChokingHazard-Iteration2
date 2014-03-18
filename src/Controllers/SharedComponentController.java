@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import Models.PalaceCard;
 import Models.SharedComponentModel;
 import Models.Actions.Action;
+import Models.Actions.IrrigationTileAction;
+import Models.Actions.PalaceTileAction;
+import Models.Actions.ThreeTileAction;
 import Views.SharedComponentPanel;
 
 public class SharedComponentController {
@@ -82,8 +85,22 @@ public class SharedComponentController {
 	public boolean selectIrrigationTile(){
 		return sharedModel.hasIrrigationTile();
 	}
+	
+	//takes the action from the GameController and updates the components needed in the SharedComponentPanel/Model
+	//this assumes that the only actions that can change this panel/model are valid Palace/Three/Irrigation actions
 	public void doAction(Action action) {
-		// TODO Auto-generated method stub
-		
+		if(action instanceof PalaceTileAction){
+			int value = ((PalaceTileAction)action).getValueOfPalace();
+			sharedModel.decrementPalaceTiles(value);
+			sharedPanel.updatePalaceTiles(sharedModel.getNumPalaceTiles(value),value);
+		}
+		else if (action instanceof ThreeTileAction){
+			sharedModel.decrementThreeSpaceTiles();
+			sharedPanel.updateThreePieceTiles(sharedModel.getThreeSpaceTiles());
+		}
+		else if (action instanceof IrrigationTileAction){
+			sharedModel.decrementIrrigationTiles();
+			sharedPanel.updateIrrigationTiles(sharedModel.getIrrigationTiles());
+		}
 	}
 }
