@@ -28,7 +28,7 @@ public class TwoTileAction extends RotatableComponentAction {
 
 	@Override
 	public void redo(GameModel game) {
-		game.placeTile(x, y, new Tile(2), game.getPlayerIndex());
+		game.placeTile(x, y, new Tile(2), game.getCurrentPlayer());
 		
 		System.out.println(x + "," + y +"Center " + game.getBoard().getMap()[x][y].getCellType());
 		System.out.println("Down " + game.getBoard().getMap()[x + 1][y].getCellType());
