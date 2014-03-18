@@ -6,14 +6,11 @@ import Models.Serializable;
 public abstract class Action extends Event implements Serializable<Action> {
 
 	public final int actionID;
-	public String beforeImageKey;
-	public String afterImageKey;
+	public String imageKey;
 	public int famePointsEarned;
 	
-	public Action(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned) {
+	public Action(int actionID, int famePointsEarned) {
 		this.actionID = actionID;
-		this.beforeImageKey = beforeImageKey; 
-		this.afterImageKey = afterImageKey;
 		this.famePointsEarned = famePointsEarned;
 	}
 	

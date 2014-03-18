@@ -12,6 +12,6 @@ public class SelectRiceTileAction extends SelectOneSpaceTileAction {
 	
 	@Override
 	public Action pressEnter() {
-		return new RiceTileAction(-1, null, null, x, y, 0, null);
+		return new RiceTileAction(-1, x, y, 0, null);
 	}
 }

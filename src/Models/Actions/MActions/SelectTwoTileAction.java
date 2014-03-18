@@ -45,6 +45,6 @@ public class SelectTwoTileAction extends SelectRotatableComponentAction {
 	@Override
 	public Action pressEnter() {
 		System.out.println("Created TwoTileAction");
-		return new TwoTileAction(-1, null, "twoTile", 0, x, y, rotationState, 1, null); //hard coded elevation for now
+		return new TwoTileAction(-1, 0, x, y, rotationState, 1, null); //hard coded elevation for now
 	}
 }

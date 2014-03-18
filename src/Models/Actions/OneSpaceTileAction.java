@@ -12,8 +12,8 @@ public class OneSpaceTileAction extends OneSpaceComponentAction {
 	public int y;
 	public JavaCell cell;
 
-	public OneSpaceTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y, JavaCell cell) {
-		super(actionID, beforeImageKey, afterImageKey, famePointsEarned);
+	public OneSpaceTileAction(int actionID, int famePointsEarned, int x, int y, JavaCell cell) {
+		super(actionID, famePointsEarned);
 		this.x = x; 
 		this.y = y;
 		this.cell = cell;

@@ -5,8 +5,8 @@ import Models.GameModel;
 
 public class TakeDeveloperOffBoardAction extends OneSpaceComponentAction {
 
-	public TakeDeveloperOffBoardAction(int actionID, String beforeImageKey,	String afterImageKey, int famePointsEarned) {
-		super(actionID, beforeImageKey, afterImageKey, famePointsEarned);
+	public TakeDeveloperOffBoardAction(int actionID, int famePointsEarned) {
+		super(actionID, famePointsEarned);
 	}
 
 	@Override
