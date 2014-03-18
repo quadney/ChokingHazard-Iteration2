@@ -6,6 +6,7 @@ import Models.Actions.*;
 import java.util.*;
 
 import Models.Actions.MActions.MAction;
+import Views.PlayerPanel;
 
 // This enum declaration might need to be moved, not sure how accessible it is right now 
 // (needs to be accessible by GameModel and the Controller). #JavaTroubles
@@ -32,33 +33,26 @@ public class GameModel implements Serializable<GameModel> {
 									// created. To be incremented after each
 									// action instantiation.
 
-	public GameModel(int numberPlayers, String[] playerNames, String[] playerColors) {
+	public GameModel(int numberPlayers, String[] playerNames,
+			String[] playerColors) {
 		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.players = new JavaPlayer[numberPlayers];
-//		this creates each of the players, with name and color, and then puts them in the JavaPlayer
-//		for(){
-//			
-//			
-//			
-//		}
+		for (int i = 0; i < players.length; i++) {
+			players[i] = new JavaPlayer(playerNames[i], playerColors[i]);
+		}
 		actionHistory = new Stack<Event>();
 		actionReplays = new Stack<Event>();
 		selectedAction = null;
 	}
-	//created for loading the game
+
+	// created for loading the game
 	public GameModel(int numberPlayers) {
 		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.players = new JavaPlayer[numberPlayers];
-//		this creates each of the players, with name and color, and then puts them in the JavaPlayer
-//		for(){
-//			
-//			
-//			
-//		}
 		actionHistory = new Stack<Event>();
 		actionReplays = new Stack<Event>();
 		selectedAction = null;
@@ -76,9 +70,9 @@ public class GameModel implements Serializable<GameModel> {
 	public void changeFamePoints(int playerIndex, int modifier) {
 		players[playerIndex].changeFamePoints(modifier);
 	}
-	
-	//Used for testing the Actions
-	public void placeTileOnBoard(int x, int y, Tile tile){
+
+	// Used for testing the Actions
+	public void placeTileOnBoard(int x, int y, Tile tile) {
 		gameBoard.placeTileOnBoard(x, y, tile);
 	}
 
@@ -307,13 +301,14 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public Action pressEnter() {
-		if(selectedAction != null){
+		if (selectedAction != null) {
 			return selectedAction.pressEnter();
 		}
 		return null;
 	}
-	
-	//Methods for MAction/selected action traversal that is needed by the controller
+
+	// Methods for MAction/selected action traversal that is needed by the
+	// controller
 
 	public int getSelectedActionX() {
 		return selectedAction.getX();
@@ -430,7 +425,7 @@ public class GameModel implements Serializable<GameModel> {
 	public void addToActionHistory(Action action) {
 		actionHistory.add(action);
 	}
-	
+
 	public JavaPlayer getCurrentPlayer() {
 		return players[indexOfCurrentPlayer];
 	}
@@ -441,8 +436,12 @@ public class GameModel implements Serializable<GameModel> {
 
 	public void doLastActionInHistory() {
 		System.out.println("in doLactActionInHistory");
-		if(actionHistory.size() > 0){
+		if (actionHistory.size() > 0) {
 			actionHistory.peek().redo(this);
 		}
+	}
+
+	public JavaPlayer[] getPlayers() {
+		return players;
 	}
 }
