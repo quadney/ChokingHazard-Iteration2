@@ -3,77 +3,81 @@ package Models;
 import Helpers.Json;
 import Helpers.JsonObject;
 
-public class JavaCell extends Cell implements Serializable<JavaCell>
-{
+public class JavaCell implements Serializable<JavaCell> {
    private int elevation;
    private String cellType;
    private boolean hasDeveLoper;
    private int cellId;
+   public int xVal;
+   public int yVal;
    
-   public JavaCell(int x, int y, String cellType, int cellId)
-   {
-      super(x,y);
-      elevation = 0;
-      this.cellType = cellType;
-      this.cellId = cellId;
-   }
-   
-   public JavaCell(int x, int y, int cellId)
-   {
-      super(x,y);
-      elevation = 0;
-      cellType = "blank";
-      this.cellId = cellId;
-   }
-   
-   public int getCellId()
-   {
-      return cellId;
-   }
-   
-   public void setCellId(int cellId){
+   public JavaCell(int x, int y, String cellType, int cellId) {
+	   this.xVal = x;
+	   this.yVal = y;
+	   elevation = 0;
+	   this.cellType = cellType;
 	   this.cellId = cellId;
    }
    
-   public int getElevation()
-   {
+   public JavaCell(int x, int y, int cellId) {
+	  this.xVal = x;
+	  this.yVal = y;
+	  elevation = 0;
+	  cellType = "blank";
+	  this.cellId = cellId;
+   }
+
+
+	public int getX() {
+		return xVal;
+	}
+
+	public int getY() {
+		return yVal;
+	}
+	
+   public int getCellId() {
+      return cellId;
+   }
+   
+   public void setCellId(int cellId) {
+	   this.cellId = cellId;
+   }
+   
+   public int getElevation() {
       return elevation;
    }
    
-   public String getCellType()
-   {
+   public String getCellType() {
       return cellType;
    }
    
-   public void setElevation(int e)
-   {
+   public void setElevation(int e) {
       elevation = e;
    }
    
-   public void setCellType(String ct)
-   {
+   public void setCellType(String ct) {
       cellType = ct;
    }
    
-   public void setDeveloper(){
+   public void setDeveloper() {
 	   this.hasDeveLoper = true;
    }
    
-   public void removeDeveloper(){
+   public void removeDeveloper() {
 	   this.hasDeveLoper = false;
    }
    
-   public boolean hasDeveloper(){
+   public boolean hasDeveloper() {
 	   return hasDeveLoper;
    }
    
-   public boolean isBorder()
-   {
+   public boolean isBorder() {
 	   return false; //TODO
    }
    
-   public boolean hasAdjacentLandSpaceTile()	//TODO: finish brett
-   {
+   public boolean hasAdjacentLandSpaceTile() {
+	   //TODO: finish brett
 	   /* 
 	   int x = this.getX();
 	   int y = this.getY();
@@ -99,8 +103,7 @@ public class JavaCell extends Cell implements Serializable<JavaCell>
 			   return true;
 	   }
 	   */ 
-	   return false;
-		   
+	   return false;   
    }
 	
 	@Override
@@ -125,5 +128,4 @@ public class JavaCell extends Cell implements Serializable<JavaCell>
 		yVal = Integer.parseInt(json.getString("yVal"));
 		return this;
 	}
-   
 }
