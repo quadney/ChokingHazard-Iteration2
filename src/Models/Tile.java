@@ -78,7 +78,8 @@ public class Tile implements Serializable<Tile> {
 
 	@Override
 	public Tile loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		tileCells = (String[][]) json.getObject("tileCells");
+		numberCells = Integer.parseInt(json.getString("numberCells"));
+		return this;
 	}
 }

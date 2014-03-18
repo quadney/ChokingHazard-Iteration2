@@ -20,15 +20,5 @@ public abstract class SelectOneSpaceComponentAction extends SelectNonRotatableCo
 		return false;
 	}
 
-	
-	public boolean isNonRotatableComponentOnBoard(int x, int y) {
-		if(x < 0 || x > 13){ //check if changes in x are invalid
-			return false;
-		}
-		else if(y < 0 || y > 13){ //check if changes in y are invalid
-			return false;
-		}
-		else
-			return true;
-	}
+
 }

@@ -16,6 +16,8 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	private ArrayList<PalaceCard> palaceCards;
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
+    private int[][] palacesInteractedWith;
+
 	private Developer[] developerArray;
 	public int currentlySelectedDeveloper;
 	private boolean hasPlacedLandTile;
@@ -35,6 +37,10 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
         this.developersOnBoard = new Developer[12];
         this.selectedDeveloperIndex = 0;
         this.hasUsedActionToken = false;
+		int[][] palacesInteractedWith = new int[40][2]; // this accounts for the
+														// fact that a player
+														// can only interact with a palace once per turn.
+														// Can either build or upgrade a palace
 	}
    
 	public int getFamePoints() {
