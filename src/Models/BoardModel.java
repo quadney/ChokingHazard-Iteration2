@@ -20,34 +20,12 @@ public class BoardModel implements Serializable<BoardModel> {
 		this.map = new JavaCell[14][14];
 		this.path = new LinkedList<JavaCell>();
 		cellId = 0;
+		outerCells = new JavaCell[44];
 
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
-//				if (x == 0 || x == 1) {
-//					map[x][y] = new JavaCell(x, y, 0);
-//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
-//				}
-//
-//				else if (x <= 6 && (y <= 1 || y >= 12)) {
-//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
-//					map[x][y] = new JavaCell(x, y, 0);
-//				}
-//
-//				else if (x >= 7 && (y <= 1 || y >= 12)) {
-//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
-//					map[x][y] = new JavaCell(x, y, 0);
-//				} 
-//				
-//				else if (x == 12 || x == 13) {
-//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
-//					map[x][y] = new JavaCell(x, y, 0);
-//				} 
-				
-				// this creates Cell objects for the rest of central Java
-//				else {
 					map[x][y] = new JavaCell(x, y, 0); 
 					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
-//				}
 			}
 		}
 	}
@@ -71,7 +49,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		JavaCell[][] miniMap = createTestMap(xC, yC);
 		String[][] tileCells = tile.getTileCells();
 		
-		
+		System.out.println("I am here in placeTile!!!!!!");
 		
 		if (checkValidTilePlacement(xC, yC, tile, player, miniMap)) {
 			/*are we going to be creating the tile here? if we are then
@@ -79,11 +57,12 @@ public class BoardModel implements Serializable<BoardModel> {
 			cellId++;
 			for (int i = 0; i < tileCells.length; i++) 
 				for (int j = 0; j < tileCells[i].length; j++)
-						if(tileCells[i][j] != null){
-							map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellType(tileCells[i][j]);
-							map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellId(cellId);
-							map[miniMap[i][j].getX()][miniMap[i][j].getY()].setElevation(map[miniMap[i][j].getX()][miniMap[i][j].getY()].getElevation()+1);
-						}
+					if(tileCells[i][j] != null){
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellType(tileCells[i][j]);
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellId(cellId);
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setElevation(map[miniMap[i][j].getX()][miniMap[i][j].getY()].getElevation()+1);
+					}
+			System.out.println(toString());
 			return true;
 		}
 
@@ -118,9 +97,13 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		JavaCell[][] testingMap = new JavaCell[3][3];
 
-		for (int i = 0, x = xC - 1; i < 3; i++, x++)
-			for (int j = 0, y = yC - 1; j < 3; j++, y++)
-				testingMap[i][j] = map[x][y];
+		for (int i = 0, x = xC - 1; i < 3; i++, x++) {
+			for (int j = 0, y = yC - 1; j < 3; j++, y++) {
+				if ((x >= 0 && x <= map.length) && (y >= 0) && (y <= map[0].length)) {
+					testingMap[i][j] = map[x][y];
+				}
+			}
+		}
 
 		return testingMap;
 	}
@@ -360,6 +343,8 @@ public class BoardModel implements Serializable<BoardModel> {
 		else{
 			number = 0;
 		}
+		
+		System.out.println("in checkedge the outer cell length is: " + outerCells.length);
 		
 		for(int i = 0; i < outerCells.length; i++){
 			
@@ -698,6 +683,18 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 		
 		return false;
+	}
+	
+	public String toString(){
+		String s = "";
+		
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				s += map[i][j].getCellId();
+			}
+			s += "\n";
+		}
+		return s;
 	}
 
 

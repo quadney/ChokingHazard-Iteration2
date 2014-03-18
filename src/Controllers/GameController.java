@@ -62,7 +62,7 @@ public class GameController {
 	
 	public boolean loadGame(File file){
 		//calls the game manager to do the parsing
-		// Sydney doesn't know how that works so if this us unnecessary feel free to do what you want
+		//Sydney doesn't know how that works so if this us unnecessary feel free to do what you want
 		gameManager.loadGame(file);
 		return true;
 	}
