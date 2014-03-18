@@ -399,4 +399,7 @@ public class GameModel implements Serializable<GameModel> {
 		actionHistory.add(action);
 	}
 
+	public JavaPlayer getCurrentPlayer() {
+		return players[indexOfCurrentPlayer];
+	}
 }
