@@ -277,7 +277,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	public boolean pressEnter() {
 		if(selectedAction != null){
-			return selectedAction.pressEnter();
+			return selectedAction.pressEnter() != null;
 		}
 		return false;
 	}
