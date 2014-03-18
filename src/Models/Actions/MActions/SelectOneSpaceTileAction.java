@@ -9,6 +9,14 @@ public class SelectOneSpaceTileAction extends SelectOneSpaceComponentAction {
 		
 	}
 	
+	public boolean pressTab(){
+		return false;
+	}
+	
+	public boolean pressDelete(){
+		return false;
+	}
+	
 	public boolean isNonRotatableComponentOnBoard(int x, int y) {
 		if(x < 0 || x > 13){ //check if changes in x are invalid
 			return false;

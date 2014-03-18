@@ -14,20 +14,38 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 	
 	@Override
 	public boolean isNonRotatableComponentOnBoard(int x, int y) {
-		if(x < 0 || x > 1 || x < 12 || x > 13){ //check if changes in x are invalid
+		if((y > 1 && y < 12) && (x > 1 && x < 12)){ //check if changes in x are invalid
+			System.out.println("if false. (x,y): " + x + "," + y);
 			return false;
 		}
-		else if(y < 0 || y > 1 || y < 12 || y > 13){ //check if changes in y are invalid
+		else if(x < 0 || x > 13){ //check if changes in x are invalid
 			return false;
 		}
-		else
+		else if(y < 0 || y > 13){ //check if changes in y are invalid
+			return false;
+		}
+		else{
+			System.out.println("(In SelPlaDev) component on board valid");
 			return true;
+		}
 	}
 
 	@Override
 	public Action pressEnter() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean pressTab() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean pressDelete() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
