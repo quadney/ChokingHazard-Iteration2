@@ -1,7 +1,7 @@
 package Models.Actions;
 
 import Helpers.JsonObject;
-import Models.*;
+import Models.Serializable;
 
 /**
  * The abstract "action" class, to be defined by various subclasses, each of
@@ -42,8 +42,8 @@ public abstract class Action extends Event implements Serializable<Action> {
 	//Loading----------------------------------------------------------------------
 	
 	public static Action loadAction(JsonObject json) {
-		// TODO this will return the correct Action based on subactions
-		return new SampleAction(-1, -1, -1);
+		// TODO this will return the correct Action based on sub actions
+		return null;
 	}
 
 }
