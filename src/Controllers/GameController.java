@@ -7,6 +7,15 @@ import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
 import Models.Actions.Action;
+import Models.Actions.IrrigationTileAction;
+import Models.Actions.MoveDeveloperAction;
+import Models.Actions.PalaceTileAction;
+import Models.Actions.PlaceDeveloperOnBoardAction;
+import Models.Actions.RiceTileAction;
+import Models.Actions.TakeDeveloperOffBoardAction;
+import Models.Actions.ThreeTileAction;
+import Models.Actions.TwoTileAction;
+import Models.Actions.VillageTileAction;
 import Models.Actions.MActions.*;
 import Views.GameContainerPanel;
 
@@ -112,7 +121,8 @@ public class GameController {
 			System.out.println("(in GameController)Enter was pressed");
 			Action action = currentGame.pressEnter();
 			if(action != null){
-				updateControllersWithAction();
+				currentGame.addToActionHistory(action);
+				updateControllersWithAction(action);
 			}
 			break;	
 		case 27:
@@ -246,8 +256,17 @@ public class GameController {
 		}
 	}
 	
-	private void updateControllersWithAction(){
+	private void updateControllersWithAction(Action action){
 		// TODO turn all into permanent actions instead of momentary
+		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction)
+			shared.doAction(action);
+		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction
+			|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
+			|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)
+			board.doAction(action);
+		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction)
+			players.doAction(action);
+		/*
 		if (currentGame.getSelectedAction() instanceof SelectTwoTileAction || currentGame.getSelectedAction() instanceof SelectThreeTileAction){
 			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");
 			//System.out.println(" This is the rotation state: " + ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
@@ -259,7 +278,7 @@ public class GameController {
 		}
 		else{//developer
 			//TODO this is to tell the view that the developer path has changed
-		}
+		}*/
 	}
 	
 	private void updateBoardControllerWithSelectedAction(){

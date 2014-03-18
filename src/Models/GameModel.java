@@ -395,4 +395,8 @@ public class GameModel implements Serializable<GameModel> {
 		return this;
 	}
 
+	public void addToActionHistory(Action action) {
+		actionHistory.add(action);
+	}
+
 }

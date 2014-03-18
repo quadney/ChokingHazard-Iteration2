@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.JavaPlayer;
 import Models.PalaceCard;
+import Models.Actions.Action;
 import Views.PlayerPanel;
 
 public class PlayerController {
@@ -95,6 +96,11 @@ public class PlayerController {
 	public String getColorOfPlayer(int playerIndex) {
 		playerModels[playerIndex].getColor();
 		return null;
+	}
+
+	public void doAction(Action action) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	//---------------------------------------------------------------------------

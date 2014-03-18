@@ -3,9 +3,9 @@ package Models.Actions;
 import Helpers.JsonObject;
 import Models.GameModel;
 
-public class TakeDeveloperOffBoardAction extends OneSpaceComponentAction {
+public class MoveDeveloperAction extends OneSpaceComponentAction {
 
-	public TakeDeveloperOffBoardAction(int actionID, int playerIndex) {
+	public MoveDeveloperAction(int actionID, int playerIndex) {
 		super(actionID, playerIndex);
 	}
 
