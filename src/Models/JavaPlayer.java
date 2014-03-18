@@ -118,7 +118,7 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	
 	public void removeDeveloperFromArray()
 	{
-		developerArray[currentlySelectedDeveloper] = false;
+		developerArray[currentlySelectedDeveloper] = null;
 	}
 	
 	public void addPalaceCard(PalaceCard card){
