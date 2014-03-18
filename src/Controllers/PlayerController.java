@@ -3,6 +3,10 @@ package Controllers;
 import Models.JavaPlayer;
 import Models.PalaceCard;
 import Models.Actions.Action;
+import Models.Actions.RiceTileAction;
+import Models.Actions.TwoTileAction;
+import Models.Actions.UseActionTokenAction;
+import Models.Actions.VillageTileAction;
 import Views.PlayerPanel;
 
 public class PlayerController {
@@ -98,11 +102,40 @@ public class PlayerController {
 		return null;
 	}
 
-	public void doAction(Action action) {
-		// TODO Auto-generated method stub
+	
+	//---------------------------------------------------------------------------
+
+	
+	public void doAction(Action action, int playerIndex) {
+		
+		//changes the fame points of the player, applicable (for now) for every action
+		playerModels[playerIndex].changeFamePoints(action.getEarnedFamePoints());
+		//updated the playerPanel of this change
+		playerPanels[playerIndex].updateFamePoints(playerModels[playerIndex].getFamePoints());
+		
+		//
+		if(action instanceof RiceTileAction){
+			playerModels[playerIndex].decrementRice();
+			playerPanels[playerIndex].useOneRiceTile(playerModels[playerIndex].getNumOneRiceTile());
+		}
+		else if(action instanceof VillageTileAction){
+			playerModels[playerIndex].decrementVillage();
+			playerPanels[playerIndex].useOneVillageTile(playerModels[playerIndex].getNumOneVillageTile());
+		}
+		else if(action instanceof TwoTileAction){
+			playerModels[playerIndex].decrementTwo();
+			playerPanels[playerIndex].useTwoTile(playerModels[playerIndex].getNumTwoTile());
+		}
+		else if(action instanceof UseActionTokenAction){
+			playerModels[playerIndex].useActionToken();
+			playerPanels[playerIndex].
+		}
+		//else if() //use for palace cards shit....
+		//else if() //use for palace festival shit...
+						
+		
 		
 	}
 	
-	//---------------------------------------------------------------------------
 	
 }

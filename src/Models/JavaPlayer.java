@@ -175,7 +175,7 @@ public class JavaPlayer implements Serializable<JavaPlayer>{
 	}
 
 	public boolean canUseActionToken() { //checks if the player has not used an action token yet
-		return !hasUsedActionToken;
+		return !hasUsedActionToken && numActionTokens > 0;
 	}
 
 	public boolean canUseIrrigation() { //checks if the player has the AP
@@ -194,7 +194,45 @@ public class JavaPlayer implements Serializable<JavaPlayer>{
 		return developersOffBoard > 0 && getAvailableActionPoints(true) > 0;
 	}
 	
-	//---------------------------------------------------------------------------------------------------------
+	//--------used for doAction in PlayerController----------------------------------------------------------------------
+	
+	public void incrementRice(){
+		numOneRiceTile++;
+	}
+	
+	public void incrementVillage(){
+		numOneVillageTile++;
+	}
+	
+	public void incrememntTwo(){
+		numTwoTile++;
+	}
+	
+	public void useActionToken(){
+		hasUsedActionToken = true;
+		numActionTokens--;
+	}
+	
+	public void decrementRice(){
+		numOneRiceTile--;
+	}
+	
+	public void decrementVillage(){
+		numOneVillageTile--;
+	}
+	
+	public void decrementTwo(){
+		numTwoTile--;
+	}
+	
+	public void unuseActionToken(){
+		hasUsedActionToken = false;
+		numActionTokens++;
+	}
+	
+	//----------------------------------------
+	
+	
 
 	@Override
 	public String serialize() {
