@@ -168,31 +168,22 @@ public class BoardModel implements Serializable<BoardModel> {
 				}
 			}
 		}
-		
+
 		int number;
-		if(tile.getType() == "two") {
+		if (tile.getType() == "two") {
 			number = 2;
-		}
-		
-		else if(tile.getType() == "three") {
-			number = 3;	
-		}
-		
-		else if(tile.getType() == "one") {
+		} else if (tile.getType() == "three") {
+			number = 3;
+
+		} else if (tile.getType() == "one") {
 			number = 1;
-		}
-		
-		else{
+		} else {
 			number = 0;
 		}
-		
-		if(number == numberOfTilesBelow) {
+		if (number == numberOfTilesBelow)
 			return false;
-		}
-		
-		else {
+		else
 			return true;
-		}
 	}
 
 	private boolean checkElevation(JavaCell[][] miniMap, Tile tile, int xC,
@@ -293,6 +284,8 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 
 		map[x][y] = null;
+		
+		//fixed the bug here
 		if (canUp
 				&& (map[x - 1][y] != null && (map[x - 1][y].getCellType() == "village" || map[x - 1][y]
 						.getCellType() == "palace"))) {
@@ -300,7 +293,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 
 		if (canDown
-				&& (map[x + 1][y] != null && (map[x + 1][y].getCellType() == "village" || map[x - 1][y]
+				&& (map[x + 1][y] != null && (map[x + 1][y].getCellType() == "village" || map[x + 1][y]
 						.getCellType() == "palace"))) {
 			findPalaceSpaces(x + 1, y, map);
 		}
@@ -312,7 +305,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 
 		if (canRight
-				&& (map[x][y + 1] != null && (map[x][y + 1].getCellType() == "village" || map[x - 1][y]
+				&& (map[x][y + 1] != null && (map[x][y + 1].getCellType() == "village" || map[x][y + 1]
 						.getCellType() == "palace"))) {
 			findPalaceSpaces(x, y + 1, map);
 		}
