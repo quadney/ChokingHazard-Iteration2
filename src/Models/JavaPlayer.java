@@ -1,9 +1,8 @@
 package Models;
 import Helpers.Json;
-
 import java.util.*;
-
 import Helpers.JsonObject;
+import Views.GameContainerPanel;
 
 public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	private int famePoints;
@@ -77,6 +76,10 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 		return actionPoints - 1;
 	}
 	
+	public void setDeveloperCell(JavaCell jc) {
+		developerArray[selectedDeveloperIndex].setLocation(jc);
+	}
+	
 	public void changeFamePoints(int modifier){
 		famePoints += modifier;
 	}
@@ -131,6 +134,19 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	//Methods needed from Player controller to validate action selections-----------------------------------
 	public boolean canUsePalace() { //checks if the player has the AP
 		return getAvailableActionPoints(false) > 0;
+	}
+	
+	public boolean endTurn()
+	{
+		if (!hasPlacedLandTile)
+		{
+			GameContainerPanel.tellPeopleTheyAintPlacedNoLandTile(); //TODO: Make sure this works
+			return false;
+		}
+		//Otherwise, typical end of turn activities
+		changeFamePoints(1); //TODO: determine correct amount, method?
+		
+		return true;
 	}
 
 	public boolean canUseRice() { //checks if the player has enough plus has the AP
