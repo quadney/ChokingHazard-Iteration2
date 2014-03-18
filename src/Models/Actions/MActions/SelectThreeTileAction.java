@@ -1,5 +1,7 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+
 public class SelectThreeTileAction extends SelectRotatableComponentAction{
 
 	
@@ -44,8 +46,8 @@ public class SelectThreeTileAction extends SelectRotatableComponentAction{
 	}
 
 	@Override
-	public boolean pressEnter() {
+	public Action pressEnter() {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 }

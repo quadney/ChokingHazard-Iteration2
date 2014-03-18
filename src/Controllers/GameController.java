@@ -6,6 +6,7 @@ import java.io.File;
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
+import Models.Actions.Action;
 import Models.Actions.MActions.*;
 import Views.GameContainerPanel;
 
@@ -109,8 +110,9 @@ public class GameController {
 		case 10:
 			//released enter, place tile/developer onto board.
 			System.out.println("(in GameController)Enter was pressed");
-			if(currentGame.pressEnter()){
-				updateBoardControllerWithAction();
+			Action action = currentGame.pressEnter();
+			if(action != null){
+				updateControllersWithAction();
 			}
 			break;	
 		case 27:
@@ -238,7 +240,7 @@ public class GameController {
 		}
 	}
 	
-	private void updateBoardControllerWithAction(){
+	private void updateControllersWithAction(){
 		// TODO turn all into permanent actions instead of momentary
 		if (currentGame.getSelectedAction() instanceof SelectTwoTileAction || currentGame.getSelectedAction() instanceof SelectThreeTileAction){
 			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");

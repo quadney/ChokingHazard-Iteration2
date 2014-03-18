@@ -1,5 +1,7 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+
 public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAction {
 
 	public SelectPlaceDeveloperOnBoardAction(String imageKey) {
@@ -23,9 +25,9 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 	}
 
 	@Override
-	public boolean pressEnter() {
+	public Action pressEnter() {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 }
