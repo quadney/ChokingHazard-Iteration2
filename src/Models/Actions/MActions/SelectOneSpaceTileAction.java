@@ -1,5 +1,7 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+
 public class SelectOneSpaceTileAction extends SelectOneSpaceComponentAction {
 	
 	public SelectOneSpaceTileAction(String imageKey) {
