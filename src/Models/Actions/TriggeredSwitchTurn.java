@@ -13,12 +13,6 @@ public class TriggeredSwitchTurn extends Event {
 	}
 
 	@Override
-	public void undo(GameModel game) {
-		//revert the booleans in the player
-		//take out the array 
-	}
-
-	@Override
 	public void redo(GameModel game) {
 		
 	}
