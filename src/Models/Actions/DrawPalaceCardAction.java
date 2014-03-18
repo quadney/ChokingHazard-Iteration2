@@ -3,9 +3,9 @@ package Models.Actions;
 import Helpers.JsonObject;
 import Models.GameModel;
 
-public class UseActionTokenAction extends Action {
+public class DrawPalaceCardAction extends Action {
 
-	public UseActionTokenAction(int actionID, int playerIndex) {
+	public DrawPalaceCardAction(int actionID, int playerIndex) {
 		super(actionID, playerIndex);
 	}
 
