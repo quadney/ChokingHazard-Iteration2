@@ -1,6 +1,9 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+
 public abstract class SelectOneSpaceTileAction extends SelectOneSpaceComponentAction {
+
 	
 	public SelectOneSpaceTileAction(String imageKey) {
 		super(imageKey);
@@ -11,8 +14,8 @@ public abstract class SelectOneSpaceTileAction extends SelectOneSpaceComponentAc
 		return false;
 	}
 	
-	public boolean pressDelete(){
-		return false;
+	public Action pressDelete(){
+		return null;
 	}
 	
 	public boolean isNonRotatableComponentOnBoard(int x, int y) {
@@ -24,6 +27,12 @@ public abstract class SelectOneSpaceTileAction extends SelectOneSpaceComponentAc
 		}
 		else
 			return true;
-	}	
+	}
+
+	@Override
+	public Action pressEnter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
    

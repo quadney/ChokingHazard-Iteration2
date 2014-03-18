@@ -25,7 +25,7 @@ public abstract class MAction {
 	
 	public abstract boolean pressTab();
 	
-	public abstract boolean pressDelete();
+	public abstract Action pressDelete();
 	
 	public abstract Action pressEnter();
 	

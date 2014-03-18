@@ -34,6 +34,7 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 	@Override
 	public Action pressEnter() {
 		return new PlaceDeveloperOnBoardAction(x, y);
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -43,9 +44,9 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 	}
 
 	@Override
-	public boolean pressDelete() {
+	public Action pressDelete() {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 }
