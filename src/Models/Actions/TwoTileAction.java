@@ -2,6 +2,8 @@ package Models.Actions;
 
 import Helpers.JsonObject;
 import Models.GameModel;
+import Models.JavaCell;
+import Models.JavaPlayer;
 import Models.Tile;
 import Models.Tile.TileType;
 
@@ -31,6 +33,7 @@ public class TwoTileAction extends RotatableComponentAction {
 		game.placeTileOnBoard(y, x, new Tile(TileType.twotile, rotationState));
 		System.out.println(x + "," + y +"Center " + game.getBoard().getMap()[x][y].getCellType());
 		
+		System.out.println(x + "," + y +"Center " + game.getBoard().getMap()[x][y].getCellType());
 		System.out.println("Down " + game.getBoard().getMap()[x + 1][y].getCellType());
 		System.out.println("Up " + game.getBoard().getMap()[x - 1][y].getCellType());
 		System.out.println("Right " + game.getBoard().getMap()[x][y + 1].getCellType());

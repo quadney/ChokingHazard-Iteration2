@@ -20,9 +20,4 @@ public abstract class Action extends Event implements Serializable<Action> {
 		// TODO this will return the correct Action based on sub actions
 		return null;
 	}
-
-	public int getEarnedFamePoints() {
-		return 0; //return earned fame points;
-	}
-
 }
