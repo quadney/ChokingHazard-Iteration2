@@ -232,7 +232,7 @@ public class GameController {
 			//does not become a selected action, just does a regular action!
 			//released T, use action token
 			if(players.selectActionToken(currentGame.getPlayerIndex())){
-				UseActionTokenAction actionTokenAction = new UseActionTokenAction(-1, 0);
+				UseActionTokenAction actionTokenAction = new UseActionTokenAction(-1);
 				currentGame.addToActionHistory(actionTokenAction);
 				updateControllersWithAction(actionTokenAction);
 			}
