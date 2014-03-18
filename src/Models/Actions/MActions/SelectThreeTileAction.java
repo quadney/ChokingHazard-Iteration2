@@ -1,6 +1,7 @@
 package Models.Actions.MActions;
 
 import Models.Actions.Action;
+import Models.Actions.ThreeTileAction;
 
 public class SelectThreeTileAction extends SelectRotatableComponentAction{
 
@@ -47,7 +48,6 @@ public class SelectThreeTileAction extends SelectRotatableComponentAction{
 
 	@Override
 	public Action pressEnter() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ThreeTileAction(x, y, rotationState);
 	}
 }

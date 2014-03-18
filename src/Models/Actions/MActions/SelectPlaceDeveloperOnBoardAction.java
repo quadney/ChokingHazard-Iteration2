@@ -1,6 +1,7 @@
 package Models.Actions.MActions;
 
 import Models.Actions.Action;
+import Models.Actions.PlaceDeveloperOnBoardAction;
 
 public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAction {
 
@@ -32,8 +33,7 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 
 	@Override
 	public Action pressEnter() {
-		// TODO Auto-generated method stub
-		return null;
+		return new PlaceDeveloperOnBoardAction(x, y);
 	}
 
 	@Override

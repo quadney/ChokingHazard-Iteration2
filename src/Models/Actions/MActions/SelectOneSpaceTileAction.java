@@ -1,8 +1,6 @@
 package Models.Actions.MActions;
 
-import Models.Actions.Action;
-
-public class SelectOneSpaceTileAction extends SelectOneSpaceComponentAction {
+public abstract class SelectOneSpaceTileAction extends SelectOneSpaceComponentAction {
 	
 	public SelectOneSpaceTileAction(String imageKey) {
 		super(imageKey);
@@ -26,13 +24,6 @@ public class SelectOneSpaceTileAction extends SelectOneSpaceComponentAction {
 		}
 		else
 			return true;
-	}
-
-	@Override
-	public Action pressEnter() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+	}	
 }
    
