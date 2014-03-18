@@ -33,7 +33,7 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectOneSpaceComponentAc
 
 	@Override
 	public Action pressEnter() {
-		return new PlaceDeveloperOnBoardAction(x, y);
+		return new PlaceDeveloperOnBoardAction(-1, null, null, 0);
 		// TODO Auto-generated method stub
 	}
 

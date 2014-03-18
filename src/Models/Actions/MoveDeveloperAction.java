@@ -5,8 +5,8 @@ import Models.GameModel;
 
 public class MoveDeveloperAction extends OneSpaceComponentAction {
 
-	public MoveDeveloperAction(int actionID, int playerIndex) {
-		super(actionID, playerIndex);
+	public MoveDeveloperAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned);
 	}
 
 	@Override

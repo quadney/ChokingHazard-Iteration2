@@ -5,8 +5,13 @@ import Models.GameModel;
 
 public class OneSpaceTileAction extends OneSpaceComponentAction {
 
-	public OneSpaceTileAction(int actionID, int playerIndex) {
-		super(actionID, playerIndex);
+	public int x;
+	public int y;
+
+	public OneSpaceTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned);
+		this.x = x; 
+		this.y = y;
 	}
 
 	@Override

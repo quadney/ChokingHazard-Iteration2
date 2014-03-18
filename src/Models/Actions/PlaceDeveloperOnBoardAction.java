@@ -5,8 +5,9 @@ import Models.GameModel;
 
 public class PlaceDeveloperOnBoardAction extends OneSpaceComponentAction {
 
-	public PlaceDeveloperOnBoardAction(int actionID, int playerIndex) {
-		super(actionID, playerIndex);
+
+	public PlaceDeveloperOnBoardAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned);
 	}
 
 	@Override
