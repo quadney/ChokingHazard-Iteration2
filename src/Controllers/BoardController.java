@@ -9,8 +9,8 @@ public class BoardController {
 	BoardModel boardModel;
 	BoardPanel boardPanel;
 	
-	public BoardController(){
-		this.boardModel = new BoardModel();
+	public BoardController(BoardModel boardModel){
+		this.boardModel = boardModel;
 		this.boardPanel = new BoardPanel();
 	}
 	

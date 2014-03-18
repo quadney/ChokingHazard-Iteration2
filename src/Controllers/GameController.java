@@ -41,10 +41,10 @@ public class GameController {
 	public void createNewGame(int numPlayers, String[] playerNames, String[] playerColors){
 		//create controllers
 		
-		currentGame = new GameModel(numPlayers);
-		board = new BoardController();
-		players = new PlayerController(numPlayers, playerNames, playerColors);
-		shared = new SharedComponentController();
+		currentGame = new GameModel(numPlayers, playerNames, playerColors);
+		board = new BoardController(currentGame.getBoard());
+		players = new PlayerController(numPlayers, null, null); //change player controller to query the model for the player info
+		shared = new SharedComponentController(); //change this to work
 		
 		//this initializes the dealing of the palace cards
 		//the shared dealPalaceCards returns the dealt palace cards

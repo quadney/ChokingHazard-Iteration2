@@ -32,11 +32,33 @@ public class GameModel implements Serializable<GameModel> {
 									// created. To be incremented after each
 									// action instantiation.
 
+	public GameModel(int numberPlayers, String[] playerNames, String[] playerColors) {
+		this.isFinalRound = false;
+		this.indexOfCurrentPlayer = 0;
+		this.gameBoard = new BoardModel();
+		this.players = new JavaPlayer[numberPlayers];
+//		this creates each of the players, with name and color, and then puts them in the JavaPlayer
+//		for(){
+//			
+//			
+//			
+//		}
+		actionHistory = new Stack<Event>();
+		actionReplays = new Stack<Event>();
+		selectedAction = null;
+	}
+	//created for loading the game
 	public GameModel(int numberPlayers) {
 		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.players = new JavaPlayer[numberPlayers];
+//		this creates each of the players, with name and color, and then puts them in the JavaPlayer
+//		for(){
+//			
+//			
+//			
+//		}
 		actionHistory = new Stack<Event>();
 		actionReplays = new Stack<Event>();
 		selectedAction = null;
