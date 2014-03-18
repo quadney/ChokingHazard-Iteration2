@@ -267,10 +267,7 @@ public class GameController {
 		|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
 		|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)
 			board.doAction(action);
-		if (action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
-		|| action instanceof RiceTileAction || action instanceof VillageTileAction || action instanceof UseActionTokenAction
-		|| action instanceof DrawPalaceCardAction || action instanceof MoveDeveloperAction)
-			players.doAction(action);
+		players.doAction(action);
 	}
 	
 	private void updateBoardControllerWithSelectedAction(){

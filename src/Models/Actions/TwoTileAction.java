@@ -5,9 +5,8 @@ import Models.GameModel;
 
 public class TwoTileAction extends RotatableComponentAction {
 
-	public TwoTileAction(int actionID, int playerIndex, int rotationState) {
-		super(actionID, playerIndex, rotationState);
-		// TODO Auto-generated constructor stub
+	public TwoTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y,	int rotationState) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState);
 	}
 
 	@Override

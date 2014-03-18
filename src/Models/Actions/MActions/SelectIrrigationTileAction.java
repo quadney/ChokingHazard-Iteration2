@@ -11,6 +11,6 @@ public class SelectIrrigationTileAction extends SelectOneSpaceTileAction {
 	}
 	
 	public Action pressEnter() {
-		return new IrrigationTileAction(x, y);
+		return new IrrigationTileAction(-1, null, null, 0, x, y);
 	}
 }

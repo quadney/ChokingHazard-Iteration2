@@ -18,6 +18,6 @@ public class SelectPalaceTileAction extends SelectOneSpaceTileAction {
 	}
 	
 	public Action pressEnter() {
-		return new PalaceTileAction(x, y, value);
+		return new PalaceTileAction(-1, null, null, 0, x, y, value);
 	}
 }

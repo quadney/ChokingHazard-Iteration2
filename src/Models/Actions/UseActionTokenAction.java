@@ -5,8 +5,8 @@ import Models.GameModel;
 
 public class UseActionTokenAction extends Action {
 
-	public UseActionTokenAction(int actionID, int playerIndex) {
-		super(actionID, playerIndex);
+	public UseActionTokenAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned);
 	}
 
 	@Override
