@@ -9,7 +9,7 @@ public class PalaceTileAction extends OneSpaceTileAction {
 	public PalaceTileAction(int actionID, int famePointsEarned, int x, int y, int value, JavaCell cell) {
 		super(actionID, famePointsEarned, x, y, cell);
 		this.value = value;
-		this.imageKey = "palace" + value;
+		this.imageKey = "palace" + value + "Tile";
 	}
 
 	public int getValueOfPalace() {
