@@ -7,6 +7,7 @@ import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
 import Models.Actions.Action;
+import Models.Actions.DrawPalaceCardAction;
 import Models.Actions.IrrigationTileAction;
 import Models.Actions.MoveDeveloperAction;
 import Models.Actions.PalaceTileAction;
@@ -15,6 +16,7 @@ import Models.Actions.RiceTileAction;
 import Models.Actions.TakeDeveloperOffBoardAction;
 import Models.Actions.ThreeTileAction;
 import Models.Actions.TwoTileAction;
+import Models.Actions.UseActionTokenAction;
 import Models.Actions.VillageTileAction;
 import Models.Actions.MActions.*;
 import Views.GameContainerPanel;
@@ -258,27 +260,16 @@ public class GameController {
 	
 	private void updateControllersWithAction(Action action){
 		// TODO turn all into permanent actions instead of momentary
-		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction)
+		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || 
+			action instanceof ThreeTileAction || action instanceof DrawPalaceCardAction)
 			shared.doAction(action);
 		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction
 			|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
 			|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)
 			board.doAction(action);
-		if (action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof ThreeTileAction)
+		if (action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
+			|| action instanceof RiceTileAction || action instanceof VillageTileAction || action instanceof UseActionTokenAction)
 			players.doAction(action);
-		/*
-		if (currentGame.getSelectedAction() instanceof SelectTwoTileAction || currentGame.getSelectedAction() instanceof SelectThreeTileAction){
-			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");
-			//System.out.println(" This is the rotation state: " + ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
-			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableComponentAction)currentGame.getSelectedAction()).getRotationState());
-		}
-		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
-			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
-			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), 0);
-		}
-		else{//developer
-			//TODO this is to tell the view that the developer path has changed
-		}*/
 	}
 	
 	private void updateBoardControllerWithSelectedAction(){
