@@ -49,6 +49,7 @@ public class Tile implements Serializable<Tile> {
 	}
 
 	private void createTile(TileType type) {
+		tileCells = new TileType[3][3];
 		if (type == TileType.threetile) {
 			tileCells[1][1] = TileType.village;
 			tileCells[1][2] = TileType.rice;
