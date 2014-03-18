@@ -2,15 +2,14 @@ package Models.Actions;
 
 import Helpers.JsonObject;
 import Models.GameModel;
-import Models.JavaCell;
 import Models.Tile;
 import Models.Tile.TileType;
 
 public class TwoTileAction extends RotatableComponentAction {
 	
 
-	public TwoTileAction(int actionID, int famePointsEarned, int x, int y,	int rotationState, int elevation, JavaCell[] cell) {
-		super(actionID, famePointsEarned, x, y, rotationState, elevation, cell);
+	public TwoTileAction(int actionID, int x, int y, int rotationState) {
+		super(actionID, x, y, rotationState);
 		System.out.println("Two Tile constructor end");
 		this.imageKey = "twoTile";
 	}

@@ -7,11 +7,9 @@ public abstract class Action extends Event implements Serializable<Action> {
 
 	public final int actionID;
 	public String imageKey;
-	public int famePointsEarned;
 	
-	public Action(int actionID, int famePointsEarned) {
+	public Action(int actionID) {
 		this.actionID = actionID;
-		this.famePointsEarned = famePointsEarned;
 	}
 	
 	public int getActionID() {
