@@ -83,7 +83,11 @@ public class HoldFestivalPanel extends JPanel{
 		}
 		
 		//set currentIndex as the one who is selected
-		players.get(currentPlayerIndex).setCurrentPlayer(true);
+		if(currentPlayerIndex > -1)
+			players.get(currentPlayerIndex).setCurrentPlayer(true);
+		else{
+			System.out.println("cannot start festival");
+		}
 	}
 	
 	public void setFestivalController(HoldFestivalController c){

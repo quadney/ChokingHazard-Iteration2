@@ -68,7 +68,7 @@ public class PalaceCard implements Serializable<PalaceCard> {
    }
    
    //Returns if has the shared symbols on it
-   public boolean compare(PalaceCard card){
+   public boolean compareHasSymbols(PalaceCard card){
       
 	   //returns true if the comparing card and this card share a symbol
 	   //false if they dont
@@ -79,6 +79,14 @@ public class PalaceCard implements Serializable<PalaceCard> {
       }
       
       return false;
+   }
+   
+   public boolean compareNumSymbols(PalaceCard card){
+	   //returns true if the num of symbols matches the card
+	   if(this.numSymbols > card.getNumSymbols()){
+		   return false;
+	   }
+	   return true;
    }
    
    public int compareForPoints(PalaceCard card){

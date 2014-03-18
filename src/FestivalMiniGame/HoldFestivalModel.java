@@ -14,7 +14,6 @@ public class HoldFestivalModel {
 	private PalaceCard festivalCard;
 	private int valueOfPalaceCity;
 	private int highestBid;
-	private int currentBid;
 	
 	public HoldFestivalModel(ArrayList<JavaFestivalPlayer> festivalPlayers, PalaceCard festCard, int valueOfPalaceCity){
 		this.players = festivalPlayers;
@@ -25,7 +24,6 @@ public class HoldFestivalModel {
 		this.famePointsAwarded = new HashMap<String, Integer>(10);
 		initFamePointsHashMap();
 		this.highestBid = 0;
-		this.currentBid = 0;
 	}
 	
 	public int getCurrentPlayer(){
@@ -48,15 +46,6 @@ public class HoldFestivalModel {
 		return this.discardedPalaceTiles;
 	}
 	
-	public int getNumPlayersInFestival(){
-		int numPlayers = 0;
-		for(int i = 0; i < players.size(); i++){
-			if(players.get(i).checkIfInFestival())
-				numPlayers++;
-		}
-		return numPlayers;
-	}
-	
 	public int getBeginningPlayerIndex(){
 		for(int i = 0; i < players.size(); i++){
 			if(players.get(i).startedFestival()) return i;
@@ -64,13 +53,9 @@ public class HoldFestivalModel {
 		return -1;
 	}
 	
-	public void startTurn(){
-		//if player can start turn, then clear the bin num
-		currentBid = 0;
-	}
 	
 	public boolean canEndTurn(){
-		return highestBid <= currentBid;
+		return highestBid <= players.get(indexOfCurrentPlayer).getFestivalBid();
 	}
 	
 	public int endTurn(){
@@ -84,20 +69,22 @@ public class HoldFestivalModel {
 	public boolean ifHadFullCycleTurnCheck(){
 		if(players.get(indexOfCurrentPlayer).startedFestival()){
 			highestBid = 0;
-			currentBid = 0;
 			return true;
 		}
 		return false;
 	}
 	
 	public PalaceCard tabThroughPalaceCards(){
-		players.get(indexOfCurrentPlayer).incrementTab();
 		return players.get(indexOfCurrentPlayer).getTabbedPalaceCard();
 	}
 	
 	public PalaceCard selectPalaceCard(){
-		PalaceCard selectedCard = players.get(indexOfCurrentPlayer).getSelectedPalaceCard();
-		currentBid++;
+		JavaFestivalPlayer player = players.get(indexOfCurrentPlayer);
+		PalaceCard selectedCard = player.getSelectedPalaceCard();
+		//increment the player's festival bid
+		player.addFestivalBid(selectedCard.compareForPoints(festivalCard));
+		//increment the highest bid if appropriate
+		int currentBid = player.getFestivalBid();
 		if(currentBid > highestBid) highestBid = currentBid;
 		return selectedCard;
 	}
@@ -121,10 +108,10 @@ public class HoldFestivalModel {
 		for(int i = 0; i < players.size(); i++){
 			if(players.get(i).checkIfInFestival())
 				numPlayers++;
-			if(numPlayers < 1)
-				return false;;
 		}
-		return true;
+		if(numPlayers == 1)
+			return true;
+		return false;
 	}
 	
 	public boolean checkIfEveryoneIsOutOfCards(){
@@ -137,53 +124,24 @@ public class HoldFestivalModel {
 		return true;
 	}
 	
-	public JavaFestivalPlayer calculateWinner(){
-		calculatePlayersPointsForRound();
-		int max = getMaxPoints();
-		for(int i = 0; i < players.size(); i++){
-			if(players.get(i).getFestivalPoints() == max)
-				return players.get(i);
-		}
-		return null;
-	}
-	
 	public boolean checkForTies(){
-		//calculate points for each player
-		calculatePlayersPointsForRound();
-		int max = getMaxPoints();
+		//checks for a tie
+		int numPlayersInTie = 0;
 		for(int i = 0; i < players.size(); i++){
-			if(players.get(i).getFestivalPoints() == max)
-				return true;
+			if(players.get(i).getFestivalBid() == highestBid)
+				numPlayersInTie++;
 		}
+		if(numPlayersInTie > 1) return true;
 		return false;
 	}
 	
-	public ArrayList<JavaFestivalPlayer> getPlayersInTie(){
-		ArrayList<JavaFestivalPlayer> playersInTie = new ArrayList<JavaFestivalPlayer>();
-		int max = getMaxPoints();
+	public ArrayList<JavaFestivalPlayer> getWinners(){
+		ArrayList<JavaFestivalPlayer> winners = new ArrayList<JavaFestivalPlayer>();
 		for(int i = 0; i < players.size(); i++){
-			if(players.get(i).getFestivalPoints() == max)
-				playersInTie.add(players.get(i));
+			if(players.get(i).getFestivalBid() == highestBid)
+				winners.add(players.get(i));
 		}
-		return playersInTie;
-	}
-	
-	private int getMaxPoints(){
-		int max = players.get(0).getFestivalPoints();
-		for(int i = 0; i < players.size(); i++){
-			if(players.get(i).getFestivalPoints() > max)
-				max = players.get(i).getFestivalPoints();
-		}
-		return max;
-	}
-	
-	private void calculatePlayersPointsForRound(){
-		for(int i = 0; i < players.size(); ++i){
-			ArrayList<PalaceCard> playersCards = players.get(i).getDiscardedCards();
-			for (PalaceCard palaceCard : playersCards) {
-				players.get(i).addFestivalPoints(palaceCard.compareForPoints(festivalCard));
-			}
-		}
+		return winners;
 	}
 	
 	public int getFamePointsWon(boolean ifTie){

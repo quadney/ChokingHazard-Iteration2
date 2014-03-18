@@ -11,7 +11,7 @@ public class JavaFestivalPlayer {
 	private ArrayList<PalaceCard> palaceCards;
 	private ArrayList<PalaceCard> discardedPalaceCards;
 	private int tabCount;
-	private int festivalPoints;
+	private int festivalBid;
 	private boolean startedFestival;
 
 	public JavaFestivalPlayer(JavaPlayer player, ArrayList<PalaceCard> validPalaceCards, boolean startedFest) {
@@ -22,12 +22,8 @@ public class JavaFestivalPlayer {
 		this.discardedPalaceCards = new ArrayList<PalaceCard>();
 		this.isInFestival = true;
 		this.tabCount = 0;
-		this.festivalPoints = 0;
+		this.festivalBid = 0;
 		this.startedFestival = startedFest;
-	}
-	
-	public JavaFestivalPlayer(){
-		this.isInFestival = false;
 	}
 	
 	public boolean startedFestival(){
@@ -54,19 +50,27 @@ public class JavaFestivalPlayer {
 		return this.isInFestival;
 	}
 	
-	public void addFestivalPoints(int points){
-		this.festivalPoints += points;
+	public void addFestivalBid(int points){
+		this.festivalBid += points;
 	}
-	public int getFestivalPoints(){
-		return this.festivalPoints;
+	public int getFestivalBid(){
+		return this.festivalBid;
 	}
 	
 	public void incrementTab(){
-		tabCount = (tabCount + 1) % palaceCards.size();
+		if(palaceCards.size() == 0){
+			System.out.println("palace card size == 0");
+			tabCount = -1;
+		}
+		else{
+			tabCount = (tabCount + 1) % palaceCards.size();
+		}
 	}
 	
 	public void dropPlayerFromFestival(){
 		this.isInFestival = false;
+		this.festivalBid = 0;
+		this.tabCount = -1;
 	}
 	
 	public PalaceCard getSelectedPalaceCard(){
@@ -74,12 +78,16 @@ public class JavaFestivalPlayer {
 		PalaceCard selectedCard = palaceCards.get(tabCount);
 		discardedPalaceCards.add(selectedCard);
 		palaceCards.remove(tabCount);
-		tabCount = 0;
-		System.out.println(discardedPalaceCards.get(0).getType());
+		tabCount = -1;
 		return selectedCard;
 	}
 	
 	public PalaceCard getTabbedPalaceCard(){
+		if(tabCount < 0)
+			incrementTab();
+		if(tabCount < 0){
+			return null;
+		}
 		return palaceCards.get(tabCount);
 	}
 	
@@ -88,10 +96,10 @@ public class JavaFestivalPlayer {
 	}
 	
 	public void cancelTabbing(){
-		tabCount = 0;
+		tabCount = -1;
 	}
 
 	public void endTurn(){
-		tabCount = 0;
+		tabCount = -1;
 	}
 }

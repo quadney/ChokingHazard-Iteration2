@@ -26,6 +26,7 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	boolean isEvenLayout;
 	BufferedImage cardBack;
 	JLabel cards;
+	JLabel currentBid;
 	
 	public HoldFestivalPlayerPanel(int index, String name, String color, int numFestivalCards, HashMap<String, String> imageHash){
 		super(new FlowLayout());
@@ -77,21 +78,29 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	private int getCardSpacing(int numCards){
 		if(numCards == 0) return 0;
 		if(isEvenLayout){
-			return (getPreferredWidth() - (60*numCards))/numCards;
+			if(numCards < 6){
+				return 105;
+			}
+			return getPreferredWidth()/numCards;
 		}
-		else
-			return (getPreferredHeight() - (100*numCards)/numCards);
+		else{
+			if(numCards < 6){
+				return 105;
+			}
+			return getPreferredHeight()/numCards;
+		}
 	}
 
 	public void setCurrentPlayer(boolean isTurn){
 		if(isTurn){
-			setBorder(BorderFactory.createLineBorder(playerColor, 3));
+			setBorder(BorderFactory.createLineBorder(playerColor, 2));
 		}
 		else
 			setBorder(BorderFactory.createLineBorder(Color.WHITE));
 	}
 	
 	public void selectCardAtIndex(int indexOfCard, int numCards, String hashKey){
+		System.out.println(indexOfCard);
 		BufferedImage card = drawPalaceCardBacks(numCards);
 		Graphics2D g2d = card.createGraphics();
 		g2d.drawImage(getBufferedImageFromSource(imageSourceHashMap.get(hashKey)), null, indexOfCard*getCardSpacing(numCards), 0);
@@ -111,12 +120,7 @@ public class HoldFestivalPlayerPanel extends JPanel {
 			if(isEvenLayout)
 				g2d.drawImage(cardBack, null, i*spacing, 0);
 			else{
-				if(i % 2 == 0){
-					g2d.drawImage(cardBack, null, 0, i*spacing);
-				}
-				else{
-					g2d.drawImage(cardBack, null, 50, i*spacing);
-				}
+				g2d.drawImage(cardBack, null, 0, i*spacing);
 			}
 		}
 		return cards;
