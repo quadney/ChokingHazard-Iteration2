@@ -3,7 +3,7 @@ package Models.Actions;
 import Helpers.JsonObject;
 import Models.GameModel;
 
-public class ThreeTileAction extends RotatableComponentAction{
+public class ThreeTileAction extends RotatableComponentAction {
 
 	public ThreeTileAction(int actionID, int playerIndex, int rotationState) {
 		super(actionID, playerIndex, rotationState);

@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.BoardModel;
+import Models.Actions.Action;
 import Views.BoardPanel;
 
 public class BoardController {
@@ -26,5 +27,10 @@ public class BoardController {
 
 	public void pressEsc() {
 		boardPanel.cancel();
+	}
+
+	public void doAction(Action action) {
+		// TODO Auto-generated method stub
+		
 	}
 }
