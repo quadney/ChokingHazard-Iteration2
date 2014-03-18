@@ -314,4 +314,8 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return this;
 	}
 
+	public int getNumPalaceCards() {
+		return palaceCards.size();
+	}
+
 }

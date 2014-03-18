@@ -104,37 +104,30 @@ public class PlayerController {
 
 	
 	//---------------------------------------------------------------------------
-
 	
-	public void doAction(Action action, int playerIndex) {
+	public void updatePlayerPanel(int playerIndex) {
+		//given a player index, the corresponding player panel will update with all the information.
 		
-		//changes the fame points of the player, applicable (for now) for every action
-		playerModels[playerIndex].changeFamePoints(action.getEarnedFamePoints());
-		//updated the playerPanel of this change
+		//tells the player their fame points
 		playerPanels[playerIndex].updateFamePoints(playerModels[playerIndex].getFamePoints());
 		
-		//
-		if(action instanceof RiceTileAction){
-			playerModels[playerIndex].decrementRice();
-			playerPanels[playerIndex].useOneRiceTile(playerModels[playerIndex].getNumOneRiceTile());
-		}
-		else if(action instanceof VillageTileAction){
-			playerModels[playerIndex].decrementVillage();
-			playerPanels[playerIndex].useOneVillageTile(playerModels[playerIndex].getNumOneVillageTile());
-		}
-		else if(action instanceof TwoTileAction){
-			playerModels[playerIndex].decrementTwo();
-			playerPanels[playerIndex].useTwoTile(playerModels[playerIndex].getNumTwoTile());
-		}
-		else if(action instanceof UseActionTokenAction){
-			playerModels[playerIndex].useActionToken();
-			playerPanels[playerIndex].useActionToken(playerModels[playerIndex].getNumActionTokens(), playerModels[playerIndex].getActionPoints());
-		}
-		//else if() //use for palace cards shit....
-		//else if() //use for palace festival shit...
-						
+		//tells the player panel the number of palace cards
+		playerPanels[playerIndex].updateNumPalaceCards(playerModels[playerIndex].getNumPalaceCards());
 		
+		// tells the player panel the number of rice tiles
+		playerPanels[playerIndex].useOneRiceTile(playerModels[playerIndex].getNumOneRiceTile());
 		
+		// tells the player panel the number of village tiles
+		playerPanels[playerIndex].useOneVillageTile(playerModels[playerIndex].getNumOneVillageTile());
+		
+		// tells the player panel the number of two tiles
+		playerPanels[playerIndex].useTwoTile(playerModels[playerIndex].getNumTwoTile());
+		
+		// tells the player panel the number of action tokens
+		playerPanels[playerIndex].useActionToken(playerModels[playerIndex].getNumActionTokens(),playerModels[playerIndex].getActionPoints());
+		
+		// tells the player their action points
+		playerPanels[playerIndex].updateActionPoints(playerModels[playerIndex].getActionPoints());
 	}
 	
 	
