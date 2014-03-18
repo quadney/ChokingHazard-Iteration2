@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Stack;
 
 import Helpers.JsonObject;
 
@@ -370,17 +369,13 @@ public class BoardModel implements Serializable<BoardModel> {
 		return true;
 	}
 
-	public boolean placeDeveloper(Point location, JavaPlayer player) {
-		// Set the point equal to the cell on the board
-		JavaCell locationCell = map[location.getX()][location.getY()];
-
+	public boolean placeDeveloper(JavaCell jc, JavaPlayer player) {
 		// Check with validity method first
-		if (!canPlaceDeveloper(locationCell, player))
+		if (!canPlaceDeveloper(jc, player))
 			return false;
 
 		// Set developer on board
-		locationCell.setDeveloper();
-
+		player.associateDeveloperWithCell(jc);
 		return true; // TODO Specific index?? cc: Cameron
 
 	}
@@ -490,7 +485,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 		
 		if (player.decrementNActionPoints(actionPoints, false)) {
-			player.setDeveloperCell(nextCell);
+			player.associateDeveloperWithCell(nextCell);
 			return true;
 		}
 		

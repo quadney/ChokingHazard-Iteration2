@@ -56,39 +56,27 @@ public class GameModel implements Serializable<GameModel> {
 		players[playerIndex].changeFamePoints(modifier);
 	}
    
-   public Developer getDeveloperOnCell(Cell c)
-   {
-      for(int i = 0; i < players.length; i++)
-      {
-         for(Developer d:players[i].getDevelopersOnBoard())
-         {
-            if(d.getLocation() == c)
-               return d;
-         }
-      }
-      return null;
-   }
-   
-   public boolean endTurn(){
-	 //TODO only is called when a player can end a turn validly (accounted for in GameController)
-	 //call an end turn in the Player Model for the current player
-	 //change player index
-	 //change whatever else in the models
-	   
-	 JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
-	 if (!currentPlayer.endTurn()) //checks for land tile placement
-		 return false; //TODO: Handle alert, see JavaPlayer TODO
-	 indexOfCurrentPlayer++;
-	 indexOfCurrentPlayer = indexOfCurrentPlayer %  players.length; //tab through players
-	 
-	 
-	 
-	 return true;
-	    }
+	public boolean endTurn() {
+		// TODO only is called when a player can end a turn validly (accounted
+		// for in GameController)
+		// call an end turn in the Player Model for the current player
+		// change player index
+		// change whatever else in the models
+
+		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
+		if (!currentPlayer.endTurn()) // checks for land tile placement
+			return false; // TODO: Handle alert, see JavaPlayer TODO
+		indexOfCurrentPlayer++;
+		indexOfCurrentPlayer = indexOfCurrentPlayer % players.length; // tab
+																		// through
+																		// players
+
+		return true;
+	}
    
    //Returns an array of players in order from highest to lowest of ranks of players
    //valid on a palace/city
-   public ArrayList<Player> getPalaceRanks(JavaCell palace)
+   /*public ArrayList<Player> getPalaceRanks(JavaCell palace)
    {
       ArrayList<JavaCell> city = gameBoard.getCityFromRootCell(palace);
       
@@ -234,7 +222,7 @@ public class GameModel implements Serializable<GameModel> {
       
 		return players;
    }
-
+*/
 	/**
 	 * Backtracks GameModel state to end of current player's previous turn,
 	 * storing all backtracked moves in actionReplays stack. Also changes
