@@ -46,6 +46,21 @@ public class BoardModel implements Serializable<BoardModel> {
 			}
 		}
 	}
+	
+	public boolean placeTileOnBoard(int x, int y, Tile tile){
+		JavaCell[][] miniMap = createTestMap(x, y);
+		String[][] tileCells = tile.getTileCells();
+		
+		for (int i = 0; i < tileCells.length; i++) 
+			for (int j = 0; j < tileCells[i].length; j++)
+					if(tileCells[i][j] != null){
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellType(tileCells[i][j]);
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellId(-1);
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setElevation(map[miniMap[i][j].getX()][miniMap[i][j].getY()].getElevation()+1);
+					}
+		System.out.println("in BoardModel placeTileOnBoard");
+		return true;
+	}
 
 	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player) {
 		JavaCell[][] miniMap = createTestMap(xC, yC);
@@ -367,17 +382,13 @@ public class BoardModel implements Serializable<BoardModel> {
 		return true;
 	}
 
-	public boolean placeDeveloper(Point location, JavaPlayer player) {
-		// Set the point equal to the cell on the board
-		JavaCell locationCell = map[location.getX()][location.getY()];
-
+	public boolean placeDeveloper(JavaCell jc, JavaPlayer player) {
 		// Check with validity method first
-		if (!canPlaceDeveloper(locationCell, player))
+		if (!canPlaceDeveloper(jc, player))
 			return false;
 
 		// Set developer on board
-		locationCell.setDeveloper();
-
+		player.associateDeveloperWithCell(jc);
 		return true; // TODO Specific index?? cc: Cameron
 
 	}
@@ -487,7 +498,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 		
 		if (player.decrementNActionPoints(actionPoints, false)) {
-			player.setDeveloperCell(nextCell);
+			player.associateDeveloperWithCell(nextCell);
 			return true;
 		}
 		

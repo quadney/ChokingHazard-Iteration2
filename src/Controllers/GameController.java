@@ -123,7 +123,10 @@ public class GameController {
 			System.out.println("(in GameController)Enter was pressed");
 			Action action = currentGame.pressEnter();
 			if(action != null){
+				System.out.println("action != null in GCtrl");
 				currentGame.addToActionHistory(action);
+				currentGame.doLastActionInHistory();
+				currentGame.setSelectedAction(null);
 				updateControllersWithAction(action);
 			}
 			break;	
@@ -228,6 +231,11 @@ public class GameController {
 		case 84:
 			//does not become a selected action, just does a regular action!
 			//released T, use action token
+			if(players.selectActionToken(currentGame.getPlayerIndex())){
+				UseActionTokenAction actionTokenAction = new UseActionTokenAction(-1,null,null,0);
+				currentGame.addToActionHistory(actionTokenAction);
+				updateControllersWithAction(actionTokenAction);
+			}
 
 			break;
 		case 86:
@@ -244,11 +252,11 @@ public class GameController {
 			//released X, end turn
 			if(players.selectEndTurn(currentGame.getPlayerIndex())){
 				players.setNotCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the player panel of the current player to stop outlining their panel
-				if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){ //ask if they wanna have a palace festival
+				//if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){ //ask if they wanna have a palace festival
 					//TODO set up palace festival
 					//asks for palace they want to hold a festival at
 					//pass the index and the value of the palace and...
-				}
+				//}
 				
 				//call this after the prompt to have a palace festival (and after the palace festival if they had one)
 				currentGame.endTurn(); //increment the current player in the game model, changes all the stuff in player
@@ -262,12 +270,12 @@ public class GameController {
 		// TODO turn all into permanent actions instead of momentary
 		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || 
 		action instanceof ThreeTileAction || action instanceof DrawPalaceCardAction)
-			shared.doAction(action);
+			shared.updateSharedPanel(action);
 		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction
 		|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
 		|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)
-			board.doAction(action);
-		players.doAction(action, currentGame.getPlayerIndex());
+			board.updateBoardPanel(action);
+		players.updatePlayerPanel(currentGame.getPlayerIndex());
 	}
 	
 	private void updateBoardControllerWithSelectedAction(){

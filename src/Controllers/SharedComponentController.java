@@ -88,20 +88,20 @@ public class SharedComponentController {
 	
 	//takes the action from the GameController and updates the components needed in the SharedComponentPanel/Model
 	//this assumes that the only actions that can change this panel/model are valid Palace/Three/Irrigation actions
-	public void doAction(Action action) {
-		if(action instanceof PalaceTileAction){
-			int value = ((PalaceTileAction)action).getValueOfPalace();
-			sharedModel.decrementPalaceTiles(value);
-			sharedPanel.updatePalaceTiles(sharedModel.getNumPalaceTiles(value),value);
+	public void updateSharedPanel(Action action) {
+		
+		//updates each of the palace card stacks with the number
+		for(int i = 0; i < 5; i++){
+			sharedPanel.updatePalaceTiles(sharedModel.getNumPalaceTiles((i+1)*2),(i+1)*2);
 		}
-		else if (action instanceof ThreeTileAction){
-			sharedModel.decrementThreeSpaceTiles();
-			sharedPanel.updateThreePieceTiles(sharedModel.getThreeSpaceTiles());
-		}
-		else if (action instanceof IrrigationTileAction){
-			sharedModel.decrementIrrigationTiles();
-			sharedPanel.updateIrrigationTiles(sharedModel.getIrrigationTiles());
-		}
-		//do else for palace card shit
+		
+		//updates the number of three piece tiles
+		sharedPanel.updateThreePieceTiles(sharedModel.getThreeSpaceTiles());
+		
+		//updates the number of irrigation tiles
+		sharedPanel.updateIrrigationTiles(sharedModel.getIrrigationTiles());
+		
+		//do more for palace card shit
+		sharedPanel.updateNumPalaceCards(sharedModel.getNumberPalaceCards());
 	}
 }
