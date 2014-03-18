@@ -7,7 +7,7 @@ import Models.GameModel;
 public class UseActionTokenAction extends Action {
 
 	public UseActionTokenAction(int actionID, int famePointsEarned) {
-		super(actionID, famePointsEarned);
+		super(actionID, famePointsEarned, 0);
 	}
 
 	@Override
