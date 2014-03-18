@@ -43,7 +43,7 @@ public class GameController {
 		
 		currentGame = new GameModel(numPlayers, playerNames, playerColors);
 		board = new BoardController(currentGame.getBoard());
-		players = new PlayerController(numPlayers, null, null); //change player controller to query the model for the player info
+		players = new PlayerController(numPlayers, currentGame.getPlayers()); //change player controller to query the model for the player info
 		shared = new SharedComponentController(); //change this to work
 		
 		//this initializes the dealing of the palace cards

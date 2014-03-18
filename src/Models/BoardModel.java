@@ -60,6 +60,7 @@ public class BoardModel implements Serializable<BoardModel> {
 			for (int j = 0; j < tileCells[i].length; j++)
 					if(tileCells[i][j] != null){
 						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellType(tileCells[i][j]);
+						System.out.println(i + "," + j + " " + map[miniMap[i][j].getX()][miniMap[i][j].getY()].getCellType());
 						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellId(-1);
 						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setElevation(map[miniMap[i][j].getX()][miniMap[i][j].getY()].getElevation()+1);
 					}
