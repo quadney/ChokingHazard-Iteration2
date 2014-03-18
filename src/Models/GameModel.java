@@ -387,8 +387,4 @@ public class GameModel implements Serializable<GameModel> {
 		return this;
 	}
 
-	public void pressD() {
-		// TODO Auto-generated method stub
-		
-	}
 }
