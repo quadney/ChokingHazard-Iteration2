@@ -5,9 +5,6 @@ import java.util.LinkedList;
 import Models.PalaceCard;
 import Models.SharedComponentModel;
 import Models.Actions.Action;
-import Models.Actions.IrrigationTileAction;
-import Models.Actions.PalaceTileAction;
-import Models.Actions.ThreeTileAction;
 import Views.SharedComponentPanel;
 
 public class SharedComponentController {
