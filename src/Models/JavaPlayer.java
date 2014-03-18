@@ -211,6 +211,7 @@ public class JavaPlayer implements Serializable<JavaPlayer>{
 	public void useActionToken(){
 		hasUsedActionToken = true;
 		numActionTokens--;
+		actionPoints++;
 	}
 	
 	public void decrementRice(){
@@ -228,6 +229,7 @@ public class JavaPlayer implements Serializable<JavaPlayer>{
 	public void unuseActionToken(){
 		hasUsedActionToken = false;
 		numActionTokens++;
+		actionPoints--;
 	}
 	
 	//----------------------------------------

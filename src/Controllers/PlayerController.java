@@ -128,7 +128,7 @@ public class PlayerController {
 		}
 		else if(action instanceof UseActionTokenAction){
 			playerModels[playerIndex].useActionToken();
-			playerPanels[playerIndex].
+			playerPanels[playerIndex].useActionToken(playerModels[playerIndex].getNumActionTokens(), playerModels[playerIndex].getActionPoints());
 		}
 		//else if() //use for palace cards shit....
 		//else if() //use for palace festival shit...
