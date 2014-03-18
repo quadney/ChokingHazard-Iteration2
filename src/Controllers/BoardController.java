@@ -21,7 +21,7 @@ public class BoardController {
 	}
 	
 	public void updateSelectedDeveloperAction(int x, int y, String imageKey){
-		
+		boardPanel.selectHighlightedDeveloper(imageKey, x, y);
 	}
 
 	public void pressEsc() {

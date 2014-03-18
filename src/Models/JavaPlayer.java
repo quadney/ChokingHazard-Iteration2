@@ -161,6 +161,10 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 		return hasPlacedLandTile;
 	}
 	
+	public boolean canPlaceDeveloperOnBoard() {
+		return developersOffBoard > 0 && getAvailableActionPoints(true) > 0;
+	}
+	
 	//---------------------------------------------------------------------------------------------------------
 
 	@Override
@@ -218,4 +222,5 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 
 		return this;
 	}
+
 }
