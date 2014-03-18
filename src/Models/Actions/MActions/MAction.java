@@ -1,5 +1,7 @@
 package Models.Actions.MActions; 
 
+import Models.Actions.Action;
+
 /**
  * MAction, which is a 'momentary' action only used for selection
  * 
@@ -21,9 +23,11 @@ public abstract class MAction {
 	
 	public abstract boolean pressArrow(int xChange, int yChange);
 	
-	//public abstract boolean pressTab();'
+	public abstract boolean pressTab();
 	
-	public abstract boolean pressEnter();
+	public abstract boolean pressDelete();
+	
+	public abstract Action pressEnter();
 	
 	//Accessor Methods ---------------------------------------------//
 	public int getX(){

@@ -1,5 +1,7 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+
 public class SelectTwoTileAction extends SelectRotatableComponentAction {
 
 	public SelectTwoTileAction(String imageKey) {
@@ -40,8 +42,8 @@ public class SelectTwoTileAction extends SelectRotatableComponentAction {
 	}
 
 	@Override
-	public boolean pressEnter() {
+	public Action pressEnter() {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 }

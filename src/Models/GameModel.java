@@ -275,11 +275,11 @@ public class GameModel implements Serializable<GameModel> {
 		return false;
 	}
 
-	public boolean pressEnter() {
+	public Action pressEnter() {
 		if(selectedAction != null){
 			return selectedAction.pressEnter();
 		}
-		return false;
+		return null;
 	}
 	
 	//Methods for MAction/selected action traversal that is needed by the controller
@@ -328,6 +328,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	public boolean pressDown() {
 		if(selectedAction != null){
+			System.out.println("(In GModel)pressDown selectedAction != null ");
 			return selectedAction.pressArrow(0,1);
 		}
 		return false;

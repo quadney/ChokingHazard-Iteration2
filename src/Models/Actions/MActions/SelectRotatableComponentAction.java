@@ -7,6 +7,14 @@ public abstract class SelectRotatableComponentAction extends MAction {
 	public SelectRotatableComponentAction(String imageKey) {
 		super(imageKey);
 	}
+	
+	public boolean pressTab(){
+		return false;
+	}
+	
+	public boolean pressDelete(){
+		return false;
+	}
 
 	public boolean pressSpace() {
 		int newRotationState = (rotationState + 1)  % 4;

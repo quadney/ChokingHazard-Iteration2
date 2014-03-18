@@ -1,10 +1,20 @@
 package Models.Actions.MActions;
 
+import Models.Actions.Action;
+
 public class SelectOneSpaceTileAction extends SelectOneSpaceComponentAction {
 	
 	public SelectOneSpaceTileAction(String imageKey) {
 		super(imageKey);
 		
+	}
+	
+	public boolean pressTab(){
+		return false;
+	}
+	
+	public boolean pressDelete(){
+		return false;
 	}
 	
 	public boolean isNonRotatableComponentOnBoard(int x, int y) {
@@ -19,9 +29,9 @@ public class SelectOneSpaceTileAction extends SelectOneSpaceComponentAction {
 	}
 
 	@Override
-	public boolean pressEnter() {
+	public Action pressEnter() {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 	
 }

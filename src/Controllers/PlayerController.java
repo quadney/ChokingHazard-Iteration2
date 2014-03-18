@@ -85,8 +85,16 @@ public class PlayerController {
 	}
 
 	public void setCurrentPlayerinPlayerPanel(int playerIndex) {
-		// TODO Auto-generated method stub
 		playerPanels[playerIndex].setCurrentPlayer();
+	}
+
+	public boolean selectDeveloper(int playerIndex) {
+		return playerModels[playerIndex].canPlaceDeveloperOnBoard();
+	}
+
+	public String getColorOfPlayer(int playerIndex) {
+		playerModels[playerIndex].getColor();
+		return null;
 	}
 	
 	//---------------------------------------------------------------------------
