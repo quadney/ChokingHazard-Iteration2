@@ -9,4 +9,8 @@ public class PalaceTileAction extends OneSpaceTileAction {
 		this.value = value;
 		// TODO Auto-generated constructor stub
 	}
+
+	public int getValueOfPalace() {
+		return value;
+	}
 }

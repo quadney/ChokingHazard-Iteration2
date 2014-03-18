@@ -24,8 +24,6 @@ public abstract class SelectRotatableComponentAction extends MAction {
 			rotationState = newRotationState;
 			return true;
 		}
-
-		
 		return false;
 	}
 	
