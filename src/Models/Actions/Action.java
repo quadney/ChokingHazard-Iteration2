@@ -12,10 +12,17 @@ import Models.*;
  * @author Cameron Morrow
  * 
  */
-public abstract class Action implements Serializable<Action> {
+public abstract class Action extends Event implements Serializable<Action> {
 
 	protected final int actionID;
+	protected int playerIndex;
 
+	public Action(int actionID, int playerIndex) {
+		this.actionID = actionID;
+		this.playerIndex = playerIndex;
+	}
+	
+	//Accessors-------------------------------------------------------------------
 	/**
 	 * Returns the immutable actionID of the action, obtained at the time of
 	 * instantiation.
@@ -23,8 +30,6 @@ public abstract class Action implements Serializable<Action> {
 	public int getActionID() {
 		return actionID;
 	}
-
-	protected int playerIndex;
 
 	/**
 	 * Returns the int which holds the index of the player who created this
@@ -34,28 +39,7 @@ public abstract class Action implements Serializable<Action> {
 		return playerIndex;
 	}
 
-	public Action(int actionID, int playerIndex) {
-		this.actionID = actionID;
-		this.playerIndex = playerIndex;
-	}
-
-	/**
-	 * Undoes the action's effects on the GameModel.
-	 * 
-	 * @param game
-	 *            The game upon which the action took place.
-	 */
-	public abstract void undo(GameModel game);
-	
-	/**
-	 * Redoes the action's effects on the GameModel.
-	 * 
-	 * @param game
-	 *            The game upon which the action took place.
-	 */
-	public abstract void redo(GameModel game);
-	
-	//------------------------------------------------------
+	//Loading----------------------------------------------------------------------
 	
 	public static Action loadAction(JsonObject json) {
 		// TODO this will return the correct Action based on subactions
