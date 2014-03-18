@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import javax.swing.JPanel;
 import Models.JavaPlayer;
 import Models.PalaceCard;
 
+@SuppressWarnings("serial")
 public class DisplayPlayersPalaceCardsFrame extends JFrame {
 	JLabel playerNameLabel;
 	private HashMap<String, String> imageSourceHashMap;

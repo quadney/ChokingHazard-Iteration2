@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
+@SuppressWarnings("serial")
 public class NewGameFrame extends JFrame{
 	JPanel newGamePanel;
 	JButton startGame;
@@ -26,6 +27,7 @@ public class NewGameFrame extends JFrame{
 	int width = 500;
 	int height = 500;
 	
+	@SuppressWarnings("unchecked")
 	public NewGameFrame() {
 		newGamePanel = new JPanel();
 		newGamePanel.setPreferredSize(new Dimension(width, height));

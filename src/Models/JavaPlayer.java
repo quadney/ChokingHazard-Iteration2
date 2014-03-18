@@ -1,9 +1,8 @@
 package Models;
 import Helpers.Json;
-
 import java.util.*;
-
 import Helpers.JsonObject;
+import Views.GameContainerPanel;
 
 public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	private int famePoints;
@@ -17,7 +16,6 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	private ArrayList<PalaceCard> palaceCards;
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
-
 	private Developer[] developerArray;
 	public int currentlySelectedDeveloper;
 	private boolean hasPlacedLandTile;
@@ -70,6 +68,10 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 		}
 		
 		return actionPoints - 1;
+	}
+	
+	public void setDeveloperCell(JavaCell jc) {
+		developerArray[selectedDeveloperIndex].setLocation(jc);
 	}
 	
 	public void changeFamePoints(int modifier){
@@ -136,7 +138,7 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	{
 		if (!hasPlacedLandTile)
 		{
-			//TODO: Alert they haven't placed land
+			GameContainerPanel.tellPeopleTheyAintPlacedNoLandTile(); //TODO: Make sure this works
 			return false;
 		}
 		//Otherwise, typical end of turn activities
@@ -192,13 +194,42 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 			Json.jsonPair("developerArray", Json.serializeArray(developerArray)),
 			Json.jsonPair("selectedDeveloperIndex", Json.jsonValue(selectedDeveloperIndex + "")),
 			Json.jsonPair("currentlySelectedDeveloper", Json.jsonValue(currentlySelectedDeveloper + "")),
-			Json.jsonPair("placedLandTile", Json.jsonValue(hasPlacedLandTile + ""))
+			Json.jsonPair("hasPlacedLandTile", Json.jsonValue(hasPlacedLandTile + "")),
+			Json.jsonPair("hasUsedActionToken", Json.jsonValue(hasUsedActionToken + ""))
 		));
 	}
 
 	@Override
 	public JavaPlayer loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		this.name = json.getString("name");
+		this.color = json.getString("color");
+		this.famePoints = Integer.parseInt(json.getString("famePoints"));
+		this.actionPoints = Integer.parseInt(json.getString("actionPoints"));
+		this.numOneRiceTile = Integer.parseInt(json.getString("numOneRiceTile"));
+		this.numOneVillageTile = Integer.parseInt(json.getString("numOneVillageTile"));
+		this.numTwoTile = Integer.parseInt(json.getString("numTwoTile"));
+		this.numActionTokens = Integer.parseInt(json.getString("numActionTokens"));
+		this.developersOffBoard = Integer.parseInt(json.getString("developersOffBoard"));
+		this.selectedDeveloperIndex = Integer.parseInt(json.getString("selectedDeveloperIndex"));
+		this.currentlySelectedDeveloper = Integer.parseInt(json.getString("currentlySelectedDeveloper"));
+		this.hasPlacedLandTile = Boolean.parseBoolean(json.getString("hasPlacedLandTile"));
+		this.hasUsedActionToken = Boolean.parseBoolean(json.getString("hasUsedActionToken"));
+		
+		this.palaceCards = new ArrayList<PalaceCard>();
+		for(JsonObject obj : json.getJsonObjectArray("palaceCards"))
+			this.palaceCards.add((new PalaceCard(-1)).loadObject(obj));
+
+		this.developersOnBoard = new Developer[json.getJsonObjectArray("developersOnBoard").length];
+		for(int x = 0; x < this.developersOnBoard.length; ++x) {
+			json.getJsonObjectArray("developersOnBoard")[x].addKeyManually("map", json.getObject("map"));
+			this.developersOnBoard[x] = (new Developer(this)).loadObject(json.getJsonObjectArray("developersOnBoard")[x]);
+		}
+		
+		// TODO check if these are distinct or from developersOnBoard (or vice-versa)
+		this.developerArray = new Developer[json.getJsonObjectArray("developerArray").length];
+		for(int x = 0; x < this.developerArray.length; ++x) 
+			this.developerArray[x] = (new Developer(this)).loadObject(json.getJsonObjectArray("developerArray")[x]);
+
+		return this;
 	}
 }

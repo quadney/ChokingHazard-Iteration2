@@ -1,6 +1,4 @@
-package Models.Actions.MActions;
-import Helpers.Json;
-import Models.*;
+package Models.Actions.MActions; 
 
 /**
  * MAction, which is a 'momentary' action only used for selection
@@ -8,7 +6,7 @@ import Models.*;
  * MAction and it's children are created by Meghan and Mauricio
  * 
  */
-public abstract class MAction implements Serializable<MAction>{
+public abstract class MAction {
 
 	String imageKey;
 	int x = 1;
@@ -34,14 +32,5 @@ public abstract class MAction implements Serializable<MAction>{
 	}
 	public String getImageKey(){
 		return imageKey;
-	}
-	
-	@Override
-	public String serialize() {
-		return Json.jsonObject(Json.jsonMembers(
-			Json.jsonPair("x", Json.jsonValue(x + "")),
-			Json.jsonPair("y", Json.jsonValue(y + "")),
-			Json.jsonPair("imageKey", Json.jsonValue(imageKey))
-		));
 	}
 }

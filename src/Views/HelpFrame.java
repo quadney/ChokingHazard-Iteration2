@@ -1,10 +1,7 @@
 package Views;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -12,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
+@SuppressWarnings("serial")
 public class HelpFrame extends JFrame {
 	private final int WIDTH, HEIGHT;
 	BufferedImage helpImage;

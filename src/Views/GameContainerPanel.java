@@ -19,6 +19,7 @@ import Models.JavaPlayer;
 import Models.PalaceCard;
 
 
+@SuppressWarnings("serial")
 public class GameContainerPanel extends JPanel {
 	private final static int WIDTH = 1300;
 	private final static int HEIGHT = 840;
@@ -87,6 +88,7 @@ public class GameContainerPanel extends JPanel {
 				String[] hash = line.split(" ");
 				imageSourceHashMap.put(hash[0], hash[1]);
 			}
+			fileReader.close();
 		} catch(Exception e){
 			System.out.println(e.getMessage());
 		}
@@ -130,6 +132,11 @@ public class GameContainerPanel extends JPanel {
 	public void displayHoldFestivalFrame(GameController game, JavaPlayer[] players, int indexOfPlayerHoldingFestival, PalaceCard festivalCard, int selectedPalaceValue){
 		festivalFrame = new HoldFestivalFrame(game, players, indexOfPlayerHoldingFestival, festivalCard, selectedPalaceValue);
 		festivalFrame.setVisible(true);
+	}
+	
+	public static void tellPeopleTheyAintPlacedNoLandTile()
+	{
+		JOptionPane.showMessageDialog( null, "You haven't placed a land tile :(");
 	}
 
 }

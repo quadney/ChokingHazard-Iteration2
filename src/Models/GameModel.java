@@ -4,7 +4,6 @@ import Helpers.*;
 import Models.Actions.*;
 
 import java.util.*;
-import java.util.Stack;
 
 import Models.Actions.MActions.MAction;
 
@@ -277,12 +276,11 @@ public class GameModel implements Serializable<GameModel> {
 		return this.indexOfCurrentPlayer;
 	}
 
-	public void pressSpace() {
+	public boolean pressSpace() {
 		if(selectedAction != null){
-			selectedAction.pressSpace();
-			System.out.println("(in GameModel pressSpace()) selectedAction pressSpace() was called");
+			return selectedAction.pressSpace();
 		}
-		System.out.println("(in GameModel pressSpace()) selectedAction pressSpace() was called");
+		return false;
 	}
 	
 	//Methods for MAction/selected action traversal that is needed by the controller
@@ -337,16 +335,18 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public boolean setSelectedAction(MAction selectedAction) {
-		if(this.selectedAction == null){
-			System.out.println("(in GameModel setSelectedACtion()) setSelectedAction set the new MAction");
+		//if(this.selectedAction == null){
+			//System.out.println("(in GameModel setSelectedACtion()) setSelectedAction set the new MAction");
 			this.selectedAction = selectedAction;
 			return true;
-		}
-		System.out.println("(in GameModel setSelectedACtion()) setSelectedAction already had an MAction");
-		return false;
+		//}
+		//System.out.println("(in GameModel setSelectedACtion()) setSelectedAction already had an MAction");
+		//return false;
 		
 	}
 
+	//---------------------------------------------------------------------------
+	
 	@Override
 	public String serialize() {
 		return Json.jsonObject(Json.jsonMembers(
@@ -364,7 +364,26 @@ public class GameModel implements Serializable<GameModel> {
 	
 	@Override
 	public GameModel loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		gameState = GameState.valueOf(json.getString("gameState"));
+		gameBoard = (new BoardModel()).loadObject(json.getJsonObject("gameBoard"));
+		indexOfCurrentPlayer = Integer.parseInt(json.getString("indexOfCurrentPlayer"));
+		isFinalRound = Boolean.parseBoolean(json.getString("isFinalRound"));
+		actionIDCounter = Integer.parseInt(json.getString("actionIDCounter"));
+		
+		this.players = new JavaPlayer[json.getJsonObjectArray("players").length];
+		for(int x = 0; x < players.length; ++x) {
+			json.getJsonObjectArray("players")[x].addKeyManually("map", gameBoard.getMap());
+			players[x] = (new JavaPlayer("temp", "temp")).loadObject(json.getJsonObjectArray("players")[x]);
+		}
+
+		this.actionHistory = new Stack<Action>();
+		for(JsonObject obj : json.getJsonObjectArray("actionHistory"))
+			actionHistory.push(Action.loadAction(obj));
+		
+		this.actionReplays = new Stack<Action>();
+		for(JsonObject obj : json.getJsonObjectArray("actionReplays"))
+			actionReplays.push(Action.loadAction(obj));
+
+		return this;
 	}
 }

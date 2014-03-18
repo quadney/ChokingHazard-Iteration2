@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class PlayerPanel extends JPanel{
 	private String color;
 	private String name;
@@ -127,6 +128,7 @@ public class PlayerPanel extends JPanel{
 				String[] hash = line.split(" ");
 				imageSourceHashMap.put(hash[0], hash[1]);
 			}
+			fileReader.close();
 		} catch(Exception e){
 			System.out.println(e.getMessage());
 		}

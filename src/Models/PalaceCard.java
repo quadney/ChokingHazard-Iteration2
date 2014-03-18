@@ -105,7 +105,11 @@ public class PalaceCard implements Serializable<PalaceCard> {
 	
 	@Override
 	public PalaceCard loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		symbols = new ArrayList<Integer>();
+		for(String symbol : json.getStringArray("symbols"))
+			symbols.add(Integer.parseInt(symbol));
+		numSymbols = Integer.parseInt(json.getString("numSymbols"));
+		cardType = json.getString("cardType");
+		return this;
 	}
 }

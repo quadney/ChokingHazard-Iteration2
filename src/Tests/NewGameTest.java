@@ -12,7 +12,7 @@ public class NewGameTest {
 		@SuppressWarnings("unused")
 		RunGame game = new RunGame();
 		
-		Simulator.newGame("player1", "computer2", "computer3", "computer4");
+		Simulator.newGame("p", "c");
 		/*Simulator.placeDeveloper(3, 3);
 		Simulator.placeDeveloper(4, 4);
 		Simulator.placeDeveloper(1, 5);
