@@ -126,15 +126,13 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 		return getAvailableActionPoints(false) > 0;
 	}
 	
-	public boolean endTurn()
+	public boolean CanEndTurn()
 	{
 		if (!hasPlacedLandTile)
 		{
 			GameContainerPanel.tellPeopleTheyAintPlacedNoLandTile(); //TODO: Make sure this works
 			return false;
 		}
-		//Otherwise, typical end of turn activities
-		changeFamePoints(1); //TODO: determine correct amount, method?
 		
 		return true;
 	}

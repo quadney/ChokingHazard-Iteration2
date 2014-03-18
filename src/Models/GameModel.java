@@ -69,15 +69,10 @@ public class GameModel implements Serializable<GameModel> {
       return null;
    }
    
-   public boolean endTurn(){
-	 //TODO only is called when a player can end a turn validly (accounted for in GameController)
-	 //call an end turn in the Player Model for the current player
-	 //change player index
-	 //change whatever else in the models
-	   
+   public boolean endTurn(){  
 	 JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
-	 if (!currentPlayer.endTurn()) //checks for land tile placement
-		 return false; //TODO: Handle alert, see JavaPlayer TODO
+	 if (!currentPlayer.CanEndTurn()) //checks for land tile placement
+		 return false; 
 	 indexOfCurrentPlayer++;
 	 indexOfCurrentPlayer = indexOfCurrentPlayer %  players.length; //tab through players
 	 
