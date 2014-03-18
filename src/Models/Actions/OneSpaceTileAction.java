@@ -1,10 +1,8 @@
 package Models.Actions;
 
 import Helpers.JsonObject;
-import Models.BoardModel;
 import Models.GameModel;
 import Models.JavaCell;
-import Models.Tile;
 
 public class OneSpaceTileAction extends OneSpaceComponentAction {
 

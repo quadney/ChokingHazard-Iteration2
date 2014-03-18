@@ -8,6 +8,4 @@ public class RiceTileAction extends OneSpaceTileAction {
 		super(actionID, famePointsEarned, x, y, cell);
 		this.imageKey = "rice";
 	}
-
-
 }
