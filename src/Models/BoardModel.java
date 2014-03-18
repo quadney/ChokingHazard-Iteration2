@@ -23,26 +23,31 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
-				if (x == 0 || x == 1) {
-					map[x][y] = new JavaCell(x, y, 0);
-				}
-
-				else if (x <= 6 && (y <= 1 || y >= 12)) {
-					map[x][y] = new JavaCell(x, y, 0);
-				}
-
-				else if (x >= 7 && (y <= 1 || y >= 12)) {
-					map[x][y] = new JavaCell(x, y, 0);
-				} 
-				
-				else if (x == 12 || x == 13) {
-					map[x][y] = new JavaCell(x, y, 0);
-				} 
+//				if (x == 0 || x == 1) {
+//					map[x][y] = new JavaCell(x, y, 0);
+//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
+//				}
+//
+//				else if (x <= 6 && (y <= 1 || y >= 12)) {
+//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
+//					map[x][y] = new JavaCell(x, y, 0);
+//				}
+//
+//				else if (x >= 7 && (y <= 1 || y >= 12)) {
+//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
+//					map[x][y] = new JavaCell(x, y, 0);
+//				} 
+//				
+//				else if (x == 12 || x == 13) {
+//					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
+//					map[x][y] = new JavaCell(x, y, 0);
+//				} 
 				
 				// this creates Cell objects for the rest of central Java
-				else {
+//				else {
 					map[x][y] = new JavaCell(x, y, 0); 
-				}
+					System.out.println("(in BMod) New JavaCell created at " + x + "," + y);
+//				}
 			}
 		}
 	}

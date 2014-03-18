@@ -42,7 +42,7 @@ public class GameController {
 		//create controllers
 		
 		currentGame = new GameModel(numPlayers);
-		board = new BoardController();
+		board = new BoardController(currentGame.getBoard());
 		players = new PlayerController(numPlayers, playerNames, playerColors);
 		shared = new SharedComponentController();
 		
