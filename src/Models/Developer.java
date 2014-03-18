@@ -30,6 +30,16 @@ public class Developer implements Serializable<Developer>
       return location;
    }
    
+   //accessor methods needed for SeectTabThroughDeveloperAction------
+   
+   public int getX(){
+	   return location.getX();
+   }
+   
+   public int getY(){
+	   return location.getY();
+   }
+   //------------------------------------------------------------------
    public JavaPlayer getOwner()
    {
       return owner;

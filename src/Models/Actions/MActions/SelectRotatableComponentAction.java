@@ -12,8 +12,8 @@ public abstract class SelectRotatableComponentAction extends MAction {
 		return false;
 	}
 	
-	public boolean pressDelete(){
-		return false;
+	public MAction pressDelete(){
+		return null;
 	}
 
 	public boolean pressSpace() {
