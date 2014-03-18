@@ -267,7 +267,7 @@ public class GameController {
 		|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
 		|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)
 			board.doAction(action);
-		players.doAction(action);
+		players.doAction(action, currentGame.getPlayerIndex());
 	}
 	
 	private void updateBoardControllerWithSelectedAction(){

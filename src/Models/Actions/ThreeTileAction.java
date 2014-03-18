@@ -2,13 +2,14 @@ package Models.Actions;
 
 import Helpers.JsonObject;
 import Models.GameModel;
+import Models.JavaCell;
 
 public class ThreeTileAction extends RotatableComponentAction {
 
 	public boolean isFinalRound;
 
-	public ThreeTileAction(int actionID, String beforeImageKey,	String afterImageKey, int famePointsEarned, int x, int y, int rotationState, boolean isFinalRound) {
-		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState);
+	public ThreeTileAction(int actionID, String beforeImageKey,	String afterImageKey, int famePointsEarned, int x, int y, int rotationState, boolean isFinalRound, JavaCell[] cell) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState, cell);
 		this.isFinalRound = isFinalRound;
 	}
 	
