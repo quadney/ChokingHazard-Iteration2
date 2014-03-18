@@ -2,8 +2,8 @@ package Models.Actions;
 
 public class RiceTileAction extends OneSpaceTileAction {
 
-	public RiceTileAction(String imageKey) {
-		super(imageKey);
-		// TODO Auto-generated constructor stub
+	public RiceTileAction(int actionID, int playerIndex) {
+		super(actionID, playerIndex);
 	}
+
 }

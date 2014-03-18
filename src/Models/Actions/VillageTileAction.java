@@ -2,8 +2,8 @@ package Models.Actions;
 
 public class VillageTileAction extends OneSpaceTileAction {
 
-	public VillageTileAction(String imageKey) {
-		super(imageKey);
-		// TODO Auto-generated constructor stub
+	public VillageTileAction(int actionID, int playerIndex) {
+		super(actionID, playerIndex);
 	}
+
 }

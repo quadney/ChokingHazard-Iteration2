@@ -2,8 +2,7 @@ package Models.Actions;
 
 public class IrrigationTileAction extends OneSpaceTileAction {
 
-	public IrrigationTileAction(String imageKey) {
-		super(imageKey);
-		// TODO Auto-generated constructor stub
+	public IrrigationTileAction(int actionID, int playerIndex) {
+		super(actionID, playerIndex);
 	}
 }
