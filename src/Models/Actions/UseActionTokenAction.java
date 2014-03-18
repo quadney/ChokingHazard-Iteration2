@@ -13,8 +13,8 @@ public class UseActionTokenAction extends Action {
 	@Override
 	public String serialize() {
 		return Json.jsonObject(Json.jsonElements(
-			Json.jsonPair("actionID", actionID),
-			Json.jsonPair("famePointsEarned", famePointsEarned)
+			Json.jsonPair("actionID", actionID + ""),
+			Json.jsonPair("famePointsEarned", famePointsEarned + "")
 		));
 	}
 
