@@ -1,22 +1,23 @@
 package Models;
 
-import java.util.HashMap;
-import java.util.Stack;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Stack;
 
 public class BoardModel {
 	private JavaCell[][] map;
 	private Stack<JavaCell> path;
 	private ArrayList<JavaCell> connectedPalaces = new ArrayList<JavaCell>();
 	private JavaCell[] outerCells;
+	private int cellId;
 
 	public BoardModel() {
 		this.map = new JavaCell[14][14];
 		this.path = new Stack<JavaCell>();
 		outerCells = new JavaCell[44];
 		int k = 0;
+		cellId = 0;
 
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
@@ -52,20 +53,42 @@ public class BoardModel {
 	}
 
 	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player) {
-		if (checkValidTilePlacement(xC, yC, tile, player)) {
-
+		JavaCell[][] miniMap = createTestMap(xC, yC);
+		String[][] tileCells = tile.getTileCells();
+		
+		
+		
+		if (checkValidTilePlacement(xC, yC, tile, player, miniMap)) {
+			/*are we going to be creating the tile here? if we are then
+			we need to increase cellId here.*/
+			cellId++;
+			for (int i = 0; i < tileCells.length; i++) 
+				for (int j = 0; j < tileCells[i].length; j++)
+						if(tileCells[i][j] != null){
+							map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellType(tileCells[i][j]);
+							map[miniMap[i][j].getX()][miniMap[i][j].getY()].setCellId(cellId);
+							map[miniMap[i][j].getX()][miniMap[i][j].getY()].setElevation(map[miniMap[i][j].getX()][miniMap[i][j].getY()].getElevation()+1);
+						}
 			return true;
 		}
 
 		return false;
 	}
 
-	private boolean checkValidTilePlacement(int xC, int yC, Tile tile,
-			JavaPlayer player) {
+	private boolean checkValidTilePlacement(int xC, int yC, Tile tile, JavaPlayer player, JavaCell[][] miniMap ) {
 		// creating a small map with the cells we need to compare
-		JavaCell[][] miniMap = createTestMap(xC, yC);
+		//JavaCell[][] miniMap = createTestMap(xC, yC);
 
 		int neededActionPoints = checkNeededActionPoints(miniMap, tile);
+		
+		System.out.println("Palace: " +checkPalacePlacement(miniMap, tile));
+		System.out.println("tileBelow: " +checkTilesBelow(miniMap, tile));
+		System.out.println("elevation: " +checkElevation(miniMap, tile, xC, yC));
+		System.out.println("irrigation: " +checkIrrigationPlacement(miniMap, tile));
+		System.out.println("developeronCell: " +checkDeveloperOnCell(miniMap, tile));
+		System.out.println("cityConnection: " +checkCityConnection(miniMap, tile));
+		System.out.println("edgePlacement: " +checkEdgePlacement(miniMap, tile));
+		System.out.println("player: " +player.decrementNActionPoints(neededActionPoints));
 
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
@@ -156,8 +179,18 @@ public class BoardModel {
 			}
 		}
 		
-		
-		if(Integer.parseInt(tile.getType()) == numberOfTilesBelow)
+		int number;
+		if(tile.getType() == "two"){
+			number = 2;
+		}else if(tile.getType() == "three"){
+			number = 3;
+			
+		}else if(tile.getType() == "one"){
+			number = 1;
+		}else{
+			number = 0;
+		}
+		if(number == numberOfTilesBelow)
 			return false;
 		else 
 			return true;
@@ -298,13 +331,31 @@ public class BoardModel {
 				if (tileCells[i][j] != null) 
 					cells[i] = miniMap[i][j];
 		
+		int number;
+		if(tile.getType() == "two"){
+			number = 2;
+		}else if(tile.getType() == "three"){
+			number = 3;
+			
+		}else if(tile.getType() == "one"){
+			number = 1;
+		}else{
+			number = 0;
+		}
 		
-		
-		for(int i = 0; i < outerCells.length; i++)
-			for(int j = 0; j < cells.length; j++){
-			if(cells[j] != null &&  cells[j].getX() == outerCells[i].getX() && cells[0].getY() == outerCells[i].getY())
+		for(int i = 0; i < outerCells.length; i++){
+			
+			if(cells[0] != null && outerCells[i] != null && cells[0].getX() == outerCells[i].getX() && cells[0].getY() == outerCells[i].getY())
 				count++;
-			if(count == Integer.parseInt(tile.getType()))
+			if(cells[1] != null && outerCells[i] != null && cells[1].getX() == outerCells[i].getX() && cells[1].getY() == outerCells[i].getY())
+				count++;
+			if(cells[2] != null && outerCells[i] != null && cells[2].getX() == outerCells[i].getX() && cells[2].getY() == outerCells[i].getY())
+				count++;
+			if(cells[3] != null && outerCells[i] != null && cells[3].getX() == outerCells[i].getX() && cells[3].getY() == outerCells[i].getY())
+				count++;
+		}
+		
+			if(count == number){
 				return false;
 			}
 
@@ -577,5 +628,18 @@ public class BoardModel {
 			   return true;
 	   }
 	   return false;
+   }
+   
+   public String toString(){ //for testing purposes 
+	   
+   
+	  String maze = "";
+	  
+	  	for(int i = 0; i < map.length; i++){
+	  		for(int j = 0; j < map.length; j++)
+	  			maze += "  " + map[i][j].getElevation();
+	  		maze += "\n";
+	  	}
+	  	return maze;
    }
 }

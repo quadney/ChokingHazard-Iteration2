@@ -13,8 +13,6 @@ public class JavaPlayer extends Player {
 	private ArrayList<PalaceCard> palaceCards;
     private Developer[] developersOnBoard;
     private int selectedDeveloperIndex;
-
-
 	private Developer[] developerArray;
 	public int currentlySelectedDeveloper; 	//Index of currently selected developer. CC: Cameron
 	private boolean placedLandTile;
