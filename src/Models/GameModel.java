@@ -54,6 +54,11 @@ public class GameModel implements Serializable<GameModel> {
 	public void changeFamePoints(int playerIndex, int modifier) {
 		players[playerIndex].changeFamePoints(modifier);
 	}
+	
+	//Used for testing the Actions
+	public void placeTileOnBoard(int x, int y, Tile tile){
+		gameBoard.placeTileOnBoard(x, y, tile);
+	}
 
 	public boolean endTurn() {
 		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
@@ -412,7 +417,10 @@ public class GameModel implements Serializable<GameModel> {
 		return gameBoard;
 	}
 
-	public JavaPlayer getCurrentPlayer() {
-		return players[indexOfCurrentPlayer];
+	public void doLastActionInHistory() {
+		System.out.println("in doLactActionInHistory");
+		if(actionHistory.size() > 0){
+			actionHistory.peek().redo(this);
+		}
 	}
 }

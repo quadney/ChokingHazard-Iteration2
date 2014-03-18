@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.BoardModel;
 import Models.Actions.Action;
+import Models.Actions.RotatableComponentAction;
 import Views.BoardPanel;
 
 public class BoardController {
@@ -29,8 +30,11 @@ public class BoardController {
 		boardPanel.cancel();
 	}
 
-	public void doAction(Action action) {
-		// TODO Auto-generated method stub
+	public void updateBoardPanel(Action action) {
+		if(action instanceof RotatableComponentAction){
+			System.out.println("in updateBoardPanel RotatableTileComponent");
+			boardPanel.placeTile(((RotatableComponentAction)action).getX(), ((RotatableComponentAction)action).getY(), ((RotatableComponentAction)action).getElevation(), action.afterImageKey);
+		}
 		
 	}
 }

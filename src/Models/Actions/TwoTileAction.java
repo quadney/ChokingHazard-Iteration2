@@ -3,11 +3,14 @@ package Models.Actions;
 import Helpers.JsonObject;
 import Models.GameModel;
 import Models.JavaCell;
+import Models.Tile;
 
 public class TwoTileAction extends RotatableComponentAction {
+	
 
-	public TwoTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y,	int rotationState, JavaCell[] cell) {
-		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState, cell);
+	public TwoTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y,	int rotationState, int elevation, JavaCell[] cell) {
+		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, rotationState, elevation, cell);
+		System.out.println("Two Tile constructor end");
 	}
 
 	@Override
@@ -30,9 +33,7 @@ public class TwoTileAction extends RotatableComponentAction {
 
 	@Override
 	public void redo(GameModel game) {
-		// TODO Auto-generated method stub
-		
+		game.placeTileOnBoard(x, y, new Tile(2));
 	}
-
 		
 }
