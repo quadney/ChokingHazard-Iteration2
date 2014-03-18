@@ -1,6 +1,7 @@
 package Models.Actions.MActions;
 
 import Models.Actions.Action;
+import Models.Actions.RiceTileAction;
 
 public class SelectRiceTileAction extends SelectOneSpaceTileAction {
 
@@ -11,6 +12,6 @@ public class SelectRiceTileAction extends SelectOneSpaceTileAction {
 	
 	@Override
 	public Action pressEnter() {
-		return null;
+		return new RiceTileAction(x, y);
 	}
 }
