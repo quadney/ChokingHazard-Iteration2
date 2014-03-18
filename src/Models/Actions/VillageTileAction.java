@@ -5,8 +5,9 @@ import Models.JavaCell;
 
 public class VillageTileAction extends OneSpaceTileAction {
 
-	public VillageTileAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned, int x, int y, JavaCell cell) {
-		super(actionID, beforeImageKey, afterImageKey, famePointsEarned, x, y, cell);
+	public VillageTileAction(int actionID, int famePointsEarned, int x, int y, JavaCell cell) {
+		super(actionID, famePointsEarned, x, y, cell);
+		this.imageKey = "villageTile";
 	}
 
 	@Override
