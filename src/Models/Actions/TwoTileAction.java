@@ -3,6 +3,7 @@ package Models.Actions;
 import Helpers.JsonObject;
 import Models.GameModel;
 import Models.JavaCell;
+import Models.JavaPlayer;
 import Models.Tile;
 
 public class TwoTileAction extends RotatableComponentAction {
