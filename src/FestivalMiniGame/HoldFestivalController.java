@@ -1,6 +1,7 @@
 package FestivalMiniGame;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -9,10 +10,12 @@ import Models.PalaceCard;
 public class HoldFestivalController {
 	private HoldFestivalPanel festPanel;
 	private HoldFestivalModel festModel;
+	private HoldFestivalFrame festFrame;
 	
-	public HoldFestivalController(JavaFestivalPlayer[] festivalPlayers, int currentPlayerIndex, PalaceCard festCard, int palaceValue){
-		this.festModel = new HoldFestivalModel(festivalPlayers, currentPlayerIndex, festCard, palaceValue);
-		this.festPanel = new HoldFestivalPanel(festivalPlayers, currentPlayerIndex, festCard.getType(), palaceValue);
+	public HoldFestivalController(HoldFestivalFrame frame, ArrayList<JavaFestivalPlayer> festivalPlayers, PalaceCard festCard, int palaceValue){
+		this.festFrame = frame;
+		this.festModel = new HoldFestivalModel(festivalPlayers, festCard, palaceValue);
+		this.festPanel = new HoldFestivalPanel(festivalPlayers, festModel.getCurrentPlayer(), festCard.getType(), palaceValue);
 		festPanel.setFestivalController(this);
 	}
 	
@@ -41,38 +44,63 @@ public class HoldFestivalController {
 	}
 	
 	public void finishTurn(){
-		//set the border of the current player to white
-		festPanel.endPlayerTurn(festModel.getCurrentPlayer());
-		
-		//increment index and reflect the next player's turn in the panel
-		//end the player turn in the model. if returns -1 then that means that the festival is ending
-		int nextPlayer = festModel.endTurn();
-		
-		if(nextPlayer < 0){
-			//present that its the end of the festival
-			//calculate the winner
-			//present a thing with numpoints won and who got it and shit
-		}
-		else{
+		//check that the player as made at least the currentBid
+		if(festModel.canEndTurn()){
+			//set the border of the current player to white
+			festPanel.endPlayerTurn(festModel.getCurrentPlayer());
+			
+			//increment index and reflect the next player's turn in the panel
+			//end the player turn in the model. if returns -1 then that means that the festival is ending
+			int nextPlayer = festModel.endTurn();
 			festPanel.startPlayerTurn(nextPlayer);
 			startTurn();
+		}
+		else {
+			//alert the player that he needs to drop out from the festival or play another card
+			festPanel.tellUserThatHeHasToPlayAPalaceCardOrDropOut();
 		}
 	}
 	
 	private void startTurn(){
 		if(festModel.ifHadFullCycleTurnCheck()){
-			//a full cycle has happened
-			//ask the users shit about their shit. 
-			//if returns true, then call finish festival
+			startNewRound();
 		}
-	}
-
-	private void finishFestival(){
-		calculateWinner();
+		else if(festModel.getCurrentPlayerNumOfPalaceCards() == 0){
+			//this user has no more palace cards, ask the all the players if they have enough cards
+			//display that the user has no more palace cards and that they will be dropped from the competition
+			festPanel.displayThatUserShouldDropOutOfFestival(festModel.getCurrentPlayer());
+		}
+		festModel.startTurn();
 	}
 	
-	private void calculateWinner(){
-		
+	private void startNewRound(){
+		if((festModel.getNumPlayersInFestival() == 1) || festModel.checkIfEveryoneIsOutOfCards()){
+			//there's only one player in the festival
+			ArrayList<JavaFestivalPlayer> winner = new ArrayList<JavaFestivalPlayer>(1);
+			winner.add(festModel.calculateWinner());
+			endFestival(winner, false);
+		}
+		else if(festModel.checkForTies()){
+			//check if there's any ties
+			//if there is a tie, then ask the users if they would like to split the winnings
+			ArrayList<JavaFestivalPlayer> playersInTie = festModel.getPlayersInTie();
+			if(festPanel.askIfWouldLikeToSpiltWinnings(playersInTie)){
+				//end the game and split the winnings
+				//- 1will mean that there is a tie
+				endFestival(playersInTie, true);
+			}
+			else{
+				// continue with the game
+			}
+		}
+		else{
+			//dont end the game and continue playing
+		}
+	}
+	
+	private void endFestival(ArrayList<JavaFestivalPlayer> winningPlayers, boolean thereIsTie){
+		System.out.println("ending festival");
+		//festPanel.displayWinner(winnerIndex);
 	}
 	
 	public void tabThroughPalaceCards(){
@@ -86,12 +114,13 @@ public class HoldFestivalController {
 	}
 	
 	public void dropPlayerFromFestival(){
-		//drop the current player
-		int index = festModel.dropCurrentPlayer();
-		
-		//hide his information from this
-		festPanel.dropCurrentPlayer(index);
-		finishTurn();
+		//TODO
+//		//drop the current player
+//		int index = festModel.dropCurrentPlayer();
+//		
+//		//hide his information from this
+//		festPanel.dropCurrentPlayer(index);
+//		finishTurn();
 	}
 	
 	public void cancelTabbing(){

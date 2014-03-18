@@ -1,5 +1,8 @@
 package Controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import Helpers.Deck;
 import Models.PalaceCard;
 import Models.SharedComponentModel;
@@ -55,6 +58,14 @@ public class SharedComponentController {
 			}
 		}
 		return cards;
+	}
+	
+	public void discardPalaceCardsAfterFestival(HashMap<String, ArrayList<PalaceCard>> cardsToDiscardPerPlayer){
+//		for( int i = 0; i < cardsToDiscardPerPlayer.length; ++i){
+//			for(int j = 0; j < cardsToDiscardPerPlayer[i].length; ++j){
+//				sharedModel.discardCard(cardsToDiscardPerPlayer[i][j]);
+//			}
+//		}
 	}
 
 	//called if the player has selected a palace tile.

@@ -2,10 +2,13 @@ package Controllers;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
+import Models.PalaceCard;
 import Models.Actions.MActions.*;
 import Views.GameContainerPanel;
 
@@ -44,7 +47,7 @@ public class GameController {
 		
 		boolean fest = currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival();
 		if(fest){
-			currentGamePanel.displayHoldFestivalFrame(players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), 2);
+			currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), 2);
 		}
 	}
 	
@@ -217,6 +220,8 @@ public class GameController {
 		case 88:
 			//check if the player has placed a land tile so they can get out of their turn
 			//released X, end turn
+			System.out.println("ending turn?");
+			System.out.println(players.selectEndTurn(currentGame.getPlayerIndex()));
 			if(players.selectEndTurn(currentGame.getPlayerIndex())){
 				players.setNotCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the player panel of the current player to stop outlining their panel
 				if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){ //ask if they wanna have a palace festival
@@ -229,6 +234,7 @@ public class GameController {
 				currentGame.endTurn(); //increment the current player in the game model, changes all the stuff in player
 				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
 			}
+			
 			break;		
 		}
 	}
@@ -243,6 +249,11 @@ public class GameController {
 		else{//developer
 			//TODO this is to tell the view that the developer path has changed
 		}
+	}
+	
+	public void updatePlayersAfterFestival(HashMap<String, ArrayList<PalaceCard>> cardsToDiscardPerPlayer, int[] famePointsWonPerPlayer){
+		this.players.updatePlayersAfterFestival(cardsToDiscardPerPlayer, famePointsWonPerPlayer);
+		this.shared.discardPalaceCardsAfterFestival(cardsToDiscardPerPlayer);
 	}
 	
 }

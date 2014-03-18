@@ -67,17 +67,27 @@ public class PalaceCard implements Serializable<PalaceCard> {
 	   return this.numSymbols;
    }
    
-   //Returns the point value of cards
-   public int compare(PalaceCard card){
-      int pnts = 0;
+   //Returns if has the shared symbols on it
+   public boolean compare(PalaceCard card){
       
+	   //returns true if the comparing card and this card share a symbol
+	   //false if they dont
       for(Integer i:card.getSymbols())
       {
          if(this.symbols.contains(i))
-            pnts++;
+            return true;
       }
-      //returns if the symbol comparing to is on the card
-      return pnts;
+      
+      return false;
+   }
+   
+   public int compareForPoints(PalaceCard card){
+	   int points = 0;
+	   for(Integer i : card.getSymbols()){
+		   if(this.symbols.contains(i))
+			   points++;
+	   }
+	   return points;
    }
    
    public PalaceCard deepCopy(){

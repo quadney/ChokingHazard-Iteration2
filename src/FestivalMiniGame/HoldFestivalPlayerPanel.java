@@ -63,12 +63,12 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	private int getPreferredWidth(){
 		if(isEvenLayout)
 			return 550;
-		return 100;
+		return 110;
 	}
 	
 	private int getPreferredHeight(){
 		if(isEvenLayout){
-			return 100;
+			return 110;
 		}
 		return 550;
 	}

@@ -8,28 +8,30 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class HoldFestivalPanel extends JPanel{
 	private HashMap<String, String> imageSourceHashMap;
-	private HoldFestivalPlayerPanel[] players;
+	private ArrayList<HoldFestivalPlayerPanel> players;
 	private JPanel[] playedCardsPanels;
 	private JPanel centerPanel;
 	private HoldFestivalController controller;
 	private JButton dropFromFestival;
 	
-	public HoldFestivalPanel(JavaFestivalPlayer[] festivalPlayers, int currentPlayerIndex, String festivalHashKey, int palaceValue){
+	public HoldFestivalPanel(ArrayList<JavaFestivalPlayer> festivalPlayers, int currentPlayerIndex, String festivalHashKey, int palaceValue){
 		super(new BorderLayout());
 		
 		initHashMap();
-		setPreferredSize(new Dimension(750, 750));
-		setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+		setPreferredSize(new Dimension(780, 780));
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setBackground(Color.WHITE);
 		
 		dropFromFestival = new JButton("Drop Out of Festival");
@@ -44,54 +46,44 @@ public class HoldFestivalPanel extends JPanel{
 		initPanels(festivalPlayers, currentPlayerIndex, festivalHashKey);
 	}
 	
-	private void initPanels(JavaFestivalPlayer[] festivalPlayers, int currentPlayerIndex, String festivalHashKey){
+	private void initPanels(ArrayList<JavaFestivalPlayer> festivalPlayers, int currentPlayerIndex, String festivalHashKey){
 		centerPanel = new JPanel();
 		centerPanel.setPreferredSize(new Dimension(550, 550));
-		centerPanel.setBackground(Color.WHITE);
 		centerPanel.setLayout(new BorderLayout());
 		add(centerPanel, BorderLayout.CENTER);
 		
 		centerPanel.add(palaceLabel(imageSourceHashMap.get("label_"+festivalHashKey)), BorderLayout.CENTER);
-		
-//		add(dropFromFestival);
-//		dropFromFestival.setVisible(false);
 
 		//init player panels and add them to the panel
-		players = new HoldFestivalPlayerPanel[festivalPlayers.length];
-		playedCardsPanels = new JPanel[festivalPlayers.length];
-		for(int i = 0; i < players.length; ++i){
-			if(!festivalPlayers[i].checkIfInFestival()){
-				players[i] = null;
-				playedCardsPanels[i] = null;
+		players = new ArrayList<HoldFestivalPlayerPanel>(festivalPlayers.size());
+		playedCardsPanels = new JPanel[festivalPlayers.size()];
+		for(int i = 0; i < festivalPlayers.size(); ++i){
+			players.add(new HoldFestivalPlayerPanel(i, festivalPlayers.get(i).getName(), festivalPlayers.get(i).getColor(), festivalPlayers.get(i).getNumPalaceCards(), imageSourceHashMap));
+			playedCardsPanels[i] = new JPanel();
+			if(i == 0){
+				add(players.get(i), BorderLayout.NORTH);
+				playedCardsPanels[i].setPreferredSize(new Dimension(500, 100));
+				centerPanel.add(playedCardsPanels[i], BorderLayout.NORTH);
+			}
+			else if (i == 1){
+				add(players.get(i), BorderLayout.EAST);
+				playedCardsPanels[i].setPreferredSize(new Dimension(100, 500));
+				centerPanel.add(playedCardsPanels[i], BorderLayout.EAST);
+			}
+			else if (i == 2){
+				add(players.get(i), BorderLayout.SOUTH);
+				playedCardsPanels[i].setPreferredSize(new Dimension(500, 100));
+				centerPanel.add(playedCardsPanels[i], BorderLayout.SOUTH);
 			}
 			else{
-				players[i] = new HoldFestivalPlayerPanel(i, festivalPlayers[i].getName(), festivalPlayers[i].getColor(), festivalPlayers[i].getNumPalaceCards(), imageSourceHashMap);
-				playedCardsPanels[i] = new JPanel();
-				if(i == 0){
-					add(players[i], BorderLayout.NORTH);
-					playedCardsPanels[i].setPreferredSize(new Dimension(500, 100));
-					centerPanel.add(playedCardsPanels[i], BorderLayout.NORTH);
-				}
-				else if (i == 1){
-					add(players[i], BorderLayout.EAST);
-					playedCardsPanels[i].setPreferredSize(new Dimension(100, 500));
-					centerPanel.add(playedCardsPanels[i], BorderLayout.EAST);
-				}
-				else if (i == 2){
-					add(players[i], BorderLayout.SOUTH);
-					playedCardsPanels[i].setPreferredSize(new Dimension(500, 100));
-					centerPanel.add(playedCardsPanels[i], BorderLayout.SOUTH);
-				}
-				else{
-					add(players[i], BorderLayout.WEST);
-					playedCardsPanels[i].setPreferredSize(new Dimension(100, 500));
-					centerPanel.add(playedCardsPanels[i], BorderLayout.WEST);
-				}
+				add(players.get(i), BorderLayout.WEST);
+				playedCardsPanels[i].setPreferredSize(new Dimension(100, 500));
+				centerPanel.add(playedCardsPanels[i], BorderLayout.WEST);
 			}
 		}
 		
 		//set currentIndex as the one who is selected
-		players[currentPlayerIndex].setCurrentPlayer(true);
+		players.get(currentPlayerIndex).setCurrentPlayer(true);
 	}
 	
 	public void setFestivalController(HoldFestivalController c){
@@ -106,33 +98,60 @@ public class HoldFestivalPanel extends JPanel{
 	}
 	
 	public void endPlayerTurn(int index){
-		players[index].setCurrentPlayer(false);
+		players.get(index).setCurrentPlayer(false);
 	}
 	
 	public void startPlayerTurn(int index){
-		players[index].setCurrentPlayer(true);
+		players.get(index).setCurrentPlayer(true);
 		dropFromFestival.setVisible(true);
 	}
 	
 	public void tabThroughPlayerPalaceCards(int indexOfCard, int numCards, int indexOfPlayer, String hashKey){
-		players[indexOfPlayer].selectCardAtIndex(indexOfCard, numCards, hashKey);
+		players.get(indexOfPlayer).selectCardAtIndex(indexOfCard, numCards, hashKey);
 	}
 	
 	public void playPalaceCardAtIndex(int indexOfPlayer, String hashKey, int newNumCards){
-		players[indexOfPlayer].clearSelectedCard(newNumCards);
+		players.get(indexOfPlayer).clearSelectedCard(newNumCards);
 		addCardToCenterPanelWithImage(hashKey, indexOfPlayer);
 	}
 	
 	public void cancelTabbing(int index, int numCards){
-		players[index].clearSelectedCard(numCards);
+		players.get(index).clearSelectedCard(numCards);
 	}
 	
 	public void dropCurrentPlayer(int index){
-		players[index].setVisible(false);
+		players.get(index).setVisible(false);
+		players.remove(index);
+	}
+	
+	public void displayThatUserShouldDropOutOfFestival(int index){
+		//TODO test to see if this works
+		players.get(index).add(dropFromFestival);
+	}
+	
+	public boolean askIfWouldLikeToSpiltWinnings(ArrayList<JavaFestivalPlayer> playersTied){
+		String players = playersTied.get(0).getName();
+		for(int i = 1; i < playersTied.size(); i++){
+			if(i == (playersTied.size()-1)){
+				players = players+" and "+playersTied.get(i).getName();
+			}
+			else{
+				players = players+", "+playersTied.get(i).getName();
+			}
+		}
+		int split = JOptionPane.showConfirmDialog(null, players+" are currently tied - would you like to split the winnings?\nIf not, there will be another Festival round", "Replay Mode", JOptionPane.YES_NO_OPTION);
+		if(split == 0)
+			return true;
+		return false;
+	}
+	
+	public void tellUserThatHeHasToPlayAPalaceCardOrDropOut(){
+		JOptionPane.showMessageDialog(null, "You need to either play a Palace card or drop out of the festival", "Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	private void addCardToCenterPanelWithImage(String imageHashKey, int indexOfPlayer){
-		playedCardsPanels[indexOfPlayer].add(palaceLabel(imageSourceHashMap.get(imageHashKey)));
+		playedCardsPanels[indexOfPlayer].add(palaceLabel(imageSourceHashMap.get("label_"+imageHashKey)));
+		updateUI();
 	}
 	
 	private void initHashMap(){

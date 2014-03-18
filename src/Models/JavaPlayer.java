@@ -122,6 +122,10 @@ public class JavaPlayer extends Player implements Serializable<JavaPlayer>{
 	public void addPalaceCard(PalaceCard card){
 		this.palaceCards.add(card);
 	}
+	
+	public void removePalaceCard(PalaceCard cardToBeRemoved){
+		this.palaceCards.remove(cardToBeRemoved);
+	}
 
 	//Methods needed from Player controller to validate action selections-----------------------------------
 	public boolean canUsePalace() { //checks if the player has the AP
