@@ -22,11 +22,6 @@ public class UseActionTokenAction extends Action {
 	}
 
 	@Override
-	public void undo(GameModel game) {
-		game.getCurrentPlayer().unuseActionToken();
-	}
-
-	@Override
 	public void redo(GameModel game) {
 		game.getCurrentPlayer().useActionToken();
 	}
