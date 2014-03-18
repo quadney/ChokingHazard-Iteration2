@@ -2,19 +2,21 @@ package Models;
 
 
 import Helpers.Json;
+
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
 import Helpers.JsonObject;
+import Models.Tile.TileType;
 
 public class BoardModel implements Serializable<BoardModel> {
 	private JavaCell[][] map;
 	private LinkedList<JavaCell> path;
 	private ArrayList<JavaCell> connectedPalaces = new ArrayList<JavaCell>();
 	private JavaCell[] outerCells;
-	private int cellId;
+	public int cellId;
 
 	public BoardModel() {
 		this.map = new JavaCell[14][14];
@@ -54,7 +56,7 @@ public class BoardModel implements Serializable<BoardModel> {
 	
 	public boolean placeTileOnBoard(int x, int y, Tile tile){
 		JavaCell[][] miniMap = createTestMap(x, y);
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 		
 		for (int i = 0; i < tileCells.length; i++) 
 			for (int j = 0; j < tileCells[i].length; j++)
@@ -70,7 +72,7 @@ public class BoardModel implements Serializable<BoardModel> {
 
 	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player) {
 		JavaCell[][] miniMap = createTestMap(xC, yC);
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 		
 		
 		
@@ -98,7 +100,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		int neededActionPoints = checkNeededActionPoints(miniMap, tile);
 		
 		//boolean needed to check the amount of available AP points
-		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1]); 
+		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1].toString()); 
 
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
@@ -130,7 +132,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		int outsideCount = 1;
 		int mapRowLength = map.length;
 		int mapColumnSize = map[0].length;
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
@@ -151,7 +153,7 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 
 	private boolean checkPalacePlacement(JavaCell[][] miniMap, Tile tile) {
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
@@ -170,7 +172,7 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 
 	private boolean checkTilesBelow(JavaCell[][] miniMap, Tile tile) {
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 		int numberOfTilesBelow = 0;
 		int testId = -1;
 
@@ -218,7 +220,7 @@ public class BoardModel implements Serializable<BoardModel> {
 
 	private boolean checkElevation(JavaCell[][] miniMap, Tile tile, int xC,
 			int yC) {
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 
 		int elevation = map[xC][yC].getElevation();
 
@@ -235,7 +237,7 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 
 	private boolean checkIrrigationPlacement(JavaCell[][] miniMap, Tile tile) {
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
@@ -253,7 +255,7 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 
 	private boolean checkDeveloperOnCell(JavaCell[][] miniMap, Tile tile) {
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
@@ -277,10 +279,10 @@ public class BoardModel implements Serializable<BoardModel> {
 			}
 		}
 
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[0].length; j++) {
-				if (tileCells[i][j] != null && tileCells[i][j] == "village"
+				if (tileCells[i][j] != null && tileCells[i][j] == TileType.village
 						&& miniMap[i][j] != null) {
 					findPalaceSpaces(miniMap[i][j].getX(),
 							miniMap[i][j].getY(), mapCopy);
@@ -343,7 +345,7 @@ public class BoardModel implements Serializable<BoardModel> {
 
 	private boolean checkEdgePlacement(JavaCell[][] miniMap, Tile tile) {
 
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 		JavaCell[] cells = new JavaCell[4];
 		int count = 0;
 
@@ -739,6 +741,10 @@ public class BoardModel implements Serializable<BoardModel> {
 					.loadObject(cell).xVal][(new JavaCell(-1, -1, -1))
 					.loadObject(cell).yVal]);
 		return this;
+	}
+
+	public int getNextCellId() {
+		return ++cellId;
 	}
 
 }

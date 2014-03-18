@@ -449,4 +449,8 @@ public class GameModel implements Serializable<GameModel> {
 	public SharedComponentModel getShared() {
 		return shared;
 	}
+
+	public int getNextCellId() {
+		return gameBoard.getNextCellId();
+	}
 }

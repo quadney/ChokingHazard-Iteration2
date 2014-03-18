@@ -3,6 +3,8 @@ package Models.Actions;
 import Helpers.JsonObject;
 import Models.GameModel;
 import Models.JavaCell;
+import Models.Tile;
+import Models.Tile.TileType;
 
 public class ThreeTileAction extends RotatableComponentAction {
 
@@ -28,7 +30,6 @@ public class ThreeTileAction extends RotatableComponentAction {
 
 	@Override
 	public void redo(GameModel game) {
-		// TODO Auto-generated method stub
-		
+		game.getBoard().placeTile(x, y, new Tile(TileType.threetile, rotationState), game.getCurrentPlayer());
 	}
 }

@@ -1,23 +1,22 @@
 package Models;
 
-import Helpers.Json;
 import Helpers.JsonObject;
 
 public class Tile implements Serializable<Tile> {
-	private String[][] tileCells;
-	private int numberCells;
+	public static enum TileType {
+		palace2, palace4, palace6, palace8, palace10, village, rice, irrigation, twotile, threetile;
+	}
+	private TileType[][] tileCells;
 
-	public Tile(int numberCells) {
-		this.numberCells = numberCells;
-		tileCells = new String[3][3];
-		createTile();
+	public Tile(TileType type, int rotationState) {
+		createTile(type);
 	}
 
-	public String[][] getTileCells() {
+	public TileType[][] getTileCells() {
 		return tileCells;
 	}
 
-	public void setTileSpaces(String[][] tileCells) {
+	public void setTileSpaces(TileType[][] tileCells) {
 		this.tileCells = tileCells;
 	}
 
@@ -49,31 +48,53 @@ public class Tile implements Serializable<Tile> {
 		}
 	}
 
-	private void createTile() {
-		if (numberCells == 3) {
-
-			tileCells[1][1] = "village";
-			tileCells[1][2] = "rice";
-			tileCells[2][1] = "rice";
-
-		} else if (numberCells == 2) {
-			tileCells[1][1] = "village";
-			tileCells[1][2] = "rice";
-
+	private void createTile(TileType type) {
+		if (type == TileType.threetile) {
+			tileCells[1][1] = TileType.village;
+			tileCells[1][2] = TileType.rice;
+			tileCells[2][1] = TileType.rice;
+		} else if (type == TileType.twotile) {
+			tileCells[1][1] = TileType.village;
+			tileCells[1][2] = TileType.rice;
+		} else {
+			tileCells[1][1] = type;
 		}
+	}
+	
+	public void rotationToRotationState(int rotationState) { 
+		int rotations = (getRotationState() - rotationState + 4) % 4;
+		for(int x = 0; x < rotations; ++x)
+			rotate();
+	}
+	
+	private int getRotationState() {
+		int[] xx = {0, 1, 2, 1};
+		int[] yy = {1, 2, 1, 0};
+		for(int i = 0; i < xx.length-1; ++i)
+			if(tileCells[xx[i]][yy[i]] != null && tileCells[xx[(i+1)%xx.length]][yy[(i+1)%yy.length]] != null)
+				return i;
+		for(int i = 0; i < xx.length-1; ++i)
+			if(tileCells[xx[i]][yy[i]] != null)
+				return i;
+		return 0;
+	}
+	
+	public void rotate() {
+		int[] xx = {0, 1, 2, 1};
+		int[] yy = {1, 2, 1, 0};
+		TileType temp = tileCells[xx[0]][yy[0]];
+		for(int i = 0; i < xx.length-1; ++i)
+			tileCells[xx[i]][yy[i]] = tileCells[xx[i+1]][yy[i+1]];
+		tileCells[xx.length-1][yy.length-1] = temp;
 	}
 
 	@Override
 	public String serialize() {
-		return Json.jsonObject(Json.jsonMembers(
-				Json.jsonPair("numberCells", Json.jsonValue(numberCells + "")),
-				Json.jsonPair("tileCells", Json.serializeArray(tileCells))));
+		return null;
 	}
 
 	@Override
 	public Tile loadObject(JsonObject json) {
-		tileCells = (String[][]) json.getObject("tileCells");
-		numberCells = Integer.parseInt(json.getString("numberCells"));
 		return this;
 	}
 }
