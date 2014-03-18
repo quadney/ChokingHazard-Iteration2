@@ -257,9 +257,11 @@ public class GameController {
 		}
 	}
 	
-	public void updatePlayersAfterFestival(HashMap<String, ArrayList<PalaceCard>> cardsToDiscardPerPlayer, int[] famePointsWonPerPlayer){
-		this.players.updatePlayersAfterFestival(cardsToDiscardPerPlayer, famePointsWonPerPlayer);
-		this.shared.discardPalaceCardsAfterFestival(cardsToDiscardPerPlayer);
+	public void updatePlayersAfterFestival(ArrayList<PalaceCard> cardsToDiscard){
+		//the player's fame points and festival cards have already been taken care of.
+		//just need to update the view, and to add the used cards to the discardPile
+		this.players.updatePlayersAfterFestival();
+		this.shared.discardPalaceCardsAfterFestival(cardsToDiscard);
 	}
 	
 }

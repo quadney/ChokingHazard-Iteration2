@@ -43,9 +43,6 @@ public class HoldFestivalFrame extends JFrame {
 		
 		//make the model, view and controller
 		startFestival(players, indexOfPlayerHoldingFestival, festivalCard, selectedPalaceValue);
-		
-		//set the content pane
-		setContentPane(festController.getFestivalPanel());
 	}
 	
 	private void startFestival(JavaPlayer[] javaPlayers, int indexOfPlayer, PalaceCard festivalCard, int selectedPalaceValue){
@@ -53,6 +50,7 @@ public class HoldFestivalFrame extends JFrame {
 		//get the valid players and make their festival cards
 		ArrayList<JavaFestivalPlayer> festivalPlayers = new ArrayList<JavaFestivalPlayer>();
 		
+		boolean canHaveFestival = true;
 		for(int i = 0; i < players.length; ++i){
 			//check if null, if null then not in the festival
 			if(players[i] == null){
@@ -74,6 +72,7 @@ public class HoldFestivalFrame extends JFrame {
 				}
 				if(validPalaceCards.isEmpty()){
 					//player is not in the festival
+					if(i == indexOfPlayer) canHaveFestival = false;
 					continue;
 				}
 				//only adds players who are eligible to be in the festival
@@ -83,17 +82,19 @@ public class HoldFestivalFrame extends JFrame {
 					festivalPlayers.add(new JavaFestivalPlayer(players[i], validPalaceCards, false));
 			}
 		}
-		if(festivalPlayers.size() == 0){
+		if(festivalPlayers.size() == 0 || !canHaveFestival){
 			JOptionPane.showMessageDialog(null, "No players to have festival with :(");
 			this.dispose();
 		}
 		else{
 			festController = new HoldFestivalController(this, festivalPlayers, festivalCard, selectedPalaceValue);
+			//set the content pane
+			setContentPane(festController.getFestivalPanel());
 		}
 	}
 	
-	public void festivalDidReturn(HashMap<String, ArrayList<PalaceCard>> cardsToDiscardPerPlayer, int[] famePointsWonPerPlayer){
-		this.gameController.updatePlayersAfterFestival(cardsToDiscardPerPlayer, famePointsWonPerPlayer);
+	public void festivalDidReturn(ArrayList<PalaceCard> cardsToDiscard){
+		this.gameController.updatePlayersAfterFestival(cardsToDiscard);
 	}
 
 }

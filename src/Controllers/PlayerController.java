@@ -95,14 +95,12 @@ public class PlayerController {
 	//---------------------------------------------------------------------------
 	
 	//--------------- Update Players after Palace Festival ----------------------
-	public void updatePlayersAfterFestival(HashMap<String, ArrayList<PalaceCard>> cardsToDiscardPerPlayer, int[] famePointsPerUser){
-//		for(int i = 0; i < this.playerModels.length; i++){
-//			playerModels[i].changeFamePoints(famePointsPerUser[i]);
-//			for(int j = 0; j < cardsToDiscardPerUser[i].length; ++j){
-//				playerModels[i].removePalaceCard(cardsToDiscardPerUser[i][j]);
-//				//also need to add them to the discard pile
-//			}
-//		}
+	public void updatePlayersAfterFestival(){
+		for(int i = 0; i < playerPanels.length; i++){
+			playerPanels[i].updateFamePoints(playerModels[i].getFamePoints());
+			playerPanels[i].updateNumPalaceCards(playerModels[i].getPalaceCards().size());
+		}
+
 	}
 	
 }

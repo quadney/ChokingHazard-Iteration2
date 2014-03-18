@@ -21,6 +21,7 @@ public class HoldFestivalController {
 	}
 	
 	public void keyPressed(KeyEvent e){
+		System.out.println(e.getKeyCode());
 		switch(e.getKeyCode()){
 			case 9:
 				//tab
@@ -33,6 +34,9 @@ public class HoldFestivalController {
 			case 27:
 				//pressed esc
 				cancelTabbing();
+				break;
+			case 76:
+				dropPlayerFromFestival();
 				break;
 			case 88:
 				//finish turn, X
@@ -48,7 +52,8 @@ public class HoldFestivalController {
 		//check that the player as made at least the highest bid
 		if(festModel.canEndTurn()){
 			//set the border of the current player to white
-			festPanel.endPlayerTurn(festModel.getCurrentPlayer());
+			festPanel.endPlayerTurn(festModel.getCurrentPlayer(), festModel.getCurrentPlayerBid());
+			
 			
 			//increment index and reflect the next player's turn in the panel
 			//end the player turn in the model. if returns -1 then that means that the festival is ending
@@ -76,26 +81,33 @@ public class HoldFestivalController {
 	
 	private void startNewRound(){
 		System.out.println("starting new round");
-		if(festModel.isThereOnlyOnePlayerLeft() || festModel.checkForTies() || festModel.checkIfEveryoneIsOutOfCards()){
+		System.out.println("There is only one player left: "+festModel.isThereOnlyOnePlayerLeft());
+		System.out.println("Everyone is out of Cards: "+festModel.checkIfEveryoneIsOutOfCards());
+		System.out.println("Num of Winners: "+festModel.getNumWinners());
+		if(festModel.isThereOnlyOnePlayerLeft() || festModel.checkIfEveryoneIsOutOfCards() || (festModel.getNumWinners() > 1)){
+			System.out.println("ending the festival...");
 			//if there is only one player left
-			//if there is a tie
+			//if there is a ti
 			//if there is more than one player, but there's no tie, but everyone is out of cards
 			//get the winner(s)
-			ArrayList<JavaFestivalPlayer> winners = festModel.getWinners();
-			
-			if(winners.size() > 1){
-				if(festPanel.askIfWouldLikeToSpiltWinnings(winners)){
-					endFestival(winners, true);
+			if(festModel.getNumWinners() > 1){
+				if(festPanel.askIfWouldLikeToSpiltWinnings()){
+					endFestival(true);
 				}
 			}
 			else
-				endFestival(winners, false);
+				endFestival(false);
 		}
 	}
 	
-	private void endFestival(ArrayList<JavaFestivalPlayer> winningPlayers, boolean thereIsTie){
+	private void endFestival(boolean thereIsTie){
 		System.out.println("ending festival, is there a tie? "+thereIsTie);
 		//festPanel.displayWinner(winnerIndex);
+		//get the winners
+		//get the points per winner
+		festModel.endFestival(thereIsTie);
+		System.out.println("festival has ended");
+		festFrame.festivalDidReturn(festModel.getDiscardedPalaceCards());
 	}
 	
 	public void tabThroughPalaceCards(){
@@ -106,16 +118,19 @@ public class HoldFestivalController {
 	public void playSelectedPalaceCard(){
 		PalaceCard card = festModel.selectPalaceCard();
 		festPanel.playPalaceCardAtIndex(festModel.getCurrentPlayer(), card.getType(), festModel.getCurrentPlayerNumOfPalaceCards());
+		festPanel.setCurrentPlayerBid(festModel.getCurrentPlayer(), festModel.getCurrentPlayerBid());
 	}
 	
 	public void dropPlayerFromFestival(){
+		System.out.println("dropping player from festival...");
 		//TODO
-//		//drop the current player
-//		int index = festModel.dropCurrentPlayer();
-//		
-//		//hide his information from this
-//		festPanel.dropCurrentPlayer(index);
-//		finishTurn();
+		
+		//hide his information from this
+		festPanel.dropCurrentPlayer(festModel.getCurrentPlayer());
+		
+		int index = festModel.dropCurrentPlayer();
+		festPanel.startPlayerTurn(index);
+		System.out.println("completed dropping");
 	}
 	
 	public void cancelTabbing(){

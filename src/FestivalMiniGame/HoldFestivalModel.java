@@ -8,7 +8,7 @@ import Models.PalaceCard;
 
 public class HoldFestivalModel {
 	private ArrayList<JavaFestivalPlayer> players;
-	private HashMap<Integer, ArrayList<PalaceCard>> discardedPalaceTiles;
+	private ArrayList<PalaceCard> discardedPalaceTiles;
 	private HashMap<String, Integer> famePointsAwarded;
 	private int indexOfCurrentPlayer;
 	private PalaceCard festivalCard;
@@ -20,7 +20,7 @@ public class HoldFestivalModel {
 		this.indexOfCurrentPlayer = getBeginningPlayerIndex();
 		this.festivalCard = festCard;
 		this.valueOfPalaceCity = valueOfPalaceCity;
-		this.discardedPalaceTiles = new HashMap<Integer, ArrayList<PalaceCard>>();
+		this.discardedPalaceTiles = new ArrayList<PalaceCard>();
 		this.famePointsAwarded = new HashMap<String, Integer>(10);
 		initFamePointsHashMap();
 		this.highestBid = 0;
@@ -34,6 +34,10 @@ public class HoldFestivalModel {
 		return this.players.get(indexOfCurrentPlayer).getNumPalaceCards();
 	}
 	
+	public int getCurrentPlayerBid(){
+		return this.players.get(indexOfCurrentPlayer).getFestivalBid();
+	}
+	
 	public int getCurrentPlayerTabCount(){
 		return this.players.get(indexOfCurrentPlayer).getTabCount();
 	}
@@ -42,7 +46,7 @@ public class HoldFestivalModel {
 		return this.players.get(indexOfCurrentPlayer).getTabbedImageString();
 	}
 	
-	public HashMap<Integer, ArrayList<PalaceCard>> getDiscardedPalaceCards(){
+	public ArrayList<PalaceCard> getDiscardedPalaceCards(){
 		return this.discardedPalaceTiles;
 	}
 	
@@ -80,8 +84,10 @@ public class HoldFestivalModel {
 	
 	public PalaceCard selectPalaceCard(){
 		JavaFestivalPlayer player = players.get(indexOfCurrentPlayer);
+		
 		PalaceCard selectedCard = player.getSelectedPalaceCard();
 		//increment the player's festival bid
+		discardedPalaceTiles.add(selectedCard);
 		player.addFestivalBid(selectedCard.compareForPoints(festivalCard));
 		//increment the highest bid if appropriate
 		int currentBid = player.getFestivalBid();
@@ -98,9 +104,8 @@ public class HoldFestivalModel {
 	}
 	
 	public int dropCurrentPlayer(){
-		//TODO
 		players.get(indexOfCurrentPlayer).dropPlayerFromFestival();
-		return indexOfCurrentPlayer;
+		return endTurn();
 	}
 	
 	public boolean isThereOnlyOnePlayerLeft(){
@@ -117,22 +122,21 @@ public class HoldFestivalModel {
 	public boolean checkIfEveryoneIsOutOfCards(){
 		//returns true if everyone is out of cards
 		//if everyone is out of cards then the game ends and a winner is calculated
-		for(int i = 0; i < players.size(); ++i){
-			if(players.get(i).getNumPalaceCards() < 0)
+		for(JavaFestivalPlayer player : players){
+			if(player.getNumPalaceCards() < 0)
 				return false;
 		}
 		return true;
 	}
 	
-	public boolean checkForTies(){
+	public int getNumWinners(){
 		//checks for a tie
-		int numPlayersInTie = 0;
-		for(int i = 0; i < players.size(); i++){
-			if(players.get(i).getFestivalBid() == highestBid)
-				numPlayersInTie++;
+		int numWinningPlayers = 0;
+		for(JavaFestivalPlayer player : players){
+			if(player.getFestivalBid() == highestBid)
+				numWinningPlayers++;
 		}
-		if(numPlayersInTie > 1) return true;
-		return false;
+		return numWinningPlayers;
 	}
 	
 	public ArrayList<JavaFestivalPlayer> getWinners(){
@@ -144,11 +148,22 @@ public class HoldFestivalModel {
 		return winners;
 	}
 	
+	public void endFestival(boolean ifTie){
+		ArrayList<JavaFestivalPlayer> winners = getWinners();
+		int pointsToAward = getFamePointsWon(ifTie);
+		for(JavaFestivalPlayer winner : winners){
+			winner.awardFamePoints(pointsToAward);
+		}
+	}
+	
 	public int getFamePointsWon(boolean ifTie){
+		System.out.println("Value of Palace city: "+valueOfPalaceCity);
+		System.out.println("Fame points won: "+famePointsAwarded.get(valueOfPalaceCity+""));
+		System.out.println("Fame points won, with tie: "+famePointsAwarded.get(valueOfPalaceCity+"_tie"));
 		if(ifTie){
 			return famePointsAwarded.get(valueOfPalaceCity+"_tie");
 		}
-		return famePointsAwarded.get(valueOfPalaceCity);
+		return famePointsAwarded.get(valueOfPalaceCity+"");
 	}
 	
 	private void initFamePointsHashMap(){

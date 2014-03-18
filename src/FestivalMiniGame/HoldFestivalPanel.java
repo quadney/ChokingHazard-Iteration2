@@ -48,8 +48,9 @@ public class HoldFestivalPanel extends JPanel{
 	
 	private void initPanels(ArrayList<JavaFestivalPlayer> festivalPlayers, int currentPlayerIndex, String festivalHashKey){
 		centerPanel = new JPanel();
-		centerPanel.setPreferredSize(new Dimension(550, 550));
+		centerPanel.setPreferredSize(new Dimension(560, 560));
 		centerPanel.setLayout(new BorderLayout());
+		centerPanel.setBackground(new Color(79, 148, 19));
 		add(centerPanel, BorderLayout.CENTER);
 		
 		centerPanel.add(palaceLabel(imageSourceHashMap.get("label_"+festivalHashKey)), BorderLayout.CENTER);
@@ -94,6 +95,10 @@ public class HoldFestivalPanel extends JPanel{
 		this.controller = c;
 	}
 	
+	public void setCurrentPlayerBid(int index, int points){
+		players.get(index).setBidAmount(points);
+	}
+	
 	private JLabel palaceLabel(String src){
 		JLabel label= new JLabel();
 		label.setIcon(new ImageIcon(src));
@@ -101,7 +106,8 @@ public class HoldFestivalPanel extends JPanel{
 		return label;
 	}
 	
-	public void endPlayerTurn(int index){
+	public void endPlayerTurn(int index, int points){
+		setCurrentPlayerBid(index, points);
 		players.get(index).setCurrentPlayer(false);
 	}
 	
@@ -124,8 +130,7 @@ public class HoldFestivalPanel extends JPanel{
 	}
 	
 	public void dropCurrentPlayer(int index){
-		players.get(index).setVisible(false);
-		players.remove(index);
+		players.get(index).dropPlayer();
 	}
 	
 	public void displayThatUserShouldDropOutOfFestival(int index){
@@ -133,17 +138,8 @@ public class HoldFestivalPanel extends JPanel{
 		players.get(index).add(dropFromFestival);
 	}
 	
-	public boolean askIfWouldLikeToSpiltWinnings(ArrayList<JavaFestivalPlayer> playersTied){
-		String players = playersTied.get(0).getName();
-		for(int i = 1; i < playersTied.size(); i++){
-			if(i == (playersTied.size()-1)){
-				players = players+" and "+playersTied.get(i).getName();
-			}
-			else{
-				players = players+", "+playersTied.get(i).getName();
-			}
-		}
-		int split = JOptionPane.showConfirmDialog(null, players+" are currently tied - would you like to split the winnings?\nIf not, there will be another Festival round", "Replay Mode", JOptionPane.YES_NO_OPTION);
+	public boolean askIfWouldLikeToSpiltWinnings(){
+		int split = JOptionPane.showConfirmDialog(null, " There is a tie - would you like to split the winnings?\nIf not, there will be another round", "Replay Mode", JOptionPane.YES_NO_OPTION);
 		if(split == 0)
 			return true;
 		return false;

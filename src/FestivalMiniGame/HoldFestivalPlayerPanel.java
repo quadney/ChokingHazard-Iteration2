@@ -46,40 +46,51 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	}
 	
 	private void initPanel(int indexOnPanel, String playerName, int numFestivalCards){
-		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		
 		cards = new JLabel();
-		add(cards);
+		JPanel extraPanel = new JPanel();
 		
+		currentBid = new JLabel("Bid: 0");
 		if(indexOnPanel % 2 == 0){
 			//if its even
 			isEvenLayout = true;
+			setPreferredSize(new Dimension(780, 110));
+			setBorder(BorderFactory.createEmptyBorder(5, 115, 5, 115));
+			cards.setPreferredSize(new Dimension(470, 100));
+			extraPanel.setPreferredSize(new Dimension(70, 100));
 		}
-		int width = getPreferredWidth();
-		int height = getPreferredHeight();
-		setPreferredSize(new Dimension(width, height));
+		else{
+			setPreferredSize(new Dimension(110, 560));
+			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			cards.setPreferredSize(new Dimension(100, 470));
+			extraPanel.setPreferredSize(new Dimension(100, 70));
+			
+		}
+		extraPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		add(cards);
+		add(extraPanel);
+		extraPanel.add(new JLabel(playerName));
+		//extraPanel.add(new JButton("Drop"));
+		extraPanel.add(currentBid);
 		
 		clearSelectedCard(numFestivalCards);
 	}
 	
 	private int getPreferredWidth(){
-		if(isEvenLayout)
-			return 550;
-		return 110;
+		if(isEvenLayout) return 470;
+		else return 100;
 	}
 	
 	private int getPreferredHeight(){
-		if(isEvenLayout){
-			return 110;
-		}
-		return 550;
+		if(isEvenLayout) return 100;
+		else return 470;
 	}
 	
 	private int getCardSpacing(int numCards){
 		if(numCards == 0) return 0;
 		if(isEvenLayout){
-			if(numCards < 6){
-				return 105;
+			if(numCards < 8){
+				return 100;
 			}
 			return getPreferredWidth()/numCards;
 		}
@@ -89,6 +100,10 @@ public class HoldFestivalPlayerPanel extends JPanel {
 			}
 			return getPreferredHeight()/numCards;
 		}
+	}
+	
+	public void setBidAmount(int amount){
+		this.currentBid.setText("Bid: "+amount);
 	}
 
 	public void setCurrentPlayer(boolean isTurn){
@@ -109,6 +124,12 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	
 	public void clearSelectedCard(int numCards){
 		cards.setIcon(new ImageIcon(drawPalaceCardBacks(numCards)));
+	}
+	
+	public void dropPlayer(){
+		JPanel pieceOfShit = new JPanel();
+		pieceOfShit.setPreferredSize(new Dimension(getPreferredWidth(), getPreferredHeight()));
+		add(pieceOfShit);
 	}
 	
 	private BufferedImage drawPalaceCardBacks(int numPalaceCards){

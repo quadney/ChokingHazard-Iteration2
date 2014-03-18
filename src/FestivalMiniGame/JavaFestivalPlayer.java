@@ -9,7 +9,6 @@ public class JavaFestivalPlayer {
 	private JavaPlayer player;
 	private boolean isInFestival;
 	private ArrayList<PalaceCard> palaceCards;
-	private ArrayList<PalaceCard> discardedPalaceCards;
 	private int tabCount;
 	private int festivalBid;
 	private boolean startedFestival;
@@ -19,7 +18,6 @@ public class JavaFestivalPlayer {
 		//if they are not able, don't create a FestivalPlayer
 		this.player = player;
 		this.palaceCards = validPalaceCards;
-		this.discardedPalaceCards = new ArrayList<PalaceCard>();
 		this.isInFestival = true;
 		this.tabCount = 0;
 		this.festivalBid = 0;
@@ -42,12 +40,15 @@ public class JavaFestivalPlayer {
 	public int getTabCount(){
 		return this.tabCount;
 	}
-	public ArrayList<PalaceCard> getDiscardedCards(){
-		return discardedPalaceCards;
-	}
 	
 	public boolean checkIfInFestival(){
 		return this.isInFestival;
+	}
+	
+	public void awardFamePoints(int pointsToAward){
+		System.out.println("PLayer fame points before adding: "+this.player.getFamePoints());
+		this.player.changeFamePoints(pointsToAward);
+		System.out.println("PLayer fame points after adding: "+this.player.getFamePoints());
 	}
 	
 	public void addFestivalBid(int points){
@@ -74,9 +75,11 @@ public class JavaFestivalPlayer {
 	}
 	
 	public PalaceCard getSelectedPalaceCard(){
-		//this should only be called if the player is valid
+		//this gets called when the player plays a palacecard in the festival
 		PalaceCard selectedCard = palaceCards.get(tabCount);
-		discardedPalaceCards.add(selectedCard);
+		//test to make sure that this will work
+		//TODO
+		player.removePalaceCard(selectedCard);
 		palaceCards.remove(tabCount);
 		tabCount = -1;
 		return selectedCard;

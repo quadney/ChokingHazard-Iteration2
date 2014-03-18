@@ -61,12 +61,11 @@ public class SharedComponentController {
 		return cards;
 	}
 	
-	public void discardPalaceCardsAfterFestival(HashMap<String, ArrayList<PalaceCard>> cardsToDiscardPerPlayer){
-//		for( int i = 0; i < cardsToDiscardPerPlayer.length; ++i){
-//			for(int j = 0; j < cardsToDiscardPerPlayer[i].length; ++j){
-//				sharedModel.discardCard(cardsToDiscardPerPlayer[i][j]);
-//			}
-//		}
+	public void discardPalaceCardsAfterFestival(ArrayList<PalaceCard> cardsToDiscard){
+		for(PalaceCard discard : cardsToDiscard){
+			this.sharedModel.discardCard(discard);
+			//TODO do we need to update the view?
+		}
 	}
 
 	//called if the player has selected a palace tile.
