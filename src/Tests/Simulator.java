@@ -221,7 +221,7 @@ public class Simulator {
 	 * Selects a developer with the amount of tabs *developer* and moves it displaceX, displaceY
 	 * @param developer the amount of times tab is pressed
 	 * @param displaceX the amount of times right/left is pressed. Negative for left.
-	 * @param displaceY the amount of times up/down is pressed.
+	 * @param displaceY the amount of times up/down is pressed. Negative for up.
 	 */
 	public static void moveDeveloper(int developer, int displaceX, int displaceY) {
 		GameRobot.pressTab(developer+1);
