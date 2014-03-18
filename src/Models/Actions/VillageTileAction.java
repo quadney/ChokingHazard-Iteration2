@@ -12,12 +12,14 @@ public class VillageTileAction extends OneSpaceTileAction {
 	@Override
 	public void undo(GameModel game) {
 		game.getCurrentPlayer().incrementVillage();
-		game.getBoard().getMap();
+		game.getBoard().getMap()[x][y] = cell;
 	}
 
 	@Override
 	public void redo(GameModel game) {
 		game.getCurrentPlayer().decrementVillage();
+		// TODO deal with cellID
+		game.getBoard().getMap()[x][y] = new JavaCell(x, y, "VILLAGE", -1);
 	}
 
 }
