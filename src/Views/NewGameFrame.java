@@ -16,16 +16,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
-public class NewGameFrame extends JFrame {
+@SuppressWarnings("serial")
+public class NewGameFrame extends JFrame{
 	JPanel newGamePanel;
 	JButton startGame;
 	JPanel[] newPlayers;
 	JTextField[] playerNames;
-	JComboBox[] colorSelection;
-	JComboBox playerSelectionBox;
+	JComboBox<String>[] colorSelection;
+	JComboBox<String> playerSelectionBox;
 	int width = 500;
 	int height = 500;
 	
+	@SuppressWarnings("unchecked")
 	public NewGameFrame() {
 		newGamePanel = new JPanel();
 		newGamePanel.setPreferredSize(new Dimension(width, height));
@@ -50,11 +52,12 @@ public class NewGameFrame extends JFrame {
 	private void setUpView(){
 		JPanel numPlayerPanel = new JPanel();
 		numPlayerPanel.setPreferredSize(new Dimension(480, 70));
+		numPlayerPanel.setBackground(Color.WHITE);
 		JLabel numPlayers = new JLabel("Number of Players: ");
 		numPlayerPanel.add(numPlayers);
 		
 		String[] players = {"Select number of Players", "2", "3", "4"};
-		playerSelectionBox = new JComboBox(players);
+		playerSelectionBox = new JComboBox<String>(players);
 		playerSelectionBox.setSelectedIndex(0);
 		playerSelectionBox.addActionListener(new ActionListener() {
 			
@@ -76,15 +79,21 @@ public class NewGameFrame extends JFrame {
 		for(int i = 0; i < newPlayers.length; ++i){
 			newPlayers[i] = new JPanel();
 			newPlayers[i].setPreferredSize(new Dimension(480, 70));
+			newPlayers[i].setBackground(Color.WHITE);
 			newPlayers[i].add(new JLabel("Player "+(i+1)+" name: "));
+			
 			playerNames[i] = new JTextField();
 			playerNames[i].setPreferredSize(new Dimension(100, 25));
 			newPlayers[i].add(playerNames[i]);
-			colorSelection[i] = new JComboBox(colors);
+			
+			colorSelection[i] = new JComboBox<String>(colors);
 			colorSelection[i].setSelectedIndex(i);
 			newPlayers[i].add(colorSelection[i]);
 			newGamePanel.add(newPlayers[i]);
 			newPlayers[i].setVisible(false);
+			
+			//TODO: delete dev purposes:
+			playerNames[i].setText("Player: "+i);
 		}
 		
 		newGamePanel.add(startGame);
@@ -113,13 +122,13 @@ public class NewGameFrame extends JFrame {
 		JOptionPane.showMessageDialog(this,  errorMessage);
 	}
 	
-	public JComboBox getPlayerSelectionComboBox(){
+	public JComboBox<String> getPlayerSelectionComboBox(){
 		return this.playerSelectionBox;
 	}
 	public JTextField[] getPlayerNames(){
 		return this.playerNames;
 	}
-	public JComboBox[] getColorSelection(){
+	public JComboBox<String>[] getColorSelection(){
 		return this.colorSelection;
 	}
 

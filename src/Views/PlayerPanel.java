@@ -1,5 +1,5 @@
 package Views;
-
+  
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -17,11 +17,13 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class PlayerPanel extends JPanel{
 	private String color;
 	private String name;
 	private Color playerColor;
-	private JLabel playerName, famePoints, actionPointsLeft, numDevelopers, numOneTileRice, numOneTileVillage, numTwoTile, numActionTokens;
+	private JLabel playerName, famePoints, actionPointsLeft, developers, oneTileRice, oneTileVillage, twoTile, actionTokens;
+	private JLabel palaceCards;
 	private HashMap<String, String> imageSourceHashMap;
 	
 	public PlayerPanel(String name, String color){
@@ -38,112 +40,77 @@ public class PlayerPanel extends JPanel{
 		} 
 		
 		setBackground(Color.WHITE);
-        setPreferredSize(new Dimension(270, 335));
-        setMinimumSize(new Dimension(270, 335));
-        setMaximumSize(new Dimension(270, 335));
+        setPreferredSize(new Dimension(200, 335));
+        setMinimumSize(new Dimension(200, 335));
+        setMaximumSize(new Dimension(200, 335));
         setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         
         initHashMap();
         initLayout();
-        setCurrentPlayer();
 	}
 	
 	private void initLayout() {
 		JPanel leftPlayerInfo = new JPanel();
-		leftPlayerInfo.setPreferredSize(new Dimension(86, 60));
+		leftPlayerInfo.setPreferredSize(new Dimension(115, 60));
 		leftPlayerInfo.setBackground(Color.WHITE);
 		this.add(leftPlayerInfo);
 		
 		playerName = new JLabel(name);
         playerName.setFont(new Font("Lucida Grande", 0, 18)); 
-        playerName.setPreferredSize(new Dimension(80, 22));
-        playerName.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 5));
+        playerName.setPreferredSize(new Dimension(110, 22));
+        playerName.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         leftPlayerInfo.add(playerName);
         
-        actionPointsLeft = new JLabel();
+        actionPointsLeft = new JLabel("");
         actionPointsLeft.setFont(new Font("Lucida Grande", 0, 48)); 
         actionPointsLeft.setHorizontalAlignment(SwingConstants.CENTER);
         actionPointsLeft.setPreferredSize(new Dimension(60, 60));
         actionPointsLeft.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
         this.add(actionPointsLeft);
         
-        famePoints = new JLabel();
+        famePoints = new JLabel("");
         famePoints.setFont(new Font("Lucida Grande", 1, 36));
         famePoints.setHorizontalAlignment(SwingConstants.LEFT);
-        famePoints.setPreferredSize(new Dimension(80, 32));
-        famePoints.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 5));
+        famePoints.setPreferredSize(new Dimension(110, 32));
+        famePoints.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         leftPlayerInfo.add(famePoints);
 
         JSeparator jSeparator1 = new JSeparator();
         jSeparator1.setForeground(new Color(102, 102, 102));
-        jSeparator1.setPreferredSize(new Dimension(158, 15));
+        jSeparator1.setPreferredSize(new Dimension(180, 15));
         this.add(jSeparator1);
         
-        numDevelopers = newJLabel(imageSourceHashMap.get("layout_player_"+color)); 
-        this.add(numDevelopers);
-
-        numOneTileRice = newJLabel(imageSourceHashMap.get("layout_riceTile")); 
-        this.add(numOneTileRice);
+        developers = newJLabel("", imageSourceHashMap.get("layout_player_"+color), 80, 45); 
+        this.add(developers);
         
-        numOneTileVillage = newJLabel(imageSourceHashMap.get("layout_villageTile")); 
-        this.add(numOneTileVillage);
+        actionTokens = newJLabel("", imageSourceHashMap.get("layout_actionToken"), 80, 45); 
+        this.add(actionTokens);
 
-        numTwoTile = newJLabel(imageSourceHashMap.get("layout_twoTile")); 
-        this.add(numTwoTile);
+        oneTileRice = newJLabel("", imageSourceHashMap.get("layout_riceTile"), 80, 45); 
+        this.add(oneTileRice);
         
-        numActionTokens = newJLabel(imageSourceHashMap.get("layout_actionToken")); 
-        this.add(numActionTokens);
+        oneTileVillage = newJLabel("", imageSourceHashMap.get("layout_villageTile"), 80, 45); 
+        this.add(oneTileVillage);
+
+        twoTile = newJLabel("", imageSourceHashMap.get("layout_twoTile"), 160, 45); 
+        this.add(twoTile);
+        
+        palaceCards = newJLabel("", imageSourceHashMap.get("layout_palaceCard_back"), 160, 75);
+        this.add(palaceCards);
 		
 	}
 	
-	private JLabel newJLabel(String src){
-		JLabel label= new JLabel();
+	private JLabel newJLabel(String value, String src, int width, int height){
+		JLabel label= new JLabel(value);
 		label.setIcon(new ImageIcon(src));
 		label.setFont(new Font("Lucida Grande", 0, 14));
-		label.setPreferredSize(new Dimension(150, 41));
+		label.setPreferredSize(new Dimension(width, height));
 		label.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		return label;
 	}
 	
-	public void setPlayerName(String playersName){
-		this.playerName.setText(playersName);
-	}
-	
-	public void setPlayerColor(String color){
-		this.color = color;
-		this.playerColor = Color.getColor(color);
-	}
-
-	public void setFamePoints(int famePoints) {
-		this.famePoints.setText(""+famePoints);
-	}
-
-	public void setActionPointsLeft(int actionPointsLeft) {
-		this.actionPointsLeft.setText(""+actionPointsLeft);
-	}
-
-	public void setNumDevelopers(int numDevelopers) {
-		this.numDevelopers.setText(""+numDevelopers);
-	}
-
-	public void setNumOneTileRice(int numOneTileRice) {
-		this.numOneTileRice.setText(""+numOneTileRice);
-	}
-
-	public void setNumOneTileVillage(int numOneTileVillage) {
-		this.numOneTileVillage.setText(""+numOneTileVillage);
-	}
-
-	public void setNumTwoTile(int numTwoTile) {
-		this.numTwoTile.setText(""+numTwoTile);
-	}
-
-	public void setNumActionTokens(int numActionTokens) {
-		this.numActionTokens.setText(""+numActionTokens);
-	}
-	
 	public void setCurrentPlayer(){
-		this.setBorder(BorderFactory.createLineBorder(playerColor));
+		this.setBorder(BorderFactory.createLineBorder(playerColor, 3));
 	}
 	
 	public void setNotCurrentPlayer(){
@@ -151,59 +118,47 @@ public class PlayerPanel extends JPanel{
 	}
 	
 	private void initHashMap(){
-		// TODO test this
 		File imageSourceFile = null;
 		this.imageSourceHashMap = new HashMap<String, String>();
 		try{
-			imageSourceFile = new File("/files/PlayerImageStrings.txt");
+			imageSourceFile = new File("bin/files/PlayerImageStrings.txt");
 			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
-			String line = fileReader.readLine();
-			String[] hash = line.split(" ");
-			imageSourceHashMap.put(hash[0], hash[1]);
-			System.out.println("Hash 0: "+hash[0]);
-			System.out.println("Hash 1: "+hash[1]);
+			String line = "";
+			while((line = fileReader.readLine()) != null){
+				String[] hash = line.split(" ");
+				imageSourceHashMap.put(hash[0], hash[1]);
+			}
+			fileReader.close();
 		} catch(Exception e){
-			
+			System.out.println(e.getMessage());
 		}
-		System.out.println("File Name: "+imageSourceFile.getName());
 	}
 	
 	
 	// ---------- Actions -----------
-	public void updateFamePoints(){
-		
+	public void updateFamePoints(int newFamePoints){
+		this.famePoints.setText(""+newFamePoints);
 	}
-	public void updateActionPoints(){
-		
+	public void updateActionPoints(int actionPoints){
+		this.actionPointsLeft.setText(""+actionPoints);
 	}
-	public void useDeveloper(){
-		
+	public void updateDevelopersOffBoard(int developersOffBoard){
+		this.developers.setText(""+developersOffBoard);
 	}
-	public void removeDeveloperFromBoard(){
-		
+	public void useOneRiceTile(int numRiceTiles){
+		this.oneTileRice.setText(""+numRiceTiles);
 	}
-	public void useOneRiceTile(){
-		
+	public void useOneVillageTile(int numVillageTiles){
+		this.oneTileVillage.setText(""+numVillageTiles);
 	}
-	public void useOneVillageTile(){
-		
+	public void useTwoTile(int numTwoTiles){
+		this.twoTile.setText(""+numTwoTiles);
 	}
-	public void useTwoTile(){
-		
+	public void useActionToken(int numActionTokens, int newNumActionPoints){
+		this.actionTokens.setText(""+numActionTokens);
+		updateActionPoints(newNumActionPoints);
 	}
-	public void useActionToken(){
-		
-	}
-	public void displayPLayerFestivalCards(){
-		
-	}
-	public void hidePlayerFestivalCards(){
-		
-	}
-	public void useFestivalCard(){
-		
-	}
-	public void removeFestivalCard(){
-		
+	public void updateNumPalaceCards(int numPalaceCards){
+		this.palaceCards.setText(""+numPalaceCards);
 	}
 }

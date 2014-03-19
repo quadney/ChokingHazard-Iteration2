@@ -1,60 +1,104 @@
 package Models;
 
-import java.util.Stack;
+import Helpers.Json;
+
+import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class BoardModel {
+import Helpers.JsonObject;
+import Models.Tile.TileType;
+
+public class BoardModel implements Serializable<BoardModel> {
 	private JavaCell[][] map;
-	private Stack<JavaCell> path;
+	private LinkedList<JavaCell> path;
 	private ArrayList<JavaCell> connectedPalaces = new ArrayList<JavaCell>();
+	private JavaCell[] outerCells;
+	public int cellId;
 
 	public BoardModel() {
 		this.map = new JavaCell[14][14];
-		this.path = new Stack<JavaCell>();
+		this.path = new LinkedList<JavaCell>();
+		cellId = 0;
+		outerCells = new JavaCell[50];
+
+		int i = 0;
 
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
-				if (x == 0 || x == 1) {
-					map[x][y] = new JavaCell(x, y, 0);
+				map[x][y] = new JavaCell(x, y, 0);
+
+				if ((x == 0 || x == 13) && (y != 0 && y != 13)) {
+					outerCells[i] = map[x][y];
+					i++;
+				} else if ((y == 0 || y == 13) && (x != 0 && x != 13)) {
+					outerCells[i] = map[x][y];
+					i++;
 				}
 
-				else if (x <= 6 && (y <= 1 || y >= 12)) {
-					map[x][y] = new JavaCell(x, y, 0);
-				}
-
-				else if (x >= 7 && (y <= 1 || y >= 12)) {
-					map[x][y] = new JavaCell(x, y, 0);
-				} else if (x == 12 || x == 13) {
-					map[x][y] = new JavaCell(x, y, 0);
-				} else {
-					map[x][y] = new JavaCell(x, y, 0); // this creates Cell
-														// objects for the rest
-														// of central Java
-				}
 			}
 		}
-
 	}
-
+	
 	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player) {
-		if (checkValidTilePlacement(xC, yC, tile, player)) {
+		JavaCell[][] miniMap = createTestMap(xC, yC);
+		TileType[][] tileCells = tile.getTileCells();
 
+		if (checkValidTilePlacement(xC, yC, tile, player, miniMap)) {
+			/*
+			 * are we going to be creating the tile here? if we are then we need
+			 * to increase cellId here.
+			 */
+			cellId++;
+			for (int i = 0; i < tileCells.length; i++)
+				for (int j = 0; j < tileCells[i].length; j++)
+					if (tileCells[i][j] != null) {
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()]
+								.setCellType(tileCells[i][j]);
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()]
+								.setCellId(cellId);
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()]
+								.setElevation(map[miniMap[i][j].getX()][miniMap[i][j]
+										.getY()].getElevation() + 1);
+					}
+			
+			if(placedLandTile(xC, yC))
+				player.placedLandTile();
+			
+			System.out.println(toString());
 			return true;
 		}
 
 		return false;
 	}
+	
+	public boolean placedLandTile(int xC, int yC){
+		
+		if(map[xC][yC].getCellType() == "village" || map[xC][yC].getCellType() == "rice")
+			return true;
+		
+		return false;
+	}
 
-	private boolean checkValidTilePlacement(int xC, int yC, Tile tile,
-			JavaPlayer player) {
-
-		JavaCell[][] miniMap = createTestMap(xC, yC); // creating a small map
-														// with the cells we
-														// need to compare
+	public boolean checkValidTilePlacement(int xC, int yC, Tile tile,
+			JavaPlayer player, JavaCell[][] miniMap) {
+		// creating a small map with the cells we need to compare
+		// JavaCell[][] miniMap = createTestMap(xC, yC);
 
 		int neededActionPoints = checkNeededActionPoints(miniMap, tile);
+		
+		//boolean needed to check the amount of available AP points
+		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1].toString()); 
+
+		System.out.println("palace placement: " + checkPalacePlacement(miniMap, tile));
+		System.out.println("palace tilesBelow: " + checkTilesBelow(miniMap, tile));
+		System.out.println("palace elevation: " + checkElevation(miniMap, tile, xC, yC));
+		System.out.println("palace I: " + checkIrrigationPlacement(miniMap, tile));
+		System.out.println("palace DevOnCell: " + checkDeveloperOnCell(miniMap, tile));
+		System.out.println("palace CityConn: " + checkCityConnection(miniMap, tile));
+		System.out.println("palace edge: " + checkEdgePlacement(miniMap, tile));
+		System.out.println("palace action: " + player.decrementNActionPoints(neededActionPoints, isLandTile));
 
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
@@ -63,7 +107,7 @@ public class BoardModel {
 				&& checkDeveloperOnCell(miniMap, tile)
 				&& checkCityConnection(miniMap, tile)
 				&& checkEdgePlacement(miniMap, tile)
-				&& player.decrementNActionPoints(neededActionPoints)) {
+				&& player.decrementNActionPoints(neededActionPoints, isLandTile)) {
 			return true;
 		}
 
@@ -74,9 +118,14 @@ public class BoardModel {
 
 		JavaCell[][] testingMap = new JavaCell[3][3];
 
-		for (int i = 0, x = xC - 1; i < 3; i++, x++)
-			for (int j = 0, y = yC - 1; j < 3; j++, y++)
-				testingMap[i][j] = map[x][y];
+		for (int i = 0, x = xC - 1; i < 3; i++, x++) {
+			for (int j = 0, y = yC - 1; j < 3; j++, y++) {
+				if ((x >= 0 && x <= map.length) && (y >= 0)
+						&& (y <= map[0].length)) {
+					testingMap[i][j] = map[x][y];
+				}
+			}
+		}
 
 		return testingMap;
 	}
@@ -85,7 +134,7 @@ public class BoardModel {
 		int outsideCount = 1;
 		int mapRowLength = map.length;
 		int mapColumnSize = map[0].length;
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
@@ -106,14 +155,14 @@ public class BoardModel {
 	}
 
 	private boolean checkPalacePlacement(JavaCell[][] miniMap, Tile tile) {
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				if (tileCells[i][j] != null) {
-					if (miniMap[i][j] != null &&
-						miniMap[i][j].getCellType() != null &&
-						miniMap[i][j].getCellType() == "irrigation") {
+					if (miniMap[i][j] != null
+							&& miniMap[i][j].getCellType() != null
+							&& miniMap[i][j].getCellType() == "palace") {
 
 						return false;
 					}
@@ -125,13 +174,54 @@ public class BoardModel {
 	}
 
 	private boolean checkTilesBelow(JavaCell[][] miniMap, Tile tile) {
+		TileType[][] tileCells = tile.getTileCells();
+		int numberOfTilesBelow = 0;
+		int testId = miniMap[1][1].getCellId();
+		int testing = 0;
 
-		return true;
+		for (int i = 0; i < tileCells.length; i++) {
+			for (int j = 0; j < tileCells[i].length; j++) {
+				if (tileCells[i][j] != null	&& miniMap[i][j].getElevation() >= 0) {
+					System.out.println("in the 1st if statement");
+					
+					if (testId == 0) {
+						testId = miniMap[i][j].getCellId();
+						System.out.println("The id is: " + testId);
+					} else {
+						if (testId != miniMap[i][j].getCellId())
+							return true;
+						else
+							numberOfTilesBelow++;
+					}
+				}
+				if( miniMap[i][j] != null && miniMap[i][j].getElevation() >= 0 && miniMap[1][1].getCellId() == miniMap[i][j].getCellId()){
+					testing++;
+				}
+			}
+		}
+
+		System.out.println("The # of tiles below: " + numberOfTilesBelow + "testing: " + testing);
+
+		int number;
+		if (tile.getType() == "two") {
+			number = 2;
+		} else if (tile.getType() == "three") {
+			number = 3;
+
+		} else if (tile.getType() == "one") {
+			number = 1;
+		} else {
+			number = 0;
+		}
+		if (number != numberOfTilesBelow || testing > numberOfTilesBelow)
+			return true;
+		else
+			return false;
 	}
 
 	private boolean checkElevation(JavaCell[][] miniMap, Tile tile, int xC,
 			int yC) {
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 
 		int elevation = map[xC][yC].getElevation();
 
@@ -148,7 +238,7 @@ public class BoardModel {
 	}
 
 	private boolean checkIrrigationPlacement(JavaCell[][] miniMap, Tile tile) {
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
@@ -156,7 +246,6 @@ public class BoardModel {
 					if (miniMap[i][j] != null
 							&& miniMap[i][j].getCellType() != null
 							&& miniMap[i][j].getCellType() == "irrigation") {
-
 						return false;
 					}
 				}
@@ -167,13 +256,12 @@ public class BoardModel {
 	}
 
 	private boolean checkDeveloperOnCell(JavaCell[][] miniMap, Tile tile) {
-		String[][] tileCells = tile.getTileCells();
+		TileType[][] tileCells = tile.getTileCells();
 
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				if (tileCells[i][j] != null) {
 					if (miniMap[i][j] != null && miniMap[i][j].hasDeveloper()) {
-
 						return false;
 					}
 				}
@@ -191,28 +279,29 @@ public class BoardModel {
 				mapCopy[i][j] = map[i][j];
 			}
 		}
-		
-		String[][] tileCells = tile.getTileCells();
+
+		TileType[][] tileCells = tile.getTileCells();
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[0].length; j++) {
-				if (tileCells[i][j] != null &&
-					tileCells[i][j] == "village" &&
-					miniMap[i][j] != null) {
-					findPalaceSpaces(miniMap[i][j].getX(), miniMap[i][j].getY(), mapCopy);
+				if (tileCells[i][j] != null && tileCells[i][j] == TileType.village
+						&& miniMap[i][j] != null) {
+					findPalaceSpaces(miniMap[i][j].getX(),
+							miniMap[i][j].getY(), mapCopy);
 				}
 			}
 		}
-		
+
 		for (int i = 0; i < connectedPalaces.size(); i++) {
 			for (int j = i + 1; j < connectedPalaces.size(); j++) {
-				if (connectedPalaces.get(i) != null && connectedPalaces.get(j) != null) {
+				if (connectedPalaces.get(i) != null
+						&& connectedPalaces.get(j) != null) {
 					if (connectedPalaces.get(i) != connectedPalaces.get(j)) {
 						return false;
 					}
 				}
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -222,53 +311,177 @@ public class BoardModel {
 		boolean canRight = (y + 1 < map[0].length);
 		boolean canLeft = (y - 1 >= 0);
 
-		if (map[x][y] != null && map[x][y].getCellType() != null &&
-			map[x][y].getCellType() == "palace") {
-				connectedPalaces.add(map[x][y]);
+		if (map[x][y] != null && map[x][y].getCellType() != null
+				&& map[x][y].getCellType() == "palace") {
+			connectedPalaces.add(map[x][y]);
 		}
-		
+
 		map[x][y] = null;
-		if (canUp && 
-		   (map[x - 1][y] != null && 
-		   (map[x - 1][y].getCellType() == "village" || map[x - 1][y].getCellType() == "palace"))) {
-				findPalaceSpaces(x - 1, y, map);
+
+		// fixed the bug here
+		if (canUp
+				&& (map[x - 1][y] != null && (map[x - 1][y].getCellType() == "village" || map[x - 1][y]
+						.getCellType() == "palace"))) {
+			findPalaceSpaces(x - 1, y, map);
 		}
-		
-		if (canDown && 
-		   (map[x + 1][y] != null && 
-		   (map[x + 1][y].getCellType() == "village" || map[x - 1][y].getCellType() == "palace"))) {
-				findPalaceSpaces(x + 1, y, map);
+
+		if (canDown
+				&& (map[x + 1][y] != null && (map[x + 1][y].getCellType() == "village" || map[x + 1][y]
+						.getCellType() == "palace"))) {
+			findPalaceSpaces(x + 1, y, map);
 		}
-		
-		if (canLeft && 
-		   (map[x][y - 1] != null && 
-		   (map[x][y - 1].getCellType() == "village" || map[x][y - 1].getCellType() == "palace"))) {
-				findPalaceSpaces(x, y - 1, map);
+
+		if (canLeft
+				&& (map[x][y - 1] != null && (map[x][y - 1].getCellType() == "village" || map[x][y - 1]
+						.getCellType() == "palace"))) {
+			findPalaceSpaces(x, y - 1, map);
 		}
-		
-		if (canRight && 
-		   (map[x][y + 1] != null && 
-		   (map[x][y + 1].getCellType() == "village" || map[x - 1][y].getCellType() == "palace"))) {
-				findPalaceSpaces(x, y + 1, map);
+
+		if (canRight
+				&& (map[x][y + 1] != null && (map[x][y + 1].getCellType() == "village" || map[x][y + 1]
+						.getCellType() == "palace"))) {
+			findPalaceSpaces(x, y + 1, map);
 		}
-		
+
 		return;
 	}
 	
-	private boolean checkEdgePlacement(JavaCell[][] miniMap, Tile tile) {
+	public boolean canPlacePalace(int x, int y, JavaCell palace) {
 		return true;
 	}
+	
+	public boolean canUpgradePalace(int x, int y, JavaCell palace) {
+		return false;
+	}
 
-	public boolean placeDeveloper(Point location, JavaPlayer player) {
-		// Set the point equal to the cell on the board
-		JavaCell locationCell = map[location.getX()][location.getY()];
+	private static int findNumberConnected(int x, int y, JavaCell[][] map) {
+		JavaCell[][] copy = new JavaCell[14][14];
+		for (int i = 0; i < 14; i++)
+			for (int j = 0; j < 14; j++) {
+				{
+					copy[i][j] = map[i][j];
+				}
+			}
+		
+			boolean canUp = (x - 1 >= 0);
+			boolean canDown = (x + 1 < map.length);
+			boolean canRight = (y + 1 < map[0].length);
+			boolean canLeft = (y - 1 >= 0);
 
+			int up = 0;
+			int down = 0;
+			int right = 0;
+			int left = 0;
+
+			// fixed the bug here
+			if (canUp && (map[x - 1][y] != null && (map[x - 1][y].getCellType() == "village" ))) {
+				up = findNumberConnected(x - 1, y, map);
+			}
+
+			if (canDown && (map[x + 1][y] != null && (map[x + 1][y].getCellType() == "village" ))) {
+				up = findNumberConnected(x + 1, y, map);
+			}
+
+			if (canLeft && (map[x][y - 1] != null && (map[x][y - 1].getCellType() == "village" ))) {
+				up = findNumberConnected(x, y - 1, map);
+			}
+
+			if (canRight && map[x][y + 1] != null && (map[x][y + 1].getCellType() == "village" )) {
+				up = findNumberConnected(x, y + 1, map);
+			}
+
+		
+
+		return up + left + right + down + 1;
+	}
+
+// Returns the number of village Spaces surrounding the given Cell. Called
+// by checkIfICanUpgradePalace to make sure number of surrounding villages
+// is greater than or equal to the palace number.
+/*private int checkForNumberOfVillages(Cell cell)
+{
+setConnectedCells(cell);
+return cell.getConnectedCells().size();
+}*/
+
+
+	
+	private boolean checkEdgePlacement(JavaCell[][] miniMap, Tile tile) {
+
+		TileType[][] tileCells = tile.getTileCells();
+		JavaCell[] cells = new JavaCell[4];
+		int count = 0;
+
+		int x = 0;
+		
+		for (int i = 0; i < miniMap.length; i++)
+			for (int j = 0; j < miniMap[i].length; j++)
+				if (tileCells[i][j] != null){
+					cells[x] = miniMap[i][j];
+					x++;
+				}
+
+		int number;
+		if (tile.getType() == "two") {
+			number = 2;
+		}
+
+		else if (tile.getType() == "three") {
+			number = 3;
+		}
+
+		else if (tile.getType() == "one") {
+			number = 1;
+		}
+
+		else {
+			number = 0;
+		}
+
+		System.out.println("in checkedge the outer cell length is: "
+				+ outerCells.length);
+
+		for (int i = 0; i < outerCells.length; i++) {
+
+			if (cells[0] != null && outerCells[i] != null
+					&& cells[0].getX() == outerCells[i].getX()
+					&& cells[0].getY() == outerCells[i].getY())
+				count++;
+			if (cells[1] != null && outerCells[i] != null
+					&& cells[1].getX() == outerCells[i].getX()
+					&& cells[1].getY() == outerCells[i].getY())
+				count++;
+			if (cells[2] != null && outerCells[i] != null
+					&& cells[2].getX() == outerCells[i].getX()
+					&& cells[2].getY() == outerCells[i].getY())
+				count++;
+			if (cells[3] != null && outerCells[i] != null
+					&& cells[3].getX() == outerCells[i].getX()
+					&& cells[3].getY() == outerCells[i].getY())
+				count++;
+		}
+
+		System.out.println("count: " + count + "number" + number);
+		
+		if (count == number) {
+			return false;
+		}
+
+		return true;
+	}
+	
+	public JavaCell getCellAtXY(int x, int y){
+		return map[x][y];
+	}
+
+	public boolean placeDeveloper(JavaCell jc, JavaPlayer player) {
 		// Check with validity method first
-		if (!canPlaceDeveloper(locationCell, player))
+		if (!canPlaceDeveloper(jc, player))
 			return false;
 
 		// Set developer on board
-		return true; // TODO
+		player.placeDevOnBoard(jc);
+		return true; // TODO Specific index?? cc: Cameron
 
 	}
 
@@ -294,10 +507,10 @@ public class BoardModel {
 
 		// Check that player has available AP for this
 		// First determine type of move/cost
-		if (!player.decrementNActionPoints(1)) // TODO: Check lowlands or
-												// mountains
+		if (!player.decrementNActionPoints(1, false) || !player.canPlaceDeveloperOnBoard()) // TODO: Check lowlands or
+			// mountains
 			return false;
-
+		
 		return true;
 	}
 
@@ -307,20 +520,20 @@ public class BoardModel {
 
 		// Check if the cell is adjacent to any empty border cells
 		if (x + 1 == 13) {
-			if (map[13][y].getCellType().equals("Blank"))
+			if (map[13][y].getCellType().equals("blank"))
 				return true;
 		}
 
 		if (x - 1 == 0) {
-			if (map[0][y].getCellType().equals("Blank"))
+			if (map[0][y].getCellType().equals("blank"))
 				return true;
 		}
 		if (y + 1 == 13) {
-			if (map[x][13].getCellType().equals("Blank"))
+			if (map[x][13].getCellType().equals("blank"))
 				return true;
 		}
 		if (y - 1 == 0) {
-			if (map[x][0].getCellType().equals("Blank"))
+			if (map[x][0].getCellType().equals("blank"))
 				return true;
 		}
 
@@ -329,42 +542,110 @@ public class BoardModel {
 	}
 
 	public boolean isTileOrLand(int x, int y) {
-		if (!(map[x][y].getCellType().equals("Village") || map[x][y]
-				.getCellType().equals("Rice")))
+		if (!(map[x][y].getCellType().equals("village") || map[x][y]
+				.getCellType().equals("rice")))
 			return false;
 		return true;
 	}
 
-	public void removeDeveloper(Point point, JavaPlayer player) {
-		JavaCell pointCell = map[point.getX()][point.getY()];
+	// Method to determine cost of moving dev onto board: 2 from lowlands, 1
+	// from mountains
+	public int getCost(JavaCell cell) {
+		int x = cell.getX();
 
-		// Turn off hasDeveloper
-		pointCell.removeDeveloper();
-		// Remove currently selected developer from dev array
-		player.removeDeveloperFromArray(); // TODO: correct indices
-		// Decrement actions points
-		player.decrementNActionPoints(1);
+		if (x <= 6)
+			return 2;
+		else
+			return 1;
 	}
 
-	/**************************
-	 * Currently useless code that might be useful later
-	 * ************************/
+	public void removeDeveloper(JavaCell javaCell, JavaPlayer player) {
+		// Turn off hasDeveloper
+		javaCell.removeDeveloper();
+		// Remove currently selected developer from dev array
+		player.removeDeveloperFromArray(); // Must check that this works later
+											// on TODO
+		// Decrement actions points
+		player.decrementNActionPoints(1, false);
+	}
 
-	/*
-	 * public boolean hasAdjacentLandSpaceTile(JavaCell cell) { int x =
-	 * cell.getX(); int y = cell.getY();
-	 * 
-	 * // Check if the cell is adjacent to any border cells if (x + 1 == 13) {
-	 * if (isTileOrLand(x+1,y)) return true; }
-	 * 
-	 * if (x- 1 == 0) { if (isTileOrLand(x-1,y)) return true; } if (y + 1 == 13)
-	 * { if (isTileOrLand(x,y+1)) return true; } if (y - 1 == 0) { if
-	 * (isTileOrLand(x,y-1)) return true; }
-	 * 
-	 * return false;
-	 * 
-	 * }
-	 */
+	public boolean moveDeveloper(JavaPlayer player) {
+		int pathSize = path.size();
+		int actionPoints = 0;
+		JavaCell currentCell = path.removeLast();
+		JavaCell nextCell = path.removeLast();
+		for (int i = 0; i < pathSize - 2; i++) {
+			if (fromVillageToRice(currentCell, nextCell)) {
+				actionPoints++;
+			}
+
+			currentCell = nextCell;
+			nextCell = path.removeLast();
+		}
+
+		if (fromVillageToRice(currentCell, nextCell)) {
+			actionPoints++;
+		}
+
+		if (player.decrementNActionPoints(actionPoints, false)) {
+			player.associateDeveloperWithCell(nextCell);
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean addJavaCellToPath(JavaCell javaCell) {
+		int pathSize = path.size();
+		LinkedList<JavaCell> temp = new LinkedList<JavaCell>();
+
+		for (int i = 0; i < pathSize; i++) {
+			temp.push(path.pop());
+		}
+
+		JavaCell currentCell = temp.pop();
+		int count = 0;
+
+		while ((currentCell != javaCell) && count < pathSize - 1) {
+			path.push(currentCell);
+			currentCell = temp.pop();
+			count++;
+		}
+
+		path.push(currentCell);
+		return true;
+	}
+
+	public boolean hasAdjacentLandSpaceTile(JavaCell cell) {
+		int x = cell.getX();
+		int y = cell.getY();
+
+		// Check if the cell is adjacent to any border cells
+		if (x + 1 == 13) {
+			if (isTileOrLand(x + 1, y)) {
+				return true;
+			}
+		}
+
+		if (x - 1 == 0) {
+			if (isTileOrLand(x - 1, y))
+				return true;
+		}
+
+		if (y + 1 == 13) {
+			if (isTileOrLand(x, y + 1)) {
+				return true;
+			}
+		}
+
+		if (y - 1 == 0) {
+			if (isTileOrLand(x, y - 1)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	public JavaCell[][] getMap() {
 		return map;
@@ -382,7 +663,7 @@ public class BoardModel {
 
 		int i = 0;
 		while (i < connected.size()) {
-			Cell temp = connected.get(i);
+			// Cell temp = connected.get(i);
 			HashSet<JavaCell> adjacent = new HashSet<JavaCell>();
 			if (y < 14 && map[y + 1][x].getCellType().equals("village")
 					|| map[y + 1][x].getCellType().equals("palace"))
@@ -408,37 +689,157 @@ public class BoardModel {
 
 		return connected;
 	}
-   
-   public ArrayList<JavaCell> getBodyOfWater(JavaCell root) {
-		ArrayList<JavaCell> connected = new ArrayList<JavaCell>();
-		int x = root.getX();
-		int y = root.getY();
 
-		connected.add(root);
+	public boolean nextToIrrigation(int xC, int yC, Tile tile) {
+		JavaCell[][] mapCopy = new JavaCell[map.length][map[0].length];
 
-		int i = 0;
-		while (i < connected.size()) {
-			Cell temp = connected.get(i);
-			HashSet<JavaCell> adjacent = new HashSet<JavaCell>();
-			if (y < 14 && map[y + 1][x].getCellType().equals("irrigation"))
-				adjacent.add(map[y + 1][x]);
-			if (y > 0 && map[y - 1][x].getCellType().equals("irrigation"))
-				adjacent.add(map[y - 1][x]);
-			if (x < 14 && map[y][x + 1].getCellType().equals("irrigation"))
-				adjacent.add(map[y][x + 1]);
-			if (x > 0 && map[y][x - 1].getCellType().equals("irrigation"))
-				adjacent.add(map[y][x - 1]);
-
-			Iterator<JavaCell> it = adjacent.iterator();
-			while (it.hasNext()) {
-				JavaCell next = (JavaCell) it.next();
-				if (!connected.contains(next))
-					connected.add(next);
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				mapCopy[i][j] = map[i][j];
 			}
-			i++;
 		}
 
-		return connected;
+		if (yC < 14 && map[xC][yC + 1].getCellType().equals("irrigation")) {
+			return isIrrigationSurrounded(mapCopy, xC, yC + 1);
+		}
+
+		if (yC > 0 && map[xC][yC + 1].getCellType().equals("irrigation")) {
+			return isIrrigationSurrounded(mapCopy, xC, yC - 1);
+		}
+
+		if (xC < 14 && map[xC + 1][yC].getCellType().equals("irrigation")) {
+			return isIrrigationSurrounded(mapCopy, xC + 1, yC);
+		}
+
+		if (xC > 0 && map[xC + 1][yC].getCellType().equals("irrigation")) {
+			return isIrrigationSurrounded(mapCopy, xC - 1, yC);
+		}
+
+		return false;
+	}
+
+	public boolean isIrrigationSurrounded(JavaCell[][] mapCopy, int xC, int yC) {
+		boolean right = false;
+		boolean left = false;
+		boolean up = false;
+		boolean down = false;
+
+		if (xC < 13 && xC > 0) {
+			if (map[xC + 1][yC].getCellType().equals("blank")) {
+				return false;
+			}
+
+			else if (map[xC + 1][yC].getCellType().equals("irrigation")) {
+				return isIrrigationSurrounded(mapCopy, xC + 1, yC);
+			}
+
+			else
+				down = true;
+		}
+
+		if (xC < 14 && xC > 1) {
+			if (map[xC - 1][yC].getCellType().equals("blank")) {
+				return false;
+			}
+
+			else if (map[xC - 1][yC].getCellType().equals("irrigation")) {
+				return isIrrigationSurrounded(mapCopy, xC - 1, yC);
+			}
+
+			else
+				left = true;
+		}
+
+		if (yC < 13 && yC > 0) {
+			if (map[xC][yC + 1].getCellType().equals("blank")) {
+				return false;
+			}
+
+			else if (map[xC][yC + 1].getCellType().equals("irrigation")) {
+				return isIrrigationSurrounded(mapCopy, xC, yC + 1);
+			}
+
+			else
+				up = true;
+		}
+
+		if (yC < 14 && yC > 1) {
+			if (map[xC][yC - 1].getCellType().equals("blank")) {
+				return false;
+			}
+
+			else if (map[xC][yC - 1].getCellType().equals("irrigation")) {
+				return isIrrigationSurrounded(mapCopy, xC, yC - 1);
+			}
+
+			else
+				down = true;
+		}
+
+		if (up && down && right && left) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean fromVillageToRice(JavaCell jc1, JavaCell jc2) {
+		if (jc1.getCellType().equals("village")
+				&& jc2.getCellType().equals("rice")
+				|| jc1.getCellType().equals("rice")
+				&& jc2.getCellType().equals("village")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public String toString() {
+		String s = "";
+
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				s += map[i][j].getElevation() + " ";
+			}
+			s += "\n";
+		}
+		return s;
+	}
+
+	@Override
+	public String serialize() {
+		return Json.jsonObject(Json.jsonMembers(
+				Json.jsonPair("map", Json.serializeArray(map)),
+				Json.jsonPair("path", Json.serializeArray(path)),
+				Json.jsonPair("connectedPalaces",
+						Json.serializeArray(connectedPalaces))));
+	}
+
+	@Override
+	public BoardModel loadObject(JsonObject json) {
+		map = new JavaCell[json.getJsonObjectArray("map").length][(((JsonObject[][]) json
+				.getObject("map"))[0]).length];
+		for (int x = 0; x < json.getJsonObjectArray("map").length; ++x)
+			for (int y = 0; y < ((JsonObject[]) (Object) json
+					.getJsonObjectArray("map")[0]).length; ++y)
+				map[x][y] = (new JavaCell(-1, -1, -1))
+						.loadObject(((JsonObject[][]) json.getObject("map"))[x][y]);
+
+		path = new LinkedList<JavaCell>();
+		for (JsonObject cell : json.getJsonObjectArray("path"))
+			path.push(map[(new JavaCell(-1, -1, -1)).loadObject(cell).xVal][(new JavaCell(
+					-1, -1, -1)).loadObject(cell).yVal]);
+
+		connectedPalaces = new ArrayList<JavaCell>();
+		for (JsonObject cell : json.getJsonObjectArray("connectedPalaces"))
+			connectedPalaces.add(map[(new JavaCell(-1, -1, -1))
+					.loadObject(cell).xVal][(new JavaCell(-1, -1, -1))
+					.loadObject(cell).yVal]);
+		return this;
+	}
+
+	public int getNextCellId() {
+		return ++cellId;
 	}
 
 }

@@ -16,17 +16,20 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 	private BufferedImage board;
 	private BufferedImage tileImage;
 	private BufferedImage developers;
 	private BufferedImage tempImage;
-	private BufferedImage planningMode;
+	//private BufferedImage planningMode;
 	private Graphics2D g2d;
 	private HashMap<String, String> imageSourceHashMap;
+	public boolean replaying = false;
 
 	public BoardPanel(){
-
+		System.out.println("Board Panel is created.");
+		
 		initHashMap();
 		getBackgroundImage();
 		Dimension size = new Dimension(board.getWidth(), board.getHeight());
@@ -39,9 +42,18 @@ public class BoardPanel extends JPanel {
 		this.tempImage = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	}
 	
+//	public BoardPanel(JavaCell[] cells, ){
+//		//constructor for loading a game, populates the board with all the information
+//	}
+	
 	private void getBackgroundImage(){
 		board = getImage(imageSourceHashMap.get("board"));
 		repaint();
+	}
+	
+	public void repaint() {
+		if(!replaying)
+			super.repaint();
 	}
 	
 	private BufferedImage getImage(String source){
@@ -53,12 +65,13 @@ public class BoardPanel extends JPanel {
 		}
 		return returnImage;
 	}
-	
-	public void placeTile(int xLoc, int yLoc, int elevation, String hashMapKey){
+	// call this when the user is for sure placing a tile on the board
+	// aka when the Enter button is pressed
+	public void placeTile(int xLoc, int yLoc, int rotationState, int elevation, String hashMapKey){
 		clearImage(tempImage);
 		g2d = tileImage.createGraphics();
-		//g2d.rotate(rotationState*Math.PI/2, xLoc+50, yLoc+50);
-		g2d.scale(-0.1*elevation, -0.1*elevation);
+		g2d.rotate(rotationState*Math.PI/2, xLoc+25, yLoc+25);
+		//g2d.scale(-0.1*elevation, -0.1*elevation);
 		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
 		g2d.setColor(Color.YELLOW);
 		g2d.drawString(""+elevation, xLoc+35, yLoc+35);
@@ -66,10 +79,11 @@ public class BoardPanel extends JPanel {
 		repaint();
 	}
 	
+	//use this when the user is moving a tile around the board, and has not made the decision to place it yet
 	public void moveTile(int xLoc, int yLoc, int rotationState, String hashMapKey){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
-		g2d.rotate(rotationState*Math.PI/2);
+		g2d.rotate(rotationState*Math.PI/2, xLoc+25, yLoc+25);
 		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
 //		g2d.setColor(Color.YELLOW);
 //		g2d.setStroke(new BasicStroke(2.0f));
@@ -111,6 +125,7 @@ public class BoardPanel extends JPanel {
 //		repaint();
 //	}
 	
+	//use this when the user places a developer onto the board, aka presses enter
 	public void placeDeveloper(String playerColor, int xLoc, int yLoc){
 		clearImage(tempImage);
 		g2d = developers.createGraphics();
@@ -119,6 +134,7 @@ public class BoardPanel extends JPanel {
 		repaint();
 	}
 	
+	//tabbing through developers
 	public void highlightDeveloper(int xLoc, int yLoc){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
@@ -180,25 +196,19 @@ public class BoardPanel extends JPanel {
 	}
 	
 	private void initHashMap(){
-		// TODO test this
 		File imageSourceFile = null;
 		this.imageSourceHashMap = new HashMap<String, String>();
-		System.out.println("1");
 		try{
-			System.out.println("2");
 			imageSourceFile = new File("bin/files/BoardImageStrings.txt");
-			System.out.println("3");
 			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
-			System.out.println("4");
-			String line = fileReader.readLine();
-			System.out.println("5");
-			String[] hash = line.split(" ");
-			System.out.println("Hash 0: "+hash[0]);
-			System.out.println("Hash 1: "+hash[1]);
-			imageSourceHashMap.put(hash[0], hash[1]);
+			String line = "";
+			while((line = fileReader.readLine()) != null){
+				String[] hash = line.split(" ");
+				imageSourceHashMap.put(hash[0], hash[1]);
+			}
+			fileReader.close();
 		} catch(Exception e){
 			System.out.println(e.getMessage());
 		}
-		System.out.println("File Name: "+imageSourceFile.getName());
 	}
 }
