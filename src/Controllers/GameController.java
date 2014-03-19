@@ -10,6 +10,7 @@ import Models.GameModel;
 import Models.PalaceCard;
 import Models.Actions.Action;
 import Models.Actions.DrawPalaceCardAction;
+import Models.Actions.EndTurnAction;
 import Models.Actions.IrrigationTileAction;
 import Models.Actions.MoveDeveloperAction;
 import Models.Actions.PalaceTileAction;
