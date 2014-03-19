@@ -36,8 +36,10 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectNonRotatableCompone
 
 	@Override
 	public Action pressEnter(GameModel game) {
-		return new PlaceDeveloperOnBoardAction(-1, x, y);
-		// TODO Auto-generated method stub
+		Action action = new PlaceDeveloperOnBoardAction(-1, x, y);
+		if(action.doAction(game))
+			return action;
+		return null;
 	}
 
 	@Override

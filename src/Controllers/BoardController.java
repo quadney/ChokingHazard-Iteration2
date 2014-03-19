@@ -5,6 +5,7 @@ import Models.GameModel;
 import Models.Actions.Action;
 import Models.Actions.NonRotatableComponentAction;
 import Models.Actions.OneSpaceTileAction;
+import Models.Actions.PlaceDeveloperOnBoardAction;
 import Models.Actions.RotatableComponentAction;
 import Views.BoardPanel;
 
@@ -43,7 +44,7 @@ public class BoardController {
 			System.out.println("in updateBoardPanel OneSpaceTileAction");
 			boardPanel.placeTile(((OneSpaceTileAction)action).getY()*50, ((OneSpaceTileAction)action).getX()*50, 0, boardModel.getElevationAtCellXY(((OneSpaceTileAction)action).getX(), ((OneSpaceTileAction)action).getY()), action.imageKey);
 		}
-		else if(action instanceof NonRotatableComponentAction) {
+		else if(action instanceof PlaceDeveloperOnBoardAction) {
 			System.out.println("in updateBoardPanel NonRotatableTileComponent");
 			boardPanel.placeDeveloper(game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
 		}
