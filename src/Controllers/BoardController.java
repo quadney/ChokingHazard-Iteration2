@@ -34,6 +34,7 @@ public class BoardController {
 		if(action instanceof RotatableComponentAction){
 			System.out.println("in updateBoardPanel RotatableTileComponent");
 			boardPanel.placeTile(((RotatableComponentAction)action).getX(), ((RotatableComponentAction)action).getY(), 0, action.imageKey);
+			
 		}
 		
 	}

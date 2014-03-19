@@ -11,10 +11,10 @@ public class RunGame {
 	private final static int HEIGHT = 850;
 
 
-	public static void main(String[] args) {
-		@SuppressWarnings("unused")
-		RunGame game = new RunGame();
-	}
+//	public static void main(String[] args) {
+//		@SuppressWarnings("unused")
+//		RunGame game = new RunGame();
+//	}
 	
 	public RunGame() {
 		SwingUtilities.invokeLater(new Runnable(){
