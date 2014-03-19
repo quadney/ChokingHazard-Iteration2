@@ -99,7 +99,7 @@ public class GameController {
 		if(e.getKeyCode() == 70){
 			//the user is pressing (and holding) the F button
 			//TODO this can only be called if in Play Mode
-			currentGamePanel.displayPalaceCardFrame(this.players.getPlayerAtIndex(0));
+			currentGamePanel.displayPalaceCardFrame(this.players.getPlayerAtIndex(this.currentGame.getPlayerIndex()));
 		}
 	}
 	

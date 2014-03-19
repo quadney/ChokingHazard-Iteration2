@@ -11,21 +11,7 @@ public class JavaCell implements Serializable<JavaCell> {
    private int cellId;
    public int xVal;
    public int yVal;
-   public JavaCell(int x, int y, String cellType, int cellId, int elevation) {
-	   this.xVal = x;
-	   this.yVal = y;
-	   this.cellType = cellType;
-	   this.cellId = cellId;
-	   this.elevation = elevation;
-   }
-   
-   public JavaCell(int x, int y, String cellType, int cellId) {
-	   this.xVal = x;
-	   this.yVal = y;
-	   elevation = 0;
-	   this.cellType = cellType;
-	   this.cellId = cellId;
-   }
+   public int numOriginalSpaces;
    
    public JavaCell(int x, int y, int cellId) {
 	  this.xVal = x;
@@ -33,6 +19,7 @@ public class JavaCell implements Serializable<JavaCell> {
 	  elevation = 0;
 	  cellType = "blank";
 	  this.cellId = cellId;
+	  this.numOriginalSpaces = 0;
    }
 
 
@@ -116,5 +103,10 @@ public class JavaCell implements Serializable<JavaCell> {
 		xVal = Integer.parseInt(json.getString("xVal"));
 		yVal = Integer.parseInt(json.getString("yVal"));
 		return this;
+	}
+
+
+	public void setNumOriginalSpaces(int numOfSpaces) {
+		this.numOriginalSpaces = numOfSpaces;
 	}
 }
