@@ -1,5 +1,7 @@
 package Models.Actions;
 
+import Helpers.Json;
+
 public abstract class RotatableComponentAction extends Action {
 	int rotationState = 0;
 	protected int x; 
@@ -27,6 +29,17 @@ public abstract class RotatableComponentAction extends Action {
 	
 	public int getY(){
 		return y;
+	}
+
+	public String serialize() {
+		return Json.jsonObject(Json.jsonElements(
+			Json.jsonPair("actionID", this.actionID + ""), 
+			Json.jsonPair("imageKey", this.imageKey),
+			Json.jsonPair("x", this.x + ""),
+			Json.jsonPair("y", this.y + ""),
+			Json.jsonPair("rotationState", this.rotationState + ""),
+			Json.jsonPair("actionType", this.getClass().getSimpleName())
+		));
 	}
 	
 }

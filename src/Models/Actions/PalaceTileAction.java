@@ -1,5 +1,6 @@
 package Models.Actions;
 
+import Helpers.Json;
 import Helpers.JsonObject;
 import Models.GameModel;
 import Models.Tile;
@@ -31,11 +32,16 @@ public class PalaceTileAction extends OneSpaceTileAction {
 		}
 		return false;
 	}
-
-	@Override
+	
 	public String serialize() {
-		// TODO Auto-generated method stub
-		return null;
+		return Json.jsonObject(Json.jsonElements(
+			Json.jsonPair("actionID", this.actionID + ""), 
+			Json.jsonPair("imageKey", this.imageKey),
+			Json.jsonPair("x", this.x + ""),
+			Json.jsonPair("y", this.y + ""),
+			Json.jsonPair("value", this.value + ""),
+			Json.jsonPair("actionType", this.getClass().getSimpleName())
+		));
 	}
 
 	@Override

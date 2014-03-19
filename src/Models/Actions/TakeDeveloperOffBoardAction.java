@@ -14,12 +14,6 @@ public class TakeDeveloperOffBoardAction extends NonRotatableComponentAction {
 	}
 
 	@Override
-	public String serialize() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Action loadObject(JsonObject json) {
 		// TODO Auto-generated method stub
 		return null;

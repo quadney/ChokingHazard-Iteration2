@@ -19,12 +19,6 @@ public class TwoTileAction extends RotatableComponentAction {
 	}
 
 	@Override
-	public String serialize() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Action loadObject(JsonObject json) {
 		// TODO Auto-generated method stub
 		return null;

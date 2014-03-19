@@ -1,6 +1,5 @@
 package Models.Actions;
 
-import Helpers.Json;
 import Helpers.JsonObject;
 import Models.GameModel;
 
@@ -12,13 +11,6 @@ public class UseActionTokenAction extends Action {
 	
 	public UseActionTokenAction() {
 
-	}
-
-	@Override
-	public String serialize() {
-		return Json.jsonObject(Json.jsonElements(
-			Json.jsonPair("actionID", actionID + "")
-		));
 	}
 
 	@Override

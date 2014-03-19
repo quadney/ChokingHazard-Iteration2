@@ -15,12 +15,6 @@ public class EndTurnAction extends Action {
 	}
 
 	@Override
-	public String serialize() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Action loadObject(JsonObject json) {
 		// TODO Auto-generated method stub
 		return null;
