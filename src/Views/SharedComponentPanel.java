@@ -37,9 +37,8 @@ public class SharedComponentPanel extends JPanel{
 	
 	private void initPanel(String festivalCardHashKey){
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(130, 90));
+		buttonPanel.setPreferredSize(new Dimension(140, 90));
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
-		buttonPanel.setBackground(Color.green);
 		add(buttonPanel);
 		
 		playModeToggleButton = new JButton("Planning Mode");
