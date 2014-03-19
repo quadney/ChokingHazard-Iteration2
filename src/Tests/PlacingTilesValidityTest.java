@@ -40,7 +40,12 @@ public class PlacingTilesValidityTest {
 		Simulator.placeThreeSpaceTile(13, 13, 2);
 		Simulator.placeThreeSpaceTile(0, 13, 3);
 		
-		Simulator.placeThreeSpaceTile(2, 8, 0);
+		Simulator.placeThreeSpaceTile(0, 8, 0);
+		Simulator.placeThreeSpaceTile(8, 0, 0);
+		Simulator.placeThreeSpaceTile(8, 13, 2);
+		Simulator.placeThreeSpaceTile(13, 8, 2);
+		
+		Simulator.placeThreeSpaceTile(10, 10, 0);
 		/*Simulator.placeDeveloper(3, 3);
 		Simulator.placeDeveloper(4, 4);
 		Simulator.placeDeveloper(1, 5);

@@ -58,6 +58,7 @@ public class HoldFestivalPlayerPanel extends JPanel {
 		extraPanel = new JPanel();
 		currentBid = new JLabel();
 		playerLabel = new JLabel();
+		drop = new JButton();
 		if(index % 2 == 0){
 			//if its even
 			isEvenLayout = true;
@@ -119,7 +120,6 @@ public class HoldFestivalPlayerPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Clicked on the drop button");
 				parentPanel.playerClickedDropButton();
 			}
 		});
@@ -168,7 +168,6 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	public void setCurrentPlayer(){
 		setBorder(BorderFactory.createLineBorder(playerColor, 2));
 		drop.setEnabled(true);
-		System.out.println(drop.isEnabled());		
 	}
 	
 	public void selectCardAtIndex(int indexOfCard, int numCards, String hashKey){
@@ -189,6 +188,7 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	}
 	
 	public void dropPlayer(){
+		setBorder(BorderFactory.createLineBorder(Color.WHITE));
 		ImageIcon icon = new ImageIcon();
 		cards.setIcon(icon);
 		currentBid.setText("");
@@ -218,7 +218,6 @@ public class HoldFestivalPlayerPanel extends JPanel {
 			BufferedImage image = ImageIO.read(this.getClass().getResource(src));
 			return image;
 		}catch(IOException e){
-			System.out.println("there was an error");
 			System.out.println(e);
 		}
 		return null;

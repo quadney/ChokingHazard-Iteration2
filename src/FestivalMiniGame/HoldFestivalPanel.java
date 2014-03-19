@@ -3,24 +3,23 @@ package FestivalMiniGame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class HoldFestivalPanel extends JPanel{
 	private HashMap<String, String> imageSourceHashMap;
 	private ArrayList<HoldFestivalPlayerPanel> players;
@@ -43,7 +42,7 @@ public class HoldFestivalPanel extends JPanel{
 		centerPanel = new JPanel();
 		centerPanel.setPreferredSize(new Dimension(560, 560));
 		centerPanel.setLayout(new BorderLayout());
-		centerPanel.setBackground(new Color(79, 148, 19));
+		centerPanel.setBackground(new Color(61, 114, 15));
 		add(centerPanel, BorderLayout.CENTER);
 		
 		JLabel festivalCard = palaceLabel(imageSourceHashMap.get("label_"+festivalHashKey));
@@ -88,7 +87,6 @@ public class HoldFestivalPanel extends JPanel{
 			
 		}
 		if(size < 4){
-			System.out.println("Size: "+size);
 			for(int i = 1; i < 4; i++){
 				if(playedCardsPanels[i] == null){
 					JPanel emptyPlayer = new HoldFestivalPlayerPanel(i);
@@ -146,7 +144,6 @@ public class HoldFestivalPanel extends JPanel{
 	}
 	
 	public void tabThroughPlayerPalaceCards(int indexOfCard, int numCards, int indexOfPlayer, String hashKey){
-		System.out.println("Index of card tabbing: "+indexOfCard);
 		players.get(indexOfPlayer).selectCardAtIndex(indexOfCard, numCards, hashKey);
 	}
 	
@@ -203,11 +200,44 @@ public class HoldFestivalPanel extends JPanel{
 	
 	private void addCardToCenterPanelWithImage(String imageHashKey, int indexOfPlayer){
 		JLabel card = palaceLabel(imageSourceHashMap.get("label_"+imageHashKey));
-//		if(indexOfPlayer % 2 == 1){
-//			
-//		}
+		if(indexOfPlayer % 2 == 1){
+			BufferedImage cardToDraw = getImage(imageSourceHashMap.get(imageHashKey));
+			BufferedImage cardLabel = new BufferedImage(cardToDraw.getHeight(), cardToDraw.getWidth(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = cardLabel.createGraphics();
+			
+			if(indexOfPlayer == 1){
+				//rotate from horizontal orientation to vertical, in order to match that of the original card
+				g2d.rotate((-1)*Math.PI/2);
+				
+				//translate the g2d to the correct spot of that image
+				g2d.translate((-1)*cardToDraw.getWidth(), 0);
+				
+				//draw the image
+				g2d.drawImage(cardToDraw, null, 0, 0);
+			}
+			else{
+				g2d.rotate(Math.PI/2);
+				g2d.translate(0, (-1)*cardToDraw.getHeight());
+				g2d.drawImage(cardToDraw, null, 0, 0);
+				
+			}
+			//saveImage(cardLabel);
+			g2d.dispose();
+			card = new JLabel(new ImageIcon(cardLabel));
+			card.setPreferredSize(new Dimension(cardLabel.getWidth(), cardLabel.getHeight()));
+		}
 		playedCardsPanels[indexOfPlayer].add(card);
 		updateUI();
+	}
+	
+	private BufferedImage getImage(String source){
+		BufferedImage returnImage = null;
+		try{
+			returnImage = ImageIO.read(this.getClass().getResource(source));
+		} catch(IOException e){
+			
+		}
+		return returnImage;
 	}
 	
 	private void initHashMap(){
