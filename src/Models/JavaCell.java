@@ -87,6 +87,14 @@ public class JavaCell implements Serializable<JavaCell> {
 	   return false;
    }
    
+   //for testing purpose
+   public String toString(){
+	   
+	   String s = "x: " + getX() + " y: " + getY();
+	   
+	   return s;
+   }
+   
 	@Override
 	public String serialize() {
 		return Json.jsonObject(Json.jsonMembers(
