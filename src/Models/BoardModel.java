@@ -553,12 +553,40 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		// Check that player has available AP for this
 		// First determine type of move/cost
-		if (!player.decrementNActionPoints(1, false) || !player.canPlaceDeveloperOnBoard()) // TODO: Check lowlands or
+		if (!player.decrementNActionPoints(locationCell.getActionPointsFromDeveloperMove(), false) || !player.canPlaceDeveloperOnBoard()) // TODO: Check lowlands or
 			// mountains
 			return false;
 		
 		return true;
 	}
+	
+	public boolean removeDatDeveloperOffDaBoard(JavaCell jailCell, JavaPlayer theHomie)
+	{
+		// Check if its an border cell
+		if (!jailCell.isBorder())
+		{	
+			// If its not on the border, needs to be next to it
+			if(!jailCell.isNextToBorder())
+				return false; // Can't do it, homie goes back to Jail
+			
+			// If it's next to the border, needs an adjacent empty tile in border
+			if(!hasAdjacentEmptyTile(jailCell))
+				return false; // Can't do it, homie goes back to Jail
+		}
+		
+		// Else, he is on the border, we can proceed with bail procedures
+		if(!theHomie.decrementNActionPoints(jailCell.getActionPointsFromDeveloperMove(), false))
+			return false; // Can't do it, homie goes back to Jail
+		
+		// By this point, we've made it through all the bail procedures and homie has paid his dues (action points)
+		// He is now free to go
+		
+		theHomie.removeDeveloperFromArray();
+		
+		return true; // The homie is free ~ ~ ~
+		
+	}
+	
 
 	public boolean hasAdjacentEmptyTile(JavaCell cell) {
 		int x = cell.getX();
