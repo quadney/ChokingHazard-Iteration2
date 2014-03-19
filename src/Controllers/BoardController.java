@@ -1,7 +1,9 @@
 package Controllers;
 
 import Models.BoardModel;
+import Models.GameModel;
 import Models.Actions.Action;
+import Models.Actions.NonRotatableComponentAction;
 import Models.Actions.OneSpaceTileAction;
 import Models.Actions.RotatableComponentAction;
 import Views.BoardPanel;
@@ -31,15 +33,19 @@ public class BoardController {
 		boardPanel.cancel();
 	}
 
-	public void updateBoardPanel(Action action) {
+	public void updateBoardPanel(Action action, GameModel game) {
 		if(action instanceof RotatableComponentAction){
 			System.out.println("in updateBoardPanel RotatableTileComponent");
 			boardPanel.placeTile(((RotatableComponentAction)action).getY()*50, ((RotatableComponentAction)action).getX()*50, ((RotatableComponentAction)action).getRotationState(), boardModel.getElevationAtCellXY(((RotatableComponentAction)action).getX(), ((RotatableComponentAction)action).getY()), action.imageKey);
 		}
 		
 		else if(action instanceof OneSpaceTileAction){
-			System.out.println("in updateBoardPanel NonRotatableTileComponent");
+			System.out.println("in updateBoardPanel OneSpaceTileAction");
 			boardPanel.placeTile(((OneSpaceTileAction)action).getY()*50, ((OneSpaceTileAction)action).getX()*50, 0, boardModel.getElevationAtCellXY(((OneSpaceTileAction)action).getX(), ((OneSpaceTileAction)action).getY()), action.imageKey);
+		}
+		else if(action instanceof NonRotatableComponentAction) {
+			System.out.println("in updateBoardPanel NonRotatableTileComponent");
+			boardPanel.placeDeveloper(game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
 		}
 	}
 }
