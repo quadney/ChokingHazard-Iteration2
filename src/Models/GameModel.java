@@ -78,7 +78,8 @@ public class GameModel implements Serializable<GameModel> {
 																	//if valid, changes all states accordingly, if not, doesn't do a thing
 		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];	//gets the current player out of the container
 		if (currentPlayer.endPlayerTurn()){							//if the player can validly end their turn. All the player stuff will have been manipulated
-			indexOfCurrentPlayer += 1 % players.length;				//switches the curentPlayer to the next player
+			System.out.println("player ended turn and index is being incremented");
+			indexOfCurrentPlayer = ++indexOfCurrentPlayer % players.length;				//switches the curentPlayer to the next player
 			return true;											//tells the caller that everything worked out!
 		}
 		return false;

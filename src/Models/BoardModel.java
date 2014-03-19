@@ -826,4 +826,8 @@ return cell.getConnectedCells().size();
 		return ++cellId;
 	}
 
+	public int getElevationAtCellXY(int x, int y) {
+		return map[x][y].getElevation();
+	}
+
 }

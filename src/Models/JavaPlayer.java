@@ -60,6 +60,7 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	
 	public boolean hasPlaceLandTile(){
 		return hasPlacedLandTile;
+		
 	}
 	
 	public void placedLandTile(){
@@ -215,6 +216,7 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	// 
 	public boolean endPlayerTurn() {
 		if(hasPlacedLandTile){
+			System.out.println("Player has placed land tile and is now resetting their state");
 			hasPlacedLandTile = false;
 			hasUsedActionToken = false;
 			palacesInteractedWith.clear();

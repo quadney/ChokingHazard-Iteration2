@@ -85,9 +85,11 @@ public class PlayerController {
 	
 	//----------------------------------------------------------------------------
 	//Select Final turn method - only occurs if this is valid to do
-	public void setNotCurrentPlayerinPlayerPanel(int playerIndex) {
-		playerPanels[playerIndex].setNotCurrentPlayer();
-		
+	public void setNoCurrentPlayerinPlayerPanels() {
+	
+		for(PlayerPanel player : playerPanels){
+			player.setNotCurrentPlayer();
+		}
 	}
 
 	public void setCurrentPlayerinPlayerPanel(int playerIndex) {

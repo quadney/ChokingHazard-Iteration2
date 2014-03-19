@@ -53,7 +53,10 @@ public class HoldFestivalPanel extends JPanel{
 		centerPanel.setBackground(new Color(79, 148, 19));
 		add(centerPanel, BorderLayout.CENTER);
 		
-		centerPanel.add(palaceLabel(imageSourceHashMap.get("label_"+festivalHashKey)), BorderLayout.CENTER);
+		JLabel festivalCard = palaceLabel(imageSourceHashMap.get("label_"+festivalHashKey));
+		festivalCard.setBorder(BorderFactory.createEmptyBorder(0, 125, 0, 125));
+		
+		centerPanel.add(festivalCard, BorderLayout.CENTER);
 
 		//init player panels and add them to the panel
 		players = new ArrayList<HoldFestivalPlayerPanel>(festivalPlayers.size());
@@ -63,24 +66,26 @@ public class HoldFestivalPanel extends JPanel{
 			playedCardsPanels[i] = new JPanel();
 			if(i == 0){
 				add(players.get(i), BorderLayout.NORTH);
-				playedCardsPanels[i].setPreferredSize(new Dimension(500, 100));
+				playedCardsPanels[i].setPreferredSize(new Dimension(500, 120));
 				centerPanel.add(playedCardsPanels[i], BorderLayout.NORTH);
 			}
 			else if (i == 1){
 				add(players.get(i), BorderLayout.EAST);
-				playedCardsPanels[i].setPreferredSize(new Dimension(100, 500));
+				playedCardsPanels[i].setPreferredSize(new Dimension(120, 500));
 				centerPanel.add(playedCardsPanels[i], BorderLayout.EAST);
 			}
 			else if (i == 2){
 				add(players.get(i), BorderLayout.SOUTH);
-				playedCardsPanels[i].setPreferredSize(new Dimension(500, 100));
+				playedCardsPanels[i].setPreferredSize(new Dimension(500, 120));
 				centerPanel.add(playedCardsPanels[i], BorderLayout.SOUTH);
 			}
 			else{
 				add(players.get(i), BorderLayout.WEST);
-				playedCardsPanels[i].setPreferredSize(new Dimension(100, 500));
+				playedCardsPanels[i].setPreferredSize(new Dimension(120, 500));
 				centerPanel.add(playedCardsPanels[i], BorderLayout.WEST);
 			}
+			//playedCardsPanels[i].setBackground(new Color(79, 148, 19));
+			playedCardsPanels[i].setBackground(Color.blue);
 		}
 		
 		//set currentIndex as the one who is selected
@@ -102,13 +107,14 @@ public class HoldFestivalPanel extends JPanel{
 	private JLabel palaceLabel(String src){
 		JLabel label= new JLabel();
 		label.setIcon(new ImageIcon(src));
-		label.setPreferredSize(new Dimension(60, 100));
+		label.setPreferredSize(new Dimension(80, 100));
 		return label;
 	}
 	
-	public void endPlayerTurn(int index, int points){
+	public void endPlayerTurn(int index, int points, int numPalaceCards){
 		setCurrentPlayerBid(index, points);
-		players.get(index).setCurrentPlayer(false);
+		players.get(index).endTurn(false, numPalaceCards);
+		//players.get(index).setCurrentPlayer(false);
 	}
 	
 	public void startPlayerTurn(int index){
@@ -117,6 +123,7 @@ public class HoldFestivalPanel extends JPanel{
 	}
 	
 	public void tabThroughPlayerPalaceCards(int indexOfCard, int numCards, int indexOfPlayer, String hashKey){
+		System.out.println("Index of card tabbing: "+indexOfCard);
 		players.get(indexOfPlayer).selectCardAtIndex(indexOfCard, numCards, hashKey);
 	}
 	
@@ -170,7 +177,8 @@ public class HoldFestivalPanel extends JPanel{
 	}
 	
 	private void addCardToCenterPanelWithImage(String imageHashKey, int indexOfPlayer){
-		playedCardsPanels[indexOfPlayer].add(palaceLabel(imageSourceHashMap.get("label_"+imageHashKey)));
+		JLabel card = palaceLabel(imageSourceHashMap.get("label_"+imageHashKey));
+		playedCardsPanels[indexOfPlayer].add(card);
 		updateUI();
 	}
 	

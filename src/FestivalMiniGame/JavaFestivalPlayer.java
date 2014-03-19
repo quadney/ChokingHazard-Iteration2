@@ -19,7 +19,7 @@ public class JavaFestivalPlayer {
 		this.player = player;
 		this.palaceCards = validPalaceCards;
 		this.isInFestival = true;
-		this.tabCount = 0;
+		this.tabCount = -1;
 		this.festivalBid = 0;
 		this.startedFestival = startedFest;
 	}
@@ -86,8 +86,7 @@ public class JavaFestivalPlayer {
 	}
 	
 	public PalaceCard getTabbedPalaceCard(){
-		if(tabCount < 0)
-			incrementTab();
+		incrementTab();
 		if(tabCount < 0){
 			return null;
 		}
