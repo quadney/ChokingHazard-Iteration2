@@ -28,8 +28,6 @@ public class BoardModel implements Serializable<BoardModel> {
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
 				map[x][y] = new JavaCell(x, y, 0);
-				System.out.println("(in BMod) New JavaCell created at " + x
-						+ "," + y);
 
 				if ((x == 0 || x == 13) && (y != 0 && y != 13)) {
 					outerCells[i] = map[x][y];
@@ -64,14 +62,26 @@ public class BoardModel implements Serializable<BoardModel> {
 								.setElevation(map[miniMap[i][j].getX()][miniMap[i][j]
 										.getY()].getElevation() + 1);
 					}
+			
+			if(placedLandTile(xC, yC))
+				player.placedLandTile();
+			
 			System.out.println(toString());
 			return true;
 		}
 
 		return false;
 	}
+	
+	public boolean placedLandTile(int xC, int yC){
+		
+		if(map[xC][yC].getCellType() == "village" || map[xC][yC].getCellType() == "rice")
+			return true;
+		
+		return false;
+	}
 
-	private boolean checkValidTilePlacement(int xC, int yC, Tile tile,
+	public boolean checkValidTilePlacement(int xC, int yC, Tile tile,
 			JavaPlayer player, JavaCell[][] miniMap) {
 		// creating a small map with the cells we need to compare
 		// JavaCell[][] miniMap = createTestMap(xC, yC);
@@ -81,14 +91,14 @@ public class BoardModel implements Serializable<BoardModel> {
 		//boolean needed to check the amount of available AP points
 		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1].toString()); 
 
-//		System.out.println("palace placement: " +checkPalacePlacement(miniMap, tile));
-//		System.out.println("palace tilesBelow: " + checkTilesBelow(miniMap, tile));
-//		System.out.println("palace elevation: " + checkElevation(miniMap, tile, xC, yC));
-//		System.out.println("palace I: " + checkIrrigationPlacement(miniMap, tile));
-//		System.out.println("palace DevOnCell: " + checkDeveloperOnCell(miniMap, tile));
-//		System.out.println("palace CityConn: " + checkCityConnection(miniMap, tile));
-//		System.out.println("palace edge: " + checkEdgePlacement(miniMap, tile));
-//		System.out.println("palace action: " + player.decrementNActionPoints(neededActionPoints, isLandTile));
+		System.out.println("palace placement: " + checkPalacePlacement(miniMap, tile));
+		System.out.println("palace tilesBelow: " + checkTilesBelow(miniMap, tile));
+		System.out.println("palace elevation: " + checkElevation(miniMap, tile, xC, yC));
+		System.out.println("palace I: " + checkIrrigationPlacement(miniMap, tile));
+		System.out.println("palace DevOnCell: " + checkDeveloperOnCell(miniMap, tile));
+		System.out.println("palace CityConn: " + checkCityConnection(miniMap, tile));
+		System.out.println("palace edge: " + checkEdgePlacement(miniMap, tile));
+		System.out.println("palace action: " + player.decrementNActionPoints(neededActionPoints, isLandTile));
 
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
@@ -97,8 +107,7 @@ public class BoardModel implements Serializable<BoardModel> {
 				&& checkDeveloperOnCell(miniMap, tile)
 				&& checkCityConnection(miniMap, tile)
 				&& checkEdgePlacement(miniMap, tile)
-				&& player
-						.decrementNActionPoints(neededActionPoints, isLandTile)) {
+				&& player.decrementNActionPoints(neededActionPoints, isLandTile)) {
 			return true;
 		}
 
@@ -336,7 +345,67 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		return;
 	}
+	
+	public boolean canPlacePalace(int x, int y, JavaCell palace) {
+		return true;
+	}
+	
+	public boolean canUpgradePalace(int x, int y, JavaCell palace) {
+		return false;
+	}
 
+	private static int findNumberConnected(int x, int y, JavaCell[][] map) {
+		JavaCell[][] copy = new JavaCell[14][14];
+		for (int i = 0; i < 14; i++)
+			for (int j = 0; j < 14; j++) {
+				{
+					copy[i][j] = map[i][j];
+				}
+			}
+		
+			boolean canUp = (x - 1 >= 0);
+			boolean canDown = (x + 1 < map.length);
+			boolean canRight = (y + 1 < map[0].length);
+			boolean canLeft = (y - 1 >= 0);
+
+			int up = 0;
+			int down = 0;
+			int right = 0;
+			int left = 0;
+
+			// fixed the bug here
+			if (canUp && (map[x - 1][y] != null && (map[x - 1][y].getCellType() == "village" ))) {
+				up = findNumberConnected(x - 1, y, map);
+			}
+
+			if (canDown && (map[x + 1][y] != null && (map[x + 1][y].getCellType() == "village" ))) {
+				up = findNumberConnected(x + 1, y, map);
+			}
+
+			if (canLeft && (map[x][y - 1] != null && (map[x][y - 1].getCellType() == "village" ))) {
+				up = findNumberConnected(x, y - 1, map);
+			}
+
+			if (canRight && map[x][y + 1] != null && (map[x][y + 1].getCellType() == "village" )) {
+				up = findNumberConnected(x, y + 1, map);
+			}
+
+		
+
+		return up + left + right + down + 1;
+	}
+
+// Returns the number of village Spaces surrounding the given Cell. Called
+// by checkIfICanUpgradePalace to make sure number of surrounding villages
+// is greater than or equal to the palace number.
+/*private int checkForNumberOfVillages(Cell cell)
+{
+setConnectedCells(cell);
+return cell.getConnectedCells().size();
+}*/
+
+
+	
 	private boolean checkEdgePlacement(JavaCell[][] miniMap, Tile tile) {
 
 		TileType[][] tileCells = tile.getTileCells();
