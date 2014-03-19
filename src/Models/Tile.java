@@ -88,7 +88,6 @@ public class Tile implements Serializable<Tile> {
 		for(int i = xx.length-1; i > 0; --i)
 			tileCells[xx[i]][yy[i]] = tileCells[xx[i-1]][yy[i-1]];
 		tileCells[xx[0]][yy[0]] = temp;
-		System.out.println(toString());
 	}
 
 	public String toString() {
