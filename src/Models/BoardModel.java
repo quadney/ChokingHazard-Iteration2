@@ -91,12 +91,16 @@ public class BoardModel implements Serializable<BoardModel> {
 		int neededActionPoints = checkNeededActionPoints(miniMap, tile);
 		
 		//boolean needed to check the amount of available AP points
-		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1].toString()); 
+		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1].toString());
+		boolean palaceOK = true;
+		if (tile.getTileCells()[1][1].isPalace()) {
+			palaceOK = placePalace(xC, yC, miniMap[1][1], map, player);
+		}
 
 		System.out.println("palace placement: " + checkPalacePlacement(miniMap, tile));
 		System.out.println("palace tilesBelow: " + checkTilesBelow(miniMap, tile));
 		System.out.println("palace elevation: " + checkElevation(miniMap, tile, xC, yC));
-		System.out.println("palace I: " + checkIrrigationPlacement(miniMap, tile));
+		System.out.println("palace Irrigation: " + checkIrrigationPlacement(miniMap, tile));
 		System.out.println("palace DevOnCell: " + checkDeveloperOnCell(miniMap, tile));
 		System.out.println("palace CityConn: " + checkCityConnection(miniMap, tile));
 		System.out.println("palace edge: " + checkEdgePlacement(miniMap, tile));
@@ -109,7 +113,9 @@ public class BoardModel implements Serializable<BoardModel> {
 				&& checkDeveloperOnCell(miniMap, tile)
 				&& checkCityConnection(miniMap, tile)
 				&& checkEdgePlacement(miniMap, tile)
-				&& player.decrementNActionPoints(neededActionPoints, isLandTile)) {
+				&& player.decrementNActionPoints(neededActionPoints, isLandTile)
+				&& palaceOK) {
+	
 			return true;
 		}
 
@@ -122,8 +128,8 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		for (int i = 0, x = xC - 1; i < 3; i++, x++) {
 			for (int j = 0, y = yC - 1; j < 3; j++, y++) {
-				if ((x >= 0 && x <= map.length) && (y >= 0)
-						&& (y <= map[0].length)) {
+				if ((x >= 0 && x < map.length) && (y >= 0)
+						&& (y < map[0].length)) {
 					testingMap[i][j] = map[x][y];
 				}
 			}
@@ -348,39 +354,42 @@ public class BoardModel implements Serializable<BoardModel> {
 		return;
 	}
 	
-	/*public boolean placePalace(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
-		
-		
-		if (((map[x][y].getCellType() == "village") 
-			&& (canPlacePalace(x, y, palace, map, player)))
-			|| ((map[x][y].getCellType().contains("palace")) 
-			&& (canUpgradePalace(x, y, palace, map, player))
-			|| ((map[x][y].getCellType() == "village"))
-			&& getPalaceSize(map[x][y]) <= getPalaceSize(palace))) {
-
+	public boolean placePalace(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
+		if (map[x][y].getCellType() == "village" 
+			&& mutualPalacePlacementRequirementsOK(x, y, palace, map, player)) {
+			
 			return true;
 		}
-
-		return false;
+		
+		else if (map[x][y].getCellType().contains("palace")
+				&& mutualPalacePlacementRequirementsOK(x, y, palace, map, player)
+				&& canUpgradePalace(x, y, palace, map)) {
+				
+			return true;
+		}
+		
+		else {					
+			return false;
+		}
 	}
 	
-	public boolean canPlacePalace(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
+	public boolean canUpgradePalace(int x, int y, JavaCell palace, JavaCell[][] map) {
+		if (getPalaceSize(map[x][y]) <= getPalaceSize(palace)) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	public boolean mutualPalacePlacementRequirementsOK(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
 		if (findNumberConnected(x,y,map) >= getPalaceSize(palace)
-			&& !hasAlreadyBeenModified(x, y)
-			&&  // TODO greg's method
-			&&) {
-			
-			
+				&& !hasAlreadyBeenModified(palace, player)) {
+			return true;
 		}
 		
 		return false;
 	}
 	
-	public boolean canUpgradePalace(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
-		if (palace)
-		return false;
-	}
-
 	public int getPalaceSize(JavaCell palace) {
 		int palaceSize = 200;
 		
@@ -405,10 +414,11 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 		
 		return palaceSize;
-	}*/
+	}
 	
-	private boolean hasAlreadyBeenModified(int x, int y) {
-		return false;
+	private boolean hasAlreadyBeenModified(JavaCell palace, JavaPlayer player) {
+		
+		return player.cellInPalacesInteractedWith(palace);
 	}
 	
 	public static int findNumberConnected(int x, int y, JavaCell[][] map) {
@@ -632,8 +642,6 @@ public class BoardModel implements Serializable<BoardModel> {
 		else
 			return 1;
 	}
-
-
 
 	public boolean moveDeveloper(JavaPlayer player) {
 		int pathSize = path.size();
