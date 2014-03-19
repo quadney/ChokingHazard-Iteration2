@@ -1,5 +1,6 @@
 package Models.Actions.MActions;
 
+import Models.GameModel;
 import Models.Actions.Action;
 import Models.Actions.IrrigationTileAction;
 
@@ -10,7 +11,10 @@ public class SelectIrrigationTileAction extends SelectOneSpaceTileAction {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Action pressEnter() {
-		return new IrrigationTileAction(-1, x, y);
+	public Action pressEnter(GameModel game) {
+		IrrigationTileAction action = new IrrigationTileAction(-1, x, y);
+		if(action.doAction(game))
+			return action; 
+		return null;
 	}
 }

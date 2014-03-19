@@ -27,9 +27,12 @@ public class TwoTileAction extends RotatableComponentAction {
 	}
 
 	@Override
-	public void redo(GameModel game) {
-		game.getBoard().placeTile(x, y, new Tile(TileType.twotile, rotationState), game.getCurrentPlayer());
-		game.getCurrentPlayer().decrementTwo();
+	public boolean redo(GameModel game) {
+		if(game.getBoard().placeTile(x, y, new Tile(TileType.twotile, rotationState), game.getCurrentPlayer())) {
+			game.getCurrentPlayer().decrementTwo();
+			return true;
+		}
+		return false;
 	}
 		
 }

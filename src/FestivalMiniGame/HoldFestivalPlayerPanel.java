@@ -3,8 +3,11 @@ package FestivalMiniGame;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,14 +26,17 @@ import javax.swing.JPanel;
 public class HoldFestivalPlayerPanel extends JPanel {
 	private HashMap<String, String> imageSourceHashMap;
 	private Color playerColor;
-	boolean isEvenLayout;
-	BufferedImage cardBack;
-	JLabel cards;
-	JLabel currentBid;
+	private boolean isEvenLayout;
+	private BufferedImage cardBack;
+	private HoldFestivalPanel parentPanel;
+	private JLabel cards, currentBid, playerLabel;
+	private JPanel extraPanel;
+	private JButton drop;
 	
-	public HoldFestivalPlayerPanel(int index, String name, String color, int numFestivalCards, HashMap<String, String> imageHash){
+	public HoldFestivalPlayerPanel(HoldFestivalPanel parent, int index, String name, String color, int numFestivalCards, HashMap<String, String> imageHash){
 		super(new FlowLayout());
 		
+		this.parentPanel = parent;
 		//convert the color string to color
 		try {
 			Field field = Color.class.getField(color);
@@ -45,12 +51,14 @@ public class HoldFestivalPlayerPanel extends JPanel {
 		initPanel(index, name, numFestivalCards);
 	}
 	
-	private void initPanel(int indexOnPanel, String playerName, int numFestivalCards){
+	public HoldFestivalPlayerPanel(int index){
+		super(new FlowLayout());
+		//constructor for an empty panel, place holder for the Festival frame
 		cards = new JLabel();
-		JPanel extraPanel = new JPanel();
-		
-		currentBid = new JLabel("Bid: 0");
-		if(indexOnPanel % 2 == 0){
+		extraPanel = new JPanel();
+		currentBid = new JLabel();
+		playerLabel = new JLabel();
+		if(index % 2 == 0){
 			//if its even
 			isEvenLayout = true;
 			setPreferredSize(new Dimension(780, 110));
@@ -60,17 +68,62 @@ public class HoldFestivalPlayerPanel extends JPanel {
 		}
 		else{
 			setPreferredSize(new Dimension(110, 560));
-			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			cards.setPreferredSize(new Dimension(100, 470));
 			extraPanel.setPreferredSize(new Dimension(100, 70));
-			
 		}
-		extraPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		setBackground(Color.WHITE);
+		extraPanel.setBackground(Color.WHITE);
 		
 		add(cards);
 		add(extraPanel);
-		extraPanel.add(new JLabel(playerName));
-		//extraPanel.add(new JButton("Drop"));
+		dropPlayer();
+	}
+	
+	private void initPanel(int indexOnPanel, String playerName, int numFestivalCards){
+		cards = new JLabel();
+		extraPanel = new JPanel();
+		
+		currentBid = new JLabel("Bid: 0");
+		currentBid.setFont(new Font("Lucida Grande", 0, 16));
+		
+		if(indexOnPanel % 2 == 0){
+			//if its even
+			isEvenLayout = true;
+			setPreferredSize(new Dimension( 780, getPreferredHeight()+10 ));
+			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			cards.setPreferredSize(new Dimension(getPreferredWidth(), getPreferredHeight()));
+			extraPanel.setPreferredSize(new Dimension(85, getPreferredHeight()));
+		}
+		else{
+			setPreferredSize(new Dimension( getPreferredWidth()+10 , 560));
+			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			cards.setPreferredSize(new Dimension( getPreferredWidth(), getPreferredHeight() ));
+			extraPanel.setPreferredSize(new Dimension( getPreferredWidth(), 85));			
+		}
+		setBackground(Color.WHITE);
+		extraPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		extraPanel.setBackground(Color.WHITE);
+		
+		add(cards);
+		add(extraPanel);
+		playerLabel = new JLabel(playerName);
+		
+		extraPanel.add(playerLabel);
+		
+		drop = new JButton("Drop");
+		extraPanel.add(drop);
+		drop.setFocusable(false);
+		drop.setEnabled(false);
+		drop.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Clicked on the drop button");
+				parentPanel.playerClickedDropButton();
+			}
+		});
+		
 		extraPanel.add(currentBid);
 		
 		clearSelectedCard(numFestivalCards);
@@ -83,7 +136,7 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	
 	private int getPreferredHeight(){
 		if(isEvenLayout) return 100;
-		else return 470;
+		else return 435;
 	}
 	
 	private int getCardSpacing(int numCards){
@@ -105,20 +158,29 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	public void setBidAmount(int amount){
 		this.currentBid.setText("Bid: "+amount);
 	}
+	
+	public void endTurn(boolean isTurn, int numCards){
+		setBorder(BorderFactory.createLineBorder(Color.WHITE));
+		drop.setEnabled(false);
+		clearSelectedCard(numCards);
+	}
 
-	public void setCurrentPlayer(boolean isTurn){
-		if(isTurn){
-			setBorder(BorderFactory.createLineBorder(playerColor, 2));
-		}
-		else
-			setBorder(BorderFactory.createLineBorder(Color.WHITE));
+	public void setCurrentPlayer(){
+		setBorder(BorderFactory.createLineBorder(playerColor, 2));
+		drop.setEnabled(true);
+		System.out.println(drop.isEnabled());		
 	}
 	
 	public void selectCardAtIndex(int indexOfCard, int numCards, String hashKey){
-		System.out.println(indexOfCard);
 		BufferedImage card = drawPalaceCardBacks(numCards);
 		Graphics2D g2d = card.createGraphics();
-		g2d.drawImage(getBufferedImageFromSource(imageSourceHashMap.get(hashKey)), null, indexOfCard*getCardSpacing(numCards), 0);
+		if(isEvenLayout)
+			g2d.drawImage(getBufferedImageFromSource(imageSourceHashMap.get(hashKey)), null, indexOfCard*getCardSpacing(numCards), 0);
+		else{
+			//need to rotate the card
+			g2d.drawImage(getBufferedImageFromSource(imageSourceHashMap.get(hashKey)), null, 0, indexOfCard*getCardSpacing(numCards));
+		}
+		
 		cards.setIcon(new ImageIcon(card));
 	}
 	
@@ -127,11 +189,13 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	}
 	
 	public void dropPlayer(){
-		JPanel clearPanel = new JPanel();
-		clearPanel.setBackground(Color.BLACK);
-		setBorder(BorderFactory.createEmptyBorder(20,20, 20, 20));
-		clearPanel.setPreferredSize(new Dimension(getPreferredWidth(), getPreferredHeight()));
-		add(clearPanel);
+		ImageIcon icon = new ImageIcon();
+		cards.setIcon(icon);
+		currentBid.setText("");
+		extraPanel.setBorder(BorderFactory.createEmptyBorder());
+		playerLabel.setText("");
+		drop.setVisible(false);
+		updateUI();
 	}
 	
 	private BufferedImage drawPalaceCardBacks(int numPalaceCards){
@@ -158,15 +222,5 @@ public class HoldFestivalPlayerPanel extends JPanel {
 			System.out.println(e);
 		}
 		return null;
-	}
-	
-	private void saveImage(BufferedImage image){
-		System.out.println("saving image");
-		try{
-			File outputfile = new File("image.png");
-		    ImageIO.write(image, "png", outputfile);
-		} catch (IOException e) {
-		    System.out.println(e);
-		}
 	}
 }

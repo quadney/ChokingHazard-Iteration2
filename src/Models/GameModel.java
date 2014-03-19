@@ -74,16 +74,15 @@ public class GameModel implements Serializable<GameModel> {
 
 	// Used for testing the Actions
 
-	public boolean endTurn() {
-		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
-		if (!currentPlayer.canEndTurn()) // checks for land tile placement
-			return false;
-		indexOfCurrentPlayer++;
-		indexOfCurrentPlayer = indexOfCurrentPlayer % players.length; // tab
-																		// through
-																		// players
-
-		return true;
+	public boolean endTurn() {										//this is called by TriggerSwitchTurn Action and the GameController.
+																	//if valid, changes all states accordingly, if not, doesn't do a thing
+		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];	//gets the current player out of the container
+		if (currentPlayer.endPlayerTurn()){							//if the player can validly end their turn. All the player stuff will have been manipulated
+			System.out.println("player ended turn and index is being incremented");
+			indexOfCurrentPlayer = ++indexOfCurrentPlayer % players.length;				//switches the curentPlayer to the next player
+			return true;											//tells the caller that everything worked out!
+		}
+		return false;
 	}
 
 	public void placeTile(int x, int y, Tile tile, JavaPlayer player) {
@@ -150,7 +149,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	public Action pressEnter() {
 		if (selectedAction != null) {
-			return selectedAction.pressEnter();
+			return selectedAction.pressEnter(this);
 		}
 		return null;
 	}

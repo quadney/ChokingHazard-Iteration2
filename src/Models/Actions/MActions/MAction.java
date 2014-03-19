@@ -1,5 +1,6 @@
 package Models.Actions.MActions; 
 
+import Models.GameModel;
 import Models.Actions.Action;
 
 /**
@@ -27,15 +28,17 @@ public abstract class MAction {
 	
 	public abstract Action pressDelete();
 	
-	public abstract Action pressEnter();
+	public abstract Action pressEnter(GameModel game);
 	
 	//Accessor Methods ---------------------------------------------//
 	public int getX(){
 		return x;
 	}
+	
 	public int getY(){
 		return y;
 	}
+	
 	public String getImageKey(){
 		return imageKey;
 	}

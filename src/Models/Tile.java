@@ -22,15 +22,7 @@ public class Tile implements Serializable<Tile> {
 	}
 
 	public String getType() {
-		int numberOfCell = 0;
-
-		for (int i = 0; i < tileCells.length; i++) {
-			for (int j = 0; j < tileCells.length; j++) {
-				if (tileCells[i][j] != null) {
-					numberOfCell++;
-				}
-			}
-		}
+		int numberOfCell = numOfSpaces();
 
 		if (numberOfCell == 2) {
 			return "two";
@@ -88,7 +80,6 @@ public class Tile implements Serializable<Tile> {
 		for(int i = xx.length-1; i > 0; --i)
 			tileCells[xx[i]][yy[i]] = tileCells[xx[i-1]][yy[i-1]];
 		tileCells[xx[0]][yy[0]] = temp;
-		System.out.println(toString());
 	}
 
 	public String toString() {
@@ -110,5 +101,14 @@ public class Tile implements Serializable<Tile> {
 	@Override
 	public Tile loadObject(JsonObject json) {
 		return this;
+	}
+
+	public int numOfSpaces() {
+		int count = 0; 
+		for(int x = 0; x < tileCells.length; ++x)
+			for (int y = 0; y < tileCells[0].length; ++y)
+				if(tileCells[x][y] != null)
+					++count;
+		return count;
 	}
 }

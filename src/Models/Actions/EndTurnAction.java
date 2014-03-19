@@ -3,10 +3,11 @@ package Models.Actions;
 import Helpers.JsonObject;
 import Models.GameModel;
 
-public class TakeDeveloperOffBoardAction extends NonRotatableComponentAction {
+public class EndTurnAction extends Action {
 
-	public TakeDeveloperOffBoardAction(int actionID, int x, int y) {
-		super(actionID, x, y);
+	public EndTurnAction(int actionID) {
+		super(actionID);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -23,8 +24,7 @@ public class TakeDeveloperOffBoardAction extends NonRotatableComponentAction {
 
 	@Override
 	public boolean redo(GameModel game) {
-		// TODO Auto-generated method stub
-		return false;
+		return game.endTurn();
 	}
 
 }
