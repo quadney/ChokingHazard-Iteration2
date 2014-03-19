@@ -1,5 +1,6 @@
 package Views;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -16,11 +17,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 
 @SuppressWarnings("serial")
 public class SharedComponentPanel extends JPanel{
 	private JLabel threeTiles, irrigationTiles, twoPalaceTiles, fourPalaceTiles, sixPalaceTiles, eightPalaceTiles, tenPalaceTiles;
 	private JButton palaceDeck, festivalCard;
+	private JButton playModeToggleButton, replayButton;
+	private boolean playMode = true;
 	private HashMap<String, String> imageSourceHashMap;
 	
 	public SharedComponentPanel(String festivalCardHashKey){
@@ -32,6 +36,44 @@ public class SharedComponentPanel extends JPanel{
 	}
 	
 	private void initPanel(String festivalCardHashKey){
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setPreferredSize(new Dimension(130, 90));
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+		buttonPanel.setBackground(Color.green);
+		add(buttonPanel);
+		
+		playModeToggleButton = new JButton("Planning Mode");
+		playModeToggleButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(playMode){
+					playModeToggleButton.setText("Play Mode");
+					playMode = false;
+				}
+				else{
+					playModeToggleButton.setText("Planning Mode");
+					playMode = true;
+				}
+				
+				//TODO let the controller know
+			}
+		});
+		buttonPanel.add(playModeToggleButton);
+		
+		replayButton = new JButton("Replay");
+		replayButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//tempoarily set the button disabled while it replays, then when finished replaying set it to enabled
+				setReplayButtonEnabled(false);
+				
+				//TODO let the controller know this
+			}
+		});
+		buttonPanel.add(replayButton);
+		
 		threeTiles = newJLabel("", imageSourceHashMap.get("layout_threeTile")); 
 		threeTiles.setPreferredSize(new Dimension(70, 90));
         add(threeTiles);
@@ -136,6 +178,9 @@ public class SharedComponentPanel extends JPanel{
 		this.palaceDeck.setText(""+num);
 	}
 	
+	public void setReplayButtonEnabled(boolean yes){
+		replayButton.setEnabled(yes);
+	}
 	
 	public void updatePalaceTiles(int num, int value){
 		if(value == 2){
