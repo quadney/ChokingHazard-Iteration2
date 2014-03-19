@@ -9,17 +9,16 @@ public class PlaceDeveloperOnBoardAction extends NonRotatableComponentAction {
 	public PlaceDeveloperOnBoardAction(int actionID, int x, int y) {
 		super(actionID, x, y);
 	}
+	
+	public PlaceDeveloperOnBoardAction() {
 
-	@Override
-	public String serialize() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new PlaceDeveloperOnBoardAction(Integer.parseInt(json.getString("actionID")), 
+				Integer.parseInt(json.getString("x")), 
+				Integer.parseInt(json.getString("y")));
 	}
 
 	@Override
