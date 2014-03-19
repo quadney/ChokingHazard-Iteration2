@@ -211,9 +211,9 @@ public class Simulator {
 	 * @param rotation the number of times the tile is rotated before being placed.
 	 */
 	private static void placeTile(int posX, int posY, int rotations) {
-		GameRobot.navigateCursor(posX - PLACE_START_X, posY - PLACE_START_Y);
 		for(int x = 0; x < rotations; ++x)
 			GameRobot.pressSpace();
+		GameRobot.navigateCursor(posX - PLACE_START_X, posY - PLACE_START_Y);
 		GameRobot.pressEnter();
 	}
 
