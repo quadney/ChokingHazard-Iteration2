@@ -176,20 +176,19 @@ public class GameController {
 			//TODO check if the player has enough two tiles and AP to select a two tile action a two tile action
 			//player.checkIfSelectionValid(currentGame.getPlayerIndex(), )
 			if(players.selectTwoTile(currentGame.getPlayerIndex())){
-				if(currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"))){
+				currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"));
 					updateBoardControllerWithSelectedAction();
 				}
-			}
+			
 
 			break;
 		case 51: //released 3, select three space tile
 			//check if player has enough AP and if sharedComponent has any more 3 tiles (I could check game state but we could always change how the game state works...)
 			//if(players.checkIfSelectionValid() && shared.checkIfSelectionValid())
 			if(players.selectThreeTile(currentGame.getPlayerIndex()) && shared.selectThreeTile()){
-				if(currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"))){
+				currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"));
 					updateBoardControllerWithSelectedAction();
 				}
-			}
 
 			break;
 		case 68: //released D, add new developer onto board
@@ -214,19 +213,21 @@ public class GameController {
 			int value = currentGamePanel.promptUserForPalaceValue();
 			
 			//check player to see if they have enough AP and check shared to see if there are enough
-			if( players.selectPalaceTile(currentGame.getPlayerIndex()) && shared.selectPalaceTile(value)){
-				if(currentGame.setSelectedAction(new SelectPalaceTileAction("palace" + value + "Tile", value))){
-					updateBoardControllerWithSelectedAction();
-				}
+			if (players.selectPalaceTile(currentGame.getPlayerIndex())
+					&& shared.selectPalaceTile(value)) {
+				currentGame.setSelectedAction(new SelectPalaceTileAction(
+						"palace" + value + "Tile", value));
+				updateBoardControllerWithSelectedAction();
 			}
 			break;
 		case 82:
 			//released R, place rice tile
 			//TODO check if the player has enough rice and that they have some AP left to do this
-			if(players.selectRiceTile(currentGame.getPlayerIndex())){
-				if(currentGame.setSelectedAction(new SelectRiceTileAction("riceTile"))){
-					updateBoardControllerWithSelectedAction();
-				}
+			if (players.selectRiceTile(currentGame.getPlayerIndex())) {
+				currentGame.setSelectedAction(new SelectRiceTileAction(
+						"riceTile"));
+				updateBoardControllerWithSelectedAction();
+
 			}
 			break;
 		case 84:
@@ -243,9 +244,9 @@ public class GameController {
 			//released V, place Village
 			//TODO check if the player has enough villages and that they have some AP left to do this
 			if(players.selectVillageTile(currentGame.getPlayerIndex())){
-				if(currentGame.setSelectedAction(new SelectVillageTileAction("villageTile"))){
+				currentGame.setSelectedAction(new SelectVillageTileAction("villageTile"));
 					updateBoardControllerWithSelectedAction();
-				}
+				
 			}
 			break;
 		case 88:
