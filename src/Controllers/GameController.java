@@ -10,6 +10,7 @@ import Models.GameModel;
 import Models.PalaceCard;
 import Models.Actions.Action;
 import Models.Actions.DrawPalaceCardAction;
+import Models.Actions.EndTurnAction;
 import Models.Actions.IrrigationTileAction;
 import Models.Actions.MoveDeveloperAction;
 import Models.Actions.PalaceTileAction;
@@ -252,20 +253,14 @@ public class GameController {
 		case 88:
 			//check if the player has placed a land tile so they can get out of their turn
 			//released X, end turn
-			System.out.println("ending turn?");
-			System.out.println(players.selectEndTurn(currentGame.getPlayerIndex()));
-			if(players.selectEndTurn(currentGame.getPlayerIndex())){
-				players.setNotCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the player panel of the current player to stop outlining their panel
-				//if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){ //ask if they wanna have a palace festival
-					//TODO set up palace festival
-					//asks for palace they want to hold a festival at
-					//pass the index and the value of the palace and...
-				//}
-				
-				//call this after the prompt to have a palace festival (and after the palace festival if they had one)
-				currentGame.endTurn(); //increment the current player in the game model, changes all the stuff in player
-				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
-			}
+//			System.out.println("ending turn?");
+////			System.out.println(players.selectEndTurn(currentGame.getPlayerIndex()));
+//			if(currentGame.endTurn()){
+//				EndTurnAction endTurn = new EndTurnAction(-1);
+//				currentGame.addToActionHistory(endTurn);
+//				players.setNotCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex() - 1); //need to tell the player panel of the current player to stop outlining their panel
+//				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
+//			}
 			
 			break;		
 		}
