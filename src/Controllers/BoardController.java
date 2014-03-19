@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.BoardModel;
 import Models.Actions.Action;
+import Models.Actions.NonRotatableComponentAction;
 import Models.Actions.RotatableComponentAction;
 import Views.BoardPanel;
 
@@ -34,6 +35,10 @@ public class BoardController {
 		if(action instanceof RotatableComponentAction){
 			System.out.println("in updateBoardPanel RotatableTileComponent");
 			boardPanel.placeTile(((RotatableComponentAction)action).getY()*50, ((RotatableComponentAction)action).getX()*50, ((RotatableComponentAction)action).getRotationState(), 1, action.imageKey);
+		}
+		else if(action instanceof NonRotatableComponentAction){
+			System.out.println("in updateBoardPanel NonRotatableTileComponent");
+			boardPanel.placeTile(((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50, 0, 1, action.imageKey);
 		}
 		
 		
