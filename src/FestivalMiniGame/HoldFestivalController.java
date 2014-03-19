@@ -66,13 +66,11 @@ public class HoldFestivalController {
 	}
 	
 	private void startTurn(){
-		if(festModel.ifHadFullCycleTurnCheck()){
+		if(festModel.ifHadFullCycleTurnCheck() || festModel.isThereOnlyOnePlayerLeft()){
 			startNewRound();
 		}
 		else if(festModel.getCurrentPlayerNumOfPalaceCards() == 0){
-			//this user has no more palace cards, ask the all the players if they have enough cards
-			//display that the user has no more palace cards and that they will be dropped from the competition
-			festPanel.displayThatUserShouldDropOutOfFestival(festModel.getCurrentPlayer());
+			festPanel.tellUserThatHeHasToDropOut();
 		}
 		
 	}
@@ -123,9 +121,6 @@ public class HoldFestivalController {
 	
 	public void dropPlayerFromFestival(){
 		System.out.println("dropping player from festival...");
-		//hide his information from this
-		//set this to be empty
-		//TODO
 		festPanel.dropCurrentPlayer(festModel.getCurrentPlayer());
 		
 		int index = festModel.dropCurrentPlayer();
