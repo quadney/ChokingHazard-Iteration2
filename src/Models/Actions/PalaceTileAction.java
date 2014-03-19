@@ -1,5 +1,9 @@
 package Models.Actions;
 
+import Models.GameModel;
+import Models.Tile;
+import Models.Tile.TileType;
+
 public class PalaceTileAction extends OneSpaceTileAction {
 	
 	int value;
@@ -12,5 +16,11 @@ public class PalaceTileAction extends OneSpaceTileAction {
 
 	public int getValueOfPalace() {
 		return value;
+	}
+	
+	@Override
+	public void redo(GameModel game) {
+		game.getBoard().placeTile(x, y, new Tile(TileType.valueOf("palace"+value), 0), game.getCurrentPlayer());
+		game.getShared().decrementPalaceTiles(value);
 	}
 }
