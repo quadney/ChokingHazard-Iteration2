@@ -48,7 +48,6 @@ public class BoardController {
 		}
 		else if(action instanceof PlaceDeveloperOnBoardAction) {
 			System.out.println("in updateBoardPanel NonRotatableTileComponent");
-<<<<<<< HEAD
 			Stack<Integer> xs = new Stack<Integer>();
 			Stack<Integer> ys = new Stack<Integer>(); 
 			Stack<String> images = new Stack<String>(); 
