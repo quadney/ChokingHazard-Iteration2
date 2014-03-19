@@ -2,6 +2,7 @@ package Models;
 
 import Helpers.Json;
 import Helpers.JsonObject;
+import Models.Tile.TileType;
 
 public class JavaCell implements Serializable<JavaCell> {
    private int elevation;
@@ -10,6 +11,13 @@ public class JavaCell implements Serializable<JavaCell> {
    private int cellId;
    public int xVal;
    public int yVal;
+   public JavaCell(int x, int y, String cellType, int cellId, int elevation) {
+	   this.xVal = x;
+	   this.yVal = y;
+	   this.cellType = cellType;
+	   this.cellId = cellId;
+	   this.elevation = elevation;
+   }
    
    public JavaCell(int x, int y, String cellType, int cellId) {
 	   this.xVal = x;
@@ -56,8 +64,8 @@ public class JavaCell implements Serializable<JavaCell> {
       elevation = e;
    }
    
-   public void setCellType(String ct) {
-      cellType = ct;
+   public void setCellType(TileType tileCells) {
+      cellType = tileCells.toString();
    }
    
    public void setDeveloper() {
@@ -73,39 +81,12 @@ public class JavaCell implements Serializable<JavaCell> {
    }
    
    public boolean isBorder() {
-	   return false; //TODO
+	   
+	   if (this.xVal == 13 || this.yVal == 13 || this.xVal == 0 || this.yVal == 0 )
+		   return true;
+	   return false;
    }
    
-   public boolean hasAdjacentLandSpaceTile() {
-	   //TODO: finish brett
-	   /* 
-	   int x = this.getX();
-	   int y = this.getY();
-	   if (x + 1 == 14)
-	   {
-		   if (map.isTileOrLand(x+1,y))
-			   return true;
-	   }
-	   
-	   if (x- 1 == 0)
-	   {
-		   if (board.isTileOrLand(x-1,y))
-			   return true;
-	   }
-	   if (y + 1 == 14)
-	   {
-		   if (board.isTileOrLand(x,y+1))
-			   return true;
-	   }
-	   if (y - 1 == 0)
-	   {
-		   if (board.isTileOrLand(x,y-1))
-			   return true;
-	   }
-	   */ 
-	   return false;   
-   }
-	
 	@Override
 	public String serialize() {
 		return Json.jsonObject(Json.jsonMembers(

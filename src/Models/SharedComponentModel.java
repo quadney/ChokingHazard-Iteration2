@@ -33,15 +33,15 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 		this.discardedCardDeck = new LinkedList<PalaceCard>();
     }
     
-    public SharedComponentModel(int numThreeTiles, int numIrrigation, int[] palaceTiles, LinkedList<PalaceCard> deck, PalaceCard festivalCard, LinkedList<PalaceCard> discardDeck){
-    	//constructor for loading game
-    	this.threeSpaceTiles = numThreeTiles;
-    	this.irrigationTiles = numIrrigation;
-    	this.palaceTiles = palaceTiles;
-    	this.palaceCardDeck = deck;
-    	this.festivalCard = festivalCard;
-    	this.discardedCardDeck = discardDeck;
-    }
+//    public SharedComponentModel(int numThreeTiles, int numIrrigation, int[] palaceTiles, LinkedList<PalaceCard> deck, PalaceCard festivalCard, LinkedList<PalaceCard> discardDeck){
+//    	//constructor for loading game
+//    	this.threeSpaceTiles = numThreeTiles;
+//    	this.irrigationTiles = numIrrigation;
+//    	this.palaceTiles = palaceTiles;
+//    	this.palaceCardDeck = deck;
+//    	this.festivalCard = festivalCard;
+//    	this.discardedCardDeck = discardDeck;
+//    }
     
 	public int getIrrigationTiles() {
 		return irrigationTiles;

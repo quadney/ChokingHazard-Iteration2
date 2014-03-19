@@ -76,6 +76,16 @@ public class PlayerController {
 	public boolean selectEndTurn(int playerIndex) {
 		return playerModels[playerIndex].canEndTurn();
 	}
+	
+	public boolean selectDeveloper(int playerIndex) {
+		return playerModels[playerIndex].canPlaceDeveloperOnBoard();
+	}
+	
+//	public boolean canDeleteDeveloperPlayerCheck(int playerIndex, int actionPointCost){
+//		return playerModels[playerIndex].canDeleteDeveloperOnBoardPlayerCheck(actionPointCost);
+//	}
+	
+	
 	//----------------------------------------------------------------------------
 	//Select Final turn method - only occurs if this is valid to do
 	public void setNotCurrentPlayerinPlayerPanel(int playerIndex) {
@@ -85,10 +95,6 @@ public class PlayerController {
 
 	public void setCurrentPlayerinPlayerPanel(int playerIndex) {
 		playerPanels[playerIndex].setCurrentPlayer();
-	}
-
-	public boolean selectDeveloper(int playerIndex) {
-		return playerModels[playerIndex].canPlaceDeveloperOnBoard();
 	}
 
 	public String getColorOfPlayer(int playerIndex) {

@@ -3,10 +3,10 @@ package Models.Actions;
 import Helpers.JsonObject;
 import Models.GameModel;
 
-public class TakeDeveloperOffBoardAction extends OneSpaceComponentAction {
+public class TakeDeveloperOffBoardAction extends NonRotatableComponentAction {
 
-	public TakeDeveloperOffBoardAction(int actionID, int famePointsEarned) {
-		super(actionID, famePointsEarned);
+	public TakeDeveloperOffBoardAction(int actionID, int x, int y) {
+		super(actionID, x, y);
 	}
 
 	@Override
@@ -19,12 +19,6 @@ public class TakeDeveloperOffBoardAction extends OneSpaceComponentAction {
 	public Action loadObject(JsonObject json) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void undo(GameModel game) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

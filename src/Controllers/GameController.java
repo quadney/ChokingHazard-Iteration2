@@ -42,17 +42,15 @@ public class GameController {
 	
 	public void createNewGame(int numPlayers, String[] playerNames, String[] playerColors){
 		//create controllers
-		
 		currentGame = new GameModel(numPlayers, playerNames, playerColors);
 		board = new BoardController(currentGame.getBoard());
 		players = new PlayerController(numPlayers, currentGame.getPlayers()); //change player controller to query the model for the player info
-		shared = new SharedComponentController(); //change this to work
+		shared = new SharedComponentController(currentGame.getShared()); //change this to work
 		
 		//this initializes the dealing of the palace cards
 		//the shared dealPalaceCards returns the dealt palace cards
 		//and then the player sets those dealt cards as the cards
 		players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
-		
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
 		
@@ -61,7 +59,7 @@ public class GameController {
 	
 	public boolean loadGame(File file){
 		//calls the game manager to do the parsing
-		// Sydney doesn't know how that works so if this us unnecessary feel free to do what you want
+		//Sydney doesn't know how that works so if this us unnecessary feel free to do what you want
 		gameManager.loadGame(file);
 		return true;
 	}
@@ -111,6 +109,10 @@ public class GameController {
 		case 8:
 			//released delete, delete a developer from the board
 			//need all the type checks and where they are to delete a developer
+//			if(currentGame.pressDelete()){
+//				board.pressDelete();
+//				players[currentGame.getPlayerIndex()].pressDelete();
+//			}
 			break;
 		case 9:
 			//released tab, tab through developers
@@ -231,7 +233,7 @@ public class GameController {
 			//does not become a selected action, just does a regular action!
 			//released T, use action token
 			if(players.selectActionToken(currentGame.getPlayerIndex())){
-				UseActionTokenAction actionTokenAction = new UseActionTokenAction(-1, 0);
+				UseActionTokenAction actionTokenAction = new UseActionTokenAction(-1);
 				currentGame.addToActionHistory(actionTokenAction);
 				updateControllersWithAction(actionTokenAction);
 			}
@@ -272,7 +274,7 @@ public class GameController {
 		// TODO turn all into permanent actions instead of momentary
 		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || 
 		action instanceof ThreeTileAction || action instanceof DrawPalaceCardAction)
-			shared.updateSharedPanel(action);
+			shared.updateSharedPanel();
 		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction
 		|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
 		|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)

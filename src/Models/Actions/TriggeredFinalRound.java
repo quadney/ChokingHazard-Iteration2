@@ -8,12 +8,6 @@ public class TriggeredFinalRound extends Event {
 		redo(game);
 	}
 
-	
-	public void undo(GameModel game) {
-		game.setIsFinalRound(false);
-	}
-
-	
 	public void redo(GameModel game) {
 		game.setIsFinalRound(true);
 	}

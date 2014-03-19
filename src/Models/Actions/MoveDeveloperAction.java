@@ -3,10 +3,10 @@ package Models.Actions;
 import Helpers.JsonObject;
 import Models.GameModel;
 
-public class MoveDeveloperAction extends OneSpaceComponentAction {
+public class MoveDeveloperAction extends NonRotatableComponentAction {
 
-	public MoveDeveloperAction(int actionID, int famePointsEarned) {
-		super(actionID, famePointsEarned);
+	public MoveDeveloperAction(int actionID, int x, int y) {
+		super(actionID, x, y);
 	}
 
 	@Override
@@ -22,14 +22,8 @@ public class MoveDeveloperAction extends OneSpaceComponentAction {
 	}
 
 	@Override
-	public void undo(GameModel game) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void redo(GameModel game) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

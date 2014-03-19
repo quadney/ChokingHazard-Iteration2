@@ -5,15 +5,9 @@ import Models.JavaCell;
 
 public class VillageTileAction extends OneSpaceTileAction {
 
-	public VillageTileAction(int actionID, int famePointsEarned, int x, int y, JavaCell cell) {
-		super(actionID, famePointsEarned, x, y, cell);
+	public VillageTileAction(int actionID, int x, int y) {
+		super(actionID, x, y);
 		this.imageKey = "villageTile";
-	}
-
-	@Override
-	public void undo(GameModel game) {
-		game.getCurrentPlayer().incrementVillage();
-		game.getBoard().getMap()[x][y] = cell;
 	}
 
 	@Override

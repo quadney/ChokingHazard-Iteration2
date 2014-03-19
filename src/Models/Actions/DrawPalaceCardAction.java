@@ -5,8 +5,8 @@ import Models.GameModel;
 
 public class DrawPalaceCardAction extends Action {
 
-	public DrawPalaceCardAction(int actionID, String beforeImageKey, String afterImageKey, int famePointsEarned) {
-		super(actionID, famePointsEarned);
+	public DrawPalaceCardAction(int actionID) {
+		super(actionID);
 		//TODO image key
 	}
 
@@ -20,12 +20,6 @@ public class DrawPalaceCardAction extends Action {
 	public Action loadObject(JsonObject json) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void undo(GameModel game) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
