@@ -22,7 +22,6 @@ public class JavaCell implements Serializable<JavaCell> {
 	  this.numOriginalSpaces = 0;
    }
 
-
 	public int getX() {
 		return xVal;
 	}
@@ -31,6 +30,9 @@ public class JavaCell implements Serializable<JavaCell> {
 		return yVal;
 	}
 	
+	public int getNumOriginalSpaces(){
+		return numOriginalSpaces;
+	}
    public int getCellId() {
       return cellId;
    }
@@ -46,6 +48,7 @@ public class JavaCell implements Serializable<JavaCell> {
    public String getCellType() {
       return cellType;
    }
+
    
    public void setElevation(int e) {
       elevation = e;

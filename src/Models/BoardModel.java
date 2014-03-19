@@ -49,7 +49,17 @@ public class BoardModel implements Serializable<BoardModel> {
 			/*
 			 * are we going to be creating the tile here? if we are then we need
 			 * to increase cellId here.
-			 */
+			 */int number;
+						if (tile.getType() == "two") {
+							number = 2;
+						} else if (tile.getType() == "three") {
+							number = 3;
+
+						} else if (tile.getType() == "one") {
+							number = 1;
+						} else {
+							number = 0;
+						}
 			cellId++;
 			for (int i = 0; i < tileCells.length; i++)
 				for (int j = 0; j < tileCells[i].length; j++)
@@ -63,6 +73,8 @@ public class BoardModel implements Serializable<BoardModel> {
 						map[miniMap[i][j].getX()][miniMap[i][j].getY()]
 								.setElevation(map[miniMap[i][j].getX()][miniMap[i][j]
 										.getY()].getElevation() + 1);
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setNumOriginalSpaces(number);
+						
 					}
 			
 			if(placedLandTile(xC, yC))
@@ -128,6 +140,17 @@ public class BoardModel implements Serializable<BoardModel> {
 				}
 			}
 		}
+		
+
+			String s = "";
+
+			for (int i = 0; i < testingMap.length; i++) {
+				for (int j = 0; j < testingMap[i].length; j++) {
+					s += testingMap[i][j].getElevation() + " ";
+				}
+				s += "\n";
+			}
+				System.out.println("Printing miniMap: \n" + s);
 
 		return testingMap;
 	}
@@ -181,28 +204,8 @@ public class BoardModel implements Serializable<BoardModel> {
 		int testId = miniMap[1][1].getCellId();
 		int testing = 0;
 
-		for (int i = 0; i < tileCells.length; i++) {
-			for (int j = 0; j < tileCells[i].length; j++) {
-				if (tileCells[i][j] != null	&& miniMap[i][j].getElevation() >= 0) {
-					System.out.println("in the 1st if statement");
-					
-					if (testId == 0) {
-						testId = miniMap[i][j].getCellId();
-						System.out.println("The id is: " + testId);
-					} else {
-						if (testId != miniMap[i][j].getCellId())
-							return true;
-						else
-							numberOfTilesBelow++;
-					}
-				}
-				if( miniMap[i][j] != null && miniMap[i][j].getElevation() >= 0 && miniMap[1][1].getCellId() == miniMap[i][j].getCellId()){
-					testing++;
-				}
-			}
-		}
+	
 
-		System.out.println("The # of tiles below: " + numberOfTilesBelow + "testing: " + testing);
 
 		int number;
 		if (tile.getType() == "two") {
@@ -215,6 +218,43 @@ public class BoardModel implements Serializable<BoardModel> {
 		} else {
 			number = 0;
 		}
+		
+		
+		
+		for (int i = 0; i < tileCells.length; i++) {
+			for (int j = 0; j < tileCells[i].length; j++) {
+				//System.out.println("original: "+miniMap[i][j].getNumOriginalSpaces() + "  " + number);
+				//System.out.println(i + " " + j + miniMap[i][j].getCellType());
+				
+				if(miniMap[1][1].getNumOriginalSpaces() == 1 && number == 1)
+					return false;
+				if(miniMap[1][1].getNumOriginalSpaces() > 1 && number == 1)
+					return true;
+				
+				if (tileCells[i][j] != null	&& miniMap[i][j].getElevation() >= 0) {
+					System.out.println("in the 1st if statement: " + testId);
+					
+					if (testId == 0) {
+						testId = miniMap[i][j].getCellId();
+						System.out.println("The id is: " + testId);
+					} else {
+						if (testId != miniMap[i][j].getCellId())
+							return true;
+						else
+							numberOfTilesBelow++;
+					}
+				}			
+			//	System.out.println("elevation: " + miniMap[i][j].getElevation() + "getCellIdmini: " + miniMap[1][1].getCellId() + "getCellId: " + miniMap[i][j].getCellId()  );
+			//	System.out.println("The # of tiles below: " + numberOfTilesBelow + "testing: " + testing);
+
+				if( miniMap[i][j] != null && miniMap[i][j].getElevation() >= 0 && miniMap[1][1].getCellId() == miniMap[i][j].getCellId()){
+					testing++;
+				}
+				
+				
+			}
+		}
+		
 		if (number != numberOfTilesBelow || testing > numberOfTilesBelow)
 			return true;
 		else
