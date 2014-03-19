@@ -89,6 +89,8 @@ public class HoldFestivalModel {
 		JavaFestivalPlayer player = players.get(indexOfCurrentPlayer);
 		
 		PalaceCard selectedCard = player.getSelectedPalaceCard();
+		if(selectedCard == null)
+			return null;
 		//increment the player's festival bid
 		discardedPalaceTiles.add(selectedCard);
 		player.addFestivalBid(selectedCard.compareForPoints(festivalCard));
@@ -124,15 +126,21 @@ public class HoldFestivalModel {
 		return endTurn();
 	}
 	
-	public boolean isThereOnlyOnePlayerLeft(){
+	public int getNumPlayersInFestival(){
 		int numPlayers = 0;
-		for(int i = 0; i < players.size(); i++){
-			if(players.get(i).checkIfInFestival())
+		for(JavaFestivalPlayer player : players){
+			if(player.checkIfInFestival())
 				numPlayers++;
 		}
-		if(numPlayers == 1)
-			return true;
-		return false;
+		return numPlayers;
+	}
+	
+	public JavaFestivalPlayer getLastPersonInFestival(){
+		for(JavaFestivalPlayer player : players){
+			if(player.checkIfInFestival())
+				return player;
+		}
+		return null;
 	}
 	
 	public boolean checkIfEveryoneIsOutOfCards(){
@@ -152,8 +160,7 @@ public class HoldFestivalModel {
 		calculateHighestBid();
 		int numWinningPlayers = 0;
 		for(JavaFestivalPlayer player : players){
-			if(player.checkIfInFestival()){
-				if(player.getFestivalBid() == highestBid)
+			if(player.checkIfInFestival() && (player.getFestivalBid() == highestBid)){
 					numWinningPlayers++;
 			}
 		}
@@ -173,6 +180,10 @@ public class HoldFestivalModel {
 	
 	public ArrayList<JavaFestivalPlayer> getWinners(){
 		ArrayList<JavaFestivalPlayer> winners = new ArrayList<JavaFestivalPlayer>();
+		if(getNumPlayersInFestival() == 1){
+			winners.add(getLastPersonInFestival());
+			return winners;
+		}
 		for(int i = 0; i < players.size(); i++){
 			if(players.get(i).getFestivalBid() == highestBid)
 				winners.add(players.get(i));

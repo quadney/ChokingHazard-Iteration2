@@ -1,5 +1,6 @@
 package Models.Actions;
 
+import Helpers.Json;
 import Helpers.JsonObject;
 import Models.GameModel;
 import Models.Tile;
@@ -14,16 +15,28 @@ public class ThreeTileAction extends RotatableComponentAction {
 		this.imageKey = "threeTile";
 	}
 	
-	@Override
+	public ThreeTileAction() {
+
+	}
+
 	public String serialize() {
-		// TODO Auto-generated method stub
-		return null;
+		return Json.jsonObject(Json.jsonElements(
+			Json.jsonPair("actionID", this.actionID + ""), 
+			Json.jsonPair("imageKey", this.imageKey),
+			Json.jsonPair("x", this.x + ""),
+			Json.jsonPair("y", this.y + ""),
+			Json.jsonPair("rotationState", this.rotationState + ""), 
+			Json.jsonPair("isFinalRound", isFinalRound + ""),
+			Json.jsonPair("actionType", this.getClass().getSimpleName())
+		));
 	}
 
 	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ThreeTileAction(Integer.parseInt(json.getString("actionID")), 
+				Integer.parseInt(json.getString("x")), 
+				Integer.parseInt(json.getString("y")), 
+				Integer.parseInt(json.getString("rotationState")));
 	}
 
 	@Override

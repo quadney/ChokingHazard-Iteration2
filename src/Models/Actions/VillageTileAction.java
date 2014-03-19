@@ -11,6 +11,10 @@ public class VillageTileAction extends OneSpaceTileAction {
 		super(actionID, x, y);
 		this.imageKey = "villageTile";
 	}
+	
+	public VillageTileAction() {
+
+	}
 
 	@Override
 	public boolean redo(GameModel game) {
@@ -22,15 +26,10 @@ public class VillageTileAction extends OneSpaceTileAction {
 	}
 
 	@Override
-	public String serialize() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new VillageTileAction(Integer.parseInt(json.getString("actionID")), 
+				Integer.parseInt(json.getString("x")), 
+				Integer.parseInt(json.getString("y")));
 	}
 
 }

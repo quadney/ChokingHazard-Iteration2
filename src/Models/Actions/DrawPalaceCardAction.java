@@ -9,17 +9,14 @@ public class DrawPalaceCardAction extends Action {
 		super(actionID);
 		//TODO image key
 	}
+	
+	public DrawPalaceCardAction() {
 
-	@Override
-	public String serialize() {
-		// TODO Auto-generated method stub
-		return null;
 	}
-
+	
 	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new DrawPalaceCardAction(Integer.parseInt(json.getString("actionID")));
 	}
 
 	@Override
