@@ -27,6 +27,8 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	BufferedImage cardBack;
 	JLabel cards;
 	JLabel currentBid;
+	JPanel extraPanel;
+	JLabel playerLabel;
 	
 	public HoldFestivalPlayerPanel(int index, String name, String color, int numFestivalCards, HashMap<String, String> imageHash){
 		super(new FlowLayout());
@@ -47,7 +49,7 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	
 	private void initPanel(int indexOnPanel, String playerName, int numFestivalCards){
 		cards = new JLabel();
-		JPanel extraPanel = new JPanel();
+		extraPanel = new JPanel();
 		
 		currentBid = new JLabel("Bid: 0");
 		if(indexOnPanel % 2 == 0){
@@ -65,11 +67,14 @@ public class HoldFestivalPlayerPanel extends JPanel {
 			extraPanel.setPreferredSize(new Dimension(100, 70));
 			
 		}
+		setBackground(Color.WHITE);
 		extraPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		extraPanel.setBackground(Color.WHITE);
 		
 		add(cards);
 		add(extraPanel);
-		extraPanel.add(new JLabel(playerName));
+		playerLabel = new JLabel(playerName);
+		extraPanel.add(playerLabel);
 		//extraPanel.add(new JButton("Drop"));
 		extraPanel.add(currentBid);
 		
@@ -105,6 +110,11 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	public void setBidAmount(int amount){
 		this.currentBid.setText("Bid: "+amount);
 	}
+	
+	public void endTurn(boolean isTurn, int numCards){
+		setCurrentPlayer(isTurn);
+		clearSelectedCard(numCards);
+	}
 
 	public void setCurrentPlayer(boolean isTurn){
 		if(isTurn){
@@ -115,10 +125,15 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	}
 	
 	public void selectCardAtIndex(int indexOfCard, int numCards, String hashKey){
-		System.out.println(indexOfCard);
 		BufferedImage card = drawPalaceCardBacks(numCards);
 		Graphics2D g2d = card.createGraphics();
-		g2d.drawImage(getBufferedImageFromSource(imageSourceHashMap.get(hashKey)), null, indexOfCard*getCardSpacing(numCards), 0);
+		if(isEvenLayout)
+			g2d.drawImage(getBufferedImageFromSource(imageSourceHashMap.get(hashKey)), null, indexOfCard*getCardSpacing(numCards), 0);
+		else{
+			//need to rotate the card
+			g2d.drawImage(getBufferedImageFromSource(imageSourceHashMap.get(hashKey)), null, 0, indexOfCard*getCardSpacing(numCards));
+		}
+		
 		cards.setIcon(new ImageIcon(card));
 	}
 	
@@ -127,11 +142,13 @@ public class HoldFestivalPlayerPanel extends JPanel {
 	}
 	
 	public void dropPlayer(){
-		JPanel clearPanel = new JPanel();
-		clearPanel.setBackground(Color.BLACK);
-		setBorder(BorderFactory.createEmptyBorder(20,20, 20, 20));
-		clearPanel.setPreferredSize(new Dimension(getPreferredWidth(), getPreferredHeight()));
-		add(clearPanel);
+		ImageIcon icon = new ImageIcon();
+		cards.setIcon(icon);
+		currentBid.setText("");
+		extraPanel.setBorder(BorderFactory.createEmptyBorder());
+		playerLabel.setText("");
+		setCurrentPlayer(false);
+		updateUI();
 	}
 	
 	private BufferedImage drawPalaceCardBacks(int numPalaceCards){

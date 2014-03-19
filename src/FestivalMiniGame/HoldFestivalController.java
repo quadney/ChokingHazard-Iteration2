@@ -50,7 +50,7 @@ public class HoldFestivalController {
 		//check that the player as made at least the highest bid
 		if(festModel.canEndTurn()){
 			//set the border of the current player to white
-			festPanel.endPlayerTurn(festModel.getCurrentPlayer(), festModel.getCurrentPlayerBid());
+			festPanel.endPlayerTurn(festModel.getCurrentPlayer(), festModel.getCurrentPlayerBid(), festModel.getCurrentPlayerNumOfPalaceCards());
 			
 			
 			//increment index and reflect the next player's turn in the panel
@@ -78,10 +78,6 @@ public class HoldFestivalController {
 	}
 	
 	private void startNewRound(){
-		System.out.println("starting new round");
-		System.out.println("There is only one player left: "+festModel.isThereOnlyOnePlayerLeft());
-		System.out.println("Everyone is out of Cards: "+festModel.checkIfEveryoneIsOutOfCards());
-		System.out.println("Num of Winners: "+festModel.getNumWinners());
 		boolean noCardsLeft = festModel.checkIfEveryoneIsOutOfCards();
 		if(!noCardsLeft){
 			//if there is someone with more cards that they can play, then dont end the festival. Because they need to play it
@@ -106,17 +102,16 @@ public class HoldFestivalController {
 	}
 	
 	private void endFestival(boolean thereIsTie){
-		System.out.println("ending festival, is there a tie? "+thereIsTie);
 		//get the winners
 		//get the points per winner
 		festModel.endFestival(thereIsTie);
-		System.out.println("festival has ended");
 		festPanel.displayWinner(festModel.getWinners(), festModel.getFamePointsWon(thereIsTie));
 		festFrame.festivalDidReturn(festModel.getDiscardedPalaceCards());
 	}
 	
 	public void tabThroughPalaceCards(){
-		if(festModel.tabThroughPalaceCards() != null)
+		PalaceCard cardToHighlight = festModel.tabThroughPalaceCards();
+		if(cardToHighlight != null)
 			festPanel.tabThroughPlayerPalaceCards(festModel.getCurrentPlayerTabCount(), festModel.getCurrentPlayerNumOfPalaceCards(), festModel.getCurrentPlayer(), festModel.getTabbedHashKey());
 	}
 	
