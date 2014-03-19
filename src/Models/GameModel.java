@@ -78,7 +78,7 @@ public class GameModel implements Serializable<GameModel> {
 																	//if valid, changes all states accordingly, if not, doesn't do a thing
 		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];	//gets the current player out of the container
 		if (currentPlayer.endPlayerTurn()){							//if the player can validly end their turn. All the player stuff will have been manipulated
-			System.out.println("player ended turn and index is being incremented");
+			//System.out.println("player ended turn and index is being incremented");
 			indexOfCurrentPlayer = ++indexOfCurrentPlayer % players.length;				//switches the curentPlayer to the next player
 			return true;											//tells the caller that everything worked out!
 		}
@@ -308,8 +308,7 @@ public class GameModel implements Serializable<GameModel> {
 		return null;
 	}
 
-	// Methods for MAction/selected action traversal that is needed by the
-	// controller
+	//------ Methods for MAction/selected ------------------------------
 
 	public int getSelectedActionX() {
 		return selectedAction.getX();
@@ -328,6 +327,11 @@ public class GameModel implements Serializable<GameModel> {
 		return selectedAction;
 	}
 
+	//--------------Key presses to interact with SelectedActions-------------
+	public boolean pressM() {
+		return false;
+	}
+	
 	public void pressEsc() {
 		selectedAction = null;
 	}
@@ -359,6 +363,13 @@ public class GameModel implements Serializable<GameModel> {
 		}
 		return false;
 	}
+	
+//	public boolean pressM() {
+//		if (selectedAction != null) {
+//			return selectedAction.pressM() != null;
+//		}
+//		return false;
+//	}
 
 	public boolean setSelectedAction(MAction selectedAction) {
 		// if(this.selectedAction == null){
@@ -454,7 +465,7 @@ public class GameModel implements Serializable<GameModel> {
 		return gameBoard.getNextCellId();
 	}
 
-	public void placeDeveloperOnBoard(int x, int y) {
-		gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
+	public boolean placeDeveloperOnBoard(int x, int y) {
+		return gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
 	}
 }

@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.Developer;
 import Models.JavaPlayer;
 import Models.PalaceCard;
 import Views.PlayerPanel;
@@ -139,6 +140,11 @@ public class PlayerController {
 		
 		// tells the panel the number of developers off the board
 		playerPanels[playerIndex].updateDevelopersOffBoard(playerModels[playerIndex].getDevelopersOffBoard());
+	}
+
+	public Developer[] getDeveloperArray(int playerIndex) {
+		return playerModels[playerIndex].getDevelopersOnBoard();
+		
 	}
 	
 }
