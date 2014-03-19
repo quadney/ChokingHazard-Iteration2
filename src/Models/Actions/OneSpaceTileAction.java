@@ -4,7 +4,7 @@ import Helpers.JsonObject;
 import Models.GameModel;
 import Models.JavaCell;
 
-public class OneSpaceTileAction extends NonRotatableComponentAction {
+public abstract class OneSpaceTileAction extends NonRotatableComponentAction {
 
 	public JavaCell cell;
 

@@ -25,6 +25,7 @@ public class BoardPanel extends JPanel {
 	//private BufferedImage planningMode;
 	private Graphics2D g2d;
 	private HashMap<String, String> imageSourceHashMap;
+	public boolean replaying = false;
 
 	public BoardPanel(){
 		System.out.println("Board Panel is created.");
@@ -48,6 +49,11 @@ public class BoardPanel extends JPanel {
 	private void getBackgroundImage(){
 		board = getImage(imageSourceHashMap.get("board"));
 		repaint();
+	}
+	
+	public void repaint() {
+		if(!replaying)
+			super.repaint();
 	}
 	
 	private BufferedImage getImage(String source){
