@@ -1,8 +1,5 @@
 package Controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import Models.JavaPlayer;
 import Models.PalaceCard;
 import Views.PlayerPanel;

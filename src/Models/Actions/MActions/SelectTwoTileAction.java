@@ -45,7 +45,10 @@ public class SelectTwoTileAction extends SelectRotatableComponentAction {
 
 	@Override
 	public Action pressEnter(GameModel game) {
+		TwoTileAction action = new TwoTileAction(-1, x, y, rotationState);
 		System.out.println("Created TwoTileAction");
-		return new TwoTileAction(-1, x, y, rotationState); 
+		if(action.doAction(game))
+			return action; 
+		return null;
 	}
 }

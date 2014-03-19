@@ -354,7 +354,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		return false;
 	}
 
-	private static int findNumberConnected(int x, int y, JavaCell[][] map) {
+	public static int findNumberConnected(int x, int y, JavaCell[][] map) {
 		JavaCell[][] copy = new JavaCell[14][14];
 		for (int i = 0; i < 14; i++)
 			for (int j = 0; j < 14; j++) {

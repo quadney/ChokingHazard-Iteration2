@@ -34,9 +34,11 @@ public abstract class MAction {
 	public int getX(){
 		return x;
 	}
+	
 	public int getY(){
 		return y;
 	}
+	
 	public String getImageKey(){
 		return imageKey;
 	}
