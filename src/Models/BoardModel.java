@@ -508,7 +508,7 @@ return cell.getConnectedCells().size();
 
 		// Check that player has available AP for this
 		// First determine type of move/cost
-		if (!player.decrementNActionPoints(1, false) || !player.canPlaceDeveloperOnBoard()) // TODO: Check lowlands or
+		if (!player.decrementNActionPoints(locationCell.getActionPointsFromDeveloperMove(), false) || !player.canPlaceDeveloperOnBoard()) // TODO: Check lowlands or
 			// mountains
 			return false;
 		
