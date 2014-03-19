@@ -140,7 +140,7 @@ public class GameModel implements Serializable<GameModel> {
 
 
 	}
-
+	
 	/*
 	 * public ArrayList<JavaPlayer> getIrrigationRanks(JavaCell cell) { int x =
 	 * cell.getX(); int y = cell.getY();
@@ -481,5 +481,9 @@ public class GameModel implements Serializable<GameModel> {
 
 	public void placeDeveloperOnBoard(int x, int y) {
 		gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
+	}
+	
+	public void takeDeveloperOffBoard(int x, int y) {
+		gameBoard.removeDatDeveloperOffDaBoard(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
 	}
 }

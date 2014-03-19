@@ -354,6 +354,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		return false;
 	}
 
+	//This method is so swag money $$$
 	private static int findNumberConnected(int x, int y, JavaCell[][] map) {
 		JavaCell[][] copy = new JavaCell[14][14];
 		for (int i = 0; i < 14; i++)
@@ -513,6 +514,34 @@ return cell.getConnectedCells().size();
 		
 		return true;
 	}
+	
+	public boolean removeDatDeveloperOffDaBoard(JavaCell jailCell, JavaPlayer theHomie)
+	{
+		// Check if its an border cell
+		if (!jailCell.isBorder())
+		{	
+			// If its not on the border, needs to be next to it
+			if(!jailCell.isNextToBorder())
+				return false; // Can't do it, homie goes back to Jail
+			
+			// If it's next to the border, needs an adjacent empty tile in border
+			if(!hasAdjacentEmptyTile(jailCell))
+				return false; // Can't do it, homie goes back to Jail
+		}
+		
+		// Else, he is on the border, we can proceed with bail procedures
+		if(!theHomie.decrementNActionPoints(jailCell.getActionPointsFromDeveloperMove(), false))
+			return false; // Can't do it, homie goes back to Jail
+		
+		// By this point, we've made it through all the bail procedures and homie has paid his dues (action points)
+		// He is now free to go
+		
+		theHomie.removeDeveloperFromArray();
+		
+		return true; // The homie is free ~ ~ ~
+		
+	}
+	
 
 	public boolean hasAdjacentEmptyTile(JavaCell cell) {
 		int x = cell.getX();

@@ -87,6 +87,21 @@ public class JavaCell implements Serializable<JavaCell> {
 	   return false;
    }
    
+   public boolean isNextToBorder()
+   {
+	   if (this.xVal == 12 || this.yVal == 12 || this.xVal == 1 || this.yVal == 1 )
+		   return true;
+	   return false;
+   }
+   
+   public int getActionPointsFromDeveloperMove()
+   {
+	   if (this.yVal > 6) //From lowlands
+		   return 1;
+	   else
+		   return 2; //From mountains
+   }
+   
    //for testing purpose
    public String toString(){
 	   

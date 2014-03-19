@@ -166,6 +166,7 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 
 	public void removeDeveloperFromArray() {
 		developersArray[selectedDeveloperIndex] = null;
+		developersOnBoard--;
 	}
 
 	public void addPalaceCard(PalaceCard card) {
