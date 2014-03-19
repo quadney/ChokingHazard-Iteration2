@@ -34,7 +34,7 @@ public class GameContainerPanel extends JPanel {
 		
 		initHashMap();
 		setMaximumSize(new Dimension(WIDTH, HEIGHT));
-		setBorder(BorderFactory.createEmptyBorder(0, 25, 30, 25));
+		setBorder(BorderFactory.createEmptyBorder(0, 25, 10, 25));
 		
 		toggleGameModeButton = new JButton("Play Mode");
 		replayModeButton = new JButton("Replay");

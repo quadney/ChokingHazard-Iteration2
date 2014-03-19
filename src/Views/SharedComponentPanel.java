@@ -3,6 +3,8 @@ package Views;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,13 +12,15 @@ import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class SharedComponentPanel extends JPanel{
-	private JLabel threeTiles, irrigationTiles, twoPalaceTiles, fourPalaceTiles, sixPalaceTiles, eightPalaceTiles, tenPalaceTiles, festivalCard, palaceDeck;
+	private JLabel threeTiles, irrigationTiles, twoPalaceTiles, fourPalaceTiles, sixPalaceTiles, eightPalaceTiles, tenPalaceTiles;
+	private JButton palaceDeck, festivalCard;
 	private HashMap<String, String> imageSourceHashMap;
 	
 	public SharedComponentPanel(String festivalCardHashKey){
@@ -50,11 +54,39 @@ public class SharedComponentPanel extends JPanel{
         tenPalaceTiles = newJLabel("", imageSourceHashMap.get("layout_palace10Tile")); 
         add(tenPalaceTiles);
 
-        palaceDeck = newJLabel("", imageSourceHashMap.get("layout_palaceDeck"));
+        palaceDeck = new JButton("", new ImageIcon(imageSourceHashMap.get("layout_palaceDeck")));
+        palaceDeck.setFont(new Font("Lucida Grande", 0, 14));
+        palaceDeck.setHorizontalTextPosition(SwingConstants.CENTER);
+        palaceDeck.setVerticalTextPosition(SwingConstants.BOTTOM);
+        palaceDeck.setVerticalAlignment(SwingConstants.BOTTOM);
+        palaceDeck.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO actions and shit
+				System.out.println("draw from palace deck");
+			}
+		});
         add(palaceDeck);
+        //palaceDeck = newJLabel("", imageSourceHashMap.get("layout_palaceDeck"));
+        //add(palaceDeck);
         
-        festivalCard = newJLabel(" ", imageSourceHashMap.get("layout_"+festivalCardHashKey));
+        festivalCard = new JButton("   ", new ImageIcon(imageSourceHashMap.get("layout_"+festivalCardHashKey)));
+        festivalCard.setFont(new Font("Lucida Grande", 0, 14));
+        festivalCard.setHorizontalTextPosition(SwingConstants.CENTER);
+        festivalCard.setVerticalTextPosition(SwingConstants.BOTTOM);
+        festivalCard.setVerticalAlignment(SwingConstants.BOTTOM);
+        festivalCard.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO actions and shit
+				System.out.println("draw festival card");
+			}
+		});
         add(festivalCard);
+//        festivalCard = newJLabel(" ", imageSourceHashMap.get("layout_"+festivalCardHashKey));
+//        add(festivalCard);
 
         JLabel actionSummaryCard = new JLabel();
         actionSummaryCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_actionSummaryCard")));
@@ -100,7 +132,7 @@ public class SharedComponentPanel extends JPanel{
 		this.tenPalaceTiles.setText(""+num);
 	}
 	public void updateNumPalaceCards(int num){
-		//You're welcome Sydney --mrrow
+		//You're welcome Sydney --mrrow //lol
 		this.palaceDeck.setText(""+num);
 	}
 	
@@ -131,7 +163,6 @@ public class SharedComponentPanel extends JPanel{
 	public void drawFestivalCard(int numPalaceCards, String newFestivalCardHashKey){
 		drawFromPalaceDeck(numPalaceCards);
 		this.festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_"+newFestivalCardHashKey)));
-		System.out.println("done");
 	}
 	
 	private void initHashMap(){
