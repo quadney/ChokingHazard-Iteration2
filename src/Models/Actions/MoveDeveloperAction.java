@@ -22,9 +22,9 @@ public class MoveDeveloperAction extends NonRotatableComponentAction {
 	}
 
 	@Override
-	public void redo(GameModel game) {
+	public boolean redo(GameModel game) {
 		
-		
+		return false;
 	}
 
 }
