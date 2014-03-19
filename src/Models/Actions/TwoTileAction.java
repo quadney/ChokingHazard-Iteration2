@@ -41,10 +41,10 @@ public class TwoTileAction extends RotatableComponentAction {
 		game.getBoard().placeTile(y, x, new Tile(2), new JavaPlayer("p", "red"));
 		System.out.println(x + "," + y +"Center " + game.getBoard().getMap()[x][y].getCellType());
 		
-		System.out.println("Down " + game.getBoard().getMap()[x + 1][y].getCellType());
-		System.out.println("Up " + game.getBoard().getMap()[x - 1][y].getCellType());
-		System.out.println("Right " + game.getBoard().getMap()[x][y + 1].getCellType());
-		System.out.println("Left " + game.getBoard().getMap()[x][y - 1].getCellType());
+//		System.out.println("Down " + game.getBoard().getMap()[x + 1][y].getCellType());
+//		System.out.println("Up " + game.getBoard().getMap()[x - 1][y].getCellType());
+//		System.out.println("Right " + game.getBoard().getMap()[x][y + 1].getCellType());
+//		System.out.println("Left " + game.getBoard().getMap()[x][y - 1].getCellType());
 	}
 		
 }

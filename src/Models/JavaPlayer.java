@@ -138,6 +138,7 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	}
 
 	public void associateDeveloperWithCell(JavaCell jc) {
+	
 		developersArray[selectedDeveloperIndex].setLocation(jc);
 		jc.setDeveloper();
 	}
@@ -213,7 +214,32 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	}
 	
 	public boolean canPlaceDeveloperOnBoard() {
-		return getDevelopersOffBoard() > 0 && getAvailableActionPoints(true) > 0;
+		int index = getNextAvailable();
+		return index != -1;
+		
+		
+	}
+	
+	public boolean placeDevOnBoard( JavaCell location){
+		
+		
+			developersArray[selectedDeveloperIndex] = new Developer(this);
+			associateDeveloperWithCell(location); 
+		
+		return false;
+			
+	}
+	
+	private int getNextAvailable(){
+	
+		for(int i = 0; i < developersArray.length; i++){
+			if(developersArray[i] == null){
+				selectedDeveloperIndex = i;
+				return selectedDeveloperIndex;
+			}
+		}
+		
+		return -1;
 	}
 	
 	//--------used for doAction in PlayerController----------------------------------------------------------------------

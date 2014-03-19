@@ -73,7 +73,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	// Used for testing the Actions
 	public void placeTileOnBoard(int x, int y, Tile tile) {
-		gameBoard.placeTileOnBoard(x, y, tile);
+		gameBoard.placeTile(x, y, tile, players[indexOfCurrentPlayer] );
 	}
 
 	public boolean endTurn() {
