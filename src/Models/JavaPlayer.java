@@ -8,6 +8,9 @@ import Helpers.JsonObject;
 import Views.GameContainerPanel;
 
 public class JavaPlayer implements Serializable<JavaPlayer> {
+	
+	static int testingActionPoints = 100;
+	
 	public String name;
 	private String color;
 	private int famePoints;
@@ -18,7 +21,7 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	private int numActionTokens;
 	private ArrayList<PalaceCard> palaceCards;
 	private int selectedDeveloperIndex;
-	// private int[][] palacesInteractedWith;
+	private ArrayList<JavaCell> palacesInteractedWith;
 	private Developer[] developersArray;
 	private boolean hasPlacedLandTile;
 	private boolean hasUsedActionToken;
@@ -26,8 +29,8 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	public JavaPlayer(String name, String color) {
 		this.name = name;
 		this.color = color;
+		this.actionPoints = testingActionPoints;
 		this.famePoints = 0;
-		this.actionPoints = 6;
 		this.numOneRiceTile = 3;
 		this.numOneVillageTile = 2;
 		this.numTwoTile = 5;
@@ -37,9 +40,7 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		this.selectedDeveloperIndex = 0;
 		this.hasUsedActionToken = false;
 		this.developersArray = new Developer[12];
-		// this accounts for the fact that a player can only interact with a
-		// palace once per turn. Can either build or upgrade a palace
-		// int[][] palacesInteractedWith = new int[40][2];
+		this.palacesInteractedWith = new ArrayList<JavaCell>();
 	}
 
 	public String getName() {
@@ -183,18 +184,6 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return getAvailableActionPoints(false) > 0;
 	}
 
-	// TODO Make sure this works
-	public boolean endTurn() {
-		if (!hasPlacedLandTile) {
-			GameContainerPanel.tellPeopleTheyAintPlacedNoLandTile();
-			return false;
-		}
-
-		// Otherwise, typical end of turn activities
-		changeFamePoints(1); // TODO: determine correct amount, method?
-		return true;
-	}
-
 	// checks if the player has enough plus has the AP
 	public boolean canUseRice() {
 		return numOneRiceTile > 0 && getAvailableActionPoints(true) > 0;
@@ -224,16 +213,27 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return numOneVillageTile > 0 && getAvailableActionPoints(true) > 0;
 	}
 
-	// checks if the player has placed a land tile
-	public boolean canEndTurn() {
-		return hasPlacedLandTile;
+	// 
+	public boolean endPlayerTurn() {
+		if(hasPlacedLandTile){
+			hasPlacedLandTile = false;
+			hasUsedActionToken = false;
+			palacesInteractedWith.clear();
+			actionPoints = testingActionPoints;
+			return true;
+		}
+		return false;
+		
 	}
 	
 	public boolean canPlaceDeveloperOnBoard() {
 		int index = getNextAvailable();
 		return index != -1;
 		
-		
+	}
+	
+	public boolean canEndTurn() {
+		return hasPlacedLandTile;
 	}
 	
 	public boolean placeDevOnBoard( JavaCell location){
