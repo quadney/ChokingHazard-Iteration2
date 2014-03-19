@@ -5,7 +5,6 @@ import Helpers.Json;
 import java.util.*;
 
 import Helpers.JsonObject;
-import Views.GameContainerPanel;
 
 public class JavaPlayer implements Serializable<JavaPlayer> {
 	
