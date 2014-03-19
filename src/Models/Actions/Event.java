@@ -14,10 +14,10 @@ public abstract class Event {
 		// TODO redo actions until the last action
 	}
 
-	public abstract void redo(GameModel game);
+	public abstract boolean redo(GameModel game);
 	
-	public void doAction(GameModel game){
-		redo(game);
+	public boolean doAction(GameModel game){
+		return redo(game);
 	}
 
 	public int getPlayerIndex() {

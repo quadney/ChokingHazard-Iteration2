@@ -57,6 +57,18 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	public int getActionPoints() {
 		return actionPoints;
 	}
+	
+	public boolean hasPlaceLandTile(){
+		return hasPlacedLandTile;
+	}
+	
+	public void placedLandTile(){
+		hasPlacedLandTile = true;
+	}
+	
+	public void resetPlacedLandTile(){
+		hasPlacedLandTile = false;
+	}
 
 	public int getDevelopersOffBoard() {
 		int developersOnBoard = 0;

@@ -23,9 +23,9 @@ public class DrawPalaceCardAction extends Action {
 	}
 
 	@Override
-	public void redo(GameModel game) {
+	public boolean redo(GameModel game) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 
 }

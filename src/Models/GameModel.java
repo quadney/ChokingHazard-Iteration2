@@ -304,7 +304,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	public Action pressEnter() {
 		if (selectedAction != null) {
-			return selectedAction.pressEnter();
+			return selectedAction.pressEnter(this);
 		}
 		return null;
 	}

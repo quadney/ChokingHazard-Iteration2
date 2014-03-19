@@ -9,9 +9,9 @@ public class TriggeredSwitchTurn extends Event {
 	}
 
 	@Override
-	public void redo(GameModel game) {
+	public boolean redo(GameModel game) {
 		game.endTurn();
-		
+		return true;
 	}
 
 }
