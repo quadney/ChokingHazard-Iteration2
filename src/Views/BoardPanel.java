@@ -165,7 +165,6 @@ public class BoardPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		System.out.println("calling paint component");
 		g.drawImage(board, 0, 0, null);
 		g.drawImage(tileImage, 0, 0, null);
 		g.drawImage(tempImage, 0, 0, null);
