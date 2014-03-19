@@ -22,7 +22,6 @@ public class BoardPanel extends JPanel {
 	private BufferedImage tileImage;
 	private BufferedImage developers;
 	private BufferedImage tempImage;
-	//private BufferedImage planningMode;
 	private Graphics2D g2d;
 	private HashMap<String, String> imageSourceHashMap;
 	public boolean replaying = false;
@@ -42,19 +41,15 @@ public class BoardPanel extends JPanel {
 		this.tempImage = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	}
 	
-//	public BoardPanel(JavaCell[] cells, ){
-//		//constructor for loading a game, populates the board with all the information
-//	}
-	
 	private void getBackgroundImage(){
 		board = getImage(imageSourceHashMap.get("board"));
 		repaint();
 	}
 	
-	public void repaint() {
-		if(!replaying)
-			super.repaint();
-	}
+//	public void repaint() {
+//		if(!replaying)
+//			super.repaint();
+//	}
 	
 	private BufferedImage getImage(String source){
 		BufferedImage returnImage = null;
@@ -73,10 +68,13 @@ public class BoardPanel extends JPanel {
 		g2d.rotate(rotationState*Math.PI/2, xLoc+25, yLoc+25);
 		//g2d.scale(-0.1*elevation, -0.1*elevation);
 		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
-		g2d.setColor(Color.YELLOW);
+		g2d.setColor(Color.RED);
 		g2d.drawString(""+elevation, xLoc+35, yLoc+35);
 		g2d.dispose();
+		//drawElevationLabel(xLoc, yLoc, rotationState, elevation, hashMapKey);
+		
 		repaint();
+		System.out.println("placed tile");
 	}
 	
 	//use this when the user is moving a tile around the board, and has not made the decision to place it yet
@@ -173,10 +171,36 @@ public class BoardPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		System.out.println("calling paint component");
 		g.drawImage(board, 0, 0, null);
 		g.drawImage(tileImage, 0, 0, null);
 		g.drawImage(tempImage, 0, 0, null);
 		g.drawImage(developers, 0, 0, null);
+	}
+	
+	private void drawElevationLabel(int xLoc, int yLoc, int rotationState, int elevation, String hashMapKey){
+		System.out.println("drawing elevation label");
+		int imageWidth = 50;
+		int imageHeight = imageWidth;
+		g2d = tileImage.createGraphics();
+		if(hashMapKey.equals("threeTile")){
+			imageWidth *= 2;
+			imageHeight = imageWidth;
+		}
+		else if(hashMapKey.equals("twoTile")){
+			imageWidth *= 2;
+		}
+		else{
+			//draw the elevation with no restrictions
+			System.out.println("drawing the elevation");
+			//g2d.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+			
+		}
+		
+		
+		
+		g2d.dispose();
 	}
 	
 	private void clearImage(BufferedImage image){
