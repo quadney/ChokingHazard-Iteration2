@@ -12,6 +12,9 @@ public class SelectIrrigationTileAction extends SelectOneSpaceTileAction {
 	}
 	
 	public Action pressEnter(GameModel game) {
-		return new IrrigationTileAction(-1, x, y);
+		IrrigationTileAction action = new IrrigationTileAction(-1, x, y);
+		if(action.doAction(game))
+			return action; 
+		return null;
 	}
 }

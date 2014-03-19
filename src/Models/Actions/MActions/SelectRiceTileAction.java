@@ -13,6 +13,9 @@ public class SelectRiceTileAction extends SelectOneSpaceTileAction {
 	
 	@Override
 	public Action pressEnter(GameModel game) {
-		return new RiceTileAction(-1, x, y);
+		RiceTileAction action = new RiceTileAction(-1, x, y);
+		if(action.doAction(game))
+			return action; 
+		return null;
 	}
 }
