@@ -19,6 +19,10 @@ public abstract class SelectOneSpaceTileAction extends SelectNonRotatableCompone
 		return null;
 	}
 	
+	public MAction pressM(){
+		return null;
+	}
+	
 	public boolean isNonRotatableComponentOnBoard(int x, int y) {
 		if(x < 0 || x > 13){ //check if changes in x are invalid
 			return false;

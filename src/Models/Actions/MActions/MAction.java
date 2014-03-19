@@ -30,6 +30,8 @@ public abstract class MAction {
 	
 	public abstract Action pressEnter(GameModel game);
 	
+	public abstract MAction pressM();
+	
 	//Accessor Methods ---------------------------------------------//
 	public int getX(){
 		return x;
