@@ -10,7 +10,9 @@ public abstract class Event {
 	
 	//Undo and Redo methods---------------------------------------------------------
 	
-	public abstract void undo(GameModel game);
+	public void undo(GameModel game) { 
+		// TODO redo actions until the last action
+	}
 
 	public abstract void redo(GameModel game);
 	

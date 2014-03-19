@@ -6,7 +6,6 @@ import Models.Actions.*;
 import java.util.*;
 
 import Models.Actions.MActions.MAction;
-import Views.PlayerPanel;
 
 // This enum declaration might need to be moved, not sure how accessible it is right now 
 // (needs to be accessible by GameModel and the Controller). #JavaTroubles
@@ -18,6 +17,7 @@ public class GameModel implements Serializable<GameModel> {
 	// VARIABLES
 	private BoardModel gameBoard;
 	private JavaPlayer[] players;
+	private SharedComponentModel shared;
 	private int indexOfCurrentPlayer;
 	private boolean isFinalRound;
 	public MAction selectedAction;
@@ -38,6 +38,7 @@ public class GameModel implements Serializable<GameModel> {
 		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
+		this.shared = new SharedComponentModel();
 		this.players = new JavaPlayer[numberPlayers];
 		for (int i = 0; i < players.length; i++) {
 			players[i] = new JavaPlayer(playerNames[i], playerColors[i]);
@@ -72,9 +73,6 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	// Used for testing the Actions
-	public void placeTileOnBoard(int x, int y, Tile tile) {
-		gameBoard.placeTile(x, y, tile, players[indexOfCurrentPlayer] );
-	}
 
 	public boolean endTurn() {
 		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
@@ -86,6 +84,10 @@ public class GameModel implements Serializable<GameModel> {
 																		// players
 
 		return true;
+	}
+	
+	public void placeTile(int x, int y, Tile tile, JavaPlayer player){
+		gameBoard.placeTile(x, y, tile, player);
 	}
 
 	// Returns an array of players in order from highest to lowest of ranks of
@@ -443,5 +445,9 @@ public class GameModel implements Serializable<GameModel> {
 
 	public JavaPlayer[] getPlayers() {
 		return players;
+	}
+
+	public SharedComponentModel getShared() {
+		return shared;
 	}
 }

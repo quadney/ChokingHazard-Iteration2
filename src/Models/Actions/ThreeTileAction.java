@@ -27,12 +27,6 @@ public class ThreeTileAction extends RotatableComponentAction {
 	}
 
 	@Override
-	public void undo(GameModel game) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void redo(GameModel game) {
 		// TODO Auto-generated method stub
 		

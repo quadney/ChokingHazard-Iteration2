@@ -40,9 +40,7 @@ public class BoardModel implements Serializable<BoardModel> {
 			}
 		}
 	}
-
 	
-
 	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player) {
 		JavaCell[][] miniMap = createTestMap(xC, yC);
 		String[][] tileCells = tile.getTileCells();

@@ -19,38 +19,38 @@ public class SharedComponentPanel extends JPanel{
 	private JLabel threeTiles, irrigationTiles, twoPalaceTiles, fourPalaceTiles, sixPalaceTiles, eightPalaceTiles, tenPalaceTiles, festivalCard, palaceDeck;
 	private HashMap<String, String> imageSourceHashMap;
 	
-	public SharedComponentPanel(int numThreeTiles, int numIrrigationTiles, int[] palaceTiles, int numCardsInPalaceDeck, String festivalCardHashKey){
+	public SharedComponentPanel(String festivalCardHashKey){
 		super(new FlowLayout());
 		setPreferredSize(new Dimension(1100, 110));
 		
 		initHashMap();
-		initPanel(numThreeTiles, numIrrigationTiles, palaceTiles, numCardsInPalaceDeck, festivalCardHashKey);
+		initPanel(festivalCardHashKey);
 	}
 	
-	private void initPanel(int numThreeTiles, int numIrrigationTiles, int[] palaceTiles, int numCardsInPalaceDeck, String festivalCardHashKey){
-		threeTiles = newJLabel(numThreeTiles+"", imageSourceHashMap.get("layout_threeTile")); 
+	private void initPanel(String festivalCardHashKey){
+		threeTiles = newJLabel("", imageSourceHashMap.get("layout_threeTile")); 
 		threeTiles.setPreferredSize(new Dimension(70, 90));
         add(threeTiles);
         
-        irrigationTiles = newJLabel(numIrrigationTiles+"", imageSourceHashMap.get("layout_irrigationTile")); 
+        irrigationTiles = newJLabel("", imageSourceHashMap.get("layout_irrigationTile")); 
         add(irrigationTiles);
         
-        twoPalaceTiles = newJLabel(palaceTiles[0]+"", imageSourceHashMap.get("layout_palace2Tile")); 
+        twoPalaceTiles = newJLabel("", imageSourceHashMap.get("layout_palace2Tile")); 
         add(twoPalaceTiles);
         
-        fourPalaceTiles = newJLabel(palaceTiles[1]+"", imageSourceHashMap.get("layout_palace4Tile")); 
+        fourPalaceTiles = newJLabel("", imageSourceHashMap.get("layout_palace4Tile")); 
         add(fourPalaceTiles);
         
-        sixPalaceTiles = newJLabel(palaceTiles[2]+"", imageSourceHashMap.get("layout_palace6Tile")); 
+        sixPalaceTiles = newJLabel("", imageSourceHashMap.get("layout_palace6Tile")); 
         add(sixPalaceTiles);
         
-        eightPalaceTiles = newJLabel(palaceTiles[3]+"", imageSourceHashMap.get("layout_palace8Tile"));
+        eightPalaceTiles = newJLabel("", imageSourceHashMap.get("layout_palace8Tile"));
         add(eightPalaceTiles);
         
-        tenPalaceTiles = newJLabel(palaceTiles[4]+"", imageSourceHashMap.get("layout_palace10Tile")); 
+        tenPalaceTiles = newJLabel("", imageSourceHashMap.get("layout_palace10Tile")); 
         add(tenPalaceTiles);
 
-        palaceDeck = newJLabel(numCardsInPalaceDeck+"", imageSourceHashMap.get("layout_palaceDeck"));
+        palaceDeck = newJLabel("", imageSourceHashMap.get("layout_palaceDeck"));
         add(palaceDeck);
         
         festivalCard = newJLabel(" ", imageSourceHashMap.get("layout_"+festivalCardHashKey));
