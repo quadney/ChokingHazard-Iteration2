@@ -354,7 +354,9 @@ public class BoardModel implements Serializable<BoardModel> {
 		if (((map[x][y].getCellType() == "village") 
 			&& (canPlacePalace(x, y, palace, map, player)))
 			|| ((map[x][y].getCellType().contains("palace")) 
-			&& (canUpgradePalace(x, y, palace, map, player)))) {
+			&& (canUpgradePalace(x, y, palace, map, player))
+			|| ((map[x][y].getCellType() == "village"))
+			&& getPalaceSize(map[x][y]) <= getPalaceSize(palace))) {
 
 			return true;
 		}
@@ -403,11 +405,11 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 		
 		return palaceSize;
-	}
+	}*/
 	
 	private boolean hasAlreadyBeenModified(int x, int y) {
 		return false;
-	}*/
+	}
 	
 	public static int findNumberConnected(int x, int y, JavaCell[][] map) {
 		JavaCell[][] copy = new JavaCell[14][14];
