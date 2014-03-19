@@ -66,22 +66,24 @@ public class HoldFestivalController {
 	}
 	
 	private void startTurn(){
-		if(festModel.ifHadFullCycleTurnCheck() || festModel.isThereOnlyOnePlayerLeft()){
+		if(festModel.ifHadFullCycleTurnCheck()){
 			startNewRound();
 		}
 		else if(festModel.getCurrentPlayerNumOfPalaceCards() == 0){
-			festPanel.tellUserThatHeHasToDropOut();
+			if(!festModel.canEndTurn())
+				festPanel.tellUserThatHeHasToDropOut();
 		}
 		
 	}
 	
 	private void startNewRound(){
 		boolean noCardsLeft = festModel.checkIfEveryoneIsOutOfCards();
-		if(!noCardsLeft){
-			//if there is someone with more cards that they can play, then dont end the festival. Because they need to play it
+		if(festModel.getNumPlayersInFestival() == 1){
+			//if there is only one player left
+			endFestival(false);
 		}
 		else if(festModel.getNumWinners() > 1){
-			//check if there is a tie
+			//if there is a tie
 			if(noCardsLeft){
 				//they are all out of cards, so they have to end the festival
 				endFestival(true);
@@ -92,9 +94,8 @@ public class HoldFestivalController {
 			
 			//there is a tie and they want to continue playing. let them
 		}
-		else if(festModel.isThereOnlyOnePlayerLeft() || noCardsLeft){
-			//if there is only one player left
-			//if there is a tie
+		else if(noCardsLeft){
+			
 			endFestival(false);
 		}
 	}
@@ -115,18 +116,18 @@ public class HoldFestivalController {
 	
 	public void playSelectedPalaceCard(){
 		PalaceCard card = festModel.selectPalaceCard();
-		festPanel.playPalaceCardAtIndex(festModel.getCurrentPlayer(), card.getType(), festModel.getCurrentPlayerNumOfPalaceCards());
-		festPanel.setCurrentPlayerBid(festModel.getCurrentPlayer(), festModel.getCurrentPlayerBid());
+		if(card != null){
+			festPanel.playPalaceCardAtIndex(festModel.getCurrentPlayer(), card.getType(), festModel.getCurrentPlayerNumOfPalaceCards());
+			festPanel.setCurrentPlayerBid(festModel.getCurrentPlayer(), festModel.getCurrentPlayerBid());
+		}
 	}
 	
 	public void dropPlayerFromFestival(){
-		System.out.println("dropping player from festival...");
 		festPanel.dropCurrentPlayer(festModel.getCurrentPlayer());
 		
 		int index = festModel.dropCurrentPlayer();
 		festPanel.startPlayerTurn(index);
 		startTurn();
-		System.out.println("completed dropping");
 	}
 	
 	public void cancelTabbing(){

@@ -54,7 +54,6 @@ public class HoldFestivalFrame extends JFrame {
 		for(int i = 0; i < players.length; ++i){
 			//check if null, if null then not in the festival
 			if(players[i] == null){
-				System.out.println("players null "+i);
 				continue;
 			}
 			else{
