@@ -5,6 +5,9 @@ import Helpers.JsonObject;
 public class Tile implements Serializable<Tile> {
 	public static enum TileType {
 		palace2, palace4, palace6, palace8, palace10, village, rice, irrigation, twotile, threetile;
+		public boolean isPalace() {
+			return this.toString().startsWith("palace");
+		}
 	}
 	private TileType[][] tileCells;
 
