@@ -633,15 +633,7 @@ public class BoardModel implements Serializable<BoardModel> {
 			return 1;
 	}
 
-	public void removeDeveloper(JavaCell javaCell, JavaPlayer player) {
-		// Turn off hasDeveloper
-		javaCell.removeDeveloper();
-		// Remove currently selected developer from dev array
-		player.removeDeveloperFromArray(); // Must check that this works later
-											// on TODO
-		// Decrement actions points
-		player.decrementNActionPoints(1, false);
-	}
+
 
 	public boolean moveDeveloper(JavaPlayer player) {
 		int pathSize = path.size();
