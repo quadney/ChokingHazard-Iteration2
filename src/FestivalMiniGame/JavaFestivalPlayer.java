@@ -46,9 +46,7 @@ public class JavaFestivalPlayer {
 	}
 	
 	public void awardFamePoints(int pointsToAward){
-		System.out.println("PLayer fame points before adding: "+this.player.getFamePoints());
 		this.player.changeFamePoints(pointsToAward);
-		System.out.println("PLayer fame points after adding: "+this.player.getFamePoints());
 	}
 	
 	public void addFestivalBid(int points){
@@ -60,7 +58,6 @@ public class JavaFestivalPlayer {
 	
 	public void incrementTab(){
 		if(palaceCards.size() == 0){
-			System.out.println("palace card size == 0");
 			tabCount = -1;
 		}
 		else{
@@ -76,9 +73,9 @@ public class JavaFestivalPlayer {
 	
 	public PalaceCard getSelectedPalaceCard(){
 		//this gets called when the player plays a palacecard in the festival
+		if(tabCount < 0)
+			return null;
 		PalaceCard selectedCard = palaceCards.get(tabCount);
-		//test to make sure that this will work
-		//TODO
 		player.removePalaceCard(selectedCard);
 		palaceCards.remove(tabCount);
 		tabCount = -1;
