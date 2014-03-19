@@ -52,6 +52,7 @@ public class GameController {
 		//the shared dealPalaceCards returns the dealt palace cards
 		//and then the player sets those dealt cards as the cards
 		players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
+		players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex());
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
 		
