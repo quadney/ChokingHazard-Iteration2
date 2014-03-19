@@ -8,8 +8,9 @@ public class TriggeredFinalRound extends Event {
 		redo(game);
 	}
 
-	public void redo(GameModel game) {
+	public boolean redo(GameModel game) {
 		game.setIsFinalRound(true);
+		return true;
 	}
 	
 }

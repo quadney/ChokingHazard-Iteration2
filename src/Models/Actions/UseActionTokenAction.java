@@ -24,7 +24,8 @@ public class UseActionTokenAction extends Action {
 	}
 
 	@Override
-	public void redo(GameModel game) {
+	public boolean redo(GameModel game) {
 		game.getCurrentPlayer().useActionToken();
+		return true;
 	}
 }

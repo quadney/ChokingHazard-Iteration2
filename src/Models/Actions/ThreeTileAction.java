@@ -27,8 +27,11 @@ public class ThreeTileAction extends RotatableComponentAction {
 	}
 
 	@Override
-	public void redo(GameModel game) {
-		game.getBoard().placeTile(x, y, new Tile(TileType.threetile, rotationState), game.getCurrentPlayer());
-		game.getShared().decrementThreeSpaceTiles();
+	public boolean redo(GameModel game) {
+		if(game.getBoard().placeTile(x, y, new Tile(TileType.threetile, rotationState), game.getCurrentPlayer())) {
+			game.getShared().decrementThreeSpaceTiles();
+			return true;
+		}
+		return false;
 	}
 }

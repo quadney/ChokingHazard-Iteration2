@@ -126,7 +126,7 @@ public class GameController {
 			if(action != null){
 				System.out.println("action != null in GCtrl");
 				currentGame.addToActionHistory(action);
-				currentGame.doLastActionInHistory();
+				//currentGame.doLastActionInHistory();
 				currentGame.setSelectedAction(null);
 				updateControllersWithAction(action);
 			}

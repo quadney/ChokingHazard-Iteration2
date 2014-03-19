@@ -1,5 +1,6 @@
 package Models.Actions.MActions;
 
+import Models.GameModel;
 import Models.Actions.Action;
 import Models.Actions.ThreeTileAction;
 
@@ -47,7 +48,10 @@ public class SelectThreeTileAction extends SelectRotatableComponentAction{
 	}
 
 	@Override
-	public Action pressEnter() {
-		return new ThreeTileAction(-1, x, y, rotationState);
+	public Action pressEnter(GameModel game) {
+		ThreeTileAction action = new ThreeTileAction(-1, x, y, rotationState);
+		if(action.doAction(game))
+			return action; 
+		return null;
 	}
 }
