@@ -286,15 +286,15 @@ public class GameController {
 		if (currentGame.getSelectedAction() instanceof SelectTwoTileAction || currentGame.getSelectedAction() instanceof SelectThreeTileAction){
 			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");
 			//System.out.println(" This is the rotation state: " + ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
-			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableComponentAction)currentGame.getSelectedAction()).getRotationState());
+			board.updateSelectedTileAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableComponentAction)currentGame.getSelectedAction()).getRotationState());
 		}
 		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
 			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
-			board.updateSelectedTileAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50, currentGame.getSelectedActionImageKey(), 0);
+			board.updateSelectedTileAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
 		else{//developer
 			//System.out.println("(In GCtrl) updating Board panel when developer action is selected");
-			board.updateSelectedDeveloperAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50,currentGame.getSelectedActionImageKey());
+			board.updateSelectedDeveloperAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50,currentGame.getSelectedActionImageKey());
 		}
 	}
 	
