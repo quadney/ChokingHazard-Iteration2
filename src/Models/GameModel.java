@@ -335,28 +335,28 @@ public class GameModel implements Serializable<GameModel> {
 
 	public boolean pressLeft() {
 		if (selectedAction != null) {
-			return selectedAction.pressArrow(-1, 0);
+			return selectedAction.pressArrow(0, -1);
 		}
 		return false;
 	}
 
 	public boolean pressUp() {
 		if (selectedAction != null) {
-			return selectedAction.pressArrow(0, -1);
+			return selectedAction.pressArrow(-1, 0);
 		}
 		return false;
 	}
 
 	public boolean pressRight() {
 		if (selectedAction != null) {
-			return selectedAction.pressArrow(1, 0);
+			return selectedAction.pressArrow(0, 1);
 		}
 		return false;
 	}
 
 	public boolean pressDown() {
 		if (selectedAction != null) {
-			return selectedAction.pressArrow(0, 1);
+			return selectedAction.pressArrow(1, 0);
 		}
 		return false;
 	}
