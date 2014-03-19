@@ -10,6 +10,7 @@ public class RunGame {
 	private final static int WIDTH = 1300;
 	private final static int HEIGHT = 850;
 
+
 	public static void main(String[] args) {
 		@SuppressWarnings("unused")
 		RunGame game = new RunGame();
