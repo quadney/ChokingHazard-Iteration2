@@ -21,7 +21,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		this.map = new JavaCell[14][14];
 		this.path = new LinkedList<JavaCell>();
 		cellId = 0;
-		outerCells = new JavaCell[50];
+		outerCells = new JavaCell[52];
 
 		int i = 0;
 
@@ -29,7 +29,7 @@ public class BoardModel implements Serializable<BoardModel> {
 			for (int y = 0; y < map[0].length; y++) {
 				map[x][y] = new JavaCell(x, y, 0);
 
-				if ((x == 0 || x == 13) && (y != 0 && y != 13)) {
+				if ((x == 0 || x == 13) ) {
 					outerCells[i] = map[x][y];
 					i++;
 				} else if ((y == 0 || y == 13) && (x != 0 && x != 13)) {
@@ -383,7 +383,8 @@ public class BoardModel implements Serializable<BoardModel> {
 
 	public boolean mutualPalacePlacementRequirementsOK(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
 		if (findNumberConnected(x,y,map) >= getPalaceSize(palace)
-				&& !hasAlreadyBeenModified(palace, player)) {
+				&& !hasAlreadyBeenModified(palace, player)
+				) {
 			return true;
 		}
 		
@@ -498,24 +499,16 @@ public class BoardModel implements Serializable<BoardModel> {
 				+ outerCells.length);
 
 		for (int i = 0; i < outerCells.length; i++) {
-
-			if (cells[0] != null && outerCells[i] != null
-					&& cells[0].getX() == outerCells[i].getX()
-					&& cells[0].getY() == outerCells[i].getY())
-				count++;
-			if (cells[1] != null && outerCells[i] != null
-					&& cells[1].getX() == outerCells[i].getX()
-					&& cells[1].getY() == outerCells[i].getY())
-				count++;
-			if (cells[2] != null && outerCells[i] != null
-					&& cells[2].getX() == outerCells[i].getX()
-					&& cells[2].getY() == outerCells[i].getY())
-				count++;
-			if (cells[3] != null && outerCells[i] != null
-					&& cells[3].getX() == outerCells[i].getX()
-					&& cells[3].getY() == outerCells[i].getY())
-				count++;
+			for (int j = 0; j < cells.length; j++) {
+				if (cells[j] != null && outerCells[i] != null
+						&& cells[j].getX() == outerCells[i].getX()
+						&& cells[j].getY() == outerCells[i].getY()) {
+					count++;
+				}
+			}
 		}
+		
+		System.out.println("COUNT IS: " + count);
 
 		System.out.println("count: " + count + "number" + number);
 		
