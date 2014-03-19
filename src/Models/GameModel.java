@@ -454,7 +454,7 @@ public class GameModel implements Serializable<GameModel> {
 		return gameBoard.getNextCellId();
 	}
 
-	public void placeDeveloperOnBoard(int x, int y) {
-		gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
+	public boolean placeDeveloperOnBoard(int x, int y) {
+		return gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
 	}
 }

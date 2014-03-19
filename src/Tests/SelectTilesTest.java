@@ -21,8 +21,6 @@ public class SelectTilesTest {
 		RunGame game = new RunGame();
 		
 		Simulator.newGame("p", "c");
-		Thread.sleep(3000);
-		GameRobot.pressEscape();
 //		Simulator.placeIrrigationTile(4, 3);
 //		//GameRobot.pressEscape();
 //		Simulator.placeVillageTile(2, 2);

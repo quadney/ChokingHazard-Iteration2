@@ -284,6 +284,4 @@ public class GameFrame extends JFrame {
 		// This pop up a window and ask for the palace value
 		return 0;
 	}
-	
-
 }
