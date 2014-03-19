@@ -61,11 +61,11 @@ public class BoardPanel extends JPanel {
 	}
 	// call this when the user is for sure placing a tile on the board
 	// aka when the Enter button is pressed
-	public void placeTile(int xLoc, int yLoc, int elevation, String hashMapKey){
+	public void placeTile(int xLoc, int yLoc, int rotationState, int elevation, String hashMapKey){
 		clearImage(tempImage);
 		g2d = tileImage.createGraphics();
-		//g2d.rotate(rotationState*Math.PI/2, xLoc+50, yLoc+50);
-		g2d.scale(-0.1*elevation, -0.1*elevation);
+		g2d.rotate(rotationState*Math.PI/2, xLoc+25, yLoc+25);
+		//g2d.scale(-0.1*elevation, -0.1*elevation);
 		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
 		g2d.setColor(Color.YELLOW);
 		g2d.drawString(""+elevation, xLoc+35, yLoc+35);
