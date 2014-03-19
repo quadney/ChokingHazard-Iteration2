@@ -11,6 +11,10 @@ public class IrrigationTileAction extends OneSpaceTileAction {
 		super(actionID, x, y);
 		this.imageKey = "irrigationTile";
 	}
+	
+	public IrrigationTileAction() {
+
+	}
 
 	@Override
 	public boolean redo(GameModel game) {
@@ -22,14 +26,9 @@ public class IrrigationTileAction extends OneSpaceTileAction {
 	}
 
 	@Override
-	public String serialize() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IrrigationTileAction(Integer.parseInt(json.getString("actionID")), 
+				Integer.parseInt(json.getString("x")), 
+				Integer.parseInt(json.getString("y")));
 	}
 }

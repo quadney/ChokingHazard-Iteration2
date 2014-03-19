@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -68,7 +69,6 @@ public class BoardPanel extends JPanel {
 		drawElevationLabel(xLoc, yLoc, rotationState, elevation, hashMapKey);
 		
 		repaint();
-		System.out.println("placed tile");
 	}
 	
 	//use this when the user is moving a tile around the board, and has not made the decision to place it yet
@@ -77,52 +77,33 @@ public class BoardPanel extends JPanel {
 		g2d = tempImage.createGraphics();
 		g2d.rotate(rotationState*Math.PI/2, xLoc+25, yLoc+25);
 		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
-//		g2d.setColor(Color.YELLOW);
-//		g2d.setStroke(new BasicStroke(2.0f));
-//		g2d.drawRect(xLoc, yLoc, 50, 50);
 		g2d.dispose();
 		repaint();
 	}
 	
-	public void rotate(int xLoc, int yLoc, int rotationState, String hashMapKey){
+	public void moveUnplacedDeveloperAround(int xLoc, int yLoc, String hashKey){
 		clearImage(tempImage);
-		g2d = tempImage.createGraphics();
-		g2d.rotate(rotationState*Math.PI/2);
-		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
-		g2d.dispose();
-		repaint();
-	}
-	
-	public void trackDeveloperPath(int playerIndex, int xLoc, int yLoc){
-		//clearImage(tempImage);
 		g2d = tempImage.createGraphics();
 		g2d.setColor(Color.YELLOW);
 		g2d.setStroke(new BasicStroke());
-		g2d.drawRect(xLoc, yLoc, 50, 50);
+		g2d.drawImage(getImage(imageSourceHashMap.get(hashKey)), null, xLoc, yLoc);
+	}
+	
+	public void drawDeveloperPath(Stack<Integer> x, Stack<Integer> y){
+		clearImage(tempImage);
+		g2d = tempImage.createGraphics();
+		g2d.setColor(Color.YELLOW);
+		g2d.setStroke(new BasicStroke());
+		while(!x.isEmpty()){
+			g2d.drawRect(x.pop(), y.pop(), 50, 50);
+		}
 		g2d.dispose();
 		repaint();
 	}
 	
-//	public void drawPlayerPath(int playerIndex, int[] x, int[] y){
-//		clearImage(tempImage);
-//		g2d = tempImage.createGraphics();
-//		g2d.setColor(Color.YELLOW);
-//		g2d.setStroke(new BasicStroke());
-//		System.out.println("X Length: "+x.length);
-//		for(int i = 0; i < x.length; ++i){
-//			g2d.drawRect(x[i], y[i], 50, 50);
-//		}
-//		g2d.drawImage(getImage("images/player_"+playerIndex+".png"), null, x[x.length-1], y[y.length-1]);
-//		g2d.dispose();
-//		repaint();
-//	}
-	
-	//use this when the user places a developer onto the board, aka presses enter
-	public void placeDeveloper(String playerColor, int xLoc, int yLoc){
-		clearImage(tempImage);
-		g2d = developers.createGraphics();
-		g2d.drawImage(getImage(imageSourceHashMap.get("player_"+playerColor)), null, xLoc, yLoc);
-		g2d.dispose();
+	//use this when the user places a developer onto the board,
+	public void placeDeveloper(Stack<Integer> x, Stack<Integer> y, Stack<String> hash){
+		redrawAllDevelopers(x, y, hash);
 		repaint();
 	}
 	
@@ -130,31 +111,38 @@ public class BoardPanel extends JPanel {
 	public void highlightDeveloper(int xLoc, int yLoc){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
-		g2d.setColor(Color.RED);
-		g2d.setStroke(new BasicStroke(2.0f));
-		g2d.drawRect(xLoc, yLoc, 50, 50);
-		g2d.dispose();
-		repaint();
-	}
-	
-	public void removeDeveloper(int xLoc, int yLoc){
-		//removes developer from the image
-		clearDeveloperSpace(xLoc, yLoc, developers);
-		clearImage(tempImage);
-		repaint();
-	}
-	
-	public void selectHighlightedDeveloper(String playerColor, int xLoc, int yLoc){
-		//this method removes the developer from the buffered image, and places it on the temp image
-		clearDeveloperSpace(xLoc, yLoc, developers);
-		clearImage(tempImage);
-		g2d = tempImage.createGraphics();
-		g2d.drawImage(getImage(imageSourceHashMap.get("player_"+playerColor)), null, xLoc, yLoc);
 		g2d.setColor(Color.YELLOW);
 		g2d.setStroke(new BasicStroke(2.0f));
 		g2d.drawRect(xLoc, yLoc, 50, 50);
 		g2d.dispose();
 		repaint();
+	}
+	
+	public void selectHighlightedDeveloper(String hash, int xLoc, int yLoc){
+		clearImage(tempImage);
+		g2d = tempImage.createGraphics();
+		g2d.setColor(Color.RED);
+		g2d.setStroke(new BasicStroke(2.0f));
+		g2d.drawImage(getImage(imageSourceHashMap.get(hash)), null, xLoc, yLoc);
+		g2d.drawRect(xLoc, yLoc, 50, 50);
+		g2d.dispose();
+		repaint();
+	}
+	
+	public void removeDeveloper(Stack<Integer> x, Stack<Integer> y, Stack<String> hash){
+		redrawAllDevelopers(x, y, hash);
+		repaint();
+	}
+	
+	private void redrawAllDevelopers(Stack<Integer> x, Stack<Integer> y, Stack<String> hash){
+		clearImage(tempImage);
+		clearImage(developers);
+		g2d = developers.createGraphics();
+		
+		while(!x.isEmpty()){
+			g2d.drawImage(getImage(imageSourceHashMap.get(hash.pop())), null, x.pop(), y.pop());
+		}
+		g2d.dispose();
 	}
 	
 	public void cancel(){
@@ -165,7 +153,6 @@ public class BoardPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		System.out.println("calling paint component");
 		g.drawImage(board, 0, 0, null);
 		g.drawImage(tileImage, 0, 0, null);
 		g.drawImage(tempImage, 0, 0, null);
@@ -173,11 +160,12 @@ public class BoardPanel extends JPanel {
 	}
 	
 	private void drawElevationLabel(int xLoc, int yLoc, int rotationState, int elevation, String hashMapKey){
-		System.out.println("drawing elevation label rotation state: "+rotationState);
 		int xStringLoc = xLoc+35;
 		int yStringLoc = yLoc+35;
 		g2d = tileImage.createGraphics();
 		g2d.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		g2d.setColor(Color.WHITE);
+		g2d.fillOval(xStringLoc-5, yStringLoc-5, 10, 10);
 		g2d.setColor(Color.RED);
 		g2d.drawString(""+elevation, xStringLoc, yStringLoc);
 		
@@ -187,18 +175,25 @@ public class BoardPanel extends JPanel {
 			for(int i = 0; i < 2; i++){
 				if(rotationState == 0){
 					//draw right
+//					g2d.setColor(Color.WHITE);
+//					g2d.fillOval(xStringLoc+45, yStringLoc-5, 10, 10);
+					g2d.setColor(Color.RED);
 					g2d.drawString(""+elevation, xStringLoc+50, yStringLoc);
 				}
 				else if(rotationState == 1){
 					//draw bottom
+//					g2d.fillOval(xStringLoc-5, yStringLoc+45, 10, 10);
+					g2d.setColor(Color.RED);
 					g2d.drawString(""+elevation, xStringLoc, yStringLoc+50);
 				}
 				else if(rotationState == 2){
 					//draw left
+					g2d.setColor(Color.RED);
 					g2d.drawString(""+elevation, xStringLoc-50, yStringLoc);
 				}
 				else if(rotationState == 3){
 					//draw top
+					g2d.setColor(Color.RED);
 					g2d.drawString(""+elevation, xStringLoc, yStringLoc-50);
 				}
 				

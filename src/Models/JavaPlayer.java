@@ -237,6 +237,10 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return hasPlacedLandTile;
 	}
 	
+	public boolean cellInPalacesInteractedWith(JavaCell cell) {
+		return palacesInteractedWith.contains(cell);
+	}
+	
 	public boolean placeDevOnBoard( JavaCell location){
 		
 		

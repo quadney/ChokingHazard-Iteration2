@@ -13,10 +13,11 @@ public class Simulator {
 	public static int QUIT_POS_Y = 140;
 	public static int PLACE_START_X = 1;
 	public static int PLACE_START_Y = 1;
-	public static int THROTTLE = 30;
+	public static int THROTTLE = 15;
 	public static int TIME_BETWEEN_MAIN_PLAYERS = 150;
 	public static int TIME_BETWEEN_MAIN_COMMANDS = 300;
 	public static int GAME_LOAD_WAIT_TIME = 2000;
+	public static int GAME_EXIT_WAIT_TIME = 2000;
 	
 	/**
 	 * starts a new game with new players. The colors are set to default.
@@ -38,11 +39,13 @@ public class Simulator {
 		}
 		GameRobot.pressSpace();
 		GameRobot.wait(TIME_BETWEEN_MAIN_COMMANDS);
+		GameRobot.wait(GAME_LOAD_WAIT_TIME/2);
+		GameRobot.pressEscape();
 	}
 	
 	/**
 	 * Not fully implemented yet.
-	 * Quits the game through they keyboard shortcut, alt+N. 
+	 * Quits the game through they menu with the mouse. 
 	 * @param filename name of the file to save. Set to null to quit without saving.
 	 */
 	public static void quitGame(String filename) {
@@ -56,6 +59,15 @@ public class Simulator {
 		}
 		GameRobot.wait(TIME_BETWEEN_MAIN_COMMANDS*2);
 		GameRobot.pressSpace();
+	}
+
+	/**
+	 * Not fully implemented yet.
+	 * quits through System.exit(0)
+	 */
+	public static void quitGame() {
+		GameRobot.wait(GAME_EXIT_WAIT_TIME);
+		System.exit(0);
 	}
 	
 	/** 

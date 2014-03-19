@@ -9,17 +9,14 @@ public class EndTurnAction extends Action {
 		super(actionID);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public EndTurnAction() {
 
-	@Override
-	public String serialize() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new EndTurnAction(Integer.parseInt(json.getString("actionID")));
 	}
 
 	@Override
