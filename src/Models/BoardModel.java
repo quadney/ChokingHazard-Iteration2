@@ -28,8 +28,6 @@ public class BoardModel implements Serializable<BoardModel> {
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
 				map[x][y] = new JavaCell(x, y, 0);
-				System.out.println("(in BMod) New JavaCell created at " + x
-						+ "," + y);
 
 				if ((x == 0 || x == 13) && (y != 0 && y != 13)) {
 					outerCells[i] = map[x][y];

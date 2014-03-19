@@ -3,17 +3,14 @@ package Models.Actions;
 import Models.GameModel;
 
 public class TriggeredSwitchTurn extends Event {
-
-	int oldPlayerIndex;
-	int newPlayerIndex;
 	
-	public TriggeredSwitchTurn(GameModel game) {
-		oldPlayerIndex = game.getPlayerIndex();
-		newPlayerIndex = oldPlayerIndex;
+	public TriggeredSwitchTurn() {
+		
 	}
 
 	@Override
 	public void redo(GameModel game) {
+		game.endTurn();
 		
 	}
 

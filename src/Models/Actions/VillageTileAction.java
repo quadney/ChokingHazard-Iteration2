@@ -1,7 +1,8 @@
 package Models.Actions;
 
 import Models.GameModel;
-import Models.JavaCell;
+import Models.Tile;
+import Models.Tile.TileType;
 
 public class VillageTileAction extends OneSpaceTileAction {
 
@@ -12,9 +13,8 @@ public class VillageTileAction extends OneSpaceTileAction {
 
 	@Override
 	public void redo(GameModel game) {
+		game.getBoard().placeTile(x, y, new Tile(TileType.village, 0), game.getCurrentPlayer());
 		game.getCurrentPlayer().decrementVillage();
-		// TODO deal with cellID
-		game.getBoard().getMap()[x][y] = new JavaCell(x, y, "VILLAGE", -1);
 	}
 
 }

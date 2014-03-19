@@ -30,14 +30,6 @@ public class TwoTileAction extends RotatableComponentAction {
 	public void redo(GameModel game) {
 		game.getBoard().placeTile(x, y, new Tile(TileType.twotile, rotationState), game.getCurrentPlayer());
 		game.getCurrentPlayer().decrementTwo();
-		
-		System.out.println(x + "," + y +"Center " + game.getBoard().getMap()[x][y].getCellType());
-
-//		System.out.println("Down " + game.getBoard().getMap()[x + 1][y].getCellType());
-//		System.out.println("Up " + game.getBoard().getMap()[x - 1][y].getCellType());
-//		System.out.println("Right " + game.getBoard().getMap()[x][y + 1].getCellType());
-//		System.out.println("Left " + game.getBoard().getMap()[x][y - 1].getCellType());
-
 	}
 		
 }
