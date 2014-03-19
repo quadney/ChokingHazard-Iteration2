@@ -255,12 +255,12 @@ public class GameController {
 			//released X, end turn
 //			System.out.println("ending turn?");
 ////			System.out.println(players.selectEndTurn(currentGame.getPlayerIndex()));
-//			if(currentGame.endTurn()){
-//				EndTurnAction endTurn = new EndTurnAction(-1);
-//				currentGame.addToActionHistory(endTurn);
-//				players.setNotCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex() - 1); //need to tell the player panel of the current player to stop outlining their panel
-//				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
-//			}
+			if(currentGame.endTurn()){
+				EndTurnAction endTurn = new EndTurnAction(-1);
+				currentGame.addToActionHistory(endTurn);
+				players.setNoCurrentPlayerinPlayerPanels(); //need to tell the player panel of the current player to stop outlining their panel
+				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
+			}
 			
 			break;		
 		}
