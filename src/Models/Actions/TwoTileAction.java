@@ -13,6 +13,10 @@ public class TwoTileAction extends RotatableComponentAction {
 		System.out.println("Two Tile constructor end");
 		this.imageKey = "twoTile";
 	}
+	
+	public TwoTileAction() {
+
+	}
 
 	@Override
 	public String serialize() {

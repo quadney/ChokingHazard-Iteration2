@@ -9,6 +9,10 @@ public class DrawPalaceCardAction extends Action {
 		super(actionID);
 		//TODO image key
 	}
+	
+	public DrawPalaceCardAction() {
+
+	}
 
 	@Override
 	public String serialize() {

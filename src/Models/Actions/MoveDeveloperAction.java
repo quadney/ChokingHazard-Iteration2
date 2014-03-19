@@ -8,6 +8,10 @@ public class MoveDeveloperAction extends NonRotatableComponentAction {
 	public MoveDeveloperAction(int actionID, int x, int y) {
 		super(actionID, x, y);
 	}
+	
+	public MoveDeveloperAction() {
+
+	}
 
 	@Override
 	public String serialize() {

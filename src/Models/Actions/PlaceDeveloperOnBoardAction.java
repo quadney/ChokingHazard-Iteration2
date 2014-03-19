@@ -9,6 +9,10 @@ public class PlaceDeveloperOnBoardAction extends NonRotatableComponentAction {
 	public PlaceDeveloperOnBoardAction(int actionID, int x, int y) {
 		super(actionID, x, y);
 	}
+	
+	public PlaceDeveloperOnBoardAction() {
+
+	}
 
 	@Override
 	public String serialize() {

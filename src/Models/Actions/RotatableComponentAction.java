@@ -4,6 +4,10 @@ public abstract class RotatableComponentAction extends Action {
 	int rotationState = 0;
 	protected int x; 
 	protected int y;
+	
+	public RotatableComponentAction() {
+
+	}
 
 	public RotatableComponentAction(int actionID, int x, int y, int rotationState) {
 

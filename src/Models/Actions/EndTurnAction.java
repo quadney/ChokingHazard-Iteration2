@@ -9,6 +9,10 @@ public class EndTurnAction extends Action {
 		super(actionID);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public EndTurnAction() {
+
+	}
 
 	@Override
 	public String serialize() {

@@ -10,6 +10,10 @@ public abstract class NonRotatableComponentAction extends Action {
 		this.y = y;
 	}
 	
+	public NonRotatableComponentAction() {
+
+	}
+	
 	public int getX(){
 		return x;
 	}

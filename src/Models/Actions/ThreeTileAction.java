@@ -14,6 +14,10 @@ public class ThreeTileAction extends RotatableComponentAction {
 		this.imageKey = "threeTile";
 	}
 	
+	public ThreeTileAction() {
+
+	}
+	
 	@Override
 	public String serialize() {
 		// TODO Auto-generated method stub

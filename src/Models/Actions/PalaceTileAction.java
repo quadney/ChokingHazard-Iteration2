@@ -14,6 +14,10 @@ public class PalaceTileAction extends OneSpaceTileAction {
 		this.value = value;
 		this.imageKey = "palace" + value + "Tile";
 	}
+	
+	public PalaceTileAction() {
+
+	}
 
 	public int getValueOfPalace() {
 		return value;

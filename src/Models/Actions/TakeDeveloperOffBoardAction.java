@@ -8,6 +8,10 @@ public class TakeDeveloperOffBoardAction extends NonRotatableComponentAction {
 	public TakeDeveloperOffBoardAction(int actionID, int x, int y) {
 		super(actionID, x, y);
 	}
+	
+	public TakeDeveloperOffBoardAction() {
+
+	}
 
 	@Override
 	public String serialize() {

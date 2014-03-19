@@ -11,6 +11,10 @@ public class RiceTileAction extends OneSpaceTileAction {
 		super(actionID, x, y);
 		this.imageKey = "riceTile";
 	}
+	
+	public RiceTileAction() {
+
+	}
 
 	@Override
 	public boolean redo(GameModel game) {

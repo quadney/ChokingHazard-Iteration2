@@ -11,6 +11,10 @@ public class VillageTileAction extends OneSpaceTileAction {
 		super(actionID, x, y);
 		this.imageKey = "villageTile";
 	}
+	
+	public VillageTileAction() {
+
+	}
 
 	@Override
 	public boolean redo(GameModel game) {

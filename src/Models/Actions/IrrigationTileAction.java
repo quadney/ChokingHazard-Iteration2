@@ -11,6 +11,10 @@ public class IrrigationTileAction extends OneSpaceTileAction {
 		super(actionID, x, y);
 		this.imageKey = "irrigationTile";
 	}
+	
+	public IrrigationTileAction() {
+
+	}
 
 	@Override
 	public boolean redo(GameModel game) {

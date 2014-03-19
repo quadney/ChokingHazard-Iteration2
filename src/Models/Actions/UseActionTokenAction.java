@@ -9,6 +9,10 @@ public class UseActionTokenAction extends Action {
 	public UseActionTokenAction(int actionID) {
 		super(actionID);
 	}
+	
+	public UseActionTokenAction() {
+
+	}
 
 	@Override
 	public String serialize() {
