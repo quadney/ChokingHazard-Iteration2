@@ -22,7 +22,6 @@ public class JavaCell implements Serializable<JavaCell> {
 	  this.numOriginalSpaces = 0;
    }
 
-
 	public int getX() {
 		return xVal;
 	}
@@ -31,6 +30,9 @@ public class JavaCell implements Serializable<JavaCell> {
 		return yVal;
 	}
 	
+	public int getNumOriginalSpaces(){
+		return numOriginalSpaces;
+	}
    public int getCellId() {
       return cellId;
    }
@@ -46,6 +48,7 @@ public class JavaCell implements Serializable<JavaCell> {
    public String getCellType() {
       return cellType;
    }
+
    
    public void setElevation(int e) {
       elevation = e;
@@ -72,6 +75,21 @@ public class JavaCell implements Serializable<JavaCell> {
 	   if (this.xVal == 13 || this.yVal == 13 || this.xVal == 0 || this.yVal == 0 )
 		   return true;
 	   return false;
+   }
+   
+   public boolean isNextToBorder()
+   {
+	   if (this.xVal == 12 || this.yVal == 12 || this.xVal == 1 || this.yVal == 1 )
+		   return true;
+	   return false;
+   }
+   
+   public int getActionPointsFromDeveloperMove()
+   {
+	   if (this.yVal > 6) //From lowlands
+		   return 1;
+	   else
+		   return 2; //From mountains
    }
    
    //for testing purpose
