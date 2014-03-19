@@ -91,7 +91,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		//boolean needed to check the amount of available AP points
 		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1].toString()); 
 
-		System.out.println("palace placement: " +checkPalacePlacement(miniMap, tile));
+		System.out.println("palace placement: " + checkPalacePlacement(miniMap, tile));
 		System.out.println("palace tilesBelow: " + checkTilesBelow(miniMap, tile));
 		System.out.println("palace elevation: " + checkElevation(miniMap, tile, xC, yC));
 		System.out.println("palace I: " + checkIrrigationPlacement(miniMap, tile));
