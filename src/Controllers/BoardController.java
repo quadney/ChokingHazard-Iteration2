@@ -45,7 +45,7 @@ public class BoardController {
 		}
 		else if(action instanceof NonRotatableComponentAction) {
 			System.out.println("in updateBoardPanel NonRotatableTileComponent");
-			boardPanel.placeDeveloper(game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
+			//boardPanel.placeDeveloper(game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
 		}
 	}
 }
