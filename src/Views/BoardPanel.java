@@ -26,15 +26,10 @@ public class BoardPanel extends JPanel {
 	private HashMap<String, String> imageSourceHashMap;
 	public boolean replaying = false;
 
-	public BoardPanel(){
-		System.out.println("Board Panel is created.");
-		
+	public BoardPanel(){		
 		initHashMap();
 		getBackgroundImage();
-		Dimension size = new Dimension(board.getWidth(), board.getHeight());
-		setMinimumSize(size);
-		setMaximumSize(size);
-		setPreferredSize(size);
+		setPreferredSize(new Dimension(board.getWidth(), board.getHeight()));
 		
 		this.tileImage = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		this.developers = new BufferedImage(board.getWidth(), board.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -43,13 +38,14 @@ public class BoardPanel extends JPanel {
 	
 	private void getBackgroundImage(){
 		board = getImage(imageSourceHashMap.get("board"));
+		drawLines(board);
 		repaint();
 	}
 	
-//	public void repaint() {
-//		if(!replaying)
-//			super.repaint();
-//	}
+	public void repaint() {
+		if(!replaying)
+			super.repaint();
+	}
 	
 	private BufferedImage getImage(String source){
 		BufferedImage returnImage = null;
@@ -68,10 +64,8 @@ public class BoardPanel extends JPanel {
 		g2d.rotate(rotationState*Math.PI/2, xLoc+25, yLoc+25);
 		//g2d.scale(-0.1*elevation, -0.1*elevation);
 		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
-		g2d.setColor(Color.RED);
-		g2d.drawString(""+elevation, xLoc+35, yLoc+35);
 		g2d.dispose();
-		//drawElevationLabel(xLoc, yLoc, rotationState, elevation, hashMapKey);
+		drawElevationLabel(xLoc, yLoc, rotationState, elevation, hashMapKey);
 		
 		repaint();
 		System.out.println("placed tile");
@@ -179,27 +173,43 @@ public class BoardPanel extends JPanel {
 	}
 	
 	private void drawElevationLabel(int xLoc, int yLoc, int rotationState, int elevation, String hashMapKey){
-		System.out.println("drawing elevation label");
-		int imageWidth = 50;
-		int imageHeight = imageWidth;
+		System.out.println("drawing elevation label rotation state: "+rotationState);
+		int xStringLoc = xLoc+35;
+		int yStringLoc = yLoc+35;
 		g2d = tileImage.createGraphics();
-		if(hashMapKey.equals("threeTile")){
-			imageWidth *= 2;
-			imageHeight = imageWidth;
-		}
-		else if(hashMapKey.equals("twoTile")){
-			imageWidth *= 2;
-		}
-		else{
-			//draw the elevation with no restrictions
-			System.out.println("drawing the elevation");
-			//g2d.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-
-			
-		}
+		g2d.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		g2d.setColor(Color.RED);
+		g2d.drawString(""+elevation, xStringLoc, yStringLoc);
 		
-		
-		
+		if(hashMapKey.equals("twoTile") || hashMapKey.equals("threeTile")){
+			boolean ifThree = false;
+			if(hashMapKey.equals("threeTile")) ifThree = true;
+			for(int i = 0; i < 2; i++){
+				if(rotationState == 0){
+					//draw right
+					g2d.drawString(""+elevation, xStringLoc+50, yStringLoc);
+				}
+				else if(rotationState == 1){
+					//draw bottom
+					g2d.drawString(""+elevation, xStringLoc, yStringLoc+50);
+				}
+				else if(rotationState == 2){
+					//draw left
+					g2d.drawString(""+elevation, xStringLoc-50, yStringLoc);
+				}
+				else if(rotationState == 3){
+					//draw top
+					g2d.drawString(""+elevation, xStringLoc, yStringLoc-50);
+				}
+				
+				if(ifThree){
+					//do again but increase the rotation state
+					rotationState = (rotationState + 1) % 4;
+				}
+				else
+					break;
+			}
+		}
 		g2d.dispose();
 	}
 	
@@ -217,6 +227,17 @@ public class BoardPanel extends JPanel {
 		g2d.fillRect(x, y, 50, 50);
 		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 		g2d.dispose();
+	}
+	
+	private void drawLines(BufferedImage image){
+		g2d = image.createGraphics();
+		g2d.setColor(Color.black);
+		for(int i = 50; i < image.getWidth(); i+=50){
+			//columns
+			g2d.drawLine(i, 0, i, image.getWidth());
+			//rows
+			g2d.drawLine(0, i, image.getHeight(), i);
+		}
 	}
 	
 	private void initHashMap(){
