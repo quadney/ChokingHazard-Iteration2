@@ -1,5 +1,9 @@
 package Controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import Models.PalaceCard;
 import Models.SharedComponentModel;
 import Views.SharedComponentPanel;
@@ -35,7 +39,7 @@ public class SharedComponentController {
 	}
 	
 	public PalaceCard drawFestivalCard(){
-		PalaceCard card = this.sharedModel.getFestivalCard().deepCopy();
+		PalaceCard card = this.sharedModel.getFestivalCard();
 		sharedModel.drawFestivalCard();
 		sharedPanel.drawFestivalCard(sharedModel.getNumberPalaceCards(), sharedModel.getFestivalCardType());
 		return card;
@@ -57,6 +61,14 @@ public class SharedComponentController {
 		}
 		return cards;
 	}
+	
+	public void updateAfterFestival(ArrayList<PalaceCard> cardsToDiscard){
+		for(PalaceCard discard : cardsToDiscard){
+			this.sharedModel.discardCard(discard);
+		}
+		this.sharedModel.discardCard(drawFestivalCard());
+	}
+
 //---------------------Checks validity for select actions-------------------------------------
 	//called if the player has selected a palace tile.
 	//checks to see if there enough palace tiles to allow this to happen

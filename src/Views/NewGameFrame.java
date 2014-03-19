@@ -52,6 +52,7 @@ public class NewGameFrame extends JFrame{
 	private void setUpView(){
 		JPanel numPlayerPanel = new JPanel();
 		numPlayerPanel.setPreferredSize(new Dimension(480, 70));
+		numPlayerPanel.setBackground(Color.WHITE);
 		JLabel numPlayers = new JLabel("Number of Players: ");
 		numPlayerPanel.add(numPlayers);
 		
@@ -78,15 +79,21 @@ public class NewGameFrame extends JFrame{
 		for(int i = 0; i < newPlayers.length; ++i){
 			newPlayers[i] = new JPanel();
 			newPlayers[i].setPreferredSize(new Dimension(480, 70));
+			newPlayers[i].setBackground(Color.WHITE);
 			newPlayers[i].add(new JLabel("Player "+(i+1)+" name: "));
+			
 			playerNames[i] = new JTextField();
 			playerNames[i].setPreferredSize(new Dimension(100, 25));
 			newPlayers[i].add(playerNames[i]);
+			
 			colorSelection[i] = new JComboBox<String>(colors);
 			colorSelection[i].setSelectedIndex(i);
 			newPlayers[i].add(colorSelection[i]);
 			newGamePanel.add(newPlayers[i]);
 			newPlayers[i].setVisible(false);
+			
+			//TODO: delete dev purposes:
+			playerNames[i].setText("Player: "+i);
 		}
 		
 		newGamePanel.add(startGame);

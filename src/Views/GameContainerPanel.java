@@ -2,7 +2,6 @@ package Views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 
+import Controllers.GameController;
 import FestivalMiniGame.HoldFestivalFrame;
 import Models.JavaPlayer;
 import Models.PalaceCard;
@@ -129,10 +129,12 @@ public class GameContainerPanel extends JPanel {
 		palaceCardFrame.setVisible(true);
 	}
 	
-	public void displayHoldFestivalFrame(JavaPlayer[] players, int indexOfPlayerHoldingFestival, PalaceCard festivalCard, int selectedPalaceValue){
-		System.out.println("displaying festival frame");
-		festivalFrame = new HoldFestivalFrame(players, indexOfPlayerHoldingFestival, festivalCard, selectedPalaceValue);
-		festivalFrame.setVisible(true);
+	public void displayHoldFestivalFrame(GameController game, JavaPlayer[] players, int indexOfPlayerHoldingFestival, PalaceCard festivalCard, int selectedPalaceValue){
+		festivalFrame = new HoldFestivalFrame(game, players, indexOfPlayerHoldingFestival, festivalCard, selectedPalaceValue);
+	}
+	
+	public void closeFestivalFrame(){
+		festivalFrame.dispose();
 	}
 	
 	public static void tellPeopleTheyAintPlacedNoLandTile()
