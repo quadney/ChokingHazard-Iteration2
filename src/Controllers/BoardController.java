@@ -48,6 +48,7 @@ public class BoardController {
 		}
 		else if(action instanceof PlaceDeveloperOnBoardAction) {
 			System.out.println("in updateBoardPanel NonRotatableTileComponent");
+<<<<<<< HEAD
 			Stack<Integer> xs = new Stack<Integer>();
 			Stack<Integer> ys = new Stack<Integer>(); 
 			Stack<String> images = new Stack<String>(); 
@@ -60,6 +61,7 @@ public class BoardController {
 			
 			boardPanel.placeDeveloper(xs, ys, images);
 			//game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
+			//boardPanel.placeDeveloper(game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
 		}
 	}
 }
