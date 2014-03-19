@@ -14,7 +14,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.media.jai.operator.RotateDescriptor;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
