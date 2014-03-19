@@ -346,14 +346,67 @@ public class BoardModel implements Serializable<BoardModel> {
 		return;
 	}
 	
-	public boolean canPlacePalace(int x, int y, JavaCell palace) {
-		return true;
+	/*public boolean placePalace(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
+		
+		
+		if (((map[x][y].getCellType() == "village") 
+			&& (canPlacePalace(x, y, palace, map, player)))
+			|| ((map[x][y].getCellType().contains("palace")) 
+			&& (canUpgradePalace(x, y, palace, map, player)))) {
+
+			return true;
+		}
+
+		return false;
 	}
 	
-	public boolean canUpgradePalace(int x, int y, JavaCell palace) {
+	public boolean canPlacePalace(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
+		if (findNumberConnected(x,y,map) >= getPalaceSize(palace)
+			&& !hasAlreadyBeenModified(x, y)
+			&&  // TODO greg's method
+			&&) {
+			
+			
+		}
+		
+		return false;
+	}
+	
+	public boolean canUpgradePalace(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
+		if (palace)
 		return false;
 	}
 
+	public int getPalaceSize(JavaCell palace) {
+		int palaceSize = 200;
+		
+		switch (palace.getCellType()) {
+			case "2palace":
+				palaceSize = 2;
+				break;
+			case "4palace":
+				palaceSize = 4;
+				break;
+			case "6palace":
+				palaceSize = 6;
+				break;
+			case "8palace":
+				palaceSize = 8;
+				break;
+			case "10palace":
+				palaceSize = 10;
+				break;
+			default:
+				break;
+		}
+		
+		return palaceSize;
+	}
+	
+	private boolean hasAlreadyBeenModified(int x, int y) {
+		return false;
+	}*/
+	
 	private static int findNumberConnected(int x, int y, JavaCell[][] map) {
 		JavaCell[][] copy = new JavaCell[14][14];
 		for (int i = 0; i < 14; i++)
@@ -394,17 +447,6 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		return up + left + right + down + 1;
 	}
-
-// Returns the number of village Spaces surrounding the given Cell. Called
-// by checkIfICanUpgradePalace to make sure number of surrounding villages
-// is greater than or equal to the palace number.
-/*private int checkForNumberOfVillages(Cell cell)
-{
-setConnectedCells(cell);
-return cell.getConnectedCells().size();
-}*/
-
-
 	
 	private boolean checkEdgePlacement(JavaCell[][] miniMap, Tile tile) {
 
