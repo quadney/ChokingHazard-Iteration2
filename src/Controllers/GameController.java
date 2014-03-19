@@ -2,10 +2,12 @@ package Controllers;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
+import Models.PalaceCard;
 import Models.Actions.Action;
 import Models.Actions.DrawPalaceCardAction;
 import Models.Actions.IrrigationTileAction;
@@ -52,10 +54,7 @@ public class GameController {
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
 		
-		boolean fest = currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival();
-		if(fest){
-			currentGamePanel.displayHoldFestivalFrame(players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), 2);
-		}
+		seeIfPlayerCanHoldAFestival();
 	}
 	
 	public boolean loadGame(File file){
@@ -110,6 +109,10 @@ public class GameController {
 		case 8:
 			//released delete, delete a developer from the board
 			//need all the type checks and where they are to delete a developer
+//			if(currentGame.pressDelete()){
+//				board.pressDelete();
+//				players[currentGame.getPlayerIndex()].pressDelete();
+//			}
 			break;
 		case 9:
 			//released tab, tab through developers
@@ -248,6 +251,8 @@ public class GameController {
 		case 88:
 			//check if the player has placed a land tile so they can get out of their turn
 			//released X, end turn
+			System.out.println("ending turn?");
+			System.out.println(players.selectEndTurn(currentGame.getPlayerIndex()));
 			if(players.selectEndTurn(currentGame.getPlayerIndex())){
 				players.setNotCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the player panel of the current player to stop outlining their panel
 				//if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){ //ask if they wanna have a palace festival
@@ -260,6 +265,7 @@ public class GameController {
 				currentGame.endTurn(); //increment the current player in the game model, changes all the stuff in player
 				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
 			}
+			
 			break;		
 		}
 	}
@@ -290,6 +296,30 @@ public class GameController {
 			//System.out.println("(In GCtrl) updating Board panel when developer action is selected");
 			board.updateSelectedDeveloperAction(currentGame.getSelectedActionX()*50, currentGame.getSelectedActionY()*50,currentGame.getSelectedActionImageKey());
 		}
+	}
+	
+	private void seeIfPlayerCanHoldAFestival(){
+		//TODO need to first make sure that the user can in fact hold a festival
+		//TODO need to get the palace and palace vaule that the player wants it to be on
+		//TODO put the festival image on the palace to let the user know that there was a festival on it
+		int palaceValue = 10;
+		//TODO need to also reflect that in the board model
+		//TODO 
+		boolean fest = currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival();
+		if(fest)
+			startFestival(palaceValue);
+	}
+	
+	private void startFestival(int palaceValue){
+		currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
+	}
+	
+	public void updatePlayersAfterFestival(ArrayList<PalaceCard> cardsToDiscard){
+		//the player's fame points and festival cards have already been taken care of.
+		//this updates the views and discards of the cards that were played in the festival
+		this.players.updatePlayersAfterFestival();
+		this.shared.updateAfterFestival(cardsToDiscard);
+		this.currentGamePanel.closeFestivalFrame(); 
 	}
 	
 }

@@ -77,7 +77,7 @@ public class BoardPanel extends JPanel {
 	public void moveTile(int xLoc, int yLoc, int rotationState, String hashMapKey){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
-		g2d.rotate(rotationState*Math.PI/2);
+		g2d.rotate(rotationState*Math.PI/2, xLoc+25, yLoc+25);
 		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
 //		g2d.setColor(Color.YELLOW);
 //		g2d.setStroke(new BasicStroke(2.0f));

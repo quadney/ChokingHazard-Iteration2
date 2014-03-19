@@ -1,5 +1,8 @@
 package Controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import Models.JavaPlayer;
 import Models.PalaceCard;
 import Views.PlayerPanel;
@@ -73,6 +76,16 @@ public class PlayerController {
 	public boolean selectEndTurn(int playerIndex) {
 		return playerModels[playerIndex].canEndTurn();
 	}
+	
+	public boolean selectDeveloper(int playerIndex) {
+		return playerModels[playerIndex].canPlaceDeveloperOnBoard();
+	}
+	
+//	public boolean canDeleteDeveloperPlayerCheck(int playerIndex, int actionPointCost){
+//		return playerModels[playerIndex].canDeleteDeveloperOnBoardPlayerCheck(actionPointCost);
+//	}
+	
+	
 	//----------------------------------------------------------------------------
 	//Select Final turn method - only occurs if this is valid to do
 	public void setNotCurrentPlayerinPlayerPanel(int playerIndex) {
@@ -84,10 +97,6 @@ public class PlayerController {
 		playerPanels[playerIndex].setCurrentPlayer();
 	}
 
-	public boolean selectDeveloper(int playerIndex) {
-		return playerModels[playerIndex].canPlaceDeveloperOnBoard();
-	}
-
 	public String getColorOfPlayer(int playerIndex) {
 		playerModels[playerIndex].getColor();
 		return null;
@@ -96,6 +105,15 @@ public class PlayerController {
 	
 	//---------------------------------------------------------------------------
 	
+	//--------------- Update Players after Palace Festival ----------------------
+	public void updatePlayersAfterFestival(){
+		for(int i = 0; i < playerPanels.length; i++){
+			playerPanels[i].updateFamePoints(playerModels[i].getFamePoints());
+			playerPanels[i].updateNumPalaceCards(playerModels[i].getPalaceCards().size());
+		}
+
+	}
+
 	public void updatePlayerPanel(int playerIndex) {
 		//given a player index, the corresponding player panel will update with all the information.
 		
@@ -123,6 +141,5 @@ public class PlayerController {
 		// tells the panel the number of developers off the board
 		playerPanels[playerIndex].updateDevelopersOffBoard(playerModels[playerIndex].getDevelopersOffBoard());
 	}
-	
 	
 }
