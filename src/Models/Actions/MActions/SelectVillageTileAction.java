@@ -12,6 +12,9 @@ public class SelectVillageTileAction extends SelectOneSpaceTileAction {
 	}
 	
 	public Action pressEnter(GameModel game) {
-		return new VillageTileAction(-1, x, y);
+		VillageTileAction action = new VillageTileAction(-1, x, y);
+		if(action.doAction(game))
+			return action; 
+		return null;
 	}
 }
