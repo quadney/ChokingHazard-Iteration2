@@ -15,8 +15,7 @@ public class UseActionTokenAction extends Action {
 
 	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new UseActionTokenAction(Integer.parseInt(json.getString("actionID")));
 	}
 
 	@Override

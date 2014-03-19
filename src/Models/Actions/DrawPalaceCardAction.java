@@ -16,8 +16,7 @@ public class DrawPalaceCardAction extends Action {
 	
 	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new DrawPalaceCardAction(Integer.parseInt(json.getString("actionID")));
 	}
 
 	@Override

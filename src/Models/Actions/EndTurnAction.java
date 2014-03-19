@@ -16,8 +16,7 @@ public class EndTurnAction extends Action {
 
 	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new EndTurnAction(Integer.parseInt(json.getString("actionID")));
 	}
 
 	@Override

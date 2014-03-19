@@ -15,8 +15,9 @@ public class TakeDeveloperOffBoardAction extends NonRotatableComponentAction {
 
 	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new TakeDeveloperOffBoardAction(Integer.parseInt(json.getString("actionID")), 
+				Integer.parseInt(json.getString("x")), 
+				Integer.parseInt(json.getString("y")));
 	}
 
 	@Override

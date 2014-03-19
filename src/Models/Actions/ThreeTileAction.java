@@ -33,8 +33,10 @@ public class ThreeTileAction extends RotatableComponentAction {
 
 	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ThreeTileAction(Integer.parseInt(json.getString("actionID")), 
+				Integer.parseInt(json.getString("x")), 
+				Integer.parseInt(json.getString("y")), 
+				Integer.parseInt(json.getString("rotationState")));
 	}
 
 	@Override

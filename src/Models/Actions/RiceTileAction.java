@@ -27,7 +27,8 @@ public class RiceTileAction extends OneSpaceTileAction {
 
 	@Override
 	public Action loadObject(JsonObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		return new RiceTileAction(Integer.parseInt(json.getString("actionID")), 
+				Integer.parseInt(json.getString("x")), 
+				Integer.parseInt(json.getString("y")));
 	}
 }
