@@ -8,11 +8,15 @@ import Models.JavaCell;
 
 public class MoveDeveloperAction extends NonRotatableComponentAction {
 	
-	LinkedList<JavaCell> path;
+	int originX;
+	int originY;
+	int actionPointsCost;
 
-	public MoveDeveloperAction(int actionID, int x, int y, LinkedList<JavaCell> path) {
-		super(actionID, path.peekFirst().getX(), path.peekFirst().getY());
-		this.path = path;
+	public MoveDeveloperAction(int actionID, int x, int y, int originX, int originY, int actionPointsCost) {
+		super(actionID, x, y);
+		this.originX = originX;
+		this.originY = originY;
+		this.actionPointsCost = actionPointsCost;
 	}
 	
 	public MoveDeveloperAction() {
@@ -31,8 +35,7 @@ public class MoveDeveloperAction extends NonRotatableComponentAction {
 
 	@Override
 	public boolean redo(GameModel game) {
-		
-		return false;
+		return game.moveDeveloperAroundBoard(originX, originY, x, y, actionPointsCost);
 	}
 
 }

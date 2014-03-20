@@ -739,6 +739,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		// He is now free to go
 
 		theHomie.removeDeveloperAtXY(jailCell.getX(), jailCell.getY());
+		jailCell.removeDeveloper();
 
 		return true; // The homie is free ~ ~ ~
 
@@ -788,53 +789,6 @@ public class BoardModel implements Serializable<BoardModel> {
 		else
 			return 1;
 	}
-
-	public boolean moveDeveloper(JavaPlayer player, LinkedList<JavaCell> path) {
-		int pathSize = path.size();
-		int actionPoints = 0;
-		JavaCell currentCell = path.removeLast();
-		JavaCell nextCell = path.removeLast();
-		for (int i = 0; i < pathSize - 2; i++) {
-			if (fromVillageToRice(currentCell, nextCell)) {
-				actionPoints++;
-			}
-
-			currentCell = nextCell;
-			nextCell = path.removeLast();
-		}
-
-		if (fromVillageToRice(currentCell, nextCell)) {
-			actionPoints++;
-		}
-
-		if (player.decrementNActionPoints(actionPoints, false)) {
-			player.associateDeveloperWithCell(nextCell);
-			return true;
-		}
-
-		return false;
-	}
-
-	// public boolean addJavaCellToPath(JavaCell javaCell) {
-	// int pathSize = path.size();
-	// LinkedList<JavaCell> temp = new LinkedList<JavaCell>();
-	//
-	// for (int i = 0; i < pathSize; i++) {
-	// temp.push(path.pop());
-	// }
-	//
-	// JavaCell currentCell = temp.pop();
-	// int count = 0;
-	//
-	// while ((currentCell != javaCell) && count < pathSize - 1) {
-	// path.push(currentCell);
-	// currentCell = temp.pop();
-	// count++;
-	// }
-	//
-	// path.push(currentCell);
-	// return true;
-	// }
 
 	public boolean hasAdjacentLandSpaceTile(JavaCell cell) {
 		int x = cell.getX();
