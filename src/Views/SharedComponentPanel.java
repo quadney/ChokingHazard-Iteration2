@@ -17,7 +17,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
 
 @SuppressWarnings("serial")
 public class SharedComponentPanel extends JPanel{
@@ -45,7 +44,6 @@ public class SharedComponentPanel extends JPanel{
 		playModeToggleButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if(playMode){
 					playModeToggleButton.setText("Play Mode");
 					playMode = false;
@@ -56,6 +54,7 @@ public class SharedComponentPanel extends JPanel{
 				}
 				
 				//TODO let the controller know
+				
 			}
 		});
 		buttonPanel.add(playModeToggleButton);

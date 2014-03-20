@@ -24,10 +24,8 @@ public class GameContainerPanel extends JPanel {
 	private final static int WIDTH = 1300;
 	private final static int HEIGHT = 840;
 	private HashMap<String, String> imageSourceHashMap; 
-	DisplayPlayersPalaceCardsFrame palaceCardFrame;
-	HoldFestivalFrame festivalFrame;
-	private JButton toggleGameModeButton;
-	private JButton replayModeButton;
+	private DisplayPlayersPalaceCardsFrame palaceCardFrame;
+	private HoldFestivalFrame festivalFrame;
 	
 	public GameContainerPanel(BoardPanel board, PlayerPanel[] players, SharedComponentPanel shared){
 		super(new BorderLayout());
@@ -35,9 +33,6 @@ public class GameContainerPanel extends JPanel {
 		initHashMap();
 		setMaximumSize(new Dimension(WIDTH, HEIGHT));
 		setBorder(BorderFactory.createEmptyBorder(0, 25, 10, 25));
-		
-		toggleGameModeButton = new JButton("Play Mode");
-		replayModeButton = new JButton("Replay");
 		
 		initPanels(board, players, shared);
 	}
@@ -122,6 +117,26 @@ public class GameContainerPanel extends JPanel {
 		if(saveChanges == 0)
 			return true;
 		return false;
+	}
+	
+	public String askUserWhatNameToSaveGameAs(){
+		String fileName = "";
+		boolean okFileName = false;
+		while(!okFileName ){
+			try{
+				fileName = JOptionPane.showInputDialog("Name save file as?");
+				String s = ".*[ /\\\\?%*:|\"<>.].*";
+				if (fileName.matches(s) || fileName.equals("")){
+					JOptionPane.showMessageDialog(null, "Please enter a valid name");
+				}
+				else {
+					okFileName = true;
+				}
+			}catch(NullPointerException e){
+				return null;
+			}
+		}
+		return fileName;
 	}
 	
 	public void displayPalaceCardFrame(JavaPlayer player){
