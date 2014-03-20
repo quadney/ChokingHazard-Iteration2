@@ -150,7 +150,8 @@ public class BoardModel implements Serializable<BoardModel>  {
 				&& checkEdgePlacement(miniMap, tile)
 				&& player
 						.decrementNActionPoints(neededActionPoints, isLandTile)
-				&& palaceOK) {
+				&& palaceOK
+				&& checkIrrigationOnBoard(miniMap, tile)) {
 
 			return true;
 		}
@@ -198,6 +199,16 @@ public class BoardModel implements Serializable<BoardModel>  {
 		return outsideCount;
 	}
 
+	private boolean checkIrrigationOnBoard(JavaCell[][] miniMap, Tile tile) {
+		if (tile.getTileCells()[1][1].equals(Tile.TileType.irrigation)) {
+			if (miniMap[1][1].getElevation() != 0) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	private boolean checkPalacePlacement(JavaCell[][] miniMap, Tile tile) {
 		TileType[][] tileCells = tile.getTileCells();
 
@@ -969,7 +980,7 @@ public class BoardModel implements Serializable<BoardModel>  {
 	public JavaPlayer playerWithHighestRankedDeveloperSurroundingBodyOfWater(ArrayList<JavaCell> coast, LinkedList<Developer> gameDevelopers) {
 		int dontSearchAtOrAboveThisElevation = 200;
 		int maxElevation = 0;
-		HashMap<JavaPlayer, Integer> playersWithDevelopersAtMaxElevation = new HashMap<JavaPlayer, Integer>();
+		HashMap<JavaPlayer, Integer> playersWithElevation = new HashMap<JavaPlayer, Integer>();
 		while (dontSearchAtOrAboveThisElevation > 0) {
 			for (int i = 0; i < coast.size(); i++) {
 				if (maxElevation < coast.get(i).getElevation() && coast.get(i).getElevation() < dontSearchAtOrAboveThisElevation) {
@@ -979,9 +990,17 @@ public class BoardModel implements Serializable<BoardModel>  {
 			
 			for (int i = 0; i < coast.size(); i++) {
 				if (maxElevation == coast.get(i).getElevation()) {
-					//for (int j = 0; j < gameDevelopers)
+					for (int j = 0; j < gameDevelopers.size(); i++) {
+						if (gameDevelopers.get(j).getX() == coast.get(i).getX()
+							&& gameDevelopers.get(j).getY() == coast.get(i).getY()) {
+						    	playersWithElevation.put(gameDevelopers.get(j).getOwner(), playersWithElevation.get(gameDevelopers.get(j).getOwner()) + 1);
+						    	break;
+						}
+					}
 				}
 			}
+			
+			
 			
 		}
 		
