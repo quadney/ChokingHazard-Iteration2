@@ -1,5 +1,6 @@
 package Controllers;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -364,12 +365,12 @@ public class GameController {
 		case 85:
 			// does not become a selected action, just does a regular action!
 			// released U, undo
-//			if (currentGame.getGameState().equals(GameState.PlanningMode)) {
+			if (currentGame.getGameState().equals(GameState.PlanningMode)) {
 				undo();
 				System.out.println("UNDO");
-//			} else {
-//				currentGamePanel.playErrorSound();
-//			}
+			} else {
+				currentGamePanel.playErrorSound();
+			}
 
 			break;
 		case 86:
@@ -516,6 +517,7 @@ public class GameController {
 		Action[] actions = currentGame.getActions();
 		doActions(actions, 0, actions.length-1, false, false);
 		doActions(actions, actions.length-1, actions.length, false, true);
+		System.out.println(currentGame.getActionHistory());
 	}
 
 	public void startReplay() {
@@ -539,6 +541,7 @@ public class GameController {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {	}
 			}	  
+			actions[x].doAction(currentGame);
 			if(draw) {
 				shared.updateSharedPanel();
 				players.updatePlayerPanel(currentGame.getPlayerIndex());
@@ -546,7 +549,6 @@ public class GameController {
 			else {
 				board.setRedraw(false);
 			}
-			actions[x].doAction(currentGame);
 			board.updateBoardPanel(actions[x], currentGame);
 			board.setRedraw(true);
 		}
@@ -555,12 +557,18 @@ public class GameController {
 	public void pickUpPalaceCard() {
 		Action action = new DrawPalaceCardAction(currentGame.nextActionID());
 		action.doAction(currentGame);
+		currentGame.addToActionHistory(action);
 		updateControllersWithAction(action);
 	}
 
 	public void pickUpFestivalCard() {
 		Action action = new DrawFestivalCardAction(currentGame.nextActionID());
 		action.doAction(currentGame);
+		currentGame.addToActionHistory(action);
 		updateControllersWithAction(action);
+	}
+
+	public Component getGameFrame() {
+		return gameFrame;
 	}
 }

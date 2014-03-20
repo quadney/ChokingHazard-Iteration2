@@ -59,6 +59,7 @@ public class SharedComponentPanel extends JPanel{
 				gameController.startPlanningMode();
 			}
 		});
+		playModeToggleButton.setFocusable(false);
 		buttonPanel.add(playModeToggleButton);
 		
 		replayButton = new JButton("Replay");
@@ -79,6 +80,7 @@ public class SharedComponentPanel extends JPanel{
 				worker.execute();
 			}
 		});
+		replayButton.setFocusable(false);
 		buttonPanel.add(replayButton);
 		
 		threeTiles = newJLabel("", imageSourceHashMap.get("layout_threeTile")); 
@@ -116,6 +118,7 @@ public class SharedComponentPanel extends JPanel{
 				System.out.println("draw from palace deck");
 			}
 		});
+        palaceDeck.setFocusable(false);
         add(palaceDeck);
         //palaceDeck = newJLabel("", imageSourceHashMap.get("layout_palaceDeck"));
         //add(palaceDeck);
@@ -133,6 +136,7 @@ public class SharedComponentPanel extends JPanel{
 				System.out.println("draw festival card");
 			}
 		});
+        festivalCard.setFocusable(false);
         add(festivalCard);
 //        festivalCard = newJLabel(" ", imageSourceHashMap.get("layout_"+festivalCardHashKey));
 //        add(festivalCard);

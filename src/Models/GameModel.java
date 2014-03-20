@@ -584,4 +584,8 @@ public class GameModel implements Serializable<GameModel> {
 	public Action[] getActions() {
 		return actionHistory.toArray(new Action[1]);
 	}
+
+	public Stack<Event> getActionHistory() {
+		return actionHistory;
+	}
 }
