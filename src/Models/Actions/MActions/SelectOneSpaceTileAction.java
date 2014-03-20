@@ -1,5 +1,9 @@
 package Models.Actions.MActions;
 
+
+import Models.BoardModel;
+import Models.GameModel;
+import Models.JavaPlayer;
 import Models.Actions.Action;
 
 public abstract class SelectOneSpaceTileAction extends SelectNonRotatableComponentAction {
@@ -14,11 +18,11 @@ public abstract class SelectOneSpaceTileAction extends SelectNonRotatableCompone
 		return false;
 	}
 	
-	public Action pressDelete(){
+	public Action pressDelete(GameModel game){
 		return null;
 	}
 	
-	public MAction pressM(){
+	public MAction pressM(BoardModel board, JavaPlayer player){
 		return null;
 	}
 	

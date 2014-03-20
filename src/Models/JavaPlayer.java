@@ -19,7 +19,6 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	private int numTwoTile;
 	private int numActionTokens;
 	private ArrayList<PalaceCard> palaceCards;
-	private int selectedDeveloperIndex;
 	private ArrayList<JavaCell> palacesInteractedWith;
 	private Developer[] developersArray;
 	private boolean hasPlacedLandTile;
@@ -36,7 +35,6 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		this.numActionTokens = 3;
 		this.palaceCards = new ArrayList<PalaceCard>();
 		this.hasPlacedLandTile = false;
-		this.selectedDeveloperIndex = 0;
 		this.hasUsedActionToken = false;
 		this.developersArray = new Developer[12];
 		this.palacesInteractedWith = new ArrayList<JavaCell>();
@@ -125,35 +123,22 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return temp.toArray(new Developer[1]);
 	}
 
-	// Returns the selected developer if there is a valid option (Developers on
-	// the board)
-	public Developer getSelectedDeveloper() {
-		return developersArray[selectedDeveloperIndex];
-	}
-
 	// Tabs through the collection of developers on the board. If the index is
 	// greater than the
 	// number of developers, the first developer in the list becomes selected
-	public void tabThroughDevelopers() {
-		int count = 0;
-		while (count < developersArray.length) {
-			selectedDeveloperIndex++;
-			if (selectedDeveloperIndex >= developersArray.length) {
-				selectedDeveloperIndex = 0;
-			}
-
-			if (developersArray[selectedDeveloperIndex] != null) {
-				break;
-			}
-
-			count++;
-		}
-	}
 
 	public void associateDeveloperWithCell(JavaCell jc) {
 	
-		developersArray[selectedDeveloperIndex].setLocation(jc);
+		developersArray[indexWithNoDeveloper()].setLocation(jc);
 		jc.setDeveloper();
+	}
+	
+	private int indexWithNoDeveloper(){
+		for(int i = 0; i < developersArray.length; i++){
+			if(developersArray[i] == null)
+				return i;
+		}
+		return -1;
 	}
 
 	public boolean decrementNActionPoints(int n, boolean isLandTile) {
@@ -165,8 +150,14 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return false;
 	}
 
-	public void removeDeveloperFromArray() {
-		developersArray[selectedDeveloperIndex] = null;
+	public void removeDeveloperAtXY(int x, int y) {
+		for(int i = 0; i < developersArray.length; i++){
+			if(developersArray[i] != null){
+				if(developersArray[i].getX() == x && developersArray[i].getY() == y){
+					developersArray[i] = null;
+				}
+			}
+		}
 	}
 
 	public void addPalaceCard(PalaceCard card) {
@@ -228,7 +219,7 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	}
 	
 	public boolean canPlaceDeveloperOnBoard() {
-		int index = getNextAvailable();
+		int index = getNextAvailableDeveloperSpot();
 		return index != -1;
 		
 	}
@@ -241,22 +232,18 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return palacesInteractedWith.contains(cell);
 	}
 	
-	public boolean placeDevOnBoard( JavaCell location){
-		
-		
-			developersArray[selectedDeveloperIndex] = new Developer(this);
-			associateDeveloperWithCell(location); 
-		
-		return false;
-			
+	public boolean placeDevOnBoard(JavaCell location){
+		int num = getNextAvailableDeveloperSpot();
+		developersArray[num] = new Developer(this);
+		developersArray[num].setLocation(location);
+		return true;
 	}
 	
-	private int getNextAvailable(){
+	private int getNextAvailableDeveloperSpot(){
 	
 		for(int i = 0; i < developersArray.length; i++){
 			if(developersArray[i] == null){
-				selectedDeveloperIndex = i;
-				return selectedDeveloperIndex;
+				return i;
 			}
 		}
 		
@@ -317,9 +304,7 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 				"numActionTokens", Json.jsonValue(numActionTokens + "")), Json
 				.jsonPair("palaceCards", Json.serializeArray(palaceCards)),
 				Json.jsonPair("developerArray",
-						Json.serializeArray(developersArray)), Json.jsonPair(
-						"selectedDeveloperIndex",
-						Json.jsonValue(selectedDeveloperIndex + "")), Json
+						Json.serializeArray(developersArray)),  Json
 						.jsonPair("hasPlacedLandTile",
 								Json.jsonValue(hasPlacedLandTile + "")), Json
 						.jsonPair("hasUsedActionToken",
@@ -339,8 +324,6 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		this.numTwoTile = Integer.parseInt(json.getString("numTwoTile"));
 		this.numActionTokens = Integer.parseInt(json
 				.getString("numActionTokens"));
-		this.selectedDeveloperIndex = Integer.parseInt(json
-				.getString("selectedDeveloperIndex"));
 		this.hasPlacedLandTile = Boolean.parseBoolean(json
 				.getString("hasPlacedLandTile"));
 		this.hasUsedActionToken = Boolean.parseBoolean(json
