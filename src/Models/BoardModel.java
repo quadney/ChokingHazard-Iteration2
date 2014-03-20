@@ -52,8 +52,10 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 	}
 
+
 	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player,
 			LinkedList<Developer> gameDevelopers) {
+
 		JavaCell[][] miniMap = createTestMap(xC, yC);
 		TileType[][] tileCells = tile.getTileCells();
 
@@ -103,9 +105,12 @@ public class BoardModel implements Serializable<BoardModel> {
 
 			if (placedLandTile(xC, yC))
 				player.placedLandTile();
+
 			
 			System.out.println("CHECK FOR SURROUNDED IRRIGATION CELLS: " + checkForSurroundedIrrigationCells(xC, yC, tile, gameDevelopers));
+
 			bodiesOfWater.clear();
+
 			System.out.println(toString());
 			return true;
 		}
@@ -137,23 +142,8 @@ public class BoardModel implements Serializable<BoardModel> {
 			palaceOK = placePalace(xC, yC, miniMap[1][1], map, player);
 		}
 
-		System.out.println("palace placement: "
-				+ checkPalacePlacement(miniMap, tile));
-		System.out.println("palace tilesBelow: "
-				+ checkTilesBelow(miniMap, tile));
-		System.out.println("palace elevation: "
-				+ checkElevation(miniMap, tile, xC, yC));
-		System.out.println("palace Irrigation: "
-				+ checkIrrigationPlacement(miniMap, tile));
-		System.out.println("palace DevOnCell: "
-				+ checkDeveloperOnCell(miniMap, tile));
-		System.out.println("palace CityConn: "
-				+ checkCityConnection(miniMap, tile));
-		System.out.println("palace edge: " + checkEdgePlacement(miniMap, tile));
-		System.out
-				.println("palace action: "
-						+ player.decrementNActionPoints(neededActionPoints,
-								isLandTile));
+
+
 
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
@@ -166,6 +156,7 @@ public class BoardModel implements Serializable<BoardModel> {
 						.decrementNActionPoints(neededActionPoints, isLandTile)
 				&& palaceOK 
 				&& checkIrrigationOnBoard(miniMap, tile)) {
+
 
 			return true;
 		}
@@ -188,23 +179,24 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		return testingMap;
 	}
-	
+
 	private int checkNeededActionPoints(JavaCell[][] miniMap, Tile tile) {
 		int outsideCount = 1;
-		int mapRowLength = map.length;
-		int mapColumnSize = map[0].length;
 		TileType[][] tileCells = tile.getTileCells();
 
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				if (tileCells[i][j] != null) {
-					if (miniMap[i][j] != null
-							&& ((i == mapRowLength)
-									|| (i == mapColumnSize)
-									|| ((i != 0) && (i != mapColumnSize - 1) && (j == 0)) || ((i != 0)
-									&& (i != mapColumnSize) && (j == mapRowLength)))) {
-
-						outsideCount++;
+					for(int out = 0; out < outerCells.length; out++ ){
+						
+					
+					System.out.println("-----------------------HHHHHHHHererere---------------");
+						if (miniMap[i][j] != null && miniMap[i][j].getElevation() == 0 && miniMap[i][j].getX() == outerCells[out].getX() && miniMap[i][j].getY() == outerCells[out].getY()) {
+							
+							System.out.println("i: " + i + "j: " + j );
+	
+							outsideCount++;
+						}
 					}
 				}
 			}
@@ -460,7 +452,9 @@ public class BoardModel implements Serializable<BoardModel> {
 
 	public boolean canUpgradePalace(int x, int y, JavaCell palace,
 			JavaCell[][] map) {
+
 		if (getPalaceSize(map[x][y]) < getPalaceSize(palace)) {
+
 			return true;
 		}
 
@@ -469,7 +463,9 @@ public class BoardModel implements Serializable<BoardModel> {
 
 	public boolean mutualPalacePlacementRequirementsOK(int x, int y,
 			JavaCell palace, JavaCell[][] map, JavaPlayer player) {
+
 		if (findNumberConnected(x, y, map, visitedVillages) >= getPalaceSize(palace)
+
 				&& !hasAlreadyBeenModified(palace, player)) {
 			return true;
 		}
@@ -508,6 +504,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		return player.cellInPalacesInteractedWith(palace);
 	}
 
+
 	public static int findNumberConnected(int x, int y, JavaCell[][] map,
 			ArrayList<JavaCell> visitedVillages) {
 		visitedVillages.add(map[x][y]);
@@ -544,6 +541,7 @@ public class BoardModel implements Serializable<BoardModel> {
 				&& !visitedVillages.contains(map[x][y + 1])
 				&& (map[x][y + 1].getCellType() == "village")) {
 			up = findNumberConnected(x, y + 1, map, visitedVillages);
+
 		}
 
 		return up + left + right + down + 1;
@@ -585,13 +583,16 @@ public class BoardModel implements Serializable<BoardModel> {
 				+ outerCells.length);
 
 		for (int i = 0; i < outerCells.length; i++) {
+
 			for (int j = 0; j < cells.length; j++) {
 				if (cells[j] != null && outerCells[i] != null
 						&& cells[j].getX() == outerCells[i].getX()
-						&& cells[j].getY() == outerCells[i].getY()) {
+						&& cells[j].getY() == outerCells[i].getY()
+						&& cells[j].getElevation() == 0) {
 					count++;
 				}
 			}
+
 		}
 
 		System.out.println("COUNT IS: " + count);
@@ -674,8 +675,10 @@ public class BoardModel implements Serializable<BoardModel> {
 		// By this point, we've made it through all the bail procedures and
 		// homie has paid his dues (action points)
 		// He is now free to go
+
 		
 		theHomie.removeDeveloperAtXY(jailCell.getX(), jailCell.getY());
+
 		return true; // The homie is free ~ ~ ~
 
 	}
