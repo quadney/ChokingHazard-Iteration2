@@ -8,7 +8,7 @@ import Helpers.JsonObject;
 
 public class JavaPlayer implements Serializable<JavaPlayer> {
 	
-	static int testingActionPoints = 6;
+	static int testingActionPoints = 30;
 	
 	public String name;	 
 	private String color;

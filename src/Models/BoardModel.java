@@ -141,8 +141,11 @@ public class BoardModel implements Serializable<BoardModel> {
 		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1]
 				.toString());
 		boolean palaceOK = true;
+		
 		if (tile.getTileCells()[1][1].isPalace()) {
-			palaceOK = placePalace(xC, yC, miniMap[1][1], map, player, gameDevelopers);
+			JavaCell newPalace = new JavaCell(xC, yC, 0);
+			newPalace.setCellType(tile.getTileCells()[1][1]);
+			palaceOK = placePalace(xC, yC, newPalace, map, player, gameDevelopers);
 		}
 
 		if (checkPalacePlacement(miniMap, tile)
@@ -154,7 +157,8 @@ public class BoardModel implements Serializable<BoardModel> {
 				&& checkEdgePlacement(miniMap, tile)
 				&& player
 						.decrementNActionPoints(neededActionPoints, isLandTile)
-				&& palaceOK && checkIrrigationOnBoard(miniMap, tile)) {
+				&& palaceOK 
+				&& checkIrrigationOnBoard(miniMap, tile)) {
 
 			return true;
 		}
@@ -186,9 +190,6 @@ public class BoardModel implements Serializable<BoardModel> {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				if (tileCells[i][j] != null) {
 					for (int out = 0; out < outerCells.length; out++) {
-
-						System.out
-								.println("-----------------------HHHHHHHHererere---------------");
 						if (miniMap[i][j] != null
 								&& miniMap[i][j].getElevation() == 0
 								&& miniMap[i][j].getX() == outerCells[out]
@@ -226,8 +227,7 @@ public class BoardModel implements Serializable<BoardModel> {
 				if (tileCells[i][j] != null) {
 					if (miniMap[i][j] != null
 							&& miniMap[i][j].getCellType() != null
-							&& miniMap[i][j].getCellType() == "palace") {
-
+							&& miniMap[i][j].getCellType().contains("palace")) {
 						return false;
 					}
 				}
@@ -243,15 +243,24 @@ public class BoardModel implements Serializable<BoardModel> {
 		int testId = miniMap[1][1].getCellId();
 		int testing = 0;
 
+		if (tile.getTileCells()[1][1].toString().startsWith("palace")) {
+			return true;
+		}
+		
 		int number;
 		if (tile.getType() == "two") {
 			number = 2;
-		} else if (tile.getType() == "three") {
+		}
+		
+		else if (tile.getType() == "three") {
 			number = 3;
-
-		} else if (tile.getType() == "one") {
+		} 
+		
+		else if (tile.getType() == "one") {
 			number = 1;
-		} else {
+		} 
+		
+		else {
 			number = 0;
 		}
 
@@ -398,7 +407,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		boolean canLeft = (y - 1 >= 0);
 
 		if (map[x][y] != null && map[x][y].getCellType() != null
-				&& map[x][y].getCellType() == "palace") {
+				&& map[x][y].getCellType().toString().startsWith("palace")) {
 			connectedPalaces.add(map[x][y]);
 		}
 
@@ -406,26 +415,26 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		// fixed the bug here
 		if (canUp
-				&& (map[x - 1][y] != null && (map[x - 1][y].getCellType() == "village" || map[x - 1][y]
-						.getCellType() == "palace"))) {
+				&& (map[x - 1][y] != null && (map[x - 1][y].getCellType() == "village" || map[x - 1][y].
+						getCellType().toString().startsWith("palace")))) {
 			findPalaceSpaces(x - 1, y, map);
 		}
 
 		if (canDown
-				&& (map[x + 1][y] != null && (map[x + 1][y].getCellType() == "village" || map[x + 1][y]
-						.getCellType() == "palace"))) {
+				&& (map[x + 1][y] != null && (map[x + 1][y].getCellType() == "village" || map[x + 1][y].
+						getCellType().toString().startsWith("palace")))) {
 			findPalaceSpaces(x + 1, y, map);
 		}
 
 		if (canLeft
-				&& (map[x][y - 1] != null && (map[x][y - 1].getCellType() == "village" || map[x][y - 1]
-						.getCellType() == "palace"))) {
+				&& (map[x][y - 1] != null && (map[x][y - 1].getCellType() == "village" || map[x][y - 1].
+						getCellType().toString().startsWith("palace")))) {
 			findPalaceSpaces(x, y - 1, map);
 		}
 
 		if (canRight
-				&& (map[x][y + 1] != null && (map[x][y + 1].getCellType() == "village" || map[x][y + 1]
-						.getCellType() == "palace"))) {
+				&& (map[x][y + 1] != null && (map[x][y + 1].getCellType() == "village" || map[x][y + 1].
+						getCellType().toString().startsWith("palace")))) {
 			findPalaceSpaces(x, y + 1, map);
 		}
 
@@ -437,24 +446,35 @@ public class BoardModel implements Serializable<BoardModel> {
 		if (map[x][y].getCellType() == "village"
 				&& mutualPalacePlacementRequirementsOK(x, y, palace, map,
 						player, gameDevelopers)) {
-
+			System.out.println("RETURNING TRUE IN PLACE PALACE 1");
+			
 			return true;
 		}
 
-		else if (map[x][y].getCellType().contains("palace")
+		System.out.println(map[x][y].getCellType().toString().startsWith("palace"));
+		System.out.println(mutualPalacePlacementRequirementsOK(x, y, palace, map,
+				player, gameDevelopers));
+		System.out.println(canUpgradePalace(x, y, palace, map));
+		
+		
+		
+		if (map[x][y].getCellType().toString().startsWith("palace")
 				&& mutualPalacePlacementRequirementsOK(x, y, palace, map,
 						player, gameDevelopers) && canUpgradePalace(x, y, palace, map)) {
 
+			System.out.println("RETURNING TRUE IN PLACE PALACE 2");
+			
 			return true;
 		}
 
 		else {
+			System.out.println("RETURNING FALSE IN PLACE PALACE 3");
 			return false;
 		}
 	}
 
 	public boolean canUpgradePalace(int x, int y, JavaCell palace,
-			JavaCell[][] map) {
+		JavaCell[][] map) {
 
 		if (getPalaceSize(map[x][y]) < getPalaceSize(palace)) {
 
@@ -466,11 +486,15 @@ public class BoardModel implements Serializable<BoardModel> {
 
 	public boolean mutualPalacePlacementRequirementsOK(int x, int y,
 			JavaCell palace, JavaCell[][] map, JavaPlayer player, LinkedList<Developer> gameDevelopers) {
-
+		visitedVillages.clear();
+		System.out.println(getPalaceSize(palace));
 		if (findNumberConnected(x, y, map, visitedVillages) >= getPalaceSize(palace)
 				&& !hasAlreadyBeenModified(palace, player)) {
-			if (getPalaceRanks(palace, gameDevelopers).get(0).size() == 1 && getPalaceRanks(palace, gameDevelopers).get(0).get(0) == player) {
-				return true;
+			if (getPalaceRanks(palace, gameDevelopers).size() != 0) {
+				if (getPalaceRanks(palace, gameDevelopers).get(0).size() == 1 
+						&& getPalaceRanks(palace, gameDevelopers).get(0).get(0) == player) {
+					return true;
+				}	
 			}
 		}
 
@@ -480,7 +504,10 @@ public class BoardModel implements Serializable<BoardModel> {
 	// Returns an array of players in order from highest to lowest of ranks of
 	// players valid on a palace/city
 	public ArrayList<ArrayList<JavaPlayer>> getPalaceRanks(JavaCell palace, LinkedList<Developer> gameDevelopers) {
-		ArrayList<JavaCell> city = getCityFromRootCell(palace);
+		ArrayList<JavaCell> city = getCityFromRootCell(palace,visitedVillages);
+		for (int i = 0; i < city.size(); i++) {
+			System.out.println("x: " + city.get(i).getX() + " y: " + city.get(i).getY());
+		}
 
 		HashMap<JavaPlayer, Integer> scores = new HashMap<JavaPlayer, Integer>();
 
@@ -529,37 +556,18 @@ public class BoardModel implements Serializable<BoardModel> {
 			LinkedList<Developer> allDevelopersOnBoard) {
 
 		for (Developer p : allDevelopersOnBoard) {
-			if (p.getLocation() == c) {
-				return p;
+			if (p != null) {
+				if (p.getLocation() == c) {
+					return p;
+				}
 			}
 		}
 		return null;
 	}
 
 	public int getPalaceSize(JavaCell palace) {
-		int palaceSize = 200;
-
-		switch (palace.getCellType()) {
-		case "2palace":
-			palaceSize = 2;
-			break;
-		case "4palace":
-			palaceSize = 4;
-			break;
-		case "6palace":
-			palaceSize = 6;
-			break;
-		case "8palace":
-			palaceSize = 8;
-			break;
-		case "10palace":
-			palaceSize = 10;
-			break;
-		default:
-			break;
-		}
-
-		return palaceSize;
+		System.out.println(palace.getCellType().toUpperCase());
+		return Integer.parseInt(palace.getCellType().replaceAll("\\D", ""));
 	}
 
 	private boolean hasAlreadyBeenModified(JavaCell palace, JavaPlayer player) {
@@ -568,7 +576,7 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 
 	public static int findNumberConnected(int x, int y, JavaCell[][] map,
-			ArrayList<JavaCell> visitedVillages) {
+		ArrayList<JavaCell> visitedVillages) {
 		visitedVillages.add(map[x][y]);
 
 		boolean canUp = (x - 1 >= 0);
@@ -874,8 +882,54 @@ public class BoardModel implements Serializable<BoardModel> {
 	// Given a root cell, finds and adds to a list all adjacent cells with the
 	// same type
 	// This can be used to retrieve the cells that make up a city.
-	public ArrayList<JavaCell> getCityFromRootCell(JavaCell root) {
-		ArrayList<JavaCell> connected = new ArrayList<JavaCell>();
+	public ArrayList<JavaCell> getCityFromRootCell(JavaCell root, ArrayList<JavaCell> visitedVillages) {
+		int x = root.getX();
+		int y = root.getY();
+		visitedVillages.add(map[x][y]);
+
+		boolean canUp = (x - 1 >= 0);
+		boolean canDown = (x + 1 < map.length);
+		boolean canRight = (y + 1 < map[0].length);
+		boolean canLeft = (y - 1 >= 0);
+
+		int up = 0;
+		int down = 0;
+		int right = 0;
+		int left = 0;
+
+		if (canUp && map[x - 1][y] != null
+				&& !visitedVillages.contains(map[x - 1][y])
+				&& map[x - 1][y].getCellType() == "village") {
+				visitedVillages.add(map[x - 1][y]);
+				getCityFromRootCell(map[x - 1][y], visitedVillages);
+		}
+
+		if (canDown && map[x + 1][y] != null
+				&& !visitedVillages.contains(map[x + 1][y])
+				&& map[x + 1][y].getCellType() == "village") {
+				visitedVillages.add(map[x + 1][y]);
+				getCityFromRootCell(map[x + 1][y], visitedVillages);
+		}
+
+		if (canLeft && map[x][y - 1] != null
+				&& !visitedVillages.contains(map[x][y - 1])
+				&& map[x][y - 1].getCellType() == "village") {
+				visitedVillages.add(map[x][y - 1]);
+				getCityFromRootCell(map[x][y - 1], visitedVillages);
+		}
+
+		if (canRight && map[x][y + 1] != null
+				&& !visitedVillages.contains(map[x][y + 1])
+				&& (map[x][y + 1].getCellType() == "village")) {
+				visitedVillages.add(map[x][y + 1]);
+				getCityFromRootCell(map[x][y + 1], visitedVillages);
+
+		}
+
+		return visitedVillages;
+	}
+		
+	/*	ArrayList<JavaCell> connected = new ArrayList<JavaCell>();
 		int x = root.getX();
 		int y = root.getY();
 
@@ -885,13 +939,13 @@ public class BoardModel implements Serializable<BoardModel> {
 		while (i < connected.size()) {
 			// Cell temp = connected.get(i);
 			HashSet<JavaCell> adjacent = new HashSet<JavaCell>();
-			if (y < 14 && map[y + 1][x].getCellType().equals("village")
+			if (y < 13 && map[y + 1][x].getCellType().equals("village")
 					|| map[y + 1][x].getCellType().equals("palace"))
 				adjacent.add(map[y + 1][x]);
 			if (y > 0 && map[y - 1][x].getCellType().equals("village")
 					|| map[y - 1][x].getCellType().equals("palace"))
 				adjacent.add(map[y - 1][x]);
-			if (x < 14 && map[y][x + 1].getCellType().equals("village")
+			if (x < 13 && map[y][x + 1].getCellType().equals("village")
 					|| map[y][x + 1].getCellType().equals("palace"))
 				adjacent.add(map[y][x + 1]);
 			if (x > 0 && map[y][x - 1].getCellType().equals("village")
@@ -909,7 +963,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 
 		return connected;
-	}
+	}*/
 
 	public boolean checkForSurroundedIrrigationCells(int xC, int yC, Tile tile,
 			LinkedList<Developer> gameDevelopers) {
