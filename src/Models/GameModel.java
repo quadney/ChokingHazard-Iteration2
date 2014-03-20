@@ -419,7 +419,7 @@ public class GameModel implements Serializable<GameModel> {
 		for (int x = actions.length - 1; x >= 0; --x) {
 			if (actions[x] instanceof EndTurnAction) {
 				--index;
-				if (index == 0)
+				if(index < 0)
 					return actions[x].getActionID();
 			}
 		}
@@ -431,11 +431,14 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public void drawFromDeck() {
-		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFromDeck());
+		PalaceCard card = shared.drawFromDeck();
+		if(gameState.equals(GameState.PlanningMode))
+			card.setFaceDown();
+		players[indexOfCurrentPlayer].addPalaceCard(card);
 	}
 
 	public Action[] getActions() {
-		return actionHistory.toArray(new Action[1]);
+		return actionHistory.toArray(new Action[0]);
 	}
 
 	public Stack<Event> getActionHistory() {
@@ -443,7 +446,7 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public void setLastPlanningModeActionID() {
-		lastPlanningModeActionID  = ((Action)actionHistory.peek()).getActionID();
+		lastPlanningModeActionID  = actionHistory.empty() ? 0 : ((Action)actionHistory.peek()).getActionID();
 	}
 
 	public void addPalaceCard(PalaceCard card) {
@@ -452,5 +455,11 @@ public class GameModel implements Serializable<GameModel> {
 
 	public int getLastPlanningModeActionID() {
 		return lastPlanningModeActionID;
+	}
+
+	public void flipAllCards() {
+		for(JavaPlayer player : players) {
+			player.flipAllCards();
+		}
 	}
 }

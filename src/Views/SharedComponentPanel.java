@@ -121,7 +121,7 @@ public class SharedComponentPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameController.pickUpPalaceCard();
-				System.out.println("draw from palace deck");
+//				System.out.println("draw from palace deck");
 			}
 		});
         palaceDeck.setFocusable(false);
@@ -139,7 +139,7 @@ public class SharedComponentPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameController.pickUpFestivalCard();
-				System.out.println("draw festival card");
+//				System.out.println("draw festival card");
 			}
 		});
         festivalCard.setFocusable(false);
