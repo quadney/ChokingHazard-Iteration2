@@ -14,7 +14,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
@@ -153,6 +152,7 @@ public class GameContainerPanel extends JPanel {
 		palaceCardFrame.setVisible(true);
 		if(displayPalaceCardEasterEgg > 10){
 			playCatSound();
+			resetEasterEggCount();
 		}
 	}
 	

@@ -74,11 +74,6 @@ public class BoardPanel extends JPanel {
 		else{
 			xT = xLoc+25; yT = yLoc+25;
 		}
-//		if(elevation > 1){
-//			g2d.translate(xT, yT);
-//			g2d.scale(0.95*elevation, 0.95*elevation);
-//			g2d.translate((-1)*xT, (-1)*yT);
-//		}
 		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
 		g2d.dispose();
 		drawElevationLabel(xLoc, yLoc, rotationState, elevation, hashMapKey);

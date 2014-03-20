@@ -94,7 +94,13 @@ public class GameModel implements Serializable<GameModel> {
 																	// the
 																	// container
 		if (currentPlayer.endPlayerTurn()) { // if the player can validly end
-												// their turn. All the player
+			indexOfCurrentPlayer = ++indexOfCurrentPlayer % players.length; // switches
+			// the
+			// curentPlayer
+			// to
+			// the
+			// next
+			// player									// their turn. All the player
 												// stuff will have been
 												// manipulated
 			// System.out.println("player ended turn and index is being incremented");
@@ -102,16 +108,6 @@ public class GameModel implements Serializable<GameModel> {
 			return true; // tells the caller that everything worked out!
 		}
 		return false;
-	}
-	
-	public void incrementPlayer(){
-		indexOfCurrentPlayer = ++indexOfCurrentPlayer % players.length; // switches
-		// the
-		// curentPlayer
-		// to
-		// the
-		// next
-		// player
 	}
 
 	public void placeTile(int x, int y, Tile tile, JavaPlayer player) {
