@@ -8,7 +8,7 @@ import Helpers.JsonObject;
 
 public class JavaPlayer implements Serializable<JavaPlayer> {
 	
-	static int testingActionPoints = 6;
+	static int testingActionPoints = 10;
 	
 	public String name;	 
 	private String color;
@@ -247,7 +247,9 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		
 		for(Developer d: developersArray){
 			if(d.moveDeveloperIfOnThisXY(origin, newLocation)){
+				
 				return decrementNActionPoints(actionPointsCost, false);
+				
 			}
 		}
 		return false;
@@ -259,7 +261,6 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 				return i;
 			}
 		}
-		
 		return -1;
 	}
 	

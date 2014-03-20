@@ -27,6 +27,10 @@ public class MovingDeveloperTest {
 		Simulator.placeThreeSpaceTile(4, 2, 3);
 		Simulator.placeDeveloper(1, 1);
 		Simulator.placeDeveloper(1, 2);
+		GameRobot.pressTab();
+		GameRobot.type("x");
+		Simulator.placeThreeSpaceTile(7, 1, 3);
+		Simulator.placeDeveloper(1,3);
 		
 		
 	}

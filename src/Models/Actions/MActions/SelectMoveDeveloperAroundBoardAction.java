@@ -27,11 +27,9 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		path.push(board.getCellAtXY(originalX, originalY));
 		this.board = board;
 		this.player = player;
-		System.out.println("SelectMoveAroundBoard: constructor at " + x +"," + y);
 	}
 	
 	public boolean pressArrow(int xChange, int yChange) {
-		System.out.println("SelectMove: pressArrow");
 		int newX = x + xChange;
 		int newY = y + yChange;
 		if(isNonRotatableComponentOnBoard(newX, newY) ){
@@ -69,9 +67,17 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 	
 	public boolean addJavaCellToPath(JavaCell javaCell, JavaPlayer player) {
 		
-		if(javaCell.hasDeveloper() && !player.hasDeveloperOnXY(x,y)){
+		if(javaCell.hasDeveloper() && !player.hasDeveloperOnXY(javaCell.getX(),javaCell.getY())){
+			System.out.print(javaCell.hasDeveloper());
+			System.out.print(" + ");
+			System.out.print(!player.hasDeveloperOnXY(javaCell.getX(),javaCell.getY()));
+			System.out.println(" means: false");
 			return false;
 		}
+		System.out.print(javaCell.hasDeveloper());
+		System.out.print(" + ");
+		System.out.print(!player.hasDeveloperOnXY(javaCell.getX(),javaCell.getY()));
+		System.out.println(" means: not false");
 		if(!"villagerice".contains(javaCell.getCellType())){
 			return false;
 		}

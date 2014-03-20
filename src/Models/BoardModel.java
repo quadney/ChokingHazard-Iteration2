@@ -678,6 +678,7 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		// Set developer on board
 		player.placeDevOnBoard(jc);
+		jc.setDeveloper();
 		return true; // TODO Specific index?? cc: Cameron
 
 	}

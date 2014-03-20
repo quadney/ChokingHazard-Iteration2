@@ -26,7 +26,10 @@ public class MoveDeveloperAction extends NonRotatableComponentAction {
 		
 		return null; //new MoveDeveloperAction(Integer.parseInt(json.getString("actionID")), 
 //				Integer.parseInt(json.getString("x")), 
-//				Integer.parseInt(json.getString("y")), path)));
+//				Integer.parseInt(json.getString("y")),
+//				Integer.parseInt(json.getString("originX")),
+//				Integer.parseInt(json.getString("originY"))
+//				Integer.parseInt(json.getString("actionPointsCost")));
 		
 	}
 
