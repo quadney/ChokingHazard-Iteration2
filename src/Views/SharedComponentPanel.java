@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
+import Controllers.GameController;
+
 @SuppressWarnings("serial")
 public class SharedComponentPanel extends JPanel{
 	private JLabel threeTiles, irrigationTiles, twoPalaceTiles, fourPalaceTiles, sixPalaceTiles, eightPalaceTiles, tenPalaceTiles;
@@ -27,15 +29,15 @@ public class SharedComponentPanel extends JPanel{
 	private boolean playMode = true;
 	private HashMap<String, String> imageSourceHashMap;
 	
-	public SharedComponentPanel(String festivalCardHashKey){
+	public SharedComponentPanel(String festivalCardHashKey, GameController gameController){
 		super(new FlowLayout());
 		setPreferredSize(new Dimension(1100, 110));
 		
 		initHashMap();
-		initPanel(festivalCardHashKey);
+		initPanel(festivalCardHashKey, gameController);
 	}
 	
-	private void initPanel(String festivalCardHashKey){
+	private void initPanel(String festivalCardHashKey, final GameController gameController){
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setPreferredSize(new Dimension(140, 90));
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
@@ -55,7 +57,7 @@ public class SharedComponentPanel extends JPanel{
 					playMode = true;
 				}
 				
-				//TODO let the controller know
+				gameController.startPlanningMode();
 			}
 		});
 		buttonPanel.add(playModeToggleButton);
@@ -68,7 +70,7 @@ public class SharedComponentPanel extends JPanel{
 				//tempoarily set the button disabled while it replays, then when finished replaying set it to enabled
 				setReplayButtonEnabled(false);
 				
-				//TODO let the controller know this
+				gameController.startReplay();
 			}
 		});
 		buttonPanel.add(replayButton);
@@ -104,7 +106,7 @@ public class SharedComponentPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO actions and shit
+				gameController.pickUpPalaceCard();
 				System.out.println("draw from palace deck");
 			}
 		});

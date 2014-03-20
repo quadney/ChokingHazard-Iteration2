@@ -46,7 +46,7 @@ public class GameController {
 		currentGame = new GameModel(numPlayers, playerNames, playerColors);
 		board = new BoardController(currentGame.getBoard());
 		players = new PlayerController(numPlayers, currentGame.getPlayers()); //change player controller to query the model for the player info
-		shared = new SharedComponentController(currentGame.getShared()); //change this to work
+		shared = new SharedComponentController(currentGame.getShared(), this); //change this to work
 		
 		//this initializes the dealing of the palace cards
 		//the shared dealPalaceCards returns the dealt palace cards
@@ -196,9 +196,8 @@ public class GameController {
 		case 68: //released D, add new developer onto board
 			//currentGame.setSelectedActionDeveloper(new MAction("")); //somehow know the developer hash with the player color
 			if(players.selectDeveloper(currentGame.getPlayerIndex())){
-				System.out.println("red is the (hard coded) current player color.");
 				//currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("developer_" + players.getColorOfPlayer(currentGame.getPlayerIndex())));
-				currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("red"));
+				currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction(players.getColorOfPlayer(currentGame.getPlayerIndex())));
 				updateBoardControllerWithSelectedAction();
 			}
 			break;
@@ -317,6 +316,21 @@ public class GameController {
 		this.players.updatePlayersAfterFestival();
 		this.shared.updateAfterFestival(cardsToDiscard);
 		this.currentGamePanel.closeFestivalFrame(); 
+	}
+
+	public void startPlanningMode() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void startReplay() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void pickUpPalaceCard() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
