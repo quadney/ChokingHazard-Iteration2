@@ -366,6 +366,7 @@ public class GameModel implements Serializable<GameModel> {
 	
 	public boolean moveDeveloperAroundBoard(int originX, int originY, int x, int y, int actionPointsCost){
 		return players[indexOfCurrentPlayer].moveDeveloperAroundBoard(gameBoard.getCellAtXY(originX, originY), gameBoard.getCellAtXY(x, y), actionPointsCost);
+		
 	}
 	
 	public boolean takeDeveloperOffBoard(int x, int y) {

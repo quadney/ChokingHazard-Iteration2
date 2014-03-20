@@ -67,7 +67,10 @@ public class Developer implements Serializable<Developer>
 
 	public boolean moveDeveloperIfOnThisXY(JavaCell origin, JavaCell newLocation) {
 		if(location == origin){
+			System.out.println("DevModel: sets new location");
 			location = newLocation;
+			origin.removeDeveloper();
+			location.setDeveloper();
 			return true;
 		}
 		return false;
