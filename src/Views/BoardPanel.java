@@ -263,10 +263,11 @@ public class BoardPanel extends JPanel {
 			System.out.println(e.getMessage());
 		}
 	}
-	public void clearBoard(){
+	public void clearBoard(boolean repaint){
 		clearImage(tileImage);
 		clearImage(developers);
 		clearImage(tempImage);
-		repaint();
+		if(repaint)
+			repaint();
 	}
 }

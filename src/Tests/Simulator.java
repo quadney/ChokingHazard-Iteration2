@@ -11,8 +11,14 @@ public class Simulator {
 	public static int FILE_POS_Y = 50;
 	public static int QUIT_POS_X = 50;
 	public static int QUIT_POS_Y = 140;
+	public static int PLANNING_MODE_X = 110;
+	public static int PLANNING_MODE_Y = 90;
+	public static int REPLAY_X = 110;
+	public static int REPLAY_Y = 120;
 	public static int PLACE_START_X = 1;
 	public static int PLACE_START_Y = 1;
+	public static int PALACE_CARD_X = 550;
+	public static int PALACE_CARD_Y = 120;
 	public static int THROTTLE = 30;
 	public static int TIME_BETWEEN_MAIN_PLAYERS = 150;
 	public static int TIME_BETWEEN_MAIN_COMMANDS = 300;
@@ -42,6 +48,42 @@ public class Simulator {
 		GameRobot.wait(TIME_BETWEEN_MAIN_COMMANDS);
 		GameRobot.wait(GAME_LOAD_WAIT_TIME/2);
 		GameRobot.pressEscape();
+	}
+	
+	/**
+	 * Not fully implemented yet.
+	 * Quits the game through they menu with the mouse. 
+	 * @param filename name of the file to save. Set to null to quit without saving.
+	 */
+	public static void pickUpPalaceCard() {
+		GameRobot.click(PALACE_CARD_X, PALACE_CARD_Y, 1);
+		GameRobot.wait(TIME_BETWEEN_MAIN_COMMANDS);
+	}
+	
+	/**
+	 * Not fully implemented yet.
+	 * Quits the game through they menu with the mouse. 
+	 * @param filename name of the file to save. Set to null to quit without saving.
+	 */
+	public static void togglePlanning(boolean planning, boolean save) {
+		GameRobot.click(PLANNING_MODE_X, PLANNING_MODE_Y, 1);
+		GameRobot.wait(TIME_BETWEEN_MAIN_COMMANDS);
+		if(planning) {
+			if(!save)
+				GameRobot.pressTab();
+			GameRobot.pressSpace();
+		}				
+	}
+	
+	/**
+	 * Not fully implemented yet.
+	 * Quits the game through they menu with the mouse. 
+	 * @param filename name of the file to save. Set to null to quit without saving.
+	 */
+	public static void startReplay() {
+		GameRobot.click(REPLAY_X, REPLAY_Y, 1);
+		GameRobot.wait(TIME_BETWEEN_MAIN_COMMANDS);
+		GameRobot.pressSpace();
 	}
 	
 	/**

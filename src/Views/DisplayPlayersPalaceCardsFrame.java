@@ -74,8 +74,11 @@ public class DisplayPlayersPalaceCardsFrame extends JFrame {
 		
 		ArrayList<PalaceCard> cards = player.getPalaceCards();
 		for(int i = 0; i < cards.size(); i++){
-			JLabel cardLabel = createPalaceCardJLabel("label_"+cards.get(i).getType());
-			System.out.println(cards.get(i).getType());
+			JLabel cardLabel;
+			if(cards.get(i).isFaceUp())
+				cardLabel = createPalaceCardJLabel("label_"+cards.get(i).getType());
+			else
+				cardLabel = createPalaceCardJLabel("label_palaceCard_back");
 			cardsPanel.add(cardLabel);
 		}
 	}
