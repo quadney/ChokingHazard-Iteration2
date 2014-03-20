@@ -88,4 +88,12 @@ public class BoardController {
 			//game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
 		}
 	}
+
+	public void setRedraw(boolean b) {
+		this.boardPanel.replaying = !b;		
+	}
+
+	public void clearBoard() {
+		boardPanel.clearBoard();
+	}
 }

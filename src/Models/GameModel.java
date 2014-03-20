@@ -10,11 +10,11 @@ import Models.Actions.MActions.SelectMoveDeveloperAroundBoardAction;
 
 // This enum declaration might need to be moved, not sure how accessible it is right now 
 // (needs to be accessible by GameModel and the Controller). #JavaTroubles
-enum GameState {
-	ReplayMode, PlanningMode, NormalMode
-}
 
 public class GameModel implements Serializable<GameModel> {
+	public enum GameState {
+		ReplayMode, PlanningMode, NormalMode
+	}
 	// VARIABLES
 	private BoardModel gameBoard;
 	private JavaPlayer[] players;
@@ -535,12 +535,11 @@ public class GameModel implements Serializable<GameModel> {
 	}
 	
 	public void undoAction() {
-		if(!gameState.equals(GameState.PlanningMode))
-			return;
-		Action[] actions = actionHistory.toArray(new Action[1]);
+//		if(!gameState.equals(GameState.PlanningMode))
+//			return;
 		actionHistory.pop();
-		for(int x = 0; x < actions.length-1; ++x) 
-			actions[x].doAction(this);
+		System.out.println("UNDONE");
+		System.out.println(actionHistory);
 	}
 	
 	public void redoAllActionsUntil(int actionID, boolean slowForReplayMode) {
@@ -573,5 +572,9 @@ public class GameModel implements Serializable<GameModel> {
 
 	public void drawFromDeck() {
 		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFromDeck());
+	}
+
+	public Action[] getActions() {
+		return actionHistory.toArray(new Action[1]);
 	}
 }

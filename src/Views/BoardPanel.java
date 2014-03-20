@@ -26,6 +26,7 @@ public class BoardPanel extends JPanel {
 	private Graphics2D g2d;
 	private HashMap<String, String> imageSourceHashMap;
 	public boolean replaying = false;
+	
 
 	public BoardPanel(){		
 		initHashMap();
@@ -261,5 +262,10 @@ public class BoardPanel extends JPanel {
 		} catch(Exception e){
 			System.out.println(e.getMessage());
 		}
+	}
+	public void clearBoard(){
+		clearImage(tileImage);
+		clearImage(developers);
+		clearImage(tempImage);
 	}
 }

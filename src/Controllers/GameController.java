@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
+import Models.GameModel.GameState;
 import Models.PalaceCard;
 import Models.Actions.Action;
 import Models.Actions.DrawFestivalCardAction;
@@ -362,6 +363,17 @@ public class GameController {
 			}
 
 			break;
+		case 85:
+			// does not become a selected action, just does a regular action!
+			// released U, undo
+//			if (currentGame.getGameState().equals(GameState.PlanningMode)) {
+				undo();
+				System.out.println("UNDO");
+//			} else {
+//				currentGamePanel.playErrorSound();
+//			}
+
+			break;
 		case 86:
 			// released V, place Village
 			// TODO check if the player has enough villages and that they have
@@ -498,10 +510,45 @@ public class GameController {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public void undo() {
+		board.clearBoard();
+		Action[] actions = currentGame.getActions();
+		doActions(actions, 0, actions.length-1, false, false);
+		doActions(actions, actions.length-1, actions.length, false, true);
+		currentGame.undoAction();
+	}
 
 	public void startReplay() {
-		// TODO Auto-generated method stub
-
+		Action[] actions = currentGame.getActions();
+		int startOfRoundIndex = 0;
+		for(int x = 0; x < actions.length; ++x)
+			if(actions[x].getActionID() == currentGame.getStartOfRoundActionID())
+				startOfRoundIndex = x;
+		
+		doActions(actions, 0, startOfRoundIndex-1, false, false);
+		actions[startOfRoundIndex-1].doAction(currentGame);
+		doActions(actions, startOfRoundIndex, actions.length, true, true);
+	}
+	
+	private void doActions(Action[] actions, int startIndex, int endIndex, boolean wait, boolean draw) {
+		for(int x = startIndex; x < endIndex; ++x) {
+			if(wait)
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				}
+			if(draw) {
+				shared.updateSharedPanel();
+				players.updatePlayerPanel(currentGame.getPlayerIndex());
+			}
+			else {
+				board.setRedraw(false);
+			}
+			board.updateBoardPanel(actions[x], currentGame);
+			board.setRedraw(true);
+			actions[x].doAction(currentGame);
+		}
 	}
 
 	public void pickUpPalaceCard() {
