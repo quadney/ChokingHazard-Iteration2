@@ -15,12 +15,13 @@ public class ReplayTest {
 		Simulator.newGame("p", "c");
 
 		Simulator.placeThreeSpaceTile(3, 3, 0);
-		Simulator.placeThreeSpaceTile(3, 3, 0);
-		Simulator.endTurn(0);
 		
 		Simulator.placeTwoSpaceTile(5, 5, 0);
-		Simulator.placeTwoSpaceTile(5, 5, 0);
-		Simulator.endTurn(0);
+		Simulator.placeThreeSpaceTile(7, 7, 0);
+		
+		Simulator.placeTwoSpaceTile(9, 9, 0);
+		Simulator.placeTwoSpaceTile(11, 11, 0);
+		Simulator.placeTwoSpaceTile(9, 3, 0);
 		/*Simulator.placeDeveloper(3, 3);
 		Simulator.placeDeveloper(4, 4);
 		Simulator.placeDeveloper(1, 5);

@@ -506,30 +506,38 @@ public class GameController {
 	}
 	
 	public void undo() {
+		currentGame.clearForReplay();
+		currentGame.undoAction();
 		board.clearBoard();
 		Action[] actions = currentGame.getActions();
 		doActions(actions, 0, actions.length-1, false, false);
 		doActions(actions, actions.length-1, actions.length, false, true);
-		currentGame.undoAction();
 	}
 
 	public void startReplay() {
+		currentGame.clearForReplay();
+		board.clearBoard();
 		Action[] actions = currentGame.getActions();
-		int startOfRoundIndex = 0;
-		for(int x = 0; x < actions.length; ++x)
-			if(actions[x].getActionID() == currentGame.getStartOfRoundActionID())
-				startOfRoundIndex = x;
-		
-		doActions(actions, 0, startOfRoundIndex-1, false, false);
-		actions[startOfRoundIndex-1].doAction(currentGame);
-		doActions(actions, startOfRoundIndex, actions.length, true, true);
+		int startOfRoundIndex = 1;
+//		for(int x = 0; x < actions.length; ++x)
+//			if(actions[x].getActionID() == currentGame.getStartOfRoundActionID())
+//				startOfRoundIndex = x;
+//		System.out.println("START OF ROUND" + startOfRoundIndex);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		doActions(actions, 0, startOfRoundIndex-1, false, false);
+//		doActions(actions, startOfRoundIndex-1, actions.length, true, true);
 	}
 	
 	private void doActions(Action[] actions, int startIndex, int endIndex, boolean wait, boolean draw) {
 		for(int x = startIndex; x < endIndex; ++x) {
 			if(wait)
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 				}
 			if(draw) {

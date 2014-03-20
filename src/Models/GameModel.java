@@ -60,6 +60,13 @@ public class GameModel implements Serializable<GameModel> {
 		this.gameState = GameState.NormalMode;
 	}
 
+	public void clearForReplay() {
+		this.indexOfCurrentPlayer = 0;
+		this.gameBoard.reset();
+		this.shared.reset();
+		for (int i = 0; i < players.length; i++)
+			players[i].reset();
+	}
 	// This method is to be used by the controller to determine which buttons
 	// are visible/enabled in the view (and other visual components). For
 	// example, if the gameState is PlanningMode, the undo button and exit

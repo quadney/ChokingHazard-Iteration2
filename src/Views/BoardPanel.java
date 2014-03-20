@@ -267,5 +267,6 @@ public class BoardPanel extends JPanel {
 		clearImage(tileImage);
 		clearImage(developers);
 		clearImage(tempImage);
+		repaint();
 	}
 }

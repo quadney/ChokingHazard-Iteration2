@@ -1074,4 +1074,34 @@ public class BoardModel implements Serializable<BoardModel>  {
 		
 		return list;
 	}
+
+	public void reset() {
+		this.map = new JavaCell[14][14];
+		this.outerCells = new JavaCell[52];
+		this.irrigationMap = new JavaCell[14][14];
+		this.path = new LinkedList<JavaCell>();
+		connectedPalaces = new ArrayList<JavaCell>();
+		visitedVillages = new ArrayList<JavaCell>();
+		bodiesOfWater = new ArrayList<ArrayList<JavaCell>>();
+		//coast = new ArrayList<JavaCell>();
+		cellId = 0;
+
+		int i = 0;
+		for (int x = 0; x < map.length; x++) {
+			for (int y = 0; y < map[0].length; y++) {
+				map[x][y] = new JavaCell(x, y, 0);
+				irrigationMap[x][y] = new JavaCell(x, y, 0);
+
+				if ((x == 0 || x == 13)) {
+					outerCells[i] = map[x][y];
+					i++;
+				}
+
+				else if ((y == 0 || y == 13) && (x != 0 && x != 13)) {
+					outerCells[i] = map[x][y];
+					i++;
+				}
+			}
+		}
+	}
 }
