@@ -1,9 +1,11 @@
 package Controllers;
 
+import java.util.Stack;
+
 import Models.BoardModel;
+import Models.Developer;
 import Models.GameModel;
 import Models.Actions.Action;
-import Models.Actions.NonRotatableComponentAction;
 import Models.Actions.OneSpaceTileAction;
 import Models.Actions.PlaceDeveloperOnBoardAction;
 import Models.Actions.RotatableComponentAction;
@@ -46,6 +48,18 @@ public class BoardController {
 		}
 		else if(action instanceof PlaceDeveloperOnBoardAction) {
 			System.out.println("in updateBoardPanel NonRotatableTileComponent");
+			Stack<Integer> xs = new Stack<Integer>();
+			Stack<Integer> ys = new Stack<Integer>(); 
+			Stack<String> images = new Stack<String>(); 
+			for(Developer developer : game.getAllPlayerDevelopers()){
+				xs.push(developer.getX());
+				ys.push(developer.getY());
+				images.push(developer.getOwner().getColor());
+			}
+			System.out.println(xs + " " + ys + " " + images);
+			
+			boardPanel.placeDeveloper(xs, ys, images);
+			//game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
 			//boardPanel.placeDeveloper(game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
 		}
 	}

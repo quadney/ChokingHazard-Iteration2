@@ -488,4 +488,11 @@ public class GameModel implements Serializable<GameModel> {
 	public void takeDeveloperOffBoard(int x, int y) {
 		gameBoard.removeDatDeveloperOffDaBoard(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
 	}
+	
+	public LinkedList<Developer> getAllPlayerDevelopers() {
+		LinkedList<Developer> list = new LinkedList<Developer>();
+		for(JavaPlayer player : players)
+			list.addAll(Arrays.asList(player.getDevelopersOnBoard()));
+		return list;
+	}
 }
