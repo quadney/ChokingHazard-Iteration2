@@ -439,28 +439,25 @@ public class GameModel implements Serializable<GameModel> {
 
 	@Override
 	public GameModel loadObject(JsonObject json) {
-		System.out.println("loading object from the game model;");
+		System.out.println("loading object");
 		this.actionHistory = new Stack<Event>();
 		this.actionReplays = new Stack<Event>();
-		
-		System.out.println("loading the action history");
 		if(json.getObject("actionHistory") != null)
 			for(int x = 0; x < ((Object[])json.getObject("actionHistory")).length; ++x)
 				this.actionHistory.push(Action.loadAction((JsonObject)((Object[])json.getObject("actionHistory"))[x]));
-		
-		System.out.println("loading the action replays");
 		if(json.getObject("actionReplays") != null)
 			for(int x = 0; x < ((Object[])json.getObject("actionReplays")).length; ++x)
 				this.actionHistory.push(Action.loadAction((JsonObject)((Object[])json.getObject("actionReplays"))[x]));
-		
-		System.out.println("loading the player names");
 		String[] names = new String[((Object[])json.getObject("playerNames")).length];
 		String[] colors = new String[((Object[])json.getObject("playerColors")).length];
+		System.out.println(names.length);
 		for(int x = 0; x < names.length; ++x) {
 			colors[x] = (String)((Object[])json.getObject("playerColors"))[x];
+			
 			names[x] = (String)((Object[])json.getObject("playerNames"))[x];
+			System.out.println(names[x]);
 		}
-		
+		System.out.println("HELLO, IS IT ME YOU'RE LOOKING FOR");
 		System.out.println(((Object[])json.getObject("playerNames")));
 		GameModel model = new GameModel(names.length, names, colors);
 		model.setActionHistory(actionHistory);
@@ -573,17 +570,5 @@ public class GameModel implements Serializable<GameModel> {
 			}
 		}
 		return -1;
-	}
-
-	public PalaceCard drawFestivalCard() {
-		return shared.drawFestivalCard();
-	}
-
-	public PalaceCard drawFromDeck() {
-		return shared.drawFromDeck();
-	}
-	
-	public void addPalaceCard(PalaceCard card) {
-		players[indexOfCurrentPlayer].addPalaceCard(card);
 	}
 }

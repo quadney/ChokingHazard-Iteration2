@@ -70,7 +70,11 @@ public class GameController {
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		
 		//TODO need to load everything from the board model to the board panel
-		//board.loadGame();
+		//board.loadGame(currentGame.get);
+		for(int i = 0; i < currentGame.getPlayers().length; i++){
+			System.out.println("Names: "+currentGame.getPlayers()[i].getName());
+
+		}
 		
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
@@ -445,11 +449,12 @@ public class GameController {
 	}
 
 	public void pickUpPalaceCard() {
-		Action action = new DrawPalaceCardAction(currentGame.nextActionID(), currentGame.drawFromDeck().getTypeNumber());
-		currentGame.drawFromDeck();
+		//Action action = new DrawPalaceCardAction(currentGame.nextActionID(), currentGame.drawFromDeck().getTypeNumber());
+		currentGamePanel.playDrawCardSound();
+		//currentGame.drawFromDeck();
 	}
 
 	public void pickUpFestivalCard() {
-		currentGame.drawFestivalCard();
+		//currentGame.drawFestivalCard();
 	}
 }

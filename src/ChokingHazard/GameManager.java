@@ -41,8 +41,7 @@ public class GameManager {
 		}
 			
 		String loadString = alpha.toString();
-		System.out.println("returning the json object");
-		System.out.println("JSON OBJECT: "+loadString);
+		
 		return new JsonObject(loadString);
 	}
 	

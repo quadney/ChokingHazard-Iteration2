@@ -58,6 +58,10 @@ public class BoardController {
 	public void pressEsc() {
 		boardPanel.cancel();
 	}
+	
+	public void loadGame(){
+		
+	}
 
 	public void updateBoardPanel(Action action, GameModel game) {
 		if(action instanceof RotatableComponentAction){
