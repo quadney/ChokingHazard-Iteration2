@@ -92,8 +92,6 @@ public class NewGameFrame extends JFrame{
 			newGamePanel.add(newPlayers[i]);
 			newPlayers[i].setVisible(false);
 			
-			//TODO: delete dev purposes:
-			playerNames[i].setText("Player: "+i);
 		}
 		
 		newGamePanel.add(startGame);

@@ -171,6 +171,7 @@ public class GameContainerPanel extends JPanel {
 	
 	public void tellPeopleTheyAintPlacedNoLandTile(){
 		JOptionPane.showMessageDialog( null, "You haven't placed a land tile :(");
+		resetEasterEggCount();
 	}
 
 	public void playErrorSound() {
