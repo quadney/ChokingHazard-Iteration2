@@ -431,9 +431,11 @@ public class GameController {
 	}
 
 	public void pickUpPalaceCard() {
-		// TODO Auto-generated method stub
-		currentGamePanel.playDrawCardSound();
-		
+		Action action = new DrawPalaceCardAction(currentGame.nextActionID(), currentGame.drawFromDeck().getTypeNumber());
+		currentGame.drawFromDeck();
 	}
-	
+
+	public void pickUpFestivalCard() {
+		currentGame.drawFestivalCard();
+	}
 }

@@ -121,7 +121,7 @@ public class SharedComponentPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO actions and shit
+				gameController.pickUpFestivalCard();
 				System.out.println("draw festival card");
 			}
 		});

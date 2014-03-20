@@ -13,8 +13,8 @@ public class SaveGameTest {
 		RunGame game = new RunGame();
 		
 		Simulator.newGame("p", "c");
-		Simulator.placeThreeSpaceTile(5, 5, 1);
-		Simulator.saveGame("mau");
+		//Simulator.placeThreeSpaceTile(5, 5, 1);
+		//Simulator.saveGame("mau");
 		
 		
 		
