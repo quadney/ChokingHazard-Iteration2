@@ -97,7 +97,7 @@ public class BoardModel implements Serializable<BoardModel> {
 			
 			System.out.println("CHECK FOR SURROUNDED IRRIGATION CELLS: " + checkForSurroundedIrrigationCells(xC, yC, tile, gameDevelopers));
 
-			System.out.println(toString());
+//			System.out.println(toString());
 			return true;
 		}
 
@@ -128,23 +128,23 @@ public class BoardModel implements Serializable<BoardModel> {
 			palaceOK = placePalace(xC, yC, miniMap[1][1], map, player);
 		}
 
-		System.out.println("palace placement: "
-				+ checkPalacePlacement(miniMap, tile));
-		System.out.println("palace tilesBelow: "
-				+ checkTilesBelow(miniMap, tile));
-		System.out.println("palace elevation: "
-				+ checkElevation(miniMap, tile, xC, yC));
-		System.out.println("palace Irrigation: "
-				+ checkIrrigationPlacement(miniMap, tile));
-		System.out.println("palace DevOnCell: "
-				+ checkDeveloperOnCell(miniMap, tile));
-		System.out.println("palace CityConn: "
-				+ checkCityConnection(miniMap, tile));
-		System.out.println("palace edge: " + checkEdgePlacement(miniMap, tile));
-		System.out
-				.println("palace action: "
-						+ player.decrementNActionPoints(neededActionPoints,
-								isLandTile));
+//		System.out.println("palace placement: "
+//				+ checkPalacePlacement(miniMap, tile));
+//		System.out.println("palace tilesBelow: "
+//				+ checkTilesBelow(miniMap, tile));
+//		System.out.println("palace elevation: "
+//				+ checkElevation(miniMap, tile, xC, yC));
+//		System.out.println("palace Irrigation: "
+//				+ checkIrrigationPlacement(miniMap, tile));
+//		System.out.println("palace DevOnCell: "
+//				+ checkDeveloperOnCell(miniMap, tile));
+//		System.out.println("palace CityConn: "
+//				+ checkCityConnection(miniMap, tile));
+//		System.out.println("palace edge: " + checkEdgePlacement(miniMap, tile));
+//		System.out
+//				.println("palace action: "
+//						+ player.decrementNActionPoints(neededActionPoints,
+//								isLandTile));
 
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
@@ -265,11 +265,11 @@ public class BoardModel implements Serializable<BoardModel> {
 
 				if (tileCells[i][j] != null
 						&& miniMap[i][j].getElevation() >= 0) {
-					System.out.println("in the 1st if statement: " + testId);
+//					System.out.println("in the 1st if statement: " + testId);
 
 					if (testId == 0) {
 						testId = miniMap[i][j].getCellId();
-						System.out.println("The id is: " + testId);
+//						System.out.println("The id is: " + testId);
 					} else {
 						if (testId != miniMap[i][j].getCellId())
 							return true;
@@ -572,8 +572,8 @@ public class BoardModel implements Serializable<BoardModel> {
 			number = 0;
 		}
 
-		System.out.println("in checkedge the outer cell length is: "
-				+ outerCells.length);
+//		System.out.println("in checkedge the outer cell length is: "
+//				+ outerCells.length);
 
 		for (int i = 0; i < outerCells.length; i++) {
 			for (int j = 0; j < cells.length; j++) {
@@ -585,9 +585,9 @@ public class BoardModel implements Serializable<BoardModel> {
 			}
 		}
 
-		System.out.println("COUNT IS: " + count);
+//		System.out.println("COUNT IS: " + count);
 
-		System.out.println("count: " + count + "number" + number);
+//		System.out.println("count: " + count + "number" + number);
 
 		if (count == number) {
 			return false;
@@ -1126,5 +1126,35 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 
 		return list;
+	}
+
+	public void reset() {
+		this.map = new JavaCell[14][14];
+		this.outerCells = new JavaCell[52];
+		this.irrigationMap = new JavaCell[14][14];
+		this.path = new LinkedList<JavaCell>();
+		connectedPalaces = new ArrayList<JavaCell>();
+		visitedVillages = new ArrayList<JavaCell>();
+		bodiesOfWater = new ArrayList<ArrayList<JavaCell>>();
+		//coast = new ArrayList<JavaCell>();
+		cellId = 0;
+
+		int i = 0;
+		for (int x = 0; x < map.length; x++) {
+			for (int y = 0; y < map[0].length; y++) {
+				map[x][y] = new JavaCell(x, y, 0);
+				irrigationMap[x][y] = new JavaCell(x, y, 0);
+
+				if ((x == 0 || x == 13)) {
+					outerCells[i] = map[x][y];
+					i++;
+				}
+
+				else if ((y == 0 || y == 13) && (x != 0 && x != 13)) {
+					outerCells[i] = map[x][y];
+					i++;
+				}
+			}
+		}
 	}
 }

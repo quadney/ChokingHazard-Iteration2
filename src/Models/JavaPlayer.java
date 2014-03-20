@@ -356,4 +356,19 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return false;
 	}
 
+	public void reset() {
+		this.actionPoints = testingActionPoints;
+		this.famePoints = 0;
+		this.numOneRiceTile = 3;
+		this.numOneVillageTile = 2;
+		this.numTwoTile = 5;
+		this.numActionTokens = 3;
+		this.palaceCards = new ArrayList<PalaceCard>();
+		this.hasPlacedLandTile = false;
+		this.selectedDeveloperIndex = 0;
+		this.hasUsedActionToken = false;
+		this.developersArray = new Developer[12];
+		this.palacesInteractedWith = new ArrayList<JavaCell>();
+	}
+
 }
