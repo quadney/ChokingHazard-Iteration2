@@ -55,6 +55,8 @@ public abstract class Action extends Event implements Serializable<Action> {
 			action = (new UseActionTokenAction()).loadObject(json);
 		if(actionType.equals("EndTurnAction"))
 			action = (new EndTurnAction()).loadObject(json);
+		if(actionType.equals("DrawPalaceCardAction"))
+			action = (new DrawPalaceCardAction()).loadObject(json);
 		return action;
 	}
 }

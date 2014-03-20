@@ -411,8 +411,11 @@ public class GameController {
 	}
 
 	public void pickUpPalaceCard() {
-		// TODO Auto-generated method stub
-		
+		Action action = new DrawPalaceCardAction();
+		currentGame.drawFromDeck();
 	}
-	
+
+	public void pickUpFestivalCard() {
+		currentGame.drawFestivalCard();
+	}
 }
