@@ -135,15 +135,15 @@ public class GameController {
 		case 9:
 			//released tab, tab through developers
 			if (currentGame.pressTab()){
-				System.out.println("Gctrl tab for not first time");
+				//System.out.println("Gctrl tab for not first time");
 				updateBoardControllerWithSelectedAction();
 			}
 			else if(players.getNumDevelopersOffBoard(currentGame.getPlayerIndex()) < 12) {
-				System.out.println("Gctrl tab for first time");
+				//System.out.println("Gctrl tab for first time");
 				currentGame.setSelectedAction(new SelectTabThroughDevelopersAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex()), players.getDevelopersOnBoard(currentGame.getPlayerIndex())));
 				updateBoardControllerWithSelectedAction();
 			} else {
-				System.out.println("Gctrl not tab blargh");
+				//System.out.println("Gctrl not tab blargh");
 				currentGamePanel.playErrorSound();
 			}
 			
@@ -155,7 +155,7 @@ public class GameController {
 			Action action = currentGame.pressEnter();
 			//currentGamePanel.playSelectDeveloperSound();  ?
 			if(action != null){
-				System.out.println("action != null in GCtrl");
+				//System.out.println("action != null in GCtrl");
 				currentGame.addToActionHistory(action);
 				//currentGame.doLastActionInHistory();
 				currentGame.setSelectedAction(null);
@@ -431,7 +431,7 @@ public class GameController {
 	}
 
 	public void pickUpPalaceCard() {
-		Action action = new DrawPalaceCardAction(currentGame.nextActionID(), currentGame.drawFromDeck().getTypeNumber());
+		Action action = new DrawPalaceCardAction(currentGame.nextActionID());
 		currentGame.drawFromDeck();
 	}
 
