@@ -528,23 +528,12 @@ public class BoardModel implements Serializable<BoardModel> {
 				+ outerCells.length);
 
 		for (int i = 0; i < outerCells.length; i++) {
-
-			if (cells[0] != null && outerCells[i] != null
-					&& cells[0].getX() == outerCells[i].getX()
-					&& cells[0].getY() == outerCells[i].getY())
+			for(int j = 0; j < cells.length; j++)
+			if (cells[j] != null && outerCells[i] != null
+					&& cells[j].getX() == outerCells[i].getX()
+					&& cells[j].getY() == outerCells[i].getY())
 				count++;
-			if (cells[1] != null && outerCells[i] != null
-					&& cells[1].getX() == outerCells[i].getX()
-					&& cells[1].getY() == outerCells[i].getY())
-				count++;
-			if (cells[2] != null && outerCells[i] != null
-					&& cells[2].getX() == outerCells[i].getX()
-					&& cells[2].getY() == outerCells[i].getY())
-				count++;
-			if (cells[3] != null && outerCells[i] != null
-					&& cells[3].getX() == outerCells[i].getX()
-					&& cells[3].getY() == outerCells[i].getY())
-				count++;
+			
 		}
 
 		System.out.println("count: " + count + "number" + number);
