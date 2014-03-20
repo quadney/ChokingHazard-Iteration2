@@ -30,9 +30,9 @@ public class SharedComponentController {
 		return card;
 	}
 	
-	public PalaceCard drawFestivalCard(){
+	public PalaceCard drawFestivalCard(boolean isUp){
 		PalaceCard card = this.sharedModel.getFestivalCard();
-		sharedModel.drawFestivalCard();
+		sharedModel.drawFestivalCard(isUp);
 		sharedPanel.drawFestivalCard(sharedModel.getNumberPalaceCards(), sharedModel.getFestivalCardType());
 		return card;
 	}
@@ -58,7 +58,7 @@ public class SharedComponentController {
 		for(PalaceCard discard : cardsToDiscard){
 			this.sharedModel.discardCard(discard);
 		}
-		this.sharedModel.discardCard(drawFestivalCard());
+		this.sharedModel.discardCard(drawFestivalCard(true));
 	}
 
 //---------------------Checks validity for select actions-------------------------------------
@@ -122,7 +122,6 @@ public class SharedComponentController {
 		//do more for palace card shit
 		sharedPanel.updateNumPalaceCards(sharedModel.getNumberPalaceCards());
 		
-		//also need to update what the "festival card" looks like
-		sharedPanel.updateFestivalCard(sharedModel.getFestivalCardType());
+		sharedPanel.updateFestivalCard(sharedModel.getFestivalCard());
 	}
 }

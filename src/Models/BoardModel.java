@@ -106,14 +106,14 @@ public class BoardModel implements Serializable<BoardModel> {
 
 			if (placedLandTile(xC, yC))
 				player.placedLandTile();
-			System.out.println("CHECK FOR SURROUNDED IRRIGATION CELLS: "
-					+ checkForSurroundedIrrigationCells(xC, yC, tile,
-							gameDevelopers));
+//			System.out.println("CHECK FOR SURROUNDED IRRIGATION CELLS: "
+//					+ checkForSurroundedIrrigationCells(xC, yC, tile,
+//							gameDevelopers));
 
 
 			bodiesOfWater.clear();
 
-			System.out.println(toString());
+//			System.out.println(toString());
 			return true;
 		}
 
@@ -186,8 +186,8 @@ public class BoardModel implements Serializable<BoardModel> {
 				if (tileCells[i][j] != null) {
 					for (int out = 0; out < outerCells.length; out++) {
 
-						System.out
-								.println("-----------------------HHHHHHHHererere---------------");
+//						System.out
+//								.println("-----------------------HHHHHHHHererere---------------");
 						if (miniMap[i][j] != null
 								&& miniMap[i][j].getElevation() == 0
 								&& miniMap[i][j].getX() == outerCells[out]
@@ -195,7 +195,7 @@ public class BoardModel implements Serializable<BoardModel> {
 								&& miniMap[i][j].getY() == outerCells[out]
 										.getY()) {
 
-							System.out.println("i: " + i + "j: " + j);
+//							System.out.println("i: " + i + "j: " + j);
 
 							outsideCount++;
 						}
@@ -899,13 +899,13 @@ public class BoardModel implements Serializable<BoardModel> {
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				boolean value = tileCells[i][j] != null;
-				System.out
-						.println("dfhjsdfhksdfhkdsajfhajksdhfkjadshfkjasdhfkjadshkjfhsadk");
-				System.out.println("tileCells[" + i + "][" + j
-						+ "] == NULL IS " + value);
+//				System.out
+//						.println("dfhjsdfhksdfhkdsajfhajksdhfkjadshfkjasdhfkjadshkjfhsadk");
+//				System.out.println("tileCells[" + i + "][" + j
+//						+ "] == NULL IS " + value);
 				if (tileCells[i][j] != null) {
-					System.out.println("THE VALUE OF xC IS " + xC);
-					System.out.println("THE VALUE OF yC IS " + yC);
+//					System.out.println("THE VALUE OF xC IS " + xC);
+//					System.out.println("THE VALUE OF yC IS " + yC);
 
 					boolean xplus1null = irrigationMap[xC][yC + 1] == null;
 					boolean xminus1null = irrigationMap[xC][yC + 1] == null;
@@ -920,26 +920,26 @@ public class BoardModel implements Serializable<BoardModel> {
 					boolean xminus1irrigation = irrigationMap[xC][yC + 1]
 							.getCellType().equals("irrigation");
 
-					System.out.println("IRRIGATION MAP [xC][yC + 1] IS NULL "
-							+ yplus1null);
-					System.out
-							.println("IRRIGATION MAP [xC][yC + 1] CellType Is Irrigation "
-									+ yplus1irrigation);
-					System.out.println("IRRIGATION MAP [xC][yC - 1] IS NULL "
-							+ yminus1null);
-					System.out
-							.println("IRRIGATION MAP [xC][yC - 1] CellType Is Irrigation "
-									+ yminus1irrigation);
-					System.out.println("IRRIGATION MAP [xC + 1][yC] IS NULL "
-							+ xplus1null);
-					System.out
-							.println("IRRIGATION MAP [xC + 1][yC] CellType Is Irrigation "
-									+ xplus1irrigation);
-					System.out.println("IRRIGATION MAP [xC - 1][yC] IS NULL "
-							+ xminus1null);
-					System.out
-							.println("IRRIGATION MAP [xC - 1][yC] CellType Is Irrigation "
-									+ xminus1irrigation);
+//					System.out.println("IRRIGATION MAP [xC][yC + 1] IS NULL "
+//							+ yplus1null);
+//					System.out
+//							.println("IRRIGATION MAP [xC][yC + 1] CellType Is Irrigation "
+//									+ yplus1irrigation);
+//					System.out.println("IRRIGATION MAP [xC][yC - 1] IS NULL "
+//							+ yminus1null);
+//					System.out
+//							.println("IRRIGATION MAP [xC][yC - 1] CellType Is Irrigation "
+//									+ yminus1irrigation);
+//					System.out.println("IRRIGATION MAP [xC + 1][yC] IS NULL "
+//							+ xplus1null);
+//					System.out
+//							.println("IRRIGATION MAP [xC + 1][yC] CellType Is Irrigation "
+//									+ xplus1irrigation);
+//					System.out.println("IRRIGATION MAP [xC - 1][yC] IS NULL "
+//							+ xminus1null);
+//					System.out
+//							.println("IRRIGATION MAP [xC - 1][yC] CellType Is Irrigation "
+//									+ xminus1irrigation);
 
 					if (yC < 13
 							&& irrigationMap[xC][yC + 1] != null
@@ -966,11 +966,11 @@ public class BoardModel implements Serializable<BoardModel> {
 							&& irrigationMap[xC - 1][yC] != null
 							&& irrigationMap[xC - 1][yC].getCellType().equals(
 									"irrigation")) {
-						System.out.println("I GET HERE: " + i + j);
-						boolean irrigationCell = irrigationMap[xC - 1][yC]
-								.getCellType().equals("irrigation");
-						System.out.println("IRRIGATION CELL == "
-								+ irrigationCell);
+//						System.out.println("I GET HERE: " + i + j);
+//						boolean irrigationCell = irrigationMap[xC - 1][yC]
+//								.getCellType().equals("irrigation");
+//						System.out.println("IRRIGATION CELL == "
+//								+ irrigationCell);
 						up = createNewBodyOfWater(xC - 1, yC);
 					}
 
@@ -987,10 +987,10 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 
 	public boolean createNewBodyOfWater(int xC, int yC) {
-		System.out.println("INSIDE CREATE NEW BODY OF WATER");
+//		System.out.println("INSIDE CREATE NEW BODY OF WATER");
 		if (!isAlreadyInBodyOfWater(xC, yC)) {
-			System.out
-					.println("xC, yC IS NOT ALREADY IN A BODY OF WATER (THIS IS GOOD)");
+//			System.out
+//					.println("xC, yC IS NOT ALREADY IN A BODY OF WATER (THIS IS GOOD)");
 			bodiesOfWater.add(new ArrayList<JavaCell>());
 			addToBodiesOfWater(xC, yC);
 			return true;
@@ -1105,8 +1105,8 @@ public class BoardModel implements Serializable<BoardModel> {
 
 			for (int i = 0; i < coast.size(); i++) {
 				if (maxElevation == coast.get(i).getElevation()) {
-					System.out.println("GAME DEVELOPERS.SIZE() = "
-							+ gameDevelopers.size());
+//					System.out.println("GAME DEVELOPERS.SIZE() = "
+//							+ gameDevelopers.size());
 					for (int j = 0; j < gameDevelopers.size(); j++) {
 						if (gameDevelopers.get(j) != null) {
 							if (gameDevelopers.get(j).getX() == coast.get(i)
@@ -1117,8 +1117,8 @@ public class BoardModel implements Serializable<BoardModel> {
 								boolean dev = gameDevelopers.get(j) == null;
 								boolean own = gameDevelopers.get(j).getOwner() == null;
 
-								System.out.println("pwe " + pwe + " dev " + dev
-										+ " own " + own);
+//								System.out.println("pwe " + pwe + " dev " + dev
+//										+ " own " + own);
 
 								if (playersWithElevation.get(gameDevelopers
 										.get(j).getOwner()) != null) {
@@ -1127,13 +1127,13 @@ public class BoardModel implements Serializable<BoardModel> {
 											playersWithElevation
 													.get(gameDevelopers.get(j)
 															.getOwner()) + 1);
-									System.out.println("HERE1");
+//									System.out.println("HERE1");
 								}
 
 								else {
 									playersWithElevation.put(gameDevelopers
 											.get(j).getOwner(), 1);
-									System.out.println("HERE2");
+//									System.out.println("HERE2");
 								}
 
 								break;
