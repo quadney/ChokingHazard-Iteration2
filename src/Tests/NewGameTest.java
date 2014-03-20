@@ -13,6 +13,7 @@ public class NewGameTest {
 		RunGame game = new RunGame();
 		
 		Simulator.newGame("p", "c");
+		
 		//Simulator.quitGame();
 		/*Simulator.placeDeveloper(3, 3);
 		Simulator.placeDeveloper(4, 4);
