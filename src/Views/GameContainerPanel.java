@@ -161,16 +161,46 @@ public class GameContainerPanel extends JPanel {
 	public void tellPeopleTheyAintPlacedNoLandTile(){
 		JOptionPane.showMessageDialog( null, "You haven't placed a land tile :(");
 	}
+
+	public void playErrorSound() {
+		String errorSound = "bin/sounds/error.wav";
+		playSound(errorSound);
+	}
 	
-	public void soundTest(){
-		String src = "bin/sounds/scissors.wav";
+	public void playFestivalSound(){
+		//TODO this is called at the end of the festival 
+		//String errorSound = "bin/sounds/festival.wav";
+		//playSound(errorSound);
+	}
+	
+	public void playDrawCardSound(){
+		String errorSound = "bin/sounds/drawCard.wav";
+		playSound(errorSound);
+	}
+	
+	public void playSelectDeveloperSound(){
+		String errorSound = "bin/sounds/selectDeveloper.wav";
+		playSound(errorSound);
+	}
+
+	public void playMoveComponentSound(){
+		String errorSound = "bin/sounds/move.wav";
+		playSound(errorSound);
+	}
+	
+	public void playPlaceTileSound(){
+		String errorSound = "bin/sounds/placeTile.wav";
+		playSound(errorSound);
+	}
+	
+	private void playSound(String src){
 		Clip sound = null;
 		try {
 			
 			AudioInputStream audio = AudioSystem.getAudioInputStream(new File(src));
 			sound = AudioSystem.getClip();
 			sound.open(audio);
-			sound.loop(1);
+			sound.loop(0);
 			sound.start();
 			
 		} catch (UnsupportedAudioFileException e) {
@@ -182,11 +212,6 @@ public class GameContainerPanel extends JPanel {
 		}
 		
 		
-	}
-
-	public void makeErrorSound() {
-		//TODO makes sound every time a player presses a button and it wasn't a valid move
-		//Called by the GameController
 	}
 
 }

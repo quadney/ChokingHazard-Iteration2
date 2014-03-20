@@ -109,6 +109,7 @@ public class GameController {
 		if(e.getKeyCode() == 70){
 			//the user is pressing (and holding) the F button
 			//TODO this can only be called if in Play Mode
+			currentGamePanel.playDrawCardSound();
 			currentGamePanel.displayPalaceCardFrame(this.players.getPlayerAtIndex(this.currentGame.getPlayerIndex()));
 		}
 	}
@@ -126,15 +127,16 @@ public class GameController {
 //				players[currentGame.getPlayerIndex()].pressDelete();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 		case 9:
 			//released tab, tab through developers
 			if (players.getNumDevelopersOffBoard(currentGame.getPlayerIndex()) < 12) {
+				currentGamePanel.playMoveComponentSound();
 				currentGame.setSelectedAction(new SelectTabThroughDevelopersAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex()), players.getDevelopersOnBoard(currentGame.getPlayerIndex())));
 			} else {
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			
 			break;
@@ -143,15 +145,17 @@ public class GameController {
 			//released enter, place tile/developer onto board.
 			//System.out.println("(in GameController)Enter was pressed");
 			Action action = currentGame.pressEnter();
+			//currentGamePanel.playSelectDeveloperSound();  ?
 			if(action != null){
 				System.out.println("action != null in GCtrl");
 				currentGame.addToActionHistory(action);
 				//currentGame.doLastActionInHistory();
 				currentGame.setSelectedAction(null);
+				currentGamePanel.playPlaceTileSound();
 				updateControllersWithAction(action);
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;	
 		case 27:
@@ -169,45 +173,50 @@ public class GameController {
 			//will only tell the board about the change if it was a rotatable tile action
 			//System.out.println("(in GameController)Space was pressed");
 			if(currentGame.pressSpace()){
+				currentGamePanel.playMoveComponentSound();
 				updateBoardControllerWithSelectedAction();
 				//System.out.println("(in GameController)Space was valid and attempted to updateBoardController");
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 			
 	// using these arrow keys for movement of developers and tiles
 		case 37:
 			if(currentGame.pressLeft()){
+				currentGamePanel.playMoveComponentSound();
 				updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 		case 38:
 			if(currentGame.pressUp()){
+				currentGamePanel.playMoveComponentSound();
 				updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 		case 39:
 			if(currentGame.pressRight()){
+				currentGamePanel.playMoveComponentSound();
 				updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 		case 40:
 			if(currentGame.pressDown()){
+				currentGamePanel.playMoveComponentSound();
 				updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 	// --------------------------------------------------------------------
@@ -216,11 +225,12 @@ public class GameController {
 			//TODO check if the player has enough two tiles and AP to select a two tile action a two tile action
 			//player.checkIfSelectionValid(currentGame.getPlayerIndex(), )
 			if(players.selectTwoTile(currentGame.getPlayerIndex())){
+				currentGamePanel.playMoveComponentSound();
 				currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"));
 					updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			
 			break;
@@ -228,36 +238,40 @@ public class GameController {
 			//check if player has enough AP and if sharedComponent has any more 3 tiles (I could check game state but we could always change how the game state works...)
 			//if(players.checkIfSelectionValid() && shared.checkIfSelectionValid())
 			if(players.selectThreeTile(currentGame.getPlayerIndex()) && shared.selectThreeTile()){
+				currentGamePanel.playMoveComponentSound();
 				currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"));
 					updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 
 			break;
 		case 68: //released D, add new developer onto board
 			//currentGame.setSelectedActionDeveloper(new MAction("")); //somehow know the developer hash with the player color
 			if(players.selectDeveloper(currentGame.getPlayerIndex())){
+				currentGamePanel.playSelectDeveloperSound();
 				currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex())));
 				updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 		case 73: //released I, add new Irrigation tile
 			//check if player has enough AP, and if there is enough in shared
 			if(players.selectThreeTile(currentGame.getPlayerIndex()) && shared.selectThreeTile()){
+				currentGamePanel.playMoveComponentSound();
 				currentGame.setSelectedAction(new SelectIrrigationTileAction("irrigationTile"));
 				updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 		case 77:
 			if(currentGame.pressM()){
+				currentGamePanel.playSelectDeveloperSound();
 				updateBoardControllerWithSelectedAction();
 			}
 			
@@ -271,10 +285,11 @@ public class GameController {
 			//check player to see if they have enough AP and check shared to see if there are enough
 			if (players.selectPalaceTile(currentGame.getPlayerIndex()) && shared.selectPalaceTile(value)) {
 				currentGame.setSelectedAction(new SelectPalaceTileAction("palace" + value + "Tile", value));
+				currentGamePanel.playMoveComponentSound();
 				updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 		case 82:
@@ -283,10 +298,11 @@ public class GameController {
 			if (players.selectRiceTile(currentGame.getPlayerIndex())) {
 				currentGame.setSelectedAction(new SelectRiceTileAction(
 						"riceTile"));
+				currentGamePanel.playMoveComponentSound();
 				updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 		case 84:
@@ -294,12 +310,13 @@ public class GameController {
 			//released T, use action token
 			if(players.selectActionToken(currentGame.getPlayerIndex())){
 				UseActionTokenAction actionTokenAction = new UseActionTokenAction(-1);
+				currentGamePanel.playMoveComponentSound();
 				currentGame.addToActionHistory(actionTokenAction);
 				currentGame.doLastActionInHistory();
 				updateControllersWithAction(actionTokenAction);
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 
 			break;
@@ -308,10 +325,11 @@ public class GameController {
 			//TODO check if the player has enough villages and that they have some AP left to do this
 			if(players.selectVillageTile(currentGame.getPlayerIndex())){
 				currentGame.setSelectedAction(new SelectVillageTileAction("villageTile"));
-					updateBoardControllerWithSelectedAction();
+				currentGamePanel.playMoveComponentSound();
+				updateBoardControllerWithSelectedAction();
 			}
 			else{
-				currentGamePanel.makeErrorSound();
+				currentGamePanel.playErrorSound();
 			}
 			break;
 		case 88:
@@ -326,8 +344,8 @@ public class GameController {
 				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
 			}
 			else{
+				currentGamePanel.playErrorSound();
 				currentGamePanel.tellPeopleTheyAintPlacedNoLandTile();
-				currentGamePanel.makeErrorSound();
 			}
 			break;		
 		}
@@ -378,7 +396,8 @@ public class GameController {
 	}
 	
 	private void startFestival(int palaceValue){
-		currentGamePanel.soundTest();
+		//TODO testing
+		currentGamePanel.playFestivalSound();
 		//currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
 	}
 	
@@ -402,6 +421,7 @@ public class GameController {
 
 	public void pickUpPalaceCard() {
 		// TODO Auto-generated method stub
+		currentGamePanel.playDrawCardSound();
 		
 	}
 	

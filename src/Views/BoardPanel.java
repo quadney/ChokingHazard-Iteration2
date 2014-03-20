@@ -63,7 +63,21 @@ public class BoardPanel extends JPanel {
 		clearImage(tempImage);
 		g2d = tileImage.createGraphics();
 		g2d.rotate(rotationState*Math.PI/2, xLoc+25, yLoc+25);
-		//g2d.scale(-0.1*elevation, -0.1*elevation);
+		int xT = 0; int yT = 0;
+		if(hashMapKey.equals("threeTile")){
+			xT = xLoc+50; yT = yLoc+50;
+		}
+		else if(hashMapKey.equals("twoTile")){
+			xT = xLoc+50; yT = yLoc+25;
+		}
+		else{
+			xT = xLoc+25; yT = yLoc+25;
+		}
+//		if(elevation > 1){
+//			g2d.translate(xT, yT);
+//			g2d.scale(0.95*elevation, 0.95*elevation);
+//			g2d.translate((-1)*xT, (-1)*yT);
+//		}
 		g2d.drawImage(getImage(imageSourceHashMap.get(hashMapKey)), null, xLoc, yLoc);
 		g2d.dispose();
 		drawElevationLabel(xLoc, yLoc, rotationState, elevation, hashMapKey);
