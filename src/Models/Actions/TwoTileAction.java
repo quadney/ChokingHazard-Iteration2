@@ -10,7 +10,7 @@ public class TwoTileAction extends RotatableComponentAction {
 
 	public TwoTileAction(int actionID, int x, int y, int rotationState) {
 		super(actionID, x, y, rotationState);
-		System.out.println("Two Tile constructor end");
+//		System.out.println("Two Tile constructor end");
 		this.imageKey = "twoTile";
 	}
 	

@@ -1,15 +1,12 @@
 package Controllers;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
-import javax.swing.Timer;
 
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
@@ -78,11 +75,29 @@ public class GameController {
 				players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
 
-		seeIfPlayerCanHoldAFestival();
+		//seeIfPlayerCanHoldAFestival();
 	}
 
 	public boolean loadGame(File file) {
-		currentGame.loadObject(gameManager.loadGame(file));
+		// create controllers
+
+				currentGame = (new GameModel(0, null, null)).loadObject(gameManager.loadGame(file));
+				int numPlayers = currentGame.getPlayers().length;
+				board = new BoardController(currentGame.getBoard());
+				players = new PlayerController(numPlayers, currentGame.getPlayers()); 
+				shared = new SharedComponentController(currentGame.getShared(), this); 
+
+				// this initializes the dealing of the palace cards
+				// and then the player sets those dealt cards as the cards
+				players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
+				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex());
+				currentGamePanel = new GameContainerPanel(board.getBoardPanel(),
+						players.getPlayerPanels(), shared.getSharedComponentPanel());
+				gameFrame.setFrameContent(currentGamePanel);
+				loadActions();
+		
+		
+		
 		return true;
 	}
 
@@ -398,8 +413,8 @@ public class GameController {
 			// System.out.println("ending turn?");
 			// //
 			// System.out.println(players.selectEndTurn(currentGame.getPlayerIndex()));
-			if (currentGame.endTurn()) {
-				EndTurnAction endTurn = new EndTurnAction(-1);
+			if (currentGame.getGameState().equals(GameState.NormalMode) && currentGame.endTurn()) {
+				EndTurnAction endTurn = new EndTurnAction(currentGame.nextActionID());
 				currentGame.setSelectedAction(null);
 				currentGame.addToActionHistory(endTurn);
 				board.pressEsc();
@@ -517,12 +532,13 @@ public class GameController {
 	
 	public void startPlayingMode() {
 		currentGame.setGameState(GameState.NormalMode);
+		currentGame.flipAllCards();
 	}
 	
 	public void undo() {
 		currentGame.clearForReplay();
 		currentGame.undoAction();
-		board.clearBoard();
+		board.clearBoard(false);
 		Action[] actions = currentGame.getActions();
 		doActions(actions, 0, actions.length-1, false, false);
 		doActions(actions, actions.length-1, actions.length, false, true);
@@ -530,13 +546,15 @@ public class GameController {
 	}
 
 	public void startReplay() {
+		System.out.println("START OF ROUND ACTION ID: " + currentGame.getStartOfRoundActionID());
 		currentGame.clearForReplay();
-		board.clearBoard();
+		board.clearBoard(false);
 		Action[] actions = currentGame.getActions();
-		int startOfRoundIndex = 1;
+		int startOfRoundIndex = 0;
 		for(int x = 0; x < actions.length; ++x)
 			if(actions[x].getActionID() == currentGame.getStartOfRoundActionID())
 				startOfRoundIndex = x;
+		System.out.println(Arrays.toString(actions));
 		System.out.println("START OF ROUND" + startOfRoundIndex);
 		doActions(actions, 0, startOfRoundIndex-1, false, false);
 		doActions(actions, startOfRoundIndex-1, actions.length, true, true);
@@ -544,12 +562,14 @@ public class GameController {
 
 	public void undoUntilLastPlayingMode() {
 		currentGame.clearForReplay();
-		board.clearBoard();
+		board.clearBoard(false);
 		Action[] actions = currentGame.getActions();
-		int startOfPlanningModeIndex = 1;
+		int startOfPlanningModeIndex = 0;
 		for(int x = 0; x < actions.length; ++x)
 			if(actions[x].getActionID() == currentGame.getLastPlanningModeActionID())
 				startOfPlanningModeIndex = x;
+		if(startOfPlanningModeIndex == 0)
+			return;
 		System.out.println("Last Planning Mode Index" + startOfPlanningModeIndex);
 		doActions(actions, 0, startOfPlanningModeIndex, false, false);
 		doActions(actions, startOfPlanningModeIndex, startOfPlanningModeIndex+1, false, true);
@@ -573,6 +593,12 @@ public class GameController {
 			board.updateBoardPanel(actions[x], currentGame);
 			board.setRedraw(true);
 		}
+	}
+
+	private void loadActions() {
+		Action[] actions = currentGame.getActions();
+		doActions(actions, 0, actions.length-1, false, false);
+		doActions(actions, actions.length-1, actions.length, false, true);
 	}
 
 	public void pickUpPalaceCard() {

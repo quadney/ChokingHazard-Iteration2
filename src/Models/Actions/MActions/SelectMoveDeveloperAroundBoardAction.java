@@ -99,7 +99,7 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 	@Override
 	public Action pressEnter(GameModel game) {
 		if (!doesLastCellAlreadyHaveDeveloper()) {
-			Action action = new MoveDeveloperAction(-1, x, y, path);
+			Action action = new MoveDeveloperAction(game.getNextCellId(), x, y, path);
 			if (action.doAction(game)) {
 				return action;
 			}

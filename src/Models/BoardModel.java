@@ -95,7 +95,7 @@ public class BoardModel implements Serializable<BoardModel> {
 			if (placedLandTile(xC, yC))
 				player.placedLandTile();
 			
-			System.out.println("CHECK FOR SURROUNDED IRRIGATION CELLS: " + checkForSurroundedIrrigationCells(xC, yC, tile, gameDevelopers));
+//			System.out.println("CHECK FOR SURROUNDED IRRIGATION CELLS: " + checkForSurroundedIrrigationCells(xC, yC, tile, gameDevelopers));
 
 //			System.out.println(toString());
 			return true;
@@ -853,7 +853,7 @@ public class BoardModel implements Serializable<BoardModel> {
 			return true;
 		}
 		
-		System.out.println("NEXTTOIRRIGATION IS FALSE");
+//		System.out.println("NEXTTOIRRIGATION IS FALSE");
 		
 		return false;
 	} 
@@ -901,10 +901,10 @@ public class BoardModel implements Serializable<BoardModel> {
 			}
 		}
 		
-		System.out.println("RIGHT IS " + right);
-		System.out.println("LEFT IS " + left);
-		System.out.println("UP IS " + up);
-		System.out.println("DOWN IS " + down);
+//		System.out.println("RIGHT IS " + right);
+//		System.out.println("LEFT IS " + left);
+//		System.out.println("UP IS " + up);
+//		System.out.println("DOWN IS " + down);
 
 		return right || left || down || up;
 	}

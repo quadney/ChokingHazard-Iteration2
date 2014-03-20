@@ -8,11 +8,13 @@ public class ReplayTest {
 	public static void main(String[] args) throws AWTException, InterruptedException {
 		test();
 	}
+	
 	public static void test() throws InterruptedException, AWTException {
 		@SuppressWarnings("unused")
 		RunGame game = new RunGame();
 		
 		Simulator.newGame("p", "c");
+		Simulator.THROTTLE = 20;
 
 		Simulator.placeThreeSpaceTile(3, 3, 0);
 		
@@ -22,6 +24,19 @@ public class ReplayTest {
 		Simulator.placeTwoSpaceTile(9, 9, 0);
 		Simulator.placeTwoSpaceTile(11, 11, 0);
 		Simulator.placeTwoSpaceTile(9, 3, 0);
+		
+
+		Simulator.placeThreeSpaceTile(7, 2, 0);
+		Simulator.endTurn(0);
+		
+		Simulator.placeTwoSpaceTile(2, 7, 0);
+		Simulator.endTurn(0);
+		Simulator.placeThreeSpaceTile(8, 4, 0);
+		Simulator.placeVillageTile(12, 12);
+		Simulator.placeVillageTile(4, 12);
+		Simulator.placeVillageTile(12, 4);
+		Simulator.startReplay();
+		
 		/*Simulator.placeDeveloper(3, 3);
 		Simulator.placeDeveloper(4, 4);
 		Simulator.placeDeveloper(1, 5);
