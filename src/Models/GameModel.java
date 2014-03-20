@@ -83,210 +83,37 @@ public class GameModel implements Serializable<GameModel> {
 
 	// Used for testing the Actions
 
-	public boolean endTurn() {										//this is called by TriggerSwitchTurn Action and the GameController.
-																	//if valid, changes all states accordingly, if not, doesn't do a thing
-		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];	//gets the current player out of the container
-		if (currentPlayer.endPlayerTurn()){							//if the player can validly end their turn. All the player stuff will have been manipulated
-			//System.out.println("player ended turn and index is being incremented");
-			indexOfCurrentPlayer = ++indexOfCurrentPlayer % players.length;				//switches the curentPlayer to the next player
-			return true;											//tells the caller that everything worked out!
+	public boolean endTurn() { // this is called by TriggerSwitchTurn Action and
+								// the GameController.
+								// if valid, changes all states accordingly, if
+								// not, doesn't do a thing
+		JavaPlayer currentPlayer = players[indexOfCurrentPlayer]; // gets the
+																	// current
+																	// player
+																	// out of
+																	// the
+																	// container
+		if (currentPlayer.endPlayerTurn()) { // if the player can validly end
+												// their turn. All the player
+												// stuff will have been
+												// manipulated
+			// System.out.println("player ended turn and index is being incremented");
+			indexOfCurrentPlayer = ++indexOfCurrentPlayer % players.length; // switches
+																			// the
+																			// curentPlayer
+																			// to
+																			// the
+																			// next
+																			// player
+			return true; // tells the caller that everything worked out!
 		}
 		return false;
 	}
-	
-	public void placeTile(int x, int y, Tile tile, JavaPlayer player){
+
+	public void placeTile(int x, int y, Tile tile, JavaPlayer player) {
 		gameBoard.placeTile(x, y, tile, player, getAllPlayerDevelopers());
 	}
 
-	// Returns an array of players in order from highest to lowest of ranks of
-	// players
-	// valid on a palace/city
-	public ArrayList<ArrayList<JavaPlayer>> getPalaceRanks(JavaCell palace) {
-		ArrayList<JavaCell> city = gameBoard.getCityFromRootCell(palace);
-
-		HashMap<JavaPlayer, Integer> scores = new HashMap<JavaPlayer, Integer>();
-
-		for (JavaCell c : city) {
-			if (getDeveloperOnCell(c) != null) {
-				Developer d = getDeveloperOnCell(c);
-				JavaPlayer p = d.getOwner();
-				int rank = c.getElevation();
-
-				if (!scores.containsKey(p)) {
-					scores.put(p, rank);
-				} else {
-					int newRank = c.getElevation();
-					if (newRank > rank)
-						scores.put(p, newRank);
-				}
-			}
-		}
-
-		// we now have each player mapped to their rank or not mapped if they
-		// don't have a developer
-		// on the city.
-
-		ArrayList<Integer> values = new ArrayList<Integer>();
-		for (Integer i : scores.values())
-			values.add(i);
-		Collections.sort(values);
-
-		ArrayList<ArrayList<JavaPlayer>> players = new ArrayList<ArrayList<JavaPlayer>>();
-   	  
-   	  for(Integer i:values) 
-        {
-            ArrayList<JavaPlayer> rank = new ArrayList<JavaPlayer>();
-            for(JavaPlayer p : scores.keySet()) 
-            {
-      	      if(scores.get(p) == i) 
-                  rank.add(p); 
-            }
-            players.add(rank); 
-        }
-   	  
-   	  return players;
-
-
-	}
-	
-	/*
-	 * public ArrayList<JavaPlayer> getIrrigationRanks(JavaCell cell) { int x =
-	 * cell.getX(); int y = cell.getY();
-	 * 
-	 * HashMap<JavaPlayer, Integer> scores = new HashMap<JavaPlayer, Integer>();
-	 * 
-	 * JavaCell[][] map = gameBoard.getMap();
-	 * 
-	 * if (y < 13 && getDeveloperOnCell(map[y + 1][x]) != null) { JavaCell c =
-	 * map[y + 1][x]; Developer d = getDeveloperOnCell(map[y + 1][x]);
-	 * JavaPlayer p = d.getOwner(); int rank = c.getElevation();
-	 * if(!scores.containsKey(p)) { scores.put(p, rank); } else { int newRank =
-	 * c.getElevation(); if(newRank > rank) scores.put(p, newRank); } } if (y >
-	 * 0 && getDeveloperOnCell(map[y - 1][x]) != null) { JavaCell c = map[y -
-	 * 1][x]; Developer d = getDeveloperOnCell(map[y - 1][x]); JavaPlayer p =
-	 * d.getOwner(); int rank = cell.getElevation(); if(!scores.containsKey(p))
-	 * { scores.put(p, rank); } else { int newRank = c.getElevation();
-	 * if(newRank > rank) scores.put(p, newRank); } } if (x < 14 &&
-	 * getDeveloperOnCell(map[y][x + 1]) != null) { JavaCell c = map[y][x+1];
-	 * Developer d = getDeveloperOnCell(map[y][x + 1]); JavaPlayer p =
-	 * d.getOwner(); int rank = c.getElevation(); if(!scores.containsKey(p)) {
-	 * scores.put(p, rank); } else { int newRank = c.getElevation(); if(newRank
-	 * > rank) scores.put(p, newRank); } } if (x > 0 &&
-	 * getDeveloperOnCell(map[y][x - 1]) != null) { JavaCell c = map[y][x-1];
-	 * Developer d = getDeveloperOnCell(map[y][x - 1]); JavaPlayer p =
-	 * d.getOwner(); int rank = cell.getElevation(); if(!scores.containsKey(p))
-	 * { scores.put(p, rank); } else { int newRank = c.getElevation();
-	 * if(newRank > rank) scores.put(p, newRank); } }
-	 * 
-	 * ArrayList<Integer> values = new ArrayList<Integer>(); for(Integer
-	 * i:scores.values()) values.add(i); Collections.sort(values);
-	 * 
-	 * ArrayList<JavaPlayer> players = new ArrayList<JavaPlayer>();
-	 * 
-	 * for(Integer i:values) { for(JavaPlayer p : scores.keySet()) {
-	 * if(scores.get(p) == i) players.add(p); } }
-	 * 
-	 * return players; }
-	 */
-
-	public Developer getDeveloperOnCell(JavaCell c) {
-		for (int i = 0; i < players.length; i++) {
-			for (Developer d : players[i].getDevelopersOnBoard()) {
-				if (d.getLocation() == c)
-					return d;
-			}
-		}
-		return null;
-	}
-
-	// Returns an array of players in order from highest to lowest of ranks of
-	// players
-	// valid on a palace/city
-	
-	  /*public ArrayList<ArrayList<Player>> getPalaceRanks(JavaCell palace) {
-     
-   	  ArrayList<JavaCell> city = gameBoard.getCityFromRootCell(palace);
-   	  
-   	  HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
-   	  
-   	  for(JavaCell c : city) 
-        { 
-           if(getDeveloperOnCell(c) != null) 
-           { 
-             Developer d = getDeveloperOnCell(c); Player p = d.getOwner(); 
-             int rank = c.getElevation();
-      	    if(!scores.containsKey(p)) 
-             { 
-               scores.put(p, rank); 
-             } 
-             else 
-             { 
-               int newRank = c.getElevation(); if(newRank > rank) scores.put(p, newRank); 
-             } 
-           } 
-        }
-   	  
-   	  //we now have each player mapped to their rank or not mapped if they
-   	  //don't have a developer on the city.
-   	  
-   	  ArrayList<Integer> values = new ArrayList<Integer>(); for(Integer
-   	  i:scores.values()) values.add(i); Collections.sort(values);
-   	  
-   	  ArrayList<ArrayList<Player>> players = new ArrayList<Player>();
-   	  
-   	  for(Integer i:values) 
-        {
-            ArrayList<Player> rank = new ArrayList<Player>();
-            for(Player p : scores.keySet()) 
-            {
-      	      if(scores.get(p) == i) 
-                  rank.add(p); 
-            }
-            players.add(rank); 
-        }
-   	  
-   	  return players;
-	  
-	  }
-	  
-	  public ArrayList<Player> getIrrigationRanks(JavaCell cell) { int x =
-	  cell.getX(); int y = cell.getY();
-	  
-	  HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
-	  
-	  JavaCell[][] map = gameBoard.getMap();
-	  
-	  if (y < 13 && getDeveloperOnCell(map[y + 1][x]) != null) { JavaCell c =
-	  map[y + 1][x]; Developer d = getDeveloperOnCell(map[y + 1][x]); Player p
-	  = d.getOwner(); int rank = c.getElevation(); if(!scores.containsKey(p)) {
-	  scores.put(p, rank); } else { int newRank = c.getElevation(); if(newRank
-	  > rank) scores.put(p, newRank); } } if (y > 0 && getDeveloperOnCell(map[y
-	  - 1][x]) != null) { JavaCell c = map[y - 1][x]; Developer d =
-	  getDeveloperOnCell(map[y - 1][x]); Player p = d.getOwner(); int rank =
-	  cell.getElevation(); if(!scores.containsKey(p)) { scores.put(p, rank); }
-	  else { int newRank = c.getElevation(); if(newRank > rank) scores.put(p,
-	  newRank); } } if (x < 14 && getDeveloperOnCell(map[y][x + 1]) != null) {
-	  JavaCell c = map[y][x+1]; Developer d = getDeveloperOnCell(map[y][x +
-	  1]); Player p = d.getOwner(); int rank = c.getElevation();
-	  if(!scores.containsKey(p)) { scores.put(p, rank); } else { int newRank =
-	  c.getElevation(); if(newRank > rank) scores.put(p, newRank); } } if (x >
-	  0 && getDeveloperOnCell(map[y][x - 1]) != null) { JavaCell c =
-	  map[y][x-1]; Developer d = getDeveloperOnCell(map[y][x - 1]); Player p =
-	  d.getOwner(); int rank = cell.getElevation(); if(!scores.containsKey(p))
-	  { scores.put(p, rank); } else { int newRank = c.getElevation();
-	  if(newRank > rank) scores.put(p, newRank); } }
-	  
-	  ArrayList<Integer> values = new ArrayList<Integer>(); for(Integer
-	  i:scores.values()) values.add(i); Collections.sort(values);
-	  
-	  ArrayList<Player> players = new ArrayList<Player>();
-	  
-	  for(Integer i:values) { for(Player p : scores.keySet()) {
-	  if(scores.get(p) == i) players.add(p); } }
-	  
-	  return players; }
-	 
->>>>>>> 2b6a227283a2a6f9dc324d6ed4eb0995d864d2ad
 	/**
 	 * Backtracks GameModel state to end of current player's previous turn,
 	 * storing all backtracked moves in actionReplays stack. Also changes
@@ -328,7 +155,7 @@ public class GameModel implements Serializable<GameModel> {
 		return this.indexOfCurrentPlayer;
 	}
 
-	//------ Methods for MAction/selected ------------------------------
+	// ------ Methods for MAction/selected ------------------------------
 
 	public int getSelectedActionX() {
 		return selectedAction.getX();
@@ -346,7 +173,7 @@ public class GameModel implements Serializable<GameModel> {
 		return selectedAction;
 	}
 
-	//--------------Key presses to interact with SelectedActions-------------
+	// --------------Key presses to interact with SelectedActions-------------
 
 	public boolean pressLeft() {
 		if (selectedAction != null) {
@@ -377,7 +204,7 @@ public class GameModel implements Serializable<GameModel> {
 		}
 		return false;
 	}
-	
+
 	public boolean pressSpace() {
 		if (selectedAction != null) {
 			return selectedAction.pressSpace();
@@ -391,21 +218,21 @@ public class GameModel implements Serializable<GameModel> {
 		}
 		return null;
 	}
-	
+
 	public Action pressDelete() {
-		if(selectedAction != null){ 
+		if (selectedAction != null) {
 			return selectedAction.pressDelete(this);
 		}
 		return null;
 	}
-	
+
 	public boolean pressTab() {
 		if (selectedAction != null) {
 			return selectedAction.pressTab();
 		}
 		return false;
 	}
-	
+
 	public boolean pressM() {
 		if (selectedAction != null) {
 			MAction sAction = selectedAction.pressM(gameBoard, this.getCurrentPlayer());
@@ -414,11 +241,10 @@ public class GameModel implements Serializable<GameModel> {
 		}
 		return false;
 	}
-	
+
 	public void pressEsc() {
 		selectedAction = null;
 	}
-
 
 	public boolean setSelectedAction(MAction selectedAction) {
 		// if(this.selectedAction == null){
@@ -443,38 +269,43 @@ public class GameModel implements Serializable<GameModel> {
 	public String serialize() {
 		Stack<String> playerNames = new Stack<String>();
 		Stack<String> playerColors = new Stack<String>();
-		for(JavaPlayer player : players) {
+		for (JavaPlayer player : players) {
 			playerNames.push(player.getName());
 			playerColors.push(player.getColor());
 		}
-		String serializedHistory = actionHistory.empty() ? "null" : Json.serializeArray(this.actionHistory);
-		String serializedReplays = actionReplays.empty() ? "null" : Json.serializeArray(this.actionReplays);
-		return Json.jsonObject(Json.jsonElements(
-			Json.jsonPair("playerNames", Json.serializeArray(playerNames)),
-			Json.jsonPair("playerColors", Json.serializeArray(playerColors)),
-			Json.jsonPair("actionHistory", serializedHistory),
-			Json.jsonPair("actionReplays", serializedReplays),
-			Json.jsonPair("gameState", this.gameState.toString())
-		));
+		String serializedHistory = actionHistory.empty() ? "null" : Json
+				.serializeArray(this.actionHistory);
+		String serializedReplays = actionReplays.empty() ? "null" : Json
+				.serializeArray(this.actionReplays);
+		return Json.jsonObject(Json.jsonElements(Json.jsonPair("playerNames",
+				Json.serializeArray(playerNames)), Json.jsonPair(
+				"playerColors", Json.serializeArray(playerColors)), Json
+				.jsonPair("actionHistory", serializedHistory), Json.jsonPair(
+				"actionReplays", serializedReplays), Json.jsonPair("gameState",
+				this.gameState.toString())));
 	}
 
 	@Override
 	public GameModel loadObject(JsonObject json) {
 		this.actionHistory = new Stack<Event>();
 		this.actionReplays = new Stack<Event>();
-		if(json.getObject("actionHistory") != null)
-			for(int x = 0; x < ((Object[])json.getObject("actionHistory")).length; ++x)
-				this.actionHistory.push(Action.loadAction((JsonObject)((Object[])json.getObject("actionHistory"))[x]));
-		if(json.getObject("actionReplays") != null)
-			for(int x = 0; x < ((Object[])json.getObject("actionReplays")).length; ++x)
-				this.actionHistory.push(Action.loadAction((JsonObject)((Object[])json.getObject("actionReplays"))[x]));
-		String[] names = new String[((Object[])json.getObject("playerNames")).length];
-		String[] colors = new String[((Object[])json.getObject("playerColors")).length];
-		for(int x = 0; x < names.length; ++x) {
-			colors[x] = (String)((Object[])json.getObject("playerColors"))[x];
-			names[x] = (String)((Object[])json.getObject("playerNames"))[x];
+		if (json.getObject("actionHistory") != null)
+			for (int x = 0; x < ((Object[]) json.getObject("actionHistory")).length; ++x)
+				this.actionHistory.push(Action
+						.loadAction((JsonObject) ((Object[]) json
+								.getObject("actionHistory"))[x]));
+		if (json.getObject("actionReplays") != null)
+			for (int x = 0; x < ((Object[]) json.getObject("actionReplays")).length; ++x)
+				this.actionHistory.push(Action
+						.loadAction((JsonObject) ((Object[]) json
+								.getObject("actionReplays"))[x]));
+		String[] names = new String[((Object[]) json.getObject("playerNames")).length];
+		String[] colors = new String[((Object[]) json.getObject("playerColors")).length];
+		for (int x = 0; x < names.length; ++x) {
+			colors[x] = (String) ((Object[]) json.getObject("playerColors"))[x];
+			names[x] = (String) ((Object[]) json.getObject("playerNames"))[x];
 		}
-		System.out.println(((Object[])json.getObject("playerNames")));
+		System.out.println(((Object[]) json.getObject("playerNames")));
 		GameModel model = new GameModel(names.length, names, colors);
 		model.setActionHistory(actionHistory);
 		model.setActionReplays(actionReplays);
@@ -489,12 +320,12 @@ public class GameModel implements Serializable<GameModel> {
 
 	private void setActionReplays(Stack<Event> actionReplays2) {
 		this.actionReplays = actionReplays2;
-		
+
 	}
 
 	private void setActionHistory(Stack<Event> actionHistory2) {
 		this.actionHistory = actionHistory2;
-		
+
 	}
 
 	public void addToActionHistory(Action action) {
@@ -538,53 +369,56 @@ public class GameModel implements Serializable<GameModel> {
 	}
 	
 	public boolean takeDeveloperOffBoard(int x, int y) {
-		return gameBoard.removeDatDeveloperOffDaBoard(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
+		return gameBoard.removeDatDeveloperOffDaBoard(
+				gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer]);
 	}
-	
+
 	public LinkedList<Developer> getAllPlayerDevelopers() {
 		LinkedList<Developer> list = new LinkedList<Developer>();
-		for(JavaPlayer player : players)
+		for (JavaPlayer player : players)
 			list.addAll(Arrays.asList(player.getDevelopersOnBoard()));
 		return list;
 	}
 
 	public LinkedList<JavaCell> getPath() {
-		if(selectedAction instanceof SelectMoveDeveloperAroundBoardAction){
-			return ((SelectMoveDeveloperAroundBoardAction)selectedAction).getPath();
+		if (selectedAction instanceof SelectMoveDeveloperAroundBoardAction) {
+			return ((SelectMoveDeveloperAroundBoardAction) selectedAction)
+					.getPath();
 		}
 		return null;
 	}
-	
+
 	public int nextActionID() {
 		return ++actionIDCounter;
 	}
-	
+
 	public void undoAction() {
-//		if(!gameState.equals(GameState.PlanningMode))
-//			return;
+		if (!gameState.equals(GameState.PlanningMode))
+			return;
+		Action[] actions = actionHistory.toArray(new Action[1]);
 		actionHistory.pop();
-		System.out.println("UNDONE");
-		System.out.println(actionHistory);
+		for (int x = 0; x < actions.length - 1; ++x)
+			actions[x].doAction(this);
 	}
-	
+
 	public void redoAllActionsUntil(int actionID, boolean slowForReplayMode) {
 		Action[] actions = actionHistory.toArray(new Action[1]);
 		actionHistory.clear();
-		for(int x = 0; x < actions.length; ++x) {
+		for (int x = 0; x < actions.length; ++x) {
 			actions[x].doAction(this);
-			if(actions[x].getActionID() == actionID)
+			if (actions[x].getActionID() == actionID)
 				return;
 			actionHistory.push(actions[x]);
 		}
 	}
-	
+
 	public int getStartOfRoundActionID() {
 		int index = this.indexOfCurrentPlayer;
 		Action[] actions = actionHistory.toArray(new Action[1]);
-		for(int x = actions.length - 1; x >= 0; --x){
-			if(actions[x] instanceof EndTurnAction) {
+		for (int x = actions.length - 1; x >= 0; --x) {
+			if (actions[x] instanceof EndTurnAction) {
 				--index;
-				if(index == 0)
+				if (index == 0)
 					return actions[x].getActionID();
 			}
 		}
@@ -610,7 +444,11 @@ public class GameModel implements Serializable<GameModel> {
 	public void setLastPlanningModeActionID() {
 		lastPlanningModeActionID  = ((Action)actionHistory.peek()).getActionID();
 	}
-	
+
+	public void addPalaceCard(PalaceCard card) {
+		players[indexOfCurrentPlayer].addPalaceCard(card);
+}
+
 	public int getLastPlanningModeActionID() {
 		return lastPlanningModeActionID;
 	}

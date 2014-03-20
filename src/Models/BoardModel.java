@@ -52,14 +52,13 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 	}
 
-
 	public boolean placeTile(int xC, int yC, Tile tile, JavaPlayer player,
 			LinkedList<Developer> gameDevelopers) {
 
 		JavaCell[][] miniMap = createTestMap(xC, yC);
 		TileType[][] tileCells = tile.getTileCells();
 
-		if (checkValidTilePlacement(xC, yC, tile, player, miniMap)) {
+		if (checkValidTilePlacement(xC, yC, tile, player, miniMap, gameDevelopers)) {
 			/*
 			 * are we going to be creating the tile here? if we are then we need
 			 * to increase cellId here.
@@ -89,25 +88,28 @@ public class BoardModel implements Serializable<BoardModel> {
 										.getY()].getElevation() + 1);
 						map[miniMap[i][j].getX()][miniMap[i][j].getY()]
 								.setNumOriginalSpaces(number);
-						irrigationMap[miniMap[i][j].getX()][miniMap[i][j].getY()]
-								.setNumOriginalSpaces(tile.numOfSpaces());
-						irrigationMap[miniMap[i][j].getX()][miniMap[i][j].getY()]
-								.setCellType(tileCells[i][j]);
-						irrigationMap[miniMap[i][j].getX()][miniMap[i][j].getY()]
-								.setCellId(cellId);
-						irrigationMap[miniMap[i][j].getX()][miniMap[i][j].getY()]
+						irrigationMap[miniMap[i][j].getX()][miniMap[i][j]
+								.getY()].setNumOriginalSpaces(tile
+								.numOfSpaces());
+						irrigationMap[miniMap[i][j].getX()][miniMap[i][j]
+								.getY()].setCellType(tileCells[i][j]);
+						irrigationMap[miniMap[i][j].getX()][miniMap[i][j]
+								.getY()].setCellId(cellId);
+						irrigationMap[miniMap[i][j].getX()][miniMap[i][j]
+								.getY()]
 								.setElevation(map[miniMap[i][j].getX()][miniMap[i][j]
 										.getY()].getElevation() + 1);
-						irrigationMap[miniMap[i][j].getX()][miniMap[i][j].getY()]
-								.setNumOriginalSpaces(number);
+						irrigationMap[miniMap[i][j].getX()][miniMap[i][j]
+								.getY()].setNumOriginalSpaces(number);
 
 					}
 
 			if (placedLandTile(xC, yC))
 				player.placedLandTile();
 
-			
-			System.out.println("CHECK FOR SURROUNDED IRRIGATION CELLS: " + checkForSurroundedIrrigationCells(xC, yC, tile, gameDevelopers));
+			System.out.println("CHECK FOR SURROUNDED IRRIGATION CELLS: "
+					+ checkForSurroundedIrrigationCells(xC, yC, tile,
+							gameDevelopers));
 
 
 			bodiesOfWater.clear();
@@ -129,7 +131,7 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 
 	public boolean checkValidTilePlacement(int xC, int yC, Tile tile,
-			JavaPlayer player, JavaCell[][] miniMap) {
+			JavaPlayer player, JavaCell[][] miniMap, LinkedList<Developer> gameDevelopers) {
 		// creating a small map with the cells we need to compare
 		// JavaCell[][] miniMap = createTestMap(xC, yC);
 
@@ -140,7 +142,7 @@ public class BoardModel implements Serializable<BoardModel> {
 				.toString());
 		boolean palaceOK = true;
 		if (tile.getTileCells()[1][1].isPalace()) {
-			palaceOK = placePalace(xC, yC, miniMap[1][1], map, player);
+			palaceOK = placePalace(xC, yC, miniMap[1][1], map, player, gameDevelopers);
 		}
 
 		if (checkPalacePlacement(miniMap, tile)
@@ -152,9 +154,7 @@ public class BoardModel implements Serializable<BoardModel> {
 				&& checkEdgePlacement(miniMap, tile)
 				&& player
 						.decrementNActionPoints(neededActionPoints, isLandTile)
-				&& palaceOK 
-				&& checkIrrigationOnBoard(miniMap, tile)) {
-
+				&& palaceOK && checkIrrigationOnBoard(miniMap, tile)) {
 
 			return true;
 		}
@@ -185,14 +185,19 @@ public class BoardModel implements Serializable<BoardModel> {
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				if (tileCells[i][j] != null) {
-					for(int out = 0; out < outerCells.length; out++ ){
-						
-					
-					System.out.println("-----------------------HHHHHHHHererere---------------");
-						if (miniMap[i][j] != null && miniMap[i][j].getElevation() == 0 && miniMap[i][j].getX() == outerCells[out].getX() && miniMap[i][j].getY() == outerCells[out].getY()) {
-							
-							System.out.println("i: " + i + "j: " + j );
-	
+					for (int out = 0; out < outerCells.length; out++) {
+
+						System.out
+								.println("-----------------------HHHHHHHHererere---------------");
+						if (miniMap[i][j] != null
+								&& miniMap[i][j].getElevation() == 0
+								&& miniMap[i][j].getX() == outerCells[out]
+										.getX()
+								&& miniMap[i][j].getY() == outerCells[out]
+										.getY()) {
+
+							System.out.println("i: " + i + "j: " + j);
+
 							outsideCount++;
 						}
 					}
@@ -428,17 +433,17 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 
 	public boolean placePalace(int x, int y, JavaCell palace, JavaCell[][] map,
-			JavaPlayer player) {
+			JavaPlayer player, LinkedList<Developer> gameDevelopers) {
 		if (map[x][y].getCellType() == "village"
 				&& mutualPalacePlacementRequirementsOK(x, y, palace, map,
-						player)) {
+						player, gameDevelopers)) {
 
 			return true;
 		}
 
 		else if (map[x][y].getCellType().contains("palace")
 				&& mutualPalacePlacementRequirementsOK(x, y, palace, map,
-						player) && canUpgradePalace(x, y, palace, map)) {
+						player, gameDevelopers) && canUpgradePalace(x, y, palace, map)) {
 
 			return true;
 		}
@@ -460,15 +465,75 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 
 	public boolean mutualPalacePlacementRequirementsOK(int x, int y,
-			JavaCell palace, JavaCell[][] map, JavaPlayer player) {
+			JavaCell palace, JavaCell[][] map, JavaPlayer player, LinkedList<Developer> gameDevelopers) {
 
 		if (findNumberConnected(x, y, map, visitedVillages) >= getPalaceSize(palace)
-
 				&& !hasAlreadyBeenModified(palace, player)) {
-			return true;
+			if (getPalaceRanks(palace, gameDevelopers).get(0).size() == 1 && getPalaceRanks(palace, gameDevelopers).get(0).get(0) == player) {
+				return true;
+			}
 		}
 
 		return false;
+	}
+
+	// Returns an array of players in order from highest to lowest of ranks of
+	// players valid on a palace/city
+	public ArrayList<ArrayList<JavaPlayer>> getPalaceRanks(JavaCell palace, LinkedList<Developer> gameDevelopers) {
+		ArrayList<JavaCell> city = getCityFromRootCell(palace);
+
+		HashMap<JavaPlayer, Integer> scores = new HashMap<JavaPlayer, Integer>();
+
+		for (JavaCell c : city) {
+			if (getDeveloperOnCell(c, gameDevelopers) != null) {
+				Developer d = getDeveloperOnCell(c, gameDevelopers);
+				JavaPlayer p = d.getOwner();
+				int rank = c.getElevation();
+
+				if (!scores.containsKey(p)) {
+					scores.put(p, rank);
+				} else {
+					int newRank = c.getElevation();
+					if (newRank > rank)
+						scores.put(p, newRank);
+				}
+			}
+		}
+
+		// we now have each player mapped to their rank or not mapped if they
+		// don't have a developer
+		// on the city.
+
+		ArrayList<Integer> values = new ArrayList<Integer>();
+		for (Integer i : scores.values())
+			values.add(i);
+		Collections.sort(values);
+		Collections.reverse(values); // from highest to lowest
+
+		ArrayList<ArrayList<JavaPlayer>> players = new ArrayList<ArrayList<JavaPlayer>>();
+
+		for (Integer i : values) {
+			ArrayList<JavaPlayer> rank = new ArrayList<JavaPlayer>();
+			for (JavaPlayer p : scores.keySet()) {
+				if (scores.get(p) == i)
+					rank.add(p);
+			}
+
+			players.add(rank);
+		}
+
+		return players;
+	}
+
+	public Developer getDeveloperOnCell(JavaCell c,
+			LinkedList<Developer> allDevelopersOnBoard) {
+
+		for (Developer p : allDevelopersOnBoard) {
+			if (p.getLocation() == c) {
+				return p;
+			}
+		}
+		return null;
 	}
 
 	public int getPalaceSize(JavaCell palace) {
@@ -501,7 +566,6 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		return player.cellInPalacesInteractedWith(palace);
 	}
-
 
 	public static int findNumberConnected(int x, int y, JavaCell[][] map,
 			ArrayList<JavaCell> visitedVillages) {
@@ -674,7 +738,6 @@ public class BoardModel implements Serializable<BoardModel> {
 		// homie has paid his dues (action points)
 		// He is now free to go
 
-		
 		theHomie.removeDeveloperAtXY(jailCell.getX(), jailCell.getY());
 		jailCell.removeDeveloper();
 
@@ -795,33 +858,36 @@ public class BoardModel implements Serializable<BoardModel> {
 				if (!connected.contains(next))
 					connected.add(next);
 			}
-			
+
 			i++;
 		}
 
 		return connected;
 	}
-	
-	public boolean checkForSurroundedIrrigationCells(int xC, int yC, Tile tile, LinkedList<Developer> gameDevelopers) {
-		
+
+	public boolean checkForSurroundedIrrigationCells(int xC, int yC, Tile tile,
+			LinkedList<Developer> gameDevelopers) {
+
 		if (nextToIrrigation(xC, yC, tile)) {
 			ArrayList<JavaCell> coast = new ArrayList<JavaCell>();
 			JavaPlayer highRankedPlayer = new JavaPlayer("", "");
-			
+
 			for (int i = 0; i < bodiesOfWater.size(); i++) {
 				coast = collectCoastFromBodyOfWater(bodiesOfWater.get(i));
-				highRankedPlayer = playerWithHighestRankedDeveloperSurroundingBodyOfWater(coast, gameDevelopers);
-				awardFamePointsForSurroundingBodyOfWater(bodiesOfWater.get(i).size(), highRankedPlayer);
+				highRankedPlayer = playerWithHighestRankedDeveloperSurroundingBodyOfWater(
+						coast, gameDevelopers);
+				awardFamePointsForSurroundingBodyOfWater(bodiesOfWater.get(i)
+						.size(), highRankedPlayer);
 			}
-			
+
 			return true;
 		}
-		
+
 		System.out.println("NEXTTOIRRIGATION IS FALSE");
-		
+
 		return false;
-	} 
-	
+	}
+
 	public boolean nextToIrrigation(int xC, int yC, Tile tile) {
 		TileType[][] tileCells = tile.getTileCells();
 
@@ -833,30 +899,48 @@ public class BoardModel implements Serializable<BoardModel> {
 		for (int i = 0; i < tileCells.length; i++) {
 			for (int j = 0; j < tileCells[i].length; j++) {
 				boolean value = tileCells[i][j] != null;
-				System.out.println("dfhjsdfhksdfhkdsajfhajksdhfkjadshfkjasdhfkjadshkjfhsadk");
-				System.out.println("tileCells[" + i + "][" + j + "] == NULL IS " + value);
+				System.out
+						.println("dfhjsdfhksdfhkdsajfhajksdhfkjadshfkjasdhfkjadshkjfhsadk");
+				System.out.println("tileCells[" + i + "][" + j
+						+ "] == NULL IS " + value);
 				if (tileCells[i][j] != null) {
 					System.out.println("THE VALUE OF xC IS " + xC);
 					System.out.println("THE VALUE OF yC IS " + yC);
-					
+
 					boolean xplus1null = irrigationMap[xC][yC + 1] == null;
 					boolean xminus1null = irrigationMap[xC][yC + 1] == null;
 					boolean yplus1null = irrigationMap[xC][yC + 1] == null;
 					boolean yminus1null = irrigationMap[xC][yC + 1] == null;
-					boolean yplus1irrigation = irrigationMap[xC][yC + 1].getCellType().equals("irrigation");
-					boolean yminus1irrigation = irrigationMap[xC][yC + 1].getCellType().equals("irrigation");
-					boolean xplus1irrigation = irrigationMap[xC][yC + 1].getCellType().equals("irrigation");
-					boolean xminus1irrigation = irrigationMap[xC][yC + 1].getCellType().equals("irrigation");
-					
-					System.out.println("IRRIGATION MAP [xC][yC + 1] IS NULL " + yplus1null);
-					System.out.println("IRRIGATION MAP [xC][yC + 1] CellType Is Irrigation " + yplus1irrigation);
-					System.out.println("IRRIGATION MAP [xC][yC - 1] IS NULL " + yminus1null);
-					System.out.println("IRRIGATION MAP [xC][yC - 1] CellType Is Irrigation " + yminus1irrigation);
-					System.out.println("IRRIGATION MAP [xC + 1][yC] IS NULL " + xplus1null);
-					System.out.println("IRRIGATION MAP [xC + 1][yC] CellType Is Irrigation " + xplus1irrigation);
-					System.out.println("IRRIGATION MAP [xC - 1][yC] IS NULL " + xminus1null);
-					System.out.println("IRRIGATION MAP [xC - 1][yC] CellType Is Irrigation " + xminus1irrigation);
-					
+					boolean yplus1irrigation = irrigationMap[xC][yC + 1]
+							.getCellType().equals("irrigation");
+					boolean yminus1irrigation = irrigationMap[xC][yC + 1]
+							.getCellType().equals("irrigation");
+					boolean xplus1irrigation = irrigationMap[xC][yC + 1]
+							.getCellType().equals("irrigation");
+					boolean xminus1irrigation = irrigationMap[xC][yC + 1]
+							.getCellType().equals("irrigation");
+
+					System.out.println("IRRIGATION MAP [xC][yC + 1] IS NULL "
+							+ yplus1null);
+					System.out
+							.println("IRRIGATION MAP [xC][yC + 1] CellType Is Irrigation "
+									+ yplus1irrigation);
+					System.out.println("IRRIGATION MAP [xC][yC - 1] IS NULL "
+							+ yminus1null);
+					System.out
+							.println("IRRIGATION MAP [xC][yC - 1] CellType Is Irrigation "
+									+ yminus1irrigation);
+					System.out.println("IRRIGATION MAP [xC + 1][yC] IS NULL "
+							+ xplus1null);
+					System.out
+							.println("IRRIGATION MAP [xC + 1][yC] CellType Is Irrigation "
+									+ xplus1irrigation);
+					System.out.println("IRRIGATION MAP [xC - 1][yC] IS NULL "
+							+ xminus1null);
+					System.out
+							.println("IRRIGATION MAP [xC - 1][yC] CellType Is Irrigation "
+									+ xminus1irrigation);
+
 					if (yC < 13
 							&& irrigationMap[xC][yC + 1] != null
 							&& irrigationMap[xC][yC + 1].getCellType().equals(
@@ -883,16 +967,17 @@ public class BoardModel implements Serializable<BoardModel> {
 							&& irrigationMap[xC - 1][yC].getCellType().equals(
 									"irrigation")) {
 						System.out.println("I GET HERE: " + i + j);
-						boolean irrigationCell = irrigationMap[xC - 1][yC].getCellType().equals(
-								"irrigation");
-						System.out.println("IRRIGATION CELL == " + irrigationCell);
+						boolean irrigationCell = irrigationMap[xC - 1][yC]
+								.getCellType().equals("irrigation");
+						System.out.println("IRRIGATION CELL == "
+								+ irrigationCell);
 						up = createNewBodyOfWater(xC - 1, yC);
 					}
 
 				}
 			}
 		}
-		
+
 		System.out.println("RIGHT IS " + right);
 		System.out.println("LEFT IS " + left);
 		System.out.println("UP IS " + up);
@@ -904,7 +989,8 @@ public class BoardModel implements Serializable<BoardModel> {
 	public boolean createNewBodyOfWater(int xC, int yC) {
 		System.out.println("INSIDE CREATE NEW BODY OF WATER");
 		if (!isAlreadyInBodyOfWater(xC, yC)) {
-			System.out.println("xC, yC IS NOT ALREADY IN A BODY OF WATER (THIS IS GOOD)");
+			System.out
+					.println("xC, yC IS NOT ALREADY IN A BODY OF WATER (THIS IS GOOD)");
 			bodiesOfWater.add(new ArrayList<JavaCell>());
 			addToBodiesOfWater(xC, yC);
 			return true;
@@ -934,7 +1020,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		boolean canDown = (xC + 1 < map.length);
 		boolean canRight = (yC + 1 < map[0].length);
 		boolean canLeft = (yC - 1 >= 0);
-		
+
 		if (canUp && map[xC - 1][yC] != null
 				&& !bodiesOfWater.get(bowSize - 1).contains(map[xC - 1][yC])
 				&& map[xC - 1][yC].getCellType() == "irrigation") {
@@ -962,7 +1048,8 @@ public class BoardModel implements Serializable<BoardModel> {
 		return;
 	}
 
-	public ArrayList<JavaCell> collectCoastFromBodyOfWater(ArrayList<JavaCell> bodyOfWater) {
+	public ArrayList<JavaCell> collectCoastFromBodyOfWater(
+			ArrayList<JavaCell> bodyOfWater) {
 		ArrayList<JavaCell> coast = new ArrayList<JavaCell>();
 
 		for (int i = 0; i < bodyOfWater.size(); i++) {
@@ -1018,32 +1105,37 @@ public class BoardModel implements Serializable<BoardModel> {
 
 			for (int i = 0; i < coast.size(); i++) {
 				if (maxElevation == coast.get(i).getElevation()) {
-					System.out.println("GAME DEVELOPERS.SIZE() = " + gameDevelopers.size());
+					System.out.println("GAME DEVELOPERS.SIZE() = "
+							+ gameDevelopers.size());
 					for (int j = 0; j < gameDevelopers.size(); j++) {
 						if (gameDevelopers.get(j) != null) {
-							if (gameDevelopers.get(j).getX() 
-									== coast.get(i).getX()
-									&& gameDevelopers.get(j).getY() == coast.get(i)
-											.getY()) {
+							if (gameDevelopers.get(j).getX() == coast.get(i)
+									.getX()
+									&& gameDevelopers.get(j).getY() == coast
+											.get(i).getY()) {
 								boolean pwe = playersWithElevation == null;
 								boolean dev = gameDevelopers.get(j) == null;
 								boolean own = gameDevelopers.get(j).getOwner() == null;
-								
-								System.out.println("pwe " + pwe + " dev " + dev + " own "+ own);
-								
-								if (playersWithElevation.get(gameDevelopers.get(j).getOwner()) != null) {
-									playersWithElevation.put(gameDevelopers.get(j)
-											.getOwner(), playersWithElevation
-											.get(gameDevelopers.get(j).getOwner()) + 1);
+
+								System.out.println("pwe " + pwe + " dev " + dev
+										+ " own " + own);
+
+								if (playersWithElevation.get(gameDevelopers
+										.get(j).getOwner()) != null) {
+									playersWithElevation.put(gameDevelopers
+											.get(j).getOwner(),
+											playersWithElevation
+													.get(gameDevelopers.get(j)
+															.getOwner()) + 1);
 									System.out.println("HERE1");
 								}
-								
+
 								else {
-									playersWithElevation.put(gameDevelopers.get(j)
-											.getOwner(), 1);
+									playersWithElevation.put(gameDevelopers
+											.get(j).getOwner(), 1);
 									System.out.println("HERE2");
 								}
-								
+
 								break;
 							}
 						}
@@ -1074,7 +1166,8 @@ public class BoardModel implements Serializable<BoardModel> {
 		return null;
 	}
 
-	public boolean awardFamePointsForSurroundingBodyOfWater(int numSurroundedIrrigationTiles, JavaPlayer player) {
+	public boolean awardFamePointsForSurroundingBodyOfWater(
+			int numSurroundedIrrigationTiles, JavaPlayer player) {
 		if (player != null) {
 			player.changeFamePoints(numSurroundedIrrigationTiles * 3);
 		}
@@ -1104,7 +1197,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 		return s;
 	}
-	
+
 	public String toString2() {
 		String s = "";
 
