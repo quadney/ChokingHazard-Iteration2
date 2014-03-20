@@ -92,7 +92,7 @@ public class BoardModel implements Serializable<BoardModel>  {
 			if (placedLandTile(xC, yC))
 				player.placedLandTile();
 
-			System.out.println(toString());
+//			System.out.println(toString());
 			return true;
 		}
 
@@ -123,23 +123,23 @@ public class BoardModel implements Serializable<BoardModel>  {
 			palaceOK = placePalace(xC, yC, miniMap[1][1], map, player);
 		}
 
-		System.out.println("palace placement: "
-				+ checkPalacePlacement(miniMap, tile));
-		System.out.println("palace tilesBelow: "
-				+ checkTilesBelow(miniMap, tile));
-		System.out.println("palace elevation: "
-				+ checkElevation(miniMap, tile, xC, yC));
-		System.out.println("palace Irrigation: "
-				+ checkIrrigationPlacement(miniMap, tile));
-		System.out.println("palace DevOnCell: "
-				+ checkDeveloperOnCell(miniMap, tile));
-		System.out.println("palace CityConn: "
-				+ checkCityConnection(miniMap, tile));
-		System.out.println("palace edge: " + checkEdgePlacement(miniMap, tile));
-		System.out
-				.println("palace action: "
-						+ player.decrementNActionPoints(neededActionPoints,
-								isLandTile));
+//		System.out.println("palace placement: "
+//				+ checkPalacePlacement(miniMap, tile));
+//		System.out.println("palace tilesBelow: "
+//				+ checkTilesBelow(miniMap, tile));
+//		System.out.println("palace elevation: "
+//				+ checkElevation(miniMap, tile, xC, yC));
+//		System.out.println("palace Irrigation: "
+//				+ checkIrrigationPlacement(miniMap, tile));
+//		System.out.println("palace DevOnCell: "
+//				+ checkDeveloperOnCell(miniMap, tile));
+//		System.out.println("palace CityConn: "
+//				+ checkCityConnection(miniMap, tile));
+//		System.out.println("palace edge: " + checkEdgePlacement(miniMap, tile));
+//		System.out
+//				.println("palace action: "
+//						+ player.decrementNActionPoints(neededActionPoints,
+//								isLandTile));
 
 		if (checkPalacePlacement(miniMap, tile)
 				&& checkTilesBelow(miniMap, tile)
@@ -260,11 +260,11 @@ public class BoardModel implements Serializable<BoardModel>  {
 
 				if (tileCells[i][j] != null
 						&& miniMap[i][j].getElevation() >= 0) {
-					System.out.println("in the 1st if statement: " + testId);
+//					System.out.println("in the 1st if statement: " + testId);
 
 					if (testId == 0) {
 						testId = miniMap[i][j].getCellId();
-						System.out.println("The id is: " + testId);
+//						System.out.println("The id is: " + testId);
 					} else {
 						if (testId != miniMap[i][j].getCellId())
 							return true;
@@ -583,9 +583,9 @@ public class BoardModel implements Serializable<BoardModel>  {
 			}
 		}
 
-		System.out.println("COUNT IS: " + count);
+//		System.out.println("COUNT IS: " + count);
 
-		System.out.println("count: " + count + "number" + number);
+//		System.out.println("count: " + count + "number" + number);
 
 		if (count == number) {
 			return false;

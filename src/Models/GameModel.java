@@ -32,6 +32,7 @@ public class GameModel implements Serializable<GameModel> {
 	private int actionIDCounter; // Provides unique actionIDs to every action
 									// created. To be incremented after each
 									// action instantiation.
+	private int lastPlanningModeActionID = 0;
 
 	public GameModel(int numberPlayers, String[] playerNames,
 			String[] playerColors) {
@@ -469,7 +470,7 @@ public class GameModel implements Serializable<GameModel> {
 		return model;
 	}
 
-	private void setGameState(GameState state) {
+	public void setGameState(GameState state) {
 		this.gameState = state;
 	}
 
@@ -587,5 +588,13 @@ public class GameModel implements Serializable<GameModel> {
 
 	public Stack<Event> getActionHistory() {
 		return actionHistory;
+	}
+
+	public void setLastPlanningModeActionID() {
+		lastPlanningModeActionID  = ((Action)actionHistory.peek()).getActionID();
+	}
+	
+	public int getLastPlanningModeActionID() {
+		return lastPlanningModeActionID;
 	}
 }

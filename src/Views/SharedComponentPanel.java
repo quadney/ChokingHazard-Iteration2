@@ -50,13 +50,17 @@ public class SharedComponentPanel extends JPanel{
 				if(playMode){
 					playModeToggleButton.setText("Play Mode");
 					playMode = false;
+					gameController.startPlanningMode();
 				}
 				else{
 					playModeToggleButton.setText("Planning Mode");
 					playMode = true;
+					gameController.startPlayingMode();
+					if(!gameController.askUserIfWouldLikeToSaveChangesFromPlanningMode()) {
+						gameController.undoUntilLastPlayingMode();
+					}
 				}
 			
-				gameController.startPlanningMode();
 			}
 		});
 		playModeToggleButton.setFocusable(false);
@@ -68,16 +72,18 @@ public class SharedComponentPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//tempoarily set the button disabled while it replays, then when finished replaying set it to enabled
-				setReplayButtonEnabled(false);
-				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-					@Override
-					protected Void doInBackground() throws Exception {
-						gameController.startReplay();
-						setReplayButtonEnabled(true);
-						return null;
-					}
-				};
-				worker.execute();
+				if(gameController.askUserIfWouldLikeToEnterReplayMode()) {
+					setReplayButtonEnabled(false);
+					SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+						@Override
+						protected Void doInBackground() throws Exception {
+							gameController.startReplay();
+							setReplayButtonEnabled(true);
+							return null;
+						}
+					};
+					worker.execute();
+				}
 			}
 		});
 		replayButton.setFocusable(false);

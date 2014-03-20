@@ -506,8 +506,12 @@ public class GameController {
 	}
 
 	public void startPlanningMode() {
-		// TODO Auto-generated method stub
-
+		currentGame.setGameState(GameState.PlanningMode);
+		currentGame.setLastPlanningModeActionID();
+	}
+	
+	public void startPlayingMode() {
+		currentGame.setGameState(GameState.NormalMode);
 	}
 	
 	public void undo() {
@@ -525,13 +529,25 @@ public class GameController {
 		board.clearBoard();
 		Action[] actions = currentGame.getActions();
 		int startOfRoundIndex = 1;
-//		for(int x = 0; x < actions.length; ++x)
-//			if(actions[x].getActionID() == currentGame.getStartOfRoundActionID())
-//				startOfRoundIndex = x;
-//		System.out.println("START OF ROUND" + startOfRoundIndex);
+		for(int x = 0; x < actions.length; ++x)
+			if(actions[x].getActionID() == currentGame.getStartOfRoundActionID())
+				startOfRoundIndex = x;
+		System.out.println("START OF ROUND" + startOfRoundIndex);
 		doActions(actions, 0, startOfRoundIndex-1, false, false);
 		doActions(actions, startOfRoundIndex-1, actions.length, true, true);
-		
+	}
+
+	public void undoUntilLastPlayingMode() {
+		currentGame.clearForReplay();
+		board.clearBoard();
+		Action[] actions = currentGame.getActions();
+		int startOfPlanningModeIndex = 1;
+		for(int x = 0; x < actions.length; ++x)
+			if(actions[x].getActionID() == currentGame.getLastPlanningModeActionID())
+				startOfPlanningModeIndex = x;
+		System.out.println("Last Planning Mode Index" + startOfPlanningModeIndex);
+		doActions(actions, 0, startOfPlanningModeIndex, false, false);
+		doActions(actions, startOfPlanningModeIndex, startOfPlanningModeIndex+1, false, true);
 	}
 	
 	private void doActions(Action[] actions, int startIndex, int endIndex, boolean wait, boolean draw) {
@@ -570,5 +586,13 @@ public class GameController {
 
 	public Component getGameFrame() {
 		return gameFrame;
+	}
+
+	public boolean askUserIfWouldLikeToSaveChangesFromPlanningMode() {
+		return currentGamePanel.askUserIfWouldLikeToSaveChangesFromPlanningMode();
+	}
+	
+	public boolean askUserIfWouldLikeToEnterReplayMode() {
+		return currentGamePanel.askUserIfWouldLikeToEnterReplayMode();
 	}
 }
