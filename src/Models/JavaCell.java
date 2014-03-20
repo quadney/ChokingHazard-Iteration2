@@ -48,7 +48,6 @@ public class JavaCell implements Serializable<JavaCell> {
    public String getCellType() {
       return cellType;
    }
-
    
    public void setElevation(int e) {
       elevation = e;
@@ -68,6 +67,10 @@ public class JavaCell implements Serializable<JavaCell> {
    
    public boolean hasDeveloper() {
 	   return hasDeveLoper;
+   }
+   
+   public boolean isLandOrPalaceOrIrrigation() {
+	   return this.cellType.contains("palace") || this.cellType.contains("irrigation") || this.cellType.contains("village") || this.cellType.contains("rice");
    }
    
    public boolean isBorder() {
@@ -127,4 +130,15 @@ public class JavaCell implements Serializable<JavaCell> {
 	public void setNumOriginalSpaces(int numOfSpaces) {
 		this.numOriginalSpaces = numOfSpaces;
 	}
+	
+//	public Object clone() throws CloneNotSupportedException {
+//		JavaCell javaCell = new JavaCell(-1, -1, 0);
+//		try {
+//			javaCell = (JavaCell)super.clone();
+//		} catch (CloneNotSupportedException e) {
+//			// should never happen
+//		}
+//		
+//		return javaCell;
+//	}
 }
