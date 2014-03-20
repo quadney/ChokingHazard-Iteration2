@@ -18,7 +18,7 @@ public class RiceTileAction extends OneSpaceTileAction {
 
 	@Override
 	public boolean redo(GameModel game) {
-		if(game.getBoard().placeTile(x, y, new Tile(TileType.rice, 0), game.getCurrentPlayer())) {
+		if(game.getBoard().placeTile(x, y, new Tile(TileType.rice, 0), game.getCurrentPlayer(), game.getAllPlayerDevelopers())) {
 			game.getCurrentPlayer().decrementRice();			
 			return true;
 		}

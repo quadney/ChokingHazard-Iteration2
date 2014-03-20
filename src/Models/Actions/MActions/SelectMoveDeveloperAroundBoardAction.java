@@ -24,6 +24,7 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		this.originalX = originalX;
 		this.originalY = originalY;
 		this.path = new LinkedList<JavaCell>();
+		path.push(board.getCellAtXY(originalX, originalY));
 		this.board = board;
 		this.player = player;
 	}
@@ -32,13 +33,13 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		int newX = x + xChange;
 		int newY = y + yChange;
 		if(isNonRotatableComponentOnBoard(newX, newY) ){
+			if( addJavaCellToPath(board.getCellAtXY(newX, newY), player)){
 			x = newX;
 			y = newY;
-			return addJavaCellToPath(board.getCellAtXY(x, y), player);
+			return true;
+			}
 		}
-		else{
-			return false;
-		}
+		return false;
 	}
 
 	@Override
@@ -66,7 +67,18 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 	
 	public boolean addJavaCellToPath(JavaCell javaCell, JavaPlayer player) {
 		
-		if(javaCell.hasDeveloper() && !player.hasDeveloperOnXY(x,y)){
+		if(javaCell.hasDeveloper() && !player.hasDeveloperOnXY(javaCell.getX(),javaCell.getY())){
+			System.out.print(javaCell.hasDeveloper());
+			System.out.print(" + ");
+			System.out.print(!player.hasDeveloperOnXY(javaCell.getX(),javaCell.getY()));
+			System.out.println(" means: false");
+			return false;
+		}
+		System.out.print(javaCell.hasDeveloper());
+		System.out.print(" + ");
+		System.out.print(!player.hasDeveloperOnXY(javaCell.getX(),javaCell.getY()));
+		System.out.println(" means: not false");
+		if(!"villagerice".contains(javaCell.getCellType())){
 			return false;
 		}
 		
@@ -78,58 +90,41 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 			temp2.push(path.peek());
 			temp.push(path.pop());
 		}
-
-		JavaCell currentCell = temp.pop();
-		int count = 0;
-
-		while ((currentCell != javaCell) && count < pathSize - 1) {
-			path.push(currentCell);
-			currentCell = temp.pop();
-			count++;
-		}
 		
-		path.push(currentCell);
-		if(costOfDeveloperPath(path) >= player.getAvailableActionPoints(false)){
-			path = temp2;
-			return false;
+		if(!temp.isEmpty()){
+			JavaCell currentCell = temp.pop();
+			int count = 0;
+	
+			while ((currentCell != javaCell) && count < pathSize) {
+				path.push(currentCell);
+				if(!temp.isEmpty())
+					currentCell = temp.pop();
+				count++;
+			}
 		}
-		return true;
+		path.push(javaCell);
+		return !(costOfDeveloperPath(path) > player.getAvailableActionPoints(false));
 	}
 
 	@Override
 	public Action pressEnter(GameModel game) {
-		if (!doesLastCellAlreadyHaveDeveloper()) {
-			Action action = new MoveDeveloperAction(-1, x, y, path);
-			if (action.doAction(game)) {
-				return action;
-			}
+		Action action = new MoveDeveloperAction(game.nextActionID(), x, y, originalX, originalY, costOfDeveloperPath(path));
+		if (action.doAction(game)) {
+			return action;
 		}
 		return null;
 	}
 	
 	private int costOfDeveloperPath(LinkedList<JavaCell> path){
-		int pathSize = path.size();
+		JavaCell[] pathArray = path.toArray(new JavaCell[0]);
+		
 		int actionPoints = 0;
-		JavaCell currentCell = path.removeLast();
-		JavaCell nextCell = path.removeLast();
-		for (int i = 0; i < pathSize - 2; i++) {
-			if (fromVillageToRice(currentCell, nextCell)) {
+		for(int i = 1; i < pathArray.length; i++) {
+			if (fromVillageToRice(pathArray[i-1], pathArray[i])) {
 				actionPoints++;
 			}
-
-			currentCell = nextCell;
-			nextCell = path.removeLast();
 		}
-
-		if (fromVillageToRice(currentCell, nextCell)) {
-			actionPoints++;
-		}
-
 		return actionPoints;
-	}
-	
-	private boolean doesLastCellAlreadyHaveDeveloper(){
-		return path.peekLast().hasDeveloper();
 	}
 	
 	public LinkedList<JavaCell> getPath(){
@@ -141,12 +136,12 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		return false;
 	}
 	
-	public MAction pressM(){
+	public MAction pressM(BoardModel board, JavaPlayer player){
 		return null;
 	}
 
 	@Override
-	public Action pressDelete() {
+	public Action pressDelete(GameModel game) {
 		return null;
 	}
 

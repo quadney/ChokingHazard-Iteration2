@@ -21,12 +21,12 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 		this.palaceTiles = new int[]{6, 7, 8, 9, 10};
 		palaceCardDeck = new LinkedList<PalaceCard>();
 		for(int i = 0; i < 5; i++){
-			palaceCardDeck.push(new PalaceCard(1));
-			palaceCardDeck.push(new PalaceCard(2));
-			palaceCardDeck.push(new PalaceCard(3));
-			palaceCardDeck.push(new PalaceCard(4));
-			palaceCardDeck.push(new PalaceCard(5));
-			palaceCardDeck.push(new PalaceCard(6));
+			palaceCardDeck.push(new PalaceCard(1, true));
+			palaceCardDeck.push(new PalaceCard(2, true));
+			palaceCardDeck.push(new PalaceCard(3, true));
+			palaceCardDeck.push(new PalaceCard(4, true));
+			palaceCardDeck.push(new PalaceCard(5, true));
+			palaceCardDeck.push(new PalaceCard(6, true));
 		}
 		Collections.shuffle(palaceCardDeck);
 		this.festivalCard = palaceCardDeck.pop();
@@ -157,28 +157,30 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 
 	@Override
 	public SharedComponentModel loadObject(JsonObject json) {
-		threeSpaceTiles = Integer.parseInt(json.getString("threeSpaceTiles"));
-		irrigationTiles = Integer.parseInt(json.getString("irrigationTiles"));
-		
-		palaceTiles = new int[json.getStringArray("palaceTiles").length];
-		for(int x = 0; x < palaceTiles.length; ++x) 
-			palaceTiles[x] = Integer.parseInt(json.getStringArray("palaceTiles")[x]);
-
-		palaceCardDeck = new LinkedList<PalaceCard>();
-		for(JsonObject card : json.getJsonObjectArray("palaceCardDeck")) 
-			palaceCardDeck.push((new PalaceCard(-1)).loadObject(card));
-
-		discardedCardDeck = new LinkedList<PalaceCard>();
-		for(JsonObject card : json.getJsonObjectArray("discardedCardDeck")) 
-			discardedCardDeck.push((new PalaceCard(-1)).loadObject(card));
-		
-		festivalCard = (new PalaceCard(-1)).loadObject(json.getJsonObject("festivalCard"));
-		
 		return this;
 	}
 
 	public boolean isFinalRound() {
 		return threeSpaceTiles == 0;
+	}
+
+	public void reset() {
+    	//constructor for new game
+		this.threeSpaceTiles = 56;
+		this.irrigationTiles = 10;
+		this.palaceTiles = new int[]{6, 7, 8, 9, 10};
+		palaceCardDeck = new LinkedList<PalaceCard>();
+		for(int i = 0; i < 5; i++){
+			palaceCardDeck.push(new PalaceCard(1, true));
+			palaceCardDeck.push(new PalaceCard(2, true));
+			palaceCardDeck.push(new PalaceCard(3, true));
+			palaceCardDeck.push(new PalaceCard(4, true));
+			palaceCardDeck.push(new PalaceCard(5, true));
+			palaceCardDeck.push(new PalaceCard(6, true));
+		}
+		Collections.shuffle(palaceCardDeck);
+		this.festivalCard = palaceCardDeck.pop();
+		this.discardedCardDeck = new LinkedList<PalaceCard>();
 	}
 
 }

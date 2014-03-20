@@ -25,6 +25,7 @@ public class PlayerPanel extends JPanel{
 	private JLabel playerName, famePoints, actionPointsLeft, developers, oneTileRice, oneTileVillage, twoTile, actionTokens;
 	private JLabel palaceCards;
 	private HashMap<String, String> imageSourceHashMap;
+	public static int TEST_FONT = 40;
 	
 	public PlayerPanel(String name, String color){
 		setLayout(new FlowLayout());
@@ -40,9 +41,9 @@ public class PlayerPanel extends JPanel{
 		} 
 		
 		setBackground(Color.WHITE);
-        setPreferredSize(new Dimension(200, 335));
-        setMinimumSize(new Dimension(200, 335));
-        setMaximumSize(new Dimension(200, 335));
+        setPreferredSize(new Dimension(210, 335));
+        setMinimumSize(new Dimension(210, 335));
+        setMaximumSize(new Dimension(210, 335));
         setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         
         initHashMap();
@@ -51,18 +52,18 @@ public class PlayerPanel extends JPanel{
 	
 	private void initLayout() {
 		JPanel leftPlayerInfo = new JPanel();
-		leftPlayerInfo.setPreferredSize(new Dimension(115, 60));
+		leftPlayerInfo.setPreferredSize(new Dimension(120, 60));
 		leftPlayerInfo.setBackground(Color.WHITE);
 		this.add(leftPlayerInfo);
 		
 		playerName = new JLabel(name);
         playerName.setFont(new Font("Lucida Grande", 0, 18)); 
-        playerName.setPreferredSize(new Dimension(110, 22));
+        playerName.setPreferredSize(new Dimension(115, 22));
         playerName.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         leftPlayerInfo.add(playerName);
         
         actionPointsLeft = new JLabel("");
-        actionPointsLeft.setFont(new Font("Lucida Grande", 0, 48)); 
+        actionPointsLeft.setFont(new Font("Lucida Grande", 0, TEST_FONT)); 
         actionPointsLeft.setHorizontalAlignment(SwingConstants.CENTER);
         actionPointsLeft.setPreferredSize(new Dimension(60, 60));
         actionPointsLeft.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
@@ -71,31 +72,31 @@ public class PlayerPanel extends JPanel{
         famePoints = new JLabel("");
         famePoints.setFont(new Font("Lucida Grande", 1, 36));
         famePoints.setHorizontalAlignment(SwingConstants.LEFT);
-        famePoints.setPreferredSize(new Dimension(110, 32));
+        famePoints.setPreferredSize(new Dimension(115, 32));
         famePoints.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         leftPlayerInfo.add(famePoints);
 
         JSeparator jSeparator1 = new JSeparator();
-        jSeparator1.setForeground(new Color(102, 102, 102));
+        jSeparator1.setForeground(new Color(112, 102, 102));
         jSeparator1.setPreferredSize(new Dimension(180, 15));
         this.add(jSeparator1);
         
-        developers = newJLabel("", imageSourceHashMap.get("layout_player_"+color), 80, 45); 
+        developers = newJLabel("", imageSourceHashMap.get("layout_player_"+color), 90, 45); 
         this.add(developers);
         
-        actionTokens = newJLabel("", imageSourceHashMap.get("layout_actionToken"), 80, 45); 
+        actionTokens = newJLabel("", imageSourceHashMap.get("layout_actionToken"), 90, 45); 
         this.add(actionTokens);
 
-        oneTileRice = newJLabel("", imageSourceHashMap.get("layout_riceTile"), 80, 45); 
+        oneTileRice = newJLabel("", imageSourceHashMap.get("layout_riceTile"), 90, 45); 
         this.add(oneTileRice);
         
-        oneTileVillage = newJLabel("", imageSourceHashMap.get("layout_villageTile"), 80, 45); 
+        oneTileVillage = newJLabel("", imageSourceHashMap.get("layout_villageTile"), 90, 45); 
         this.add(oneTileVillage);
 
-        twoTile = newJLabel("", imageSourceHashMap.get("layout_twoTile"), 160, 45); 
+        twoTile = newJLabel("", imageSourceHashMap.get("layout_twoTile"), 180, 45); 
         this.add(twoTile);
         
-        palaceCards = newJLabel("", imageSourceHashMap.get("layout_palaceCard_back"), 160, 75);
+        palaceCards = newJLabel("", imageSourceHashMap.get("layout_palaceCard_back"), 180, 75);
         this.add(palaceCards);
 		
 	}

@@ -18,7 +18,7 @@ public class VillageTileAction extends OneSpaceTileAction {
 
 	@Override
 	public boolean redo(GameModel game) {
-		if(game.getBoard().placeTile(x, y, new Tile(TileType.village, 0), game.getCurrentPlayer())) {
+		if(game.getBoard().placeTile(x, y, new Tile(TileType.village, 0), game.getCurrentPlayer(), game.getAllPlayerDevelopers())) {
 			game.getCurrentPlayer().decrementVillage();
 			return true;
 		}

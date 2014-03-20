@@ -76,7 +76,7 @@ public class GameRobot {
 	 */
 	public static void altN() {
 		press(KeyEvent.VK_ALT);
-		for(int x = 0; x < 2; ++x) 
+		for(int x = 0; x < Simulator.ALT_N; ++x) 
 			type("n");
 		release(KeyEvent.VK_ALT);
 	}

@@ -48,7 +48,6 @@ public class JavaCell implements Serializable<JavaCell> {
    public String getCellType() {
       return cellType;
    }
-
    
    public void setElevation(int e) {
       elevation = e;
@@ -70,6 +69,10 @@ public class JavaCell implements Serializable<JavaCell> {
 	   return hasDeveLoper;
    }
    
+   public boolean isLandOrPalaceOrIrrigation() {
+	   return this.cellType.contains("palace") || this.cellType.contains("irrigation") || this.cellType.contains("village") || this.cellType.contains("rice");
+   }
+   
    public boolean isBorder() {
 	   
 	   if (this.xVal == 13 || this.yVal == 13 || this.xVal == 0 || this.yVal == 0 )
@@ -86,7 +89,7 @@ public class JavaCell implements Serializable<JavaCell> {
    
    public int getActionPointsFromDeveloperMove()
    {
-	   if (this.yVal > 6) //From lowlands
+	   if (this.xVal > 6) //From lowlands
 		   return 1;
 	   else
 		   return 2; //From mountains
@@ -127,4 +130,15 @@ public class JavaCell implements Serializable<JavaCell> {
 	public void setNumOriginalSpaces(int numOfSpaces) {
 		this.numOriginalSpaces = numOfSpaces;
 	}
+	
+//	public Object clone() throws CloneNotSupportedException {
+//		JavaCell javaCell = new JavaCell(-1, -1, 0);
+//		try {
+//			javaCell = (JavaCell)super.clone();
+//		} catch (CloneNotSupportedException e) {
+//			// should never happen
+//		}
+//		
+//		return javaCell;
+//	}
 }

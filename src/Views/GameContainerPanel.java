@@ -50,13 +50,13 @@ public class GameContainerPanel extends JPanel {
 		
 		JPanel leftColumn = new JPanel();
 		leftColumn.setLayout(new BorderLayout());
-		leftColumn.setPreferredSize(new Dimension(205, 700));
+		leftColumn.setPreferredSize(new Dimension(240, 700));
 		leftColumn.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		add(leftColumn, BorderLayout.WEST);
 		
 		JPanel rightColumn = new JPanel();
 		rightColumn.setLayout(new BorderLayout());
-		rightColumn.setPreferredSize(new Dimension(205, 700));
+		rightColumn.setPreferredSize(new Dimension(240, 700));
 		rightColumn.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		add(rightColumn, BorderLayout.EAST);
 		
