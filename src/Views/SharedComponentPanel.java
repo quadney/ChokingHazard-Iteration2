@@ -1,6 +1,5 @@
 package Views;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -20,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 
 import Controllers.GameController;
+import Models.PalaceCard;
 
 @SuppressWarnings("serial")
 public class SharedComponentPanel extends JPanel{
@@ -31,7 +31,7 @@ public class SharedComponentPanel extends JPanel{
 	
 	public SharedComponentPanel(String festivalCardHashKey, GameController gameController){
 		super(new FlowLayout());
-		setPreferredSize(new Dimension(1100, 110));
+		setPreferredSize(new Dimension(1170, 110));
 		
 		initHashMap();
 		initPanel(festivalCardHashKey, gameController);
@@ -55,10 +55,10 @@ public class SharedComponentPanel extends JPanel{
 				else{
 					playModeToggleButton.setText("Planning Mode");
 					playMode = true;
-					gameController.startPlayingMode();
 					if(!gameController.askUserIfWouldLikeToSaveChangesFromPlanningMode()) {
 						gameController.undoUntilLastPlayingMode();
 					}
+					gameController.startPlayingMode();
 				}
 			
 			}
@@ -71,7 +71,7 @@ public class SharedComponentPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//tempoarily set the button disabled while it replays, then when finished replaying set it to enabled
+				//temporarily set the button disabled while it replays, then when finished replaying set it to enabled
 				if(gameController.askUserIfWouldLikeToEnterReplayMode()) {
 					setReplayButtonEnabled(false);
 					SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -121,7 +121,7 @@ public class SharedComponentPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameController.pickUpPalaceCard();
-				System.out.println("draw from palace deck");
+//				System.out.println("draw from palace deck");
 			}
 		});
         palaceDeck.setFocusable(false);
@@ -139,7 +139,7 @@ public class SharedComponentPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameController.pickUpFestivalCard();
-				System.out.println("draw festival card");
+//				System.out.println("draw festival card");
 			}
 		});
         festivalCard.setFocusable(false);
@@ -149,7 +149,7 @@ public class SharedComponentPanel extends JPanel{
 
         JLabel actionSummaryCard = new JLabel();
         actionSummaryCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_actionSummaryCard")));
-        actionSummaryCard.setPreferredSize(new Dimension(473, 77));
+        actionSummaryCard.setPreferredSize(new Dimension(533, 78));
         actionSummaryCard.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
         add(actionSummaryCard);
 		
@@ -191,8 +191,10 @@ public class SharedComponentPanel extends JPanel{
 		this.tenPalaceTiles.setText(""+num);
 	}
 	public void updateNumPalaceCards(int num){
-		//You're welcome Sydney --mrrow //lol
 		this.palaceDeck.setText(""+num);
+	}
+	public void updateFestivalCard(String newFestivalCardHashKey){
+		this.festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_"+newFestivalCardHashKey)));
 	}
 	
 	public void setReplayButtonEnabled(boolean yes){
@@ -242,6 +244,13 @@ public class SharedComponentPanel extends JPanel{
 		} catch(Exception e){
 			System.out.println(e.getMessage());
 		}
+	}
+
+	public void updateFestivalCard(PalaceCard card) {
+		if(card.isFaceUp())
+			festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_" + card.getType())));
+		else
+			festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_palaceDeck")));
 	}
 	
 }

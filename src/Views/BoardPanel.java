@@ -96,6 +96,13 @@ public class BoardPanel extends JPanel {
 		repaint();
 	}
 	
+	public void haveFestivalOnPalace(int xLoc, int yLoc){
+		g2d = tileImage.createGraphics();
+		g2d.drawImage(getImage(imageSourceHashMap.get("festival")), null, xLoc, yLoc);
+		g2d.dispose();
+		repaint();
+	}
+	
 	public void moveUnplacedDeveloperAround(int xLoc, int yLoc, String hashKey){
 		clearImage(tempImage);
 		g2d = tempImage.createGraphics();
@@ -263,10 +270,11 @@ public class BoardPanel extends JPanel {
 			System.out.println(e.getMessage());
 		}
 	}
-	public void clearBoard(){
+	public void clearBoard(boolean repaint){
 		clearImage(tileImage);
 		clearImage(developers);
 		clearImage(tempImage);
-		repaint();
+		if(repaint)
+			repaint();
 	}
 }

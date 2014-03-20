@@ -127,10 +127,15 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	// greater than the
 	// number of developers, the first developer in the list becomes selected
 
-	public void associateDeveloperWithCell(JavaCell jc) {
+	public boolean associateDeveloperWithCell(JavaCell jc) {
 	
-		developersArray[indexWithNoDeveloper()].setLocation(jc);
-		jc.setDeveloper();
+		int index = indexWithNoDeveloper();
+		if(index > -1){
+			developersArray[indexWithNoDeveloper()].setLocation(jc);
+			jc.setDeveloper();
+			return true;
+		}
+		return false;
 	}
 	
 	private int indexWithNoDeveloper(){
@@ -207,7 +212,7 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	// 
 	public boolean endPlayerTurn() {
 		if(hasPlacedLandTile){
-			System.out.println("Player has placed land tile and is now resetting their state");
+//			System.out.println("Player has placed land tile and is now resetting their state");
 			hasPlacedLandTile = false;
 			hasUsedActionToken = false;
 			palacesInteractedWith.clear();
@@ -221,7 +226,6 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	public boolean canPlaceDeveloperOnBoard() {
 		int index = getNextAvailableDeveloperSpot();
 		return index != -1;
-		
 	}
 	
 	public boolean canEndTurn() {
@@ -239,13 +243,24 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return true;
 	}
 	
+	public boolean moveDeveloperAroundBoard(JavaCell origin, JavaCell newLocation, int actionPointsCost) {
+		
+		for(Developer d: developersArray){
+			if(d.moveDeveloperIfOnThisXY(origin, newLocation)){
+				
+				return decrementNActionPoints(actionPointsCost, false);
+				
+			}
+		}
+		return false;
+	}
+	
 	private int getNextAvailableDeveloperSpot(){
 		for(int i = 0; i < developersArray.length; i++){
 			if(developersArray[i] == null){
 				return i;
 			}
 		}
-		
 		return -1;
 	}
 	
@@ -287,6 +302,15 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		actionPoints--;
 	}
 	
+	public boolean canHoldFestival(PalaceCard festivalCard){
+		for(PalaceCard currentCard : palaceCards){
+			if(currentCard.compareHasSymbols(festivalCard) && currentCard.compareNumSymbols(festivalCard)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	//----------------------------------------
 
 	@Override
@@ -312,34 +336,6 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 
 	@Override
 	public JavaPlayer loadObject(JsonObject json) {
-		this.name = json.getString("name");
-		this.color = json.getString("color");
-		this.famePoints = Integer.parseInt(json.getString("famePoints"));
-		this.actionPoints = Integer.parseInt(json.getString("actionPoints"));
-		this.numOneRiceTile = Integer
-				.parseInt(json.getString("numOneRiceTile"));
-		this.numOneVillageTile = Integer.parseInt(json
-				.getString("numOneVillageTile"));
-		this.numTwoTile = Integer.parseInt(json.getString("numTwoTile"));
-		this.numActionTokens = Integer.parseInt(json
-				.getString("numActionTokens"));
-		this.hasPlacedLandTile = Boolean.parseBoolean(json
-				.getString("hasPlacedLandTile"));
-		this.hasUsedActionToken = Boolean.parseBoolean(json
-				.getString("hasUsedActionToken"));
-
-		this.palaceCards = new ArrayList<PalaceCard>();
-		for (JsonObject obj : json.getJsonObjectArray("palaceCards"))
-			this.palaceCards.add((new PalaceCard(-1)).loadObject(obj));
-
-		// TODO check if these are distinct or from developersOnBoard (or
-		// vice-versa)
-		this.developersArray = new Developer[json
-				.getJsonObjectArray("developerArray").length];
-		for (int x = 0; x < this.developersArray.length; ++x)
-			this.developersArray[x] = (new Developer(this)).loadObject(json
-					.getJsonObjectArray("developerArray")[x]);
-
 		return this;
 	}
 
@@ -357,8 +353,23 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	}
 
 	public void reset() {
-		// TODO Auto-generated method stub
-		
+		this.actionPoints = testingActionPoints;
+		this.famePoints = 0;
+		this.numOneRiceTile = 3;
+		this.numOneVillageTile = 2;
+		this.numTwoTile = 5;
+		this.numActionTokens = 3;
+		this.palaceCards = new ArrayList<PalaceCard>();
+		this.hasPlacedLandTile = false;
+		this.hasUsedActionToken = false;
+		this.developersArray = new Developer[12];
+		this.palacesInteractedWith = new ArrayList<JavaCell>();
+	}
+
+	public void flipAllCards() {
+		for(PalaceCard card : palaceCards) {
+			card.setFaceUp();
+		}
 	}
 
 }

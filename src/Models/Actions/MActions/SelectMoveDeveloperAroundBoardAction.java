@@ -27,11 +27,9 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		path.push(board.getCellAtXY(originalX, originalY));
 		this.board = board;
 		this.player = player;
-		System.out.println("SelectMoveAroundBoard: constructor at " + x +"," + y);
 	}
 	
 	public boolean pressArrow(int xChange, int yChange) {
-		System.out.println("SelectMove: pressArrow");
 		int newX = x + xChange;
 		int newY = y + yChange;
 		if(isNonRotatableComponentOnBoard(newX, newY) ){
@@ -69,15 +67,22 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 	
 	public boolean addJavaCellToPath(JavaCell javaCell, JavaPlayer player) {
 		
-		if(javaCell.hasDeveloper() && !player.hasDeveloperOnXY(x,y)){
+		if(javaCell.hasDeveloper() && !player.hasDeveloperOnXY(javaCell.getX(),javaCell.getY())){
+			System.out.print(javaCell.hasDeveloper());
+			System.out.print(" + ");
+			System.out.print(!player.hasDeveloperOnXY(javaCell.getX(),javaCell.getY()));
+			System.out.println(" means: false");
 			return false;
 		}
+		System.out.print(javaCell.hasDeveloper());
+		System.out.print(" + ");
+		System.out.print(!player.hasDeveloperOnXY(javaCell.getX(),javaCell.getY()));
+		System.out.println(" means: not false");
 		if(!"villagerice".contains(javaCell.getCellType())){
 			return false;
 		}
 		
 		int pathSize = path.size();
-		System.out.println("path size " + pathSize);
 		LinkedList<JavaCell> temp = new LinkedList<JavaCell>();
 		LinkedList<JavaCell> temp2 = new LinkedList<JavaCell>();
 
@@ -103,11 +108,9 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 
 	@Override
 	public Action pressEnter(GameModel game) {
-		if (!doesLastCellAlreadyHaveDeveloper()) {
-			Action action = new MoveDeveloperAction(-1, x, y, path);
-			if (action.doAction(game)) {
-				return action;
-			}
+		Action action = new MoveDeveloperAction(game.nextActionID(), x, y, originalX, originalY, costOfDeveloperPath(path));
+		if (action.doAction(game)) {
+			return action;
 		}
 		return null;
 	}
@@ -122,10 +125,6 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 			}
 		}
 		return actionPoints;
-	}
-	
-	private boolean doesLastCellAlreadyHaveDeveloper(){
-		return path.peekLast().hasDeveloper();
 	}
 	
 	public LinkedList<JavaCell> getPath(){

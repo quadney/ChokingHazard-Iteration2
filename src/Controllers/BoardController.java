@@ -8,6 +8,7 @@ import Models.Developer;
 import Models.GameModel;
 import Models.JavaCell;
 import Models.Actions.Action;
+import Models.Actions.MoveDeveloperAction;
 import Models.Actions.OneSpaceTileAction;
 import Models.Actions.PlaceDeveloperOnBoardAction;
 import Models.Actions.RotatableComponentAction;
@@ -62,6 +63,10 @@ public class BoardController {
 	public void pressEsc() {
 		boardPanel.cancel();
 	}
+	
+	public void loadGame(){
+		
+	}
 
 	public void updateBoardPanel(Action action, GameModel game) {
 		if(action instanceof RotatableComponentAction){
@@ -73,8 +78,7 @@ public class BoardController {
 //			System.out.println("in updateBoardPanel OneSpaceTileAction");
 			boardPanel.placeTile(((OneSpaceTileAction)action).getY()*50, ((OneSpaceTileAction)action).getX()*50, 0, boardModel.getElevationAtCellXY(((OneSpaceTileAction)action).getX(), ((OneSpaceTileAction)action).getY()), action.imageKey);
 		}
-		else if(action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction) {
-//			System.out.println("in updateBoardPanel NonRotatableTileComponent");
+		else if(action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof MoveDeveloperAction) {
 			Stack<Integer> xs = new Stack<Integer>();
 			Stack<Integer> ys = new Stack<Integer>(); 
 			Stack<String> images = new Stack<String>(); 
@@ -82,22 +86,20 @@ public class BoardController {
 				if(developer != null){
 					xs.push(developer.getX()*50);
 					ys.push(developer.getY()*50);
-					//TODO LOD violation
 					images.push("player_" + developer.getOwner().getColor());
 				}
 			}
 			System.out.println(xs + " " + ys + " " + images);
-			
 			boardPanel.placeDeveloper(ys, xs, images);
-			//game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
 		}
+		
 	}
 
 	public void setRedraw(boolean b) {
 		this.boardPanel.replaying = !b;		
 	}
 
-	public void clearBoard() {
-		boardPanel.clearBoard();
+	public void clearBoard(boolean repaint) {
+		boardPanel.clearBoard(repaint);
 	}
 }

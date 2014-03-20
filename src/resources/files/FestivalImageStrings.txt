@@ -12,3 +12,10 @@ label_palaceCard_PUPPET bin/images/festivalCard_PUPPET.png
 label_palaceCard_MASK_DRUM bin/images/festivalCard_MASK_DRUM.png
 label_palaceCard_PUPPET_DRUM bin/images/festivalCard_PUPPET_DRUM.png
 label_palaceCard_PUPPET_MASK bin/images/festivalCard_PUPPET_MASK.png
+errorSound bin/sounds/error.wav
+festivalSound bin/sounds/festival.wav
+drawCardSound bin/sounds/drawCard.wav
+selectDeveloperSound bin/sounds/selectDeveloper.wav
+moveSound bin/sounds/move.wav
+placeTileSound bin/sounds/placeTile.wav
+catSound bin/sounds/meow.wav

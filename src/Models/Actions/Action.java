@@ -61,4 +61,8 @@ public abstract class Action extends Event implements Serializable<Action> {
 			action = (new DrawPalaceCardAction()).loadObject(json);
 		return action;
 	}
+	
+	public String toString() {
+		return "{" + this.getClass().getSimpleName() + " " + this.getActionID() + "}";
+	}
 }

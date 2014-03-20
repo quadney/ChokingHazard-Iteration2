@@ -16,12 +16,7 @@ public class SharedComponentController {
 		updateSharedPanel();
 		//there's no festival card for this deck. so when dealPalaceCards(numPlayers) is called, it will create a festival card
 	}
-	//	public SharedComponentController(int threeTiles, int irrigationTiles, int[] palaceTiles, LinkedList<PalaceCard> deck, PalaceCard festivalCard, LinkedList<PalaceCard> discardDeck){
-//		//load game constructor
-//		this.sharedModel = new SharedComponentModel(threeTiles, irrigationTiles, palaceTiles, deck, festivalCard, discardDeck);
-//		//this.sharedPanel = new SharedComponentPanel(threeTiles, irrigationTiles, palaceTiles, deck.size(), festivalCard.getType());
-//	}
-//	
+
 //---------------------Accessor---------------------------------------------------
 	public SharedComponentPanel getSharedComponentPanel(){
 		return this.sharedPanel;
@@ -35,9 +30,9 @@ public class SharedComponentController {
 		return card;
 	}
 	
-	public PalaceCard drawFestivalCard(){
+	public PalaceCard drawFestivalCard(boolean isUp){
 		PalaceCard card = this.sharedModel.getFestivalCard();
-		sharedModel.drawFestivalCard();
+		sharedModel.drawFestivalCard(isUp);
 		sharedPanel.drawFestivalCard(sharedModel.getNumberPalaceCards(), sharedModel.getFestivalCardType());
 		return card;
 	}
@@ -63,7 +58,7 @@ public class SharedComponentController {
 		for(PalaceCard discard : cardsToDiscard){
 			this.sharedModel.discardCard(discard);
 		}
-		this.sharedModel.discardCard(drawFestivalCard());
+		this.sharedModel.discardCard(drawFestivalCard(true));
 	}
 
 //---------------------Checks validity for select actions-------------------------------------
@@ -127,7 +122,6 @@ public class SharedComponentController {
 		//do more for palace card shit
 		sharedPanel.updateNumPalaceCards(sharedModel.getNumberPalaceCards());
 		
-		//also need to update what the "festival card" looks like
-		//TODO
+		sharedPanel.updateFestivalCard(sharedModel.getFestivalCard());
 	}
 }

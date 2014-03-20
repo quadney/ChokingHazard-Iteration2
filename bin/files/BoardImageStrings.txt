@@ -15,3 +15,4 @@ player_yellow /images/player_yellow.png
 player_green /images/player_green.png
 player_blue /images/player_blue.png
 player_purple /images/player_purple.png
+festival /images/festival_overlay.png

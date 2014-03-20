@@ -162,7 +162,6 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public int getSelectedActionY() {
-		// TODO Auto-generated method stub
 		return selectedAction.getY();
 	}
 
@@ -194,10 +193,8 @@ public class GameModel implements Serializable<GameModel> {
 
 	public boolean pressRight() {
 		if (selectedAction != null) {
-			System.out.println("GMod: pressRight");
 			return selectedAction.pressArrow(0, 1);
 		}
-		System.out.println("GMod: pressRight selectedAction null");
 		return false;
 	}
 
@@ -290,6 +287,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	@Override
 	public GameModel loadObject(JsonObject json) {
+		System.out.println("loading object");
 		this.actionHistory = new Stack<Event>();
 		this.actionReplays = new Stack<Event>();
 		if (json.getObject("actionHistory") != null)
@@ -366,7 +364,12 @@ public class GameModel implements Serializable<GameModel> {
 		return gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y),
 				players[indexOfCurrentPlayer]);
 	}
-
+	
+	public boolean moveDeveloperAroundBoard(int originX, int originY, int x, int y, int actionPointsCost){
+		return players[indexOfCurrentPlayer].moveDeveloperAroundBoard(gameBoard.getCellAtXY(originX, originY), gameBoard.getCellAtXY(x, y), actionPointsCost);
+		
+	}
+	
 	public boolean takeDeveloperOffBoard(int x, int y) {
 		return gameBoard.removeDatDeveloperOffDaBoard(
 				gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer]);
@@ -413,27 +416,30 @@ public class GameModel implements Serializable<GameModel> {
 
 	public int getStartOfRoundActionID() {
 		int index = this.indexOfCurrentPlayer;
-		Action[] actions = actionHistory.toArray(new Action[1]);
+		Action[] actions = actionHistory.toArray(new Action[0]);
 		for (int x = actions.length - 1; x >= 0; --x) {
 			if (actions[x] instanceof EndTurnAction) {
 				--index;
-				if (index == 0)
-					return actions[x].getActionID();
+				if(index < 0)
+					return x;
 			}
 		}
-		return -1;
+		return 0;
 	}
 
 	public void drawFestivalCard() {
-		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFestivalCard());
+		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFestivalCard(this.getGameState().equals(GameState.NormalMode)));
 	}
 
 	public void drawFromDeck() {
-		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFromDeck());
+		PalaceCard card = shared.drawFromDeck();
+		if(gameState.equals(GameState.PlanningMode))
+			card.setFaceDown();
+		players[indexOfCurrentPlayer].addPalaceCard(card);
 	}
 
 	public Action[] getActions() {
-		return actionHistory.toArray(new Action[1]);
+		return actionHistory.toArray(new Action[0]);
 	}
 
 	public Stack<Event> getActionHistory() {
@@ -441,7 +447,7 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public void setLastPlanningModeActionID() {
-		lastPlanningModeActionID  = ((Action)actionHistory.peek()).getActionID();
+		lastPlanningModeActionID  = actionHistory.empty() ? 0 : ((Action)actionHistory.peek()).getActionID();
 	}
 
 	public void addPalaceCard(PalaceCard card) {
@@ -450,5 +456,12 @@ public class GameModel implements Serializable<GameModel> {
 
 	public int getLastPlanningModeActionID() {
 		return lastPlanningModeActionID;
+	}
+
+	public void flipAllCards() {
+		for(JavaPlayer player : players) {
+			player.flipAllCards();
+		}
+		shared.flipFestivalCard();
 	}
 }

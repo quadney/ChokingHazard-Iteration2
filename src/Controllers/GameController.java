@@ -1,15 +1,12 @@
 package Controllers;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
-import javax.swing.Timer;
 
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
@@ -53,36 +50,33 @@ public class GameController {
 			String[] playerColors) {
 		// create controllers
 		currentGame = new GameModel(numPlayers, playerNames, playerColors);
+		
 		board = new BoardController(currentGame.getBoard());
-		players = new PlayerController(numPlayers, currentGame.getPlayers()); // change
-																				// player
-																				// controller
-																				// to
-																				// query
-																				// the
-																				// model
-																				// for
-																				// the
-																				// player
-																				// info
-		shared = new SharedComponentController(currentGame.getShared(), this); // change
-																				// this
-																				// to
-																				// work
-
-		// this initializes the dealing of the palace cards
-		// and then the player sets those dealt cards as the cards
+		players = new PlayerController(currentGame.getPlayers()); //change player controller to query the model for the player info
+		shared = new SharedComponentController(currentGame.getShared(), this); //change this to work
+		
+		//this initializes the dealing of the palace cards
+		//and then the player sets those dealt cards as the cards
 		players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
 		players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex());
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(),
 				players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
 
-		seeIfPlayerCanHoldAFestival();
+		//seeIfPlayerCanHoldAFestival();
 	}
 
 	public boolean loadGame(File file) {
-		currentGame.loadObject(gameManager.loadGame(file));
+		// create controllers
+		currentGame = (new GameModel(0, null, null)).loadObject(gameManager.loadGame(file));
+		board = new BoardController(currentGame.getBoard());
+		players = new PlayerController(currentGame.getPlayers()); 
+		shared = new SharedComponentController(currentGame.getShared(), this); 
+
+		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
+		gameFrame.setFrameContent(currentGamePanel);
+		loadActions();
+		
 		return true;
 	}
 
@@ -134,16 +128,11 @@ public class GameController {
 			// the user is pressing (and holding) the F button
 			// TODO this can only be called if in Play Mode
 			currentGamePanel.playDrawCardSound();
-			currentGamePanel.displayPalaceCardFrame(this.players
-					.getPlayerAtIndex(this.currentGame.getPlayerIndex()));
+			currentGamePanel.displayPalaceCardFrame(this.players.getPlayerAtIndex(this.currentGame.getPlayerIndex()));
 		}
 	}
 
 	private void userReleasedKey(KeyEvent e) {
-		// System.out.println(e.getKeyCode());
-		// TODO methods for switching between modes: planning mode, replay mode,
-		// and normal mode
-		// TODO methods for picking up a festival card/palace card
 		switch (e.getKeyCode()) {
 		case 8:
 		case 127:
@@ -186,9 +175,7 @@ public class GameController {
 			Action action = currentGame.pressEnter();
 			//currentGamePanel.playSelectDeveloperSound();  ?
 			if(action != null){
-				//System.out.println("action != null in GCtrl");
 				currentGame.addToActionHistory(action);
-				// currentGame.doLastActionInHistory();
 				currentGame.setSelectedAction(null);
 				currentGamePanel.playPlaceTileSound();
 				updateControllersWithAction(action);
@@ -201,7 +188,6 @@ public class GameController {
 			// tells the current game about the event so that it makes
 			// SelectedAction to null
 			// also updates the board panel so that the image is canceled
-			// System.out.println("(in GameController)Esc was pressed");
 			currentGame.pressEsc();
 			board.pressEsc();
 
@@ -212,11 +198,9 @@ public class GameController {
 			// pressSpace()
 			// will only tell the board about the change if it was a rotatable
 			// tile action
-			// System.out.println("(in GameController)Space was pressed");
 			if (currentGame.pressSpace()) {
 				currentGamePanel.playMoveComponentSound();
 				updateBoardControllerWithSelectedAction();
-				// System.out.println("(in GameController)Space was valid and attempted to updateBoardController");
 			} else {
 				currentGamePanel.playErrorSound();
 			}
@@ -258,9 +242,6 @@ public class GameController {
 		// --------------------------------------------------------------------
 
 		case 50: // released 2, select two space tile
-			// TODO check if the player has enough two tiles and AP to select a
-			// two tile action a two tile action
-			// player.checkIfSelectionValid(currentGame.getPlayerIndex(), )
 			if (players.selectTwoTile(currentGame.getPlayerIndex())) {
 				currentGamePanel.playMoveComponentSound();
 				currentGame
@@ -344,8 +325,6 @@ public class GameController {
 			break;
 		case 82:
 			// released R, place rice tile
-			// TODO check if the player has enough rice and that they have some
-			// AP left to do this
 			if (players.selectRiceTile(currentGame.getPlayerIndex())) {
 				currentGame.setSelectedAction(new SelectRiceTileAction(
 						"riceTile"));
@@ -356,7 +335,6 @@ public class GameController {
 			}
 			break;
 		case 84:
-			// does not become a selected action, just does a regular action!
 			// released T, use action token
 			if (players.selectActionToken(currentGame.getPlayerIndex())) {
 				UseActionTokenAction actionTokenAction = new UseActionTokenAction(
@@ -371,7 +349,6 @@ public class GameController {
 
 			break;
 		case 85:
-			// does not become a selected action, just does a regular action!
 			// released U, undo
 			if (currentGame.getGameState().equals(GameState.PlanningMode)) {
 				undo();
@@ -383,8 +360,6 @@ public class GameController {
 			break;
 		case 86:
 			// released V, place Village
-			// TODO check if the player has enough villages and that they have
-			// some AP left to do this
 			if (players.selectVillageTile(currentGame.getPlayerIndex())) {
 				currentGame.setSelectedAction(new SelectVillageTileAction(
 						"villageTile"));
@@ -398,11 +373,8 @@ public class GameController {
 			// check if the player has placed a land tile so they can get out of
 			// their turn
 			// released X, end turn
-			// System.out.println("ending turn?");
-			// //
-			// System.out.println(players.selectEndTurn(currentGame.getPlayerIndex()));
-			if (currentGame.endTurn()) {
-				EndTurnAction endTurn = new EndTurnAction(-1);
+			if (currentGame.getGameState().equals(GameState.NormalMode) && currentGame.endTurn()) {
+				EndTurnAction endTurn = new EndTurnAction(currentGame.nextActionID());
 				currentGame.setSelectedAction(null);
 				currentGame.addToActionHistory(endTurn);
 				board.pressEsc();
@@ -471,34 +443,36 @@ public class GameController {
 	}
 
 	private void seeIfPlayerCanHoldAFestival() {
-		// TODO need to first make sure that the user can in fact hold a
-		// festival
-		// TODO need to get the palace and palace vaule that the player wants it
-		// to be on
-		// TODO put the festival image on the palace to let the user know that
-		// there was a festival on it
-		int palaceValue = 10;
-		// TODO need to also reflect that in the board model ?
-		// TODO
-		boolean fest = currentGamePanel
-				.askUserIfWouldLikeToHoldAPalaceFestival();
-		if (fest)
+		// first make sure that the user can in fact hold a festival
+		int palaceValue = 0;
+		boolean fest = false;
+		if(players.canHoldFestival(currentGame.getPlayerIndex(), shared.getCurrentFestivalCard())){
+			//ask if they would like to hold a palace festival
+			if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){
+				fest = true;
+				//TODO get the palace and palace value that the player wants it to be on
+				//call the P action yes?
+			}
+			
+		}
+		
+		if (fest){
 			startFestival(palaceValue);
+		}
 	}
-
-	private void startFestival(int palaceValue) {
-		// TODO testing
+	
+	private void startFestival(int palaceValue){
 		currentGamePanel.playFestivalSound();
-		// currentGamePanel.displayHoldFestivalFrame(this,
-		// players.getPlayerModels(), currentGame.getPlayerIndex(),
-		// shared.getCurrentFestivalCard(), palaceValue);
+		currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
+
 	}
 
 	public void updatePlayersAfterFestival(ArrayList<PalaceCard> cardsToDiscard) {
-		// the player's fame points and festival cards have already been taken
-		// care of.
-		// this updates the views and discards of the cards that were played in
-		// the festival
+		// the player's fame points and festival cards have already been taken care of.
+		// this updates the views and discards of the cards that were played in the festival
+		
+		// TODO put the festival image on the palace to let the user know that there was a festival on it
+		// TODO need to also reflect that in the board model ?
 		this.players.updatePlayersAfterFestival();
 		this.shared.updateAfterFestival(cardsToDiscard);
 		this.currentGamePanel.closeFestivalFrame();
@@ -511,12 +485,14 @@ public class GameController {
 	
 	public void startPlayingMode() {
 		currentGame.setGameState(GameState.NormalMode);
+		currentGame.flipAllCards();
+		shared.updateSharedPanel();
 	}
 	
 	public void undo() {
 		currentGame.clearForReplay();
 		currentGame.undoAction();
-		board.clearBoard();
+		board.clearBoard(false);
 		Action[] actions = currentGame.getActions();
 		doActions(actions, 0, actions.length-1, false, false);
 		doActions(actions, actions.length-1, actions.length, false, true);
@@ -524,26 +500,28 @@ public class GameController {
 	}
 
 	public void startReplay() {
-		currentGame.clearForReplay();
-		board.clearBoard();
+		System.out.println("START OF ROUND ACTION ID: " + currentGame.getStartOfRoundActionID());
 		Action[] actions = currentGame.getActions();
-		int startOfRoundIndex = 1;
-		for(int x = 0; x < actions.length; ++x)
-			if(actions[x].getActionID() == currentGame.getStartOfRoundActionID())
-				startOfRoundIndex = x;
-		System.out.println("START OF ROUND" + startOfRoundIndex);
-		doActions(actions, 0, startOfRoundIndex-1, false, false);
-		doActions(actions, startOfRoundIndex-1, actions.length, true, true);
+		int startOfRoundIndex = currentGame.getStartOfRoundActionID();
+		System.out.println("START OF ROUND ACTION ID: " + currentGame.getStartOfRoundActionID());
+		System.out.println(Arrays.toString(actions));
+		System.out.println("START OF ROUND " + startOfRoundIndex);
+		currentGame.clearForReplay();
+		board.clearBoard(false);
+		doActions(actions, 0, startOfRoundIndex > 0 ? startOfRoundIndex-1 : 0, false, false);
+		doActions(actions, startOfRoundIndex > 0 ? startOfRoundIndex-1 : 0, actions.length, true, true);
 	}
 
 	public void undoUntilLastPlayingMode() {
 		currentGame.clearForReplay();
-		board.clearBoard();
+		board.clearBoard(false);
 		Action[] actions = currentGame.getActions();
-		int startOfPlanningModeIndex = 1;
+		int startOfPlanningModeIndex = 0;
 		for(int x = 0; x < actions.length; ++x)
 			if(actions[x].getActionID() == currentGame.getLastPlanningModeActionID())
 				startOfPlanningModeIndex = x;
+		if(startOfPlanningModeIndex == 0)
+			return;
 		System.out.println("Last Planning Mode Index" + startOfPlanningModeIndex);
 		doActions(actions, 0, startOfPlanningModeIndex, false, false);
 		doActions(actions, startOfPlanningModeIndex, startOfPlanningModeIndex+1, false, true);
@@ -569,10 +547,17 @@ public class GameController {
 		}
 	}
 
+	private void loadActions() {
+		Action[] actions = currentGame.getActions();
+		doActions(actions, 0, actions.length-1, false, false);
+		doActions(actions, actions.length-1, actions.length, false, true);
+	}
+
 	public void pickUpPalaceCard() {
 		Action action = new DrawPalaceCardAction(currentGame.nextActionID());
 		action.doAction(currentGame);
 		currentGame.addToActionHistory(action);
+		currentGamePanel.playDrawCardSound();
 		updateControllersWithAction(action);
 	}
 
@@ -580,6 +565,7 @@ public class GameController {
 		Action action = new DrawFestivalCardAction(currentGame.nextActionID());
 		action.doAction(currentGame);
 		currentGame.addToActionHistory(action);
+		currentGamePanel.playDrawCardSound();
 		updateControllersWithAction(action);
 	}
 
