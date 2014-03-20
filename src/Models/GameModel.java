@@ -335,7 +335,6 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public int getSelectedActionY() {
-		// TODO Auto-generated method stub
 		return selectedAction.getY();
 	}
 
@@ -367,10 +366,8 @@ public class GameModel implements Serializable<GameModel> {
 
 	public boolean pressRight() {
 		if (selectedAction != null) {
-			System.out.println("GMod: pressRight");
 			return selectedAction.pressArrow(0, 1);
 		}
-		System.out.println("GMod: pressRight selectedAction null");
 		return false;
 	}
 
@@ -534,6 +531,10 @@ public class GameModel implements Serializable<GameModel> {
 	public boolean placeDeveloperOnBoard(int x, int y) {
 		return gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y),
 				players[indexOfCurrentPlayer]);
+	}
+	
+	public boolean moveDeveloperAroundBoard(int originX, int originY, int x, int y, int actionPointsCost){
+		return players[indexOfCurrentPlayer].moveDeveloperAroundBoard(gameBoard.getCellAtXY(originX, originY), gameBoard.getCellAtXY(x, y), actionPointsCost);
 	}
 	
 	public boolean takeDeveloperOffBoard(int x, int y) {

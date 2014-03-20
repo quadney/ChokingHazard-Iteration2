@@ -77,7 +77,6 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		}
 		
 		int pathSize = path.size();
-		System.out.println("path size " + pathSize);
 		LinkedList<JavaCell> temp = new LinkedList<JavaCell>();
 		LinkedList<JavaCell> temp2 = new LinkedList<JavaCell>();
 
@@ -103,11 +102,9 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 
 	@Override
 	public Action pressEnter(GameModel game) {
-		if (!doesLastCellAlreadyHaveDeveloper()) {
-			Action action = new MoveDeveloperAction(game.nextActionID(), x, y, path);
-			if (action.doAction(game)) {
-				return action;
-			}
+		Action action = new MoveDeveloperAction(game.nextActionID(), x, y, originalX, originalY, costOfDeveloperPath(path));
+		if (action.doAction(game)) {
+			return action;
 		}
 		return null;
 	}
@@ -122,10 +119,6 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 			}
 		}
 		return actionPoints;
-	}
-	
-	private boolean doesLastCellAlreadyHaveDeveloper(){
-		return path.peekLast().hasDeveloper();
 	}
 	
 	public LinkedList<JavaCell> getPath(){

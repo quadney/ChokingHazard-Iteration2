@@ -127,10 +127,15 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	// greater than the
 	// number of developers, the first developer in the list becomes selected
 
-	public void associateDeveloperWithCell(JavaCell jc) {
+	public boolean associateDeveloperWithCell(JavaCell jc) {
 	
-		developersArray[indexWithNoDeveloper()].setLocation(jc);
-		jc.setDeveloper();
+		int index = indexWithNoDeveloper();
+		if(index > -1){
+			developersArray[indexWithNoDeveloper()].setLocation(jc);
+			jc.setDeveloper();
+			return true;
+		}
+		return false;
 	}
 	
 	private int indexWithNoDeveloper(){
@@ -221,7 +226,6 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	public boolean canPlaceDeveloperOnBoard() {
 		int index = getNextAvailableDeveloperSpot();
 		return index != -1;
-		
 	}
 	
 	public boolean canEndTurn() {
@@ -237,6 +241,16 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		developersArray[num] = new Developer(this);
 		developersArray[num].setLocation(location);
 		return true;
+	}
+	
+	public boolean moveDeveloperAroundBoard(JavaCell origin, JavaCell newLocation, int actionPointsCost) {
+		
+		for(Developer d: developersArray){
+			if(d.moveDeveloperIfOnThisXY(origin, newLocation)){
+				return decrementNActionPoints(actionPointsCost, false);
+			}
+		}
+		return false;
 	}
 	
 	private int getNextAvailableDeveloperSpot(){

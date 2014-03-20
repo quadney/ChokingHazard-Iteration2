@@ -140,10 +140,6 @@ public class GameController {
 	}
 
 	private void userReleasedKey(KeyEvent e) {
-		// System.out.println(e.getKeyCode());
-		// TODO methods for switching between modes: planning mode, replay mode,
-		// and normal mode
-		// TODO methods for picking up a festival card/palace card
 		switch (e.getKeyCode()) {
 		case 8:
 		case 127:
@@ -186,9 +182,7 @@ public class GameController {
 			Action action = currentGame.pressEnter();
 			//currentGamePanel.playSelectDeveloperSound();  ?
 			if(action != null){
-				//System.out.println("action != null in GCtrl");
 				currentGame.addToActionHistory(action);
-				// currentGame.doLastActionInHistory();
 				currentGame.setSelectedAction(null);
 				currentGamePanel.playPlaceTileSound();
 				updateControllersWithAction(action);
@@ -201,7 +195,6 @@ public class GameController {
 			// tells the current game about the event so that it makes
 			// SelectedAction to null
 			// also updates the board panel so that the image is canceled
-			// System.out.println("(in GameController)Esc was pressed");
 			currentGame.pressEsc();
 			board.pressEsc();
 
@@ -212,11 +205,9 @@ public class GameController {
 			// pressSpace()
 			// will only tell the board about the change if it was a rotatable
 			// tile action
-			// System.out.println("(in GameController)Space was pressed");
 			if (currentGame.pressSpace()) {
 				currentGamePanel.playMoveComponentSound();
 				updateBoardControllerWithSelectedAction();
-				// System.out.println("(in GameController)Space was valid and attempted to updateBoardController");
 			} else {
 				currentGamePanel.playErrorSound();
 			}
@@ -258,9 +249,6 @@ public class GameController {
 		// --------------------------------------------------------------------
 
 		case 50: // released 2, select two space tile
-			// TODO check if the player has enough two tiles and AP to select a
-			// two tile action a two tile action
-			// player.checkIfSelectionValid(currentGame.getPlayerIndex(), )
 			if (players.selectTwoTile(currentGame.getPlayerIndex())) {
 				currentGamePanel.playMoveComponentSound();
 				currentGame
@@ -344,8 +332,6 @@ public class GameController {
 			break;
 		case 82:
 			// released R, place rice tile
-			// TODO check if the player has enough rice and that they have some
-			// AP left to do this
 			if (players.selectRiceTile(currentGame.getPlayerIndex())) {
 				currentGame.setSelectedAction(new SelectRiceTileAction(
 						"riceTile"));
@@ -356,7 +342,6 @@ public class GameController {
 			}
 			break;
 		case 84:
-			// does not become a selected action, just does a regular action!
 			// released T, use action token
 			if (players.selectActionToken(currentGame.getPlayerIndex())) {
 				UseActionTokenAction actionTokenAction = new UseActionTokenAction(
@@ -371,7 +356,6 @@ public class GameController {
 
 			break;
 		case 85:
-			// does not become a selected action, just does a regular action!
 			// released U, undo
 			if (currentGame.getGameState().equals(GameState.PlanningMode)) {
 				undo();
@@ -383,8 +367,6 @@ public class GameController {
 			break;
 		case 86:
 			// released V, place Village
-			// TODO check if the player has enough villages and that they have
-			// some AP left to do this
 			if (players.selectVillageTile(currentGame.getPlayerIndex())) {
 				currentGame.setSelectedAction(new SelectVillageTileAction(
 						"villageTile"));
@@ -398,9 +380,6 @@ public class GameController {
 			// check if the player has placed a land tile so they can get out of
 			// their turn
 			// released X, end turn
-			// System.out.println("ending turn?");
-			// //
-			// System.out.println(players.selectEndTurn(currentGame.getPlayerIndex()));
 			if (currentGame.endTurn()) {
 				EndTurnAction endTurn = new EndTurnAction(-1);
 				currentGame.setSelectedAction(null);
