@@ -344,9 +344,13 @@ public class GameController {
 			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
 			board.updateSelectedTileAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
-		else{//developer
-			//System.out.println("(In GCtrl) updating Board panel when developer action is selected");
-			board.updateSelectedDeveloperAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50,currentGame.getSelectedActionImageKey());
+		else if(currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction){//developer
+			System.out.println("(In GCtrl) updating Board panel when developer action is selected");
+			board.updateSelectedHighlightDeveloperAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50,currentGame.getSelectedActionImageKey());
+		}
+		else if(currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction){//developer
+			System.out.println("(In GCtrl) drawing developer path");
+			board.updateSelectedPathDeveloperAction(currentGame.getSelectedActionImageKey(), currentGame.getPath());
 		}
 	}
 	

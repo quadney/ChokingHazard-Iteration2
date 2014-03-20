@@ -132,6 +132,10 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		return path.peekLast().hasDeveloper();
 	}
 	
+	public LinkedList<JavaCell> getPath(){
+		return path;
+	}
+	
 	//-------Methods that should do nothing---------------------
 	public boolean pressTab() {
 		return false;

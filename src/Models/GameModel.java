@@ -6,6 +6,7 @@ import Models.Actions.*;
 import java.util.*;
 
 import Models.Actions.MActions.MAction;
+import Models.Actions.MActions.SelectMoveDeveloperAroundBoardAction;
 
 // This enum declaration might need to be moved, not sure how accessible it is right now 
 // (needs to be accessible by GameModel and the Controller). #JavaTroubles
@@ -36,7 +37,6 @@ public class GameModel implements Serializable<GameModel> {
 	public GameModel(int numberPlayers, String[] playerNames,
 			String[] playerColors) {
 		this.isFinalRound = false;
-		this.gameState=
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.shared = new SharedComponentModel();
@@ -506,5 +506,12 @@ public class GameModel implements Serializable<GameModel> {
 		for(JavaPlayer player : players)
 			list.addAll(Arrays.asList(player.getDevelopersOnBoard()));
 		return list;
+	}
+
+	public LinkedList<JavaCell> getPath() {
+		if(selectedAction instanceof SelectMoveDeveloperAroundBoardAction){
+			return ((SelectMoveDeveloperAroundBoardAction)selectedAction).getPath();
+		}
+		return null;
 	}
 }
