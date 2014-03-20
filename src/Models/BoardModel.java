@@ -624,7 +624,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		// By this point, we've made it through all the bail procedures and homie has paid his dues (action points)
 		// He is now free to go
 		
-		theHomie.removeDeveloperFromArray();
+		theHomie.removeDeveloperAtXY(jailCell.getX(), jailCell.getY());
 		
 		return true; // The homie is free ~ ~ ~
 		

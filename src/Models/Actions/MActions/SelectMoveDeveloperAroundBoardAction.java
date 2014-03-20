@@ -146,7 +146,7 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 	}
 
 	@Override
-	public Action pressDelete() {
+	public Action pressDelete(GameModel game) {
 		return null;
 	}
 

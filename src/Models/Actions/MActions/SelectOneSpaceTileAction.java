@@ -17,7 +17,7 @@ public abstract class SelectOneSpaceTileAction extends SelectNonRotatableCompone
 		return false;
 	}
 	
-	public Action pressDelete(){
+	public Action pressDelete(GameModel game){
 		return null;
 	}
 	

@@ -32,10 +32,10 @@ public class SelectTabThroughDevelopersAction extends MAction {
 	
 	public boolean pressTab(){
 		if(numOfDevelopers > 0){
-			System.out.println("SelTab numDev > 0");
+			//System.out.println("SelTab numDev > 0");
 			//tabCount += 1;
 			tabCount = ++tabCount % numOfDevelopers;
-			System.out.println("tab count it " + tabCount +  " number of developers on board is " + numOfDevelopers );
+			//System.out.println("tab count it " + tabCount +  " number of developers on board is " + numOfDevelopers );
 			this.x = getXOfDeveloperAtIndexTabCount();
 			this.y = getYOfDeveloperAtIndexTabCount();
 			return true;
@@ -53,7 +53,7 @@ public class SelectTabThroughDevelopersAction extends MAction {
 			return null;
 	}
 	
-	public Action pressEnter(){
+	public Action pressEnter(GameModel game){
 		return null;
 	}
 	
@@ -67,20 +67,6 @@ public class SelectTabThroughDevelopersAction extends MAction {
 	
 	private int getYOfDeveloperAtIndexTabCount(){
 		return developersArray[tabCount].getY();
-	}
-
-
-	@Override
-	public Action pressDelete() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public Action pressEnter(GameModel game) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	

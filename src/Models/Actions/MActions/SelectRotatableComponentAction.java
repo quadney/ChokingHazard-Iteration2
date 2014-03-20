@@ -1,6 +1,7 @@
 package Models.Actions.MActions;
 
 import Models.BoardModel;
+import Models.GameModel;
 import Models.JavaPlayer;
 import Models.Actions.Action;
 
@@ -16,7 +17,7 @@ public abstract class SelectRotatableComponentAction extends MAction {
 		return false;
 	}
 	
-	public Action pressDelete(){
+	public Action pressDelete(GameModel game){
 		return null;
 	}
 	

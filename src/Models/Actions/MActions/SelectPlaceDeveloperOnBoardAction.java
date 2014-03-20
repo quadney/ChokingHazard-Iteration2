@@ -51,7 +51,7 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectNonRotatableCompone
 	}
 
 	@Override
-	public Action pressDelete() {
+	public Action pressDelete(GameModel game) {
 		// TODO Auto-generated method stub
 		return null;
 	}
