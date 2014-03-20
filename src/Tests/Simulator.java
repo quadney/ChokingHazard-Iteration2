@@ -18,6 +18,7 @@ public class Simulator {
 	public static int TIME_BETWEEN_MAIN_COMMANDS = 300;
 	public static int GAME_LOAD_WAIT_TIME = 2000;
 	public static int GAME_EXIT_WAIT_TIME = 2000;
+	public static int ALT_N = 2;
 	
 	/**
 	 * starts a new game with new players. The colors are set to default.
