@@ -102,6 +102,8 @@ public class BoardModel implements Serializable<BoardModel> {
 								.getY()].setNumOriginalSpaces(number);
 
 					}
+			
+			checkForSurroundedIrrigationCells(xC, yC, tile, gameDevelopers);
 
 			if (placedLandTile(xC, yC))
 				player.placedLandTile();
