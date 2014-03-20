@@ -427,8 +427,8 @@ public class GameModel implements Serializable<GameModel> {
 			playerNames.push(player.getName());
 			playerColors.push(player.getColor());
 		}
-		String serializedHistory = actionHistory.empty() ? "{}" : Json.serializeArray(playerNames);
-		String serializedReplays = actionReplays.empty() ? "{}" : Json.serializeArray(playerNames);
+		String serializedHistory = actionHistory.empty() ? "null" : Json.serializeArray(this.actionHistory);
+		String serializedReplays = actionReplays.empty() ? "null" : Json.serializeArray(this.actionReplays);
 		return Json.jsonObject(Json.jsonElements(
 			Json.jsonPair("playerNames", Json.serializeArray(playerNames)),
 			Json.jsonPair("playerColors", Json.serializeArray(playerColors)),
@@ -442,11 +442,20 @@ public class GameModel implements Serializable<GameModel> {
 	public GameModel loadObject(JsonObject json) {
 		this.actionHistory = new Stack<Event>();
 		this.actionReplays = new Stack<Event>();
-		for(JsonObject object : ((JsonObject[])json.getObject("actionHistory")))
-			this.actionHistory.push(Action.loadAction(object));
-		for(JsonObject object : ((JsonObject[])json.getObject("actionReplays")))
-			this.actionReplays.push(Action.loadAction(object));
-		GameModel model = new GameModel(json.getStringArray("playerNames").length, json.getStringArray("playerNames"), json.getStringArray("playerColors"));
+		if(json.getObject("actionHistory") != null)
+			for(int x = 0; x < ((Object[])json.getObject("actionHistory")).length; ++x)
+				this.actionHistory.push(Action.loadAction((JsonObject)((Object[])json.getObject("actionHistory"))[x]));
+		if(json.getObject("actionReplays") != null)
+			for(int x = 0; x < ((Object[])json.getObject("actionReplays")).length; ++x)
+				this.actionHistory.push(Action.loadAction((JsonObject)((Object[])json.getObject("actionReplays"))[x]));
+		String[] names = new String[((Object[])json.getObject("playerNames")).length];
+		String[] colors = new String[((Object[])json.getObject("playerColors")).length];
+		for(int x = 0; x < names.length; ++x) {
+			colors[x] = (String)((Object[])json.getObject("playerColors"))[x];
+			names[x] = (String)((Object[])json.getObject("playerNames"))[x];
+		}
+		System.out.println(((Object[])json.getObject("playerNames")));
+		GameModel model = new GameModel(names.length, names, colors);
 		model.setActionHistory(actionHistory);
 		model.setActionReplays(actionReplays);
 		// TODO set game states
