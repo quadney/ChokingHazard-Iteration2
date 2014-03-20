@@ -4,6 +4,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
 import Models.GameModel;
@@ -37,8 +39,7 @@ public class GameController {
 		//should we just create them here instead of passing it in?
 		this.gameFrame = frame;
 		gameFrame.giveGameController(this);
-		this.gameManager = new GameManager();
-		
+		this.gameManager = new GameManager(this);	
 	}
 	
 	public void createNewGame(int numPlayers, String[] playerNames, String[] playerColors){
@@ -60,15 +61,25 @@ public class GameController {
 	}
 	
 	public boolean loadGame(File file){
-		//calls the game manager to do the parsing
-		//Sydney doesn't know how that works so if this us unnecessary feel free to do what you want
-		gameManager.loadGame(file);
+		currentGame.loadObject(gameManager.loadGame(file));
 		return true;
 	}
 	
 	public boolean saveGame(){
-		//calls the game manager, see loadGame
-		gameManager.saveGame();
+		if(currentGame == null){
+			JOptionPane.showMessageDialog(null, "No game to save!");
+			return false;
+		}
+		
+		String filename = currentGamePanel.askUserWhatNameToSaveGameAs();
+		if(filename == null){
+			JOptionPane.showMessageDialog(null, "Invalid Filename");
+			return false;
+		}
+		
+		//everything is okay, save the game
+		gameManager.saveGame(filename, currentGame.serialize());
+		
 		return true;
 	}
 	
@@ -105,8 +116,8 @@ public class GameController {
 	
 	private void userReleasedKey(KeyEvent e){
 		//System.out.println(e.getKeyCode());
-		//TODO key codes for switching between modes: planning mode, replay mode, and normal mode
-		//TODO key codes for holding a festival, picking up a festival card/palace card
+		//TODO methods for switching between modes: planning mode, replay mode, and normal mode
+		//TODO methods for picking up a festival card/palace card
 		switch(e.getKeyCode()){
 		case 8:
 			//released delete, delete a developer from the board

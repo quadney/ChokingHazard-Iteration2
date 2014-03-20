@@ -160,12 +160,12 @@ public class BoardPanel extends JPanel {
 	}
 	
 	private void drawElevationLabel(int xLoc, int yLoc, int rotationState, int elevation, String hashMapKey){
-		int xStringLoc = xLoc+35;
-		int yStringLoc = yLoc+35;
+		int xStringLoc = xLoc+33;
+		int yStringLoc = yLoc+40;
 		g2d = tileImage.createGraphics();
 		g2d.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g2d.setColor(Color.WHITE);
-		g2d.fillOval(xStringLoc-5, yStringLoc-5, 10, 10);
+		g2d.fillOval(xStringLoc-6, yStringLoc-15, 20, 20);
 		g2d.setColor(Color.RED);
 		g2d.drawString(""+elevation, xStringLoc, yStringLoc);
 		
@@ -175,24 +175,29 @@ public class BoardPanel extends JPanel {
 			for(int i = 0; i < 2; i++){
 				if(rotationState == 0){
 					//draw right
-//					g2d.setColor(Color.WHITE);
-//					g2d.fillOval(xStringLoc+45, yStringLoc-5, 10, 10);
+					g2d.setColor(Color.WHITE);
+					g2d.fillOval(xStringLoc+50-6, yStringLoc-15, 20, 20);
 					g2d.setColor(Color.RED);
 					g2d.drawString(""+elevation, xStringLoc+50, yStringLoc);
 				}
 				else if(rotationState == 1){
 					//draw bottom
-//					g2d.fillOval(xStringLoc-5, yStringLoc+45, 10, 10);
+					g2d.setColor(Color.WHITE);
+					g2d.fillOval(xStringLoc-6, yStringLoc+50-15, 20, 20);
 					g2d.setColor(Color.RED);
 					g2d.drawString(""+elevation, xStringLoc, yStringLoc+50);
 				}
 				else if(rotationState == 2){
 					//draw left
+					g2d.setColor(Color.WHITE);
+					g2d.fillOval(xStringLoc-50-6, yStringLoc-15, 20, 20);
 					g2d.setColor(Color.RED);
 					g2d.drawString(""+elevation, xStringLoc-50, yStringLoc);
 				}
 				else if(rotationState == 3){
 					//draw top
+					g2d.setColor(Color.WHITE);
+					g2d.fillOval(xStringLoc-6, yStringLoc-50-15, 20, 20);
 					g2d.setColor(Color.RED);
 					g2d.drawString(""+elevation, xStringLoc, yStringLoc-50);
 				}
@@ -216,18 +221,10 @@ public class BoardPanel extends JPanel {
 		g2d.dispose();
 	}
 	
-	private void clearDeveloperSpace(int x, int y, BufferedImage image){
-		g2d = image.createGraphics();
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-		g2d.fillRect(x, y, 50, 50);
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		g2d.dispose();
-	}
-	
 	private void drawLines(BufferedImage image){
 		g2d = image.createGraphics();
 		g2d.setColor(Color.black);
-		for(int i = 50; i < image.getWidth(); i+=50){
+		for(int i = 49; i < image.getWidth(); i+=50){
 			//columns
 			g2d.drawLine(i, 0, i, image.getWidth());
 			//rows
