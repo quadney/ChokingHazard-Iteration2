@@ -11,7 +11,6 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 import Controllers.GameController;
-import Models.GameModel;
 
 public class GameManager {
 	GameController currentGameController;

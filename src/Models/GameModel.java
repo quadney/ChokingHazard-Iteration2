@@ -20,7 +20,6 @@ public class GameModel implements Serializable<GameModel> {
 	private JavaPlayer[] players;
 	private SharedComponentModel shared;
 	private int indexOfCurrentPlayer;
-	private boolean isFinalRound;
 	public MAction selectedAction;
 
 	private Stack<Event> actionHistory; // This holds a history of the actions
@@ -36,7 +35,6 @@ public class GameModel implements Serializable<GameModel> {
 
 	public GameModel(int numberPlayers, String[] playerNames,
 			String[] playerColors) {
-		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.shared = new SharedComponentModel();
@@ -53,7 +51,6 @@ public class GameModel implements Serializable<GameModel> {
 
 	// created for loading the game
 	public GameModel(int numberPlayers) {
-		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.players = new JavaPlayer[numberPlayers];
@@ -415,8 +412,8 @@ public class GameModel implements Serializable<GameModel> {
 
 	// Method used in Event-----------------------------------------------------
 
-	public void setIsFinalRound(boolean b) { // used in TriggeredFinalRound
-		this.isFinalRound = b;
+	public void isFinalRound(boolean b) { // used in TriggeredFinalRound
+		shared.isFinalRound();
 	}
 
 	// ---------------------------------------------------------------------------
@@ -460,8 +457,13 @@ public class GameModel implements Serializable<GameModel> {
 		GameModel model = new GameModel(names.length, names, colors);
 		model.setActionHistory(actionHistory);
 		model.setActionReplays(actionReplays);
+		model.setGameState(GameState.valueOf(json.getString("gameState")));
 		// TODO set game states
-		return this;
+		return model;
+	}
+
+	private void setGameState(GameState state) {
+		this.gameState = state;
 	}
 
 	private void setActionReplays(Stack<Event> actionReplays2) {
@@ -530,5 +532,38 @@ public class GameModel implements Serializable<GameModel> {
 	
 	public int nextActionID() {
 		return ++actionIDCounter;
+	}
+	
+	public void undoAction() {
+		if(!gameState.equals(GameState.PlanningMode))
+			return;
+		Action[] actions = actionHistory.toArray(new Action[1]);
+		actionHistory.pop();
+		for(int x = 0; x < actions.length-1; ++x) 
+			actions[x].doAction(this);
+	}
+	
+	public void redoAllActionsUntil(int actionID, boolean slowForReplayMode) {
+		Action[] actions = actionHistory.toArray(new Action[1]);
+		actionHistory.clear();
+		for(int x = 0; x < actions.length; ++x) {
+			actions[x].doAction(this);
+			if(actions[x].getActionID() == actionID)
+				return;
+			actionHistory.push(actions[x]);
+		}
+	}
+	
+	public int getStartOfRoundActionID() {
+		int index = this.indexOfCurrentPlayer;
+		Action[] actions = actionHistory.toArray(new Action[1]);
+		for(int x = actions.length - 1; x >= 0; --x){
+			if(actions[x] instanceof EndTurnAction) {
+				--index;
+				if(index == 0)
+					return actions[x].getActionID();
+			}
+		}
+		return -1;
 	}
 }
