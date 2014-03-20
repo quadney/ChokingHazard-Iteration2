@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
 import Controllers.GameController;
 
@@ -67,8 +68,15 @@ public class SharedComponentPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				//tempoarily set the button disabled while it replays, then when finished replaying set it to enabled
 				setReplayButtonEnabled(false);
-				
-				gameController.startReplay();
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+					@Override
+					protected Void doInBackground() throws Exception {
+						gameController.startReplay();
+						setReplayButtonEnabled(true);
+						return null;
+					}
+				};
+				worker.execute();
 			}
 		});
 		buttonPanel.add(replayButton);

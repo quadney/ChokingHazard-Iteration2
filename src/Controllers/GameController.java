@@ -1,10 +1,14 @@
 package Controllers;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
+import javax.swing.Timer;
 
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
@@ -523,23 +527,18 @@ public class GameController {
 //			if(actions[x].getActionID() == currentGame.getStartOfRoundActionID())
 //				startOfRoundIndex = x;
 //		System.out.println("START OF ROUND" + startOfRoundIndex);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		doActions(actions, 0, startOfRoundIndex-1, false, false);
-//		doActions(actions, startOfRoundIndex-1, actions.length, true, true);
+		doActions(actions, 0, startOfRoundIndex-1, false, false);
+		doActions(actions, startOfRoundIndex-1, actions.length, true, true);
+		
 	}
 	
 	private void doActions(Action[] actions, int startIndex, int endIndex, boolean wait, boolean draw) {
 		for(int x = startIndex; x < endIndex; ++x) {
-			if(wait)
+			if(wait) {
 				try {
 					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-				}
+				} catch (InterruptedException e) {	}
+			}	  
 			if(draw) {
 				shared.updateSharedPanel();
 				players.updatePlayerPanel(currentGame.getPlayerIndex());
@@ -547,9 +546,9 @@ public class GameController {
 			else {
 				board.setRedraw(false);
 			}
+			actions[x].doAction(currentGame);
 			board.updateBoardPanel(actions[x], currentGame);
 			board.setRedraw(true);
-			actions[x].doAction(currentGame);
 		}
 	}
 
