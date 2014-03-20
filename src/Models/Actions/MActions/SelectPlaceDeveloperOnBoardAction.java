@@ -36,7 +36,7 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectNonRotatableCompone
 
 	@Override
 	public Action pressEnter(GameModel game) {
-		Action action = new PlaceDeveloperOnBoardAction(-1, x, y);
+		Action action = new PlaceDeveloperOnBoardAction(game.nextActionID(), x, y);
 		if(action.doAction(game))
 			return action;
 		return null;

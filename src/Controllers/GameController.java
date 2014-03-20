@@ -46,7 +46,7 @@ public class GameController {
 		currentGame = new GameModel(numPlayers, playerNames, playerColors);
 		board = new BoardController(currentGame.getBoard());
 		players = new PlayerController(numPlayers, currentGame.getPlayers()); //change player controller to query the model for the player info
-		shared = new SharedComponentController(currentGame.getShared()); //change this to work
+		shared = new SharedComponentController(currentGame.getShared(), this); //change this to work
 		
 		//this initializes the dealing of the palace cards
 		//and then the player sets those dealt cards as the cards
@@ -376,6 +376,21 @@ public class GameController {
 		this.players.updatePlayersAfterFestival();
 		this.shared.updateAfterFestival(cardsToDiscard);
 		this.currentGamePanel.closeFestivalFrame(); 
+	}
+
+	public void startPlanningMode() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void startReplay() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void pickUpPalaceCard() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
