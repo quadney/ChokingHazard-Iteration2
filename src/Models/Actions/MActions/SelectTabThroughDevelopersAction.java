@@ -54,7 +54,7 @@ public abstract class SelectTabThroughDevelopersAction extends MAction {
 	}
 	
 	public MAction pressM(){
-		return new SelectMoveDeveloperAroundBoardAction(this.imageKey, this.getXOfDeveloperAtIndexTabCount(), this.getYOfDeveloperAtIndexTabCount());
+		return null; //new SelectMoveDeveloperAroundBoardAction(this.imageKey, this.getXOfDeveloperAtIndexTabCount(), this.getYOfDeveloperAtIndexTabCount());
 	}
 	
 	private int getXOfDeveloperAtIndexTabCount(){

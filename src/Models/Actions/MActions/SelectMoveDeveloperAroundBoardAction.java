@@ -7,6 +7,7 @@ import Models.GameModel;
 import Models.JavaCell;
 import Models.JavaPlayer;
 import Models.Actions.Action;
+import Models.Actions.MoveDeveloperAction;
 
 public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComponentAction {
 	
@@ -14,8 +15,9 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 	int originalY;
 	private LinkedList<JavaCell> path;
 	BoardModel board;
+	JavaPlayer player;
 
-	public SelectMoveDeveloperAroundBoardAction(String imageKey, int originalX, int originalY, BoardModel board) {
+	public SelectMoveDeveloperAroundBoardAction(String imageKey, int originalX, int originalY, BoardModel board, JavaPlayer player) {
 		super(imageKey);
 		this.x = originalX;
 		this.y = originalY;
@@ -23,8 +25,7 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		this.originalY = originalY;
 		this.path = new LinkedList<JavaCell>();
 		this.board = board;
-		
-		
+		this.player = player;
 	}
 	
 	public boolean pressArrow(int xChange, int yChange) {
@@ -33,7 +34,7 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		if(isNonRotatableComponentOnBoard(newX, newY) ){
 			x = newX;
 			y = newY;
-			return addJavaCellToPath(board.getCellAtXY(x, y));
+			return addJavaCellToPath(board.getCellAtXY(x, y), player);
 		}
 		else{
 			return false;
@@ -58,16 +59,23 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 				|| jc1.getCellType().equals("rice")
 				&& jc2.getCellType().equals("village")) {
 			return true;
-		}
 
+		}
 		return false;
 	}
 	
-	public boolean addJavaCellToPath(JavaCell javaCell) {
+	public boolean addJavaCellToPath(JavaCell javaCell, JavaPlayer player) {
+		
+		if(javaCell.hasDeveloper() && !player.hasDeveloperOnXY(x,y)){
+			return false;
+		}
+		
 		int pathSize = path.size();
 		LinkedList<JavaCell> temp = new LinkedList<JavaCell>();
+		LinkedList<JavaCell> temp2 = new LinkedList<JavaCell>();
 
 		for (int i = 0; i < pathSize; i++) {
+			temp2.push(path.peek());
 			temp.push(path.pop());
 		}
 
@@ -81,29 +89,25 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		}
 		
 		path.push(currentCell);
+		if(costOfDeveloperPath(path) >= player.getAvailableActionPoints(false)){
+			path = temp2;
+			return false;
+		}
 		return true;
 	}
 
 	@Override
-	public boolean pressTab() {
-		return false;
-	}
-	
-	public MAction pressM(){
-		return null;
-	}
-
-	@Override
-	public Action pressDelete() {
-		return null;
-	}
-
-	@Override
 	public Action pressEnter(GameModel game) {
+		if (!doesLastCellAlreadyHaveDeveloper()) {
+			Action action = new MoveDeveloperAction(-1, x, y, path);
+			if (action.doAction(game)) {
+				return action;
+			}
+		}
 		return null;
 	}
 	
-	private int costOfDeveloperPath(){
+	private int costOfDeveloperPath(LinkedList<JavaCell> path){
 		int pathSize = path.size();
 		int actionPoints = 0;
 		JavaCell currentCell = path.removeLast();
@@ -122,6 +126,24 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		}
 
 		return actionPoints;
+	}
+	
+	private boolean doesLastCellAlreadyHaveDeveloper(){
+		return path.peekLast().hasDeveloper();
+	}
+	
+	//-------Methods that should do nothing---------------------
+	public boolean pressTab() {
+		return false;
+	}
+	
+	public MAction pressM(){
+		return null;
+	}
+
+	@Override
+	public Action pressDelete() {
+		return null;
 	}
 
 }
