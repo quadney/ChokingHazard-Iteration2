@@ -29,9 +29,11 @@ import Models.PalaceCard;
 public class GameContainerPanel extends JPanel {
 	private final static int WIDTH = 1300;
 	private final static int HEIGHT = 840;
-	private HashMap<String, String> imageSourceHashMap; 
+	private HashMap<String, String> resourceHashMap; 
 	private DisplayPlayersPalaceCardsFrame palaceCardFrame;
 	private HoldFestivalFrame festivalFrame;
+	//EASTER EGG 
+	private int displayPalaceCardEasterEgg = 0;
 	
 	public GameContainerPanel(BoardPanel board, PlayerPanel[] players, SharedComponentPanel shared){
 		super(new BorderLayout());
@@ -80,14 +82,14 @@ public class GameContainerPanel extends JPanel {
 	
 	private void initHashMap(){
 		File imageSourceFile = null;
-		this.imageSourceHashMap = new HashMap<String, String>();
+		this.resourceHashMap = new HashMap<String, String>();
 		try{
 			imageSourceFile = new File("bin/files/FestivalImageStrings.txt");
 			BufferedReader fileReader = new BufferedReader(new FileReader(imageSourceFile));
 			String line = "";
 			while((line = fileReader.readLine()) != null){
 				String[] hash = line.split(" ");
-				imageSourceHashMap.put(hash[0], hash[1]);
+				resourceHashMap.put(hash[0], hash[1]);
 			}
 			fileReader.close();
 		} catch(Exception e){
@@ -146,8 +148,16 @@ public class GameContainerPanel extends JPanel {
 	}
 	
 	public void displayPalaceCardFrame(JavaPlayer player){
-		palaceCardFrame = new DisplayPlayersPalaceCardsFrame(player, imageSourceHashMap);
+		displayPalaceCardEasterEgg ++;
+		palaceCardFrame = new DisplayPlayersPalaceCardsFrame(player, resourceHashMap);
 		palaceCardFrame.setVisible(true);
+		if(displayPalaceCardEasterEgg > 10){
+			playCatSound();
+		}
+	}
+	
+	public void resetEasterEggCount(){
+		this.displayPalaceCardEasterEgg = 0;
 	}
 	
 	public void displayHoldFestivalFrame(GameController game, JavaPlayer[] players, int indexOfPlayerHoldingFestival, PalaceCard festivalCard, int selectedPalaceValue){
@@ -156,6 +166,7 @@ public class GameContainerPanel extends JPanel {
 	
 	public void closeFestivalFrame(){
 		festivalFrame.dispose();
+		resetEasterEggCount();
 	}
 	
 	public void tellPeopleTheyAintPlacedNoLandTile(){
@@ -163,41 +174,38 @@ public class GameContainerPanel extends JPanel {
 	}
 
 	public void playErrorSound() {
-		String errorSound = "bin/sounds/error.wav";
-		playSound(errorSound);
+		playSound("errorSound");
 	}
 	
 	public void playFestivalSound(){
-		//TODO this is called at the end of the festival 
-		//String errorSound = "bin/sounds/festival.wav";
-		//playSound(errorSound);
+		playSound("festivalSound");
 	}
 	
 	public void playDrawCardSound(){
-		String errorSound = "bin/sounds/drawCard.wav";
-		playSound(errorSound);
+		playSound("drawCardSound");
 	}
 	
 	public void playSelectDeveloperSound(){
-		String errorSound = "bin/sounds/selectDeveloper.wav";
-		playSound(errorSound);
+		playSound("selectDeveloperSound");
 	}
 
 	public void playMoveComponentSound(){
-		String errorSound = "bin/sounds/move.wav";
-		playSound(errorSound);
+		playSound("moveSound");
 	}
 	
 	public void playPlaceTileSound(){
-		String errorSound = "bin/sounds/placeTile.wav";
-		playSound(errorSound);
+		playSound("placeTileSound");
+	}
+	
+	public void playCatSound(){
+		playSound("catSound");
 	}
 	
 	private void playSound(String src){
 		Clip sound = null;
 		try {
 			
-			AudioInputStream audio = AudioSystem.getAudioInputStream(new File(src));
+			AudioInputStream audio = AudioSystem.getAudioInputStream(new File(resourceHashMap.get(src)));
 			sound = AudioSystem.getClip();
 			sound.open(audio);
 			sound.loop(0);

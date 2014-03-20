@@ -128,8 +128,7 @@ public class GameController {
 			// the user is pressing (and holding) the F button
 			// TODO this can only be called if in Play Mode
 			currentGamePanel.playDrawCardSound();
-			currentGamePanel.displayPalaceCardFrame(this.players
-					.getPlayerAtIndex(this.currentGame.getPlayerIndex()));
+			currentGamePanel.displayPalaceCardFrame(this.players.getPlayerAtIndex(this.currentGame.getPlayerIndex()));
 		}
 	}
 
