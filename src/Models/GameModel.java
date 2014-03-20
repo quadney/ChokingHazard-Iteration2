@@ -320,20 +320,6 @@ public class GameModel implements Serializable<GameModel> {
 		return this.indexOfCurrentPlayer;
 	}
 
-	public boolean pressSpace() {
-		if (selectedAction != null) {
-			return selectedAction.pressSpace();
-		}
-		return false;
-	}
-
-	public Action pressEnter() {
-		if (selectedAction != null) {
-			return selectedAction.pressEnter(this);
-		}
-		return null;
-	}
-
 	//------ Methods for MAction/selected ------------------------------
 
 	public int getSelectedActionX() {
@@ -354,13 +340,6 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	//--------------Key presses to interact with SelectedActions-------------
-	public boolean pressM() {
-		return false;
-	}
-	
-	public void pressEsc() {
-		selectedAction = null;
-	}
 
 	public boolean pressLeft() {
 		if (selectedAction != null) {
@@ -390,12 +369,35 @@ public class GameModel implements Serializable<GameModel> {
 		return false;
 	}
 	
-//	public boolean pressM() {
-//		if (selectedAction != null) {
-//			return selectedAction.pressM() != null;
-//		}
-//		return false;
-//	}
+	public boolean pressSpace() {
+		if (selectedAction != null) {
+			return selectedAction.pressSpace();
+		}
+		return false;
+	}
+
+	public Action pressEnter() {
+		if (selectedAction != null) {
+			return selectedAction.pressEnter(this);
+		}
+		return null;
+	}
+	
+	public boolean pressTab() {
+		if (selectedAction != null) {
+			return selectedAction.pressTab();
+		}
+		return false;
+	}
+	
+	public boolean pressM() {
+		return false;
+	}
+	
+	public void pressEsc() {
+		selectedAction = null;
+	}
+
 
 	public boolean setSelectedAction(MAction selectedAction) {
 		// if(this.selectedAction == null){
