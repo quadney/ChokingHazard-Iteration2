@@ -131,9 +131,16 @@ public class GameController {
 			break;
 		case 9:
 			//released tab, tab through developers
-			if (players.getNumDevelopersOffBoard(currentGame.getPlayerIndex()) < 12) {
+			if (currentGame.pressTab()){
+				System.out.println("Gctrl tab for not first time");
+				updateBoardControllerWithSelectedAction();
+			}
+			else if(players.getNumDevelopersOffBoard(currentGame.getPlayerIndex()) < 12) {
+				System.out.println("Gctrl tab for first time");
 				currentGame.setSelectedAction(new SelectTabThroughDevelopersAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex()), players.getDevelopersOnBoard(currentGame.getPlayerIndex())));
+				updateBoardControllerWithSelectedAction();
 			} else {
+				System.out.println("Gctrl not tab blargh");
 				currentGamePanel.makeErrorSound();
 			}
 			
@@ -321,7 +328,9 @@ public class GameController {
 ////			System.out.println(players.selectEndTurn(currentGame.getPlayerIndex()));
 			if(currentGame.endTurn()){
 				EndTurnAction endTurn = new EndTurnAction(-1);
+				currentGame.setSelectedAction(null);
 				currentGame.addToActionHistory(endTurn);
+				board.pressEsc();
 				players.setNoCurrentPlayerinPlayerPanels(); //need to tell the player panel of the current player to stop outlining their panel
 				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
 			}
@@ -355,14 +364,15 @@ public class GameController {
 			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
 			board.updateSelectedTileAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
-		else if(currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction){//developer
+		else if(currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction || currentGame.getSelectedAction() instanceof SelectTabThroughDevelopersAction){//developer
 			System.out.println("(In GCtrl) updating Board panel when developer action is selected");
 			board.updateSelectedHighlightDeveloperAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50,currentGame.getSelectedActionImageKey());
 		}
-		else if(currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction){//developer
+		else if(currentGame.getSelectedAction() instanceof SelectMoveDeveloperAroundBoardAction){//developer
 			System.out.println("(In GCtrl) drawing developer path");
 			board.updateSelectedPathDeveloperAction(currentGame.getSelectedActionImageKey(), currentGame.getPath());
 		}
+		
 	}
 	
 	private void seeIfPlayerCanHoldAFestival(){

@@ -32,11 +32,15 @@ public class SelectTabThroughDevelopersAction extends MAction {
 	
 	public boolean pressTab(){
 		if(numOfDevelopers > 0){
-			tabCount += 1 % numOfDevelopers;
+			System.out.println("SelTab numDev > 0");
+			//tabCount += 1;
+			tabCount = ++tabCount % numOfDevelopers;
+			System.out.println("tab count it " + tabCount +  " number of developers on board is " + numOfDevelopers );
 			this.x = getXOfDeveloperAtIndexTabCount();
 			this.y = getYOfDeveloperAtIndexTabCount();
 			return true;
 		}
+		System.out.println("SelTab not numDev > 0");
 		return false;
 	}
 	
