@@ -87,7 +87,7 @@ public class GameModel implements Serializable<GameModel> {
 	}
 	
 	public void placeTile(int x, int y, Tile tile, JavaPlayer player){
-		gameBoard.placeTile(x, y, tile, player);
+		gameBoard.placeTile(x, y, tile, player, getAllPlayerDevelopers());
 	}
 
 	// Returns an array of players in order from highest to lowest of ranks of
