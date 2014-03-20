@@ -31,7 +31,7 @@ public class SharedComponentPanel extends JPanel{
 	
 	public SharedComponentPanel(String festivalCardHashKey, GameController gameController){
 		super(new FlowLayout());
-		setPreferredSize(new Dimension(1100, 110));
+		setPreferredSize(new Dimension(1170, 110));
 		
 		initHashMap();
 		initPanel(festivalCardHashKey, gameController);
@@ -149,7 +149,7 @@ public class SharedComponentPanel extends JPanel{
 
         JLabel actionSummaryCard = new JLabel();
         actionSummaryCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_actionSummaryCard")));
-        actionSummaryCard.setPreferredSize(new Dimension(473, 77));
+        actionSummaryCard.setPreferredSize(new Dimension(533, 78));
         actionSummaryCard.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
         add(actionSummaryCard);
 		
@@ -191,8 +191,10 @@ public class SharedComponentPanel extends JPanel{
 		this.tenPalaceTiles.setText(""+num);
 	}
 	public void updateNumPalaceCards(int num){
-		//You're welcome Sydney --mrrow //lol
 		this.palaceDeck.setText(""+num);
+	}
+	public void updateFestivalCard(String newFestivalCardHashKey){
+		this.festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_"+newFestivalCardHashKey)));
 	}
 	
 	public void setReplayButtonEnabled(boolean yes){

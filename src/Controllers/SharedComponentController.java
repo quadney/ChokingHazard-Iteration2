@@ -16,12 +16,7 @@ public class SharedComponentController {
 		updateSharedPanel();
 		//there's no festival card for this deck. so when dealPalaceCards(numPlayers) is called, it will create a festival card
 	}
-	//	public SharedComponentController(int threeTiles, int irrigationTiles, int[] palaceTiles, LinkedList<PalaceCard> deck, PalaceCard festivalCard, LinkedList<PalaceCard> discardDeck){
-//		//load game constructor
-//		this.sharedModel = new SharedComponentModel(threeTiles, irrigationTiles, palaceTiles, deck, festivalCard, discardDeck);
-//		//this.sharedPanel = new SharedComponentPanel(threeTiles, irrigationTiles, palaceTiles, deck.size(), festivalCard.getType());
-//	}
-//	
+
 //---------------------Accessor---------------------------------------------------
 	public SharedComponentPanel getSharedComponentPanel(){
 		return this.sharedPanel;

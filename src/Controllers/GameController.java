@@ -50,25 +50,13 @@ public class GameController {
 			String[] playerColors) {
 		// create controllers
 		currentGame = new GameModel(numPlayers, playerNames, playerColors);
+		
 		board = new BoardController(currentGame.getBoard());
-		players = new PlayerController(numPlayers, currentGame.getPlayers()); // change
-																				// player
-																				// controller
-																				// to
-																				// query
-																				// the
-																				// model
-																				// for
-																				// the
-																				// player
-																				// info
-		shared = new SharedComponentController(currentGame.getShared(), this); // change
-																				// this
-																				// to
-																				// work
-
-		// this initializes the dealing of the palace cards
-		// and then the player sets those dealt cards as the cards
+		players = new PlayerController(currentGame.getPlayers()); //change player controller to query the model for the player info
+		shared = new SharedComponentController(currentGame.getShared(), this); //change this to work
+		
+		//this initializes the dealing of the palace cards
+		//and then the player sets those dealt cards as the cards
 		players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
 		players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex());
 		currentGamePanel = new GameContainerPanel(board.getBoardPanel(),
@@ -80,23 +68,14 @@ public class GameController {
 
 	public boolean loadGame(File file) {
 		// create controllers
+		currentGame = (new GameModel(0, null, null)).loadObject(gameManager.loadGame(file));
+		board = new BoardController(currentGame.getBoard());
+		players = new PlayerController(currentGame.getPlayers()); 
+		shared = new SharedComponentController(currentGame.getShared(), this); 
 
-				currentGame = (new GameModel(0, null, null)).loadObject(gameManager.loadGame(file));
-				int numPlayers = currentGame.getPlayers().length;
-				board = new BoardController(currentGame.getBoard());
-				players = new PlayerController(numPlayers, currentGame.getPlayers()); 
-				shared = new SharedComponentController(currentGame.getShared(), this); 
-
-				// this initializes the dealing of the palace cards
-				// and then the player sets those dealt cards as the cards
-				players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
-				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex());
-				currentGamePanel = new GameContainerPanel(board.getBoardPanel(),
-						players.getPlayerPanels(), shared.getSharedComponentPanel());
-				gameFrame.setFrameContent(currentGamePanel);
-				loadActions();
-		
-		
+		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
+		gameFrame.setFrameContent(currentGamePanel);
+		loadActions();
 		
 		return true;
 	}
@@ -465,34 +444,36 @@ public class GameController {
 	}
 
 	private void seeIfPlayerCanHoldAFestival() {
-		// TODO need to first make sure that the user can in fact hold a
-		// festival
-		// TODO need to get the palace and palace vaule that the player wants it
-		// to be on
-		// TODO put the festival image on the palace to let the user know that
-		// there was a festival on it
-		int palaceValue = 10;
-		// TODO need to also reflect that in the board model ?
-		// TODO
-		boolean fest = currentGamePanel
-				.askUserIfWouldLikeToHoldAPalaceFestival();
-		if (fest)
+		// first make sure that the user can in fact hold a festival
+		int palaceValue = 0;
+		boolean fest = false;
+		if(players.canHoldFestival(currentGame.getPlayerIndex(), shared.getCurrentFestivalCard())){
+			//ask if they would like to hold a palace festival
+			if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){
+				fest = true;
+				//TODO get the palace and palace value that the player wants it to be on
+				//call the P action yes?
+			}
+			
+		}
+		
+		if (fest){
 			startFestival(palaceValue);
+		}
 	}
-
-	private void startFestival(int palaceValue) {
-		// TODO testing
+	
+	private void startFestival(int palaceValue){
 		currentGamePanel.playFestivalSound();
-		// currentGamePanel.displayHoldFestivalFrame(this,
-		// players.getPlayerModels(), currentGame.getPlayerIndex(),
-		// shared.getCurrentFestivalCard(), palaceValue);
+		currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
+
 	}
 
 	public void updatePlayersAfterFestival(ArrayList<PalaceCard> cardsToDiscard) {
-		// the player's fame points and festival cards have already been taken
-		// care of.
-		// this updates the views and discards of the cards that were played in
-		// the festival
+		// the player's fame points and festival cards have already been taken care of.
+		// this updates the views and discards of the cards that were played in the festival
+		
+		// TODO put the festival image on the palace to let the user know that there was a festival on it
+		// TODO need to also reflect that in the board model ?
 		this.players.updatePlayersAfterFestival();
 		this.shared.updateAfterFestival(cardsToDiscard);
 		this.currentGamePanel.closeFestivalFrame();
@@ -577,6 +558,7 @@ public class GameController {
 		Action action = new DrawPalaceCardAction(currentGame.nextActionID());
 		action.doAction(currentGame);
 		currentGame.addToActionHistory(action);
+		currentGamePanel.playDrawCardSound();
 		updateControllersWithAction(action);
 	}
 
@@ -584,6 +566,7 @@ public class GameController {
 		Action action = new DrawFestivalCardAction(currentGame.nextActionID());
 		action.doAction(currentGame);
 		currentGame.addToActionHistory(action);
+		currentGamePanel.playDrawCardSound();
 		updateControllersWithAction(action);
 	}
 

@@ -26,6 +26,7 @@ public class GameManager {
 	}
 	
 	public JsonObject loadGame(File loadFile){
+		System.out.println("loading game");
 		//returns true if successfully loaded
 		StringBuilder alpha = new StringBuilder();
 		try{
@@ -40,6 +41,7 @@ public class GameManager {
 		}
 			
 		String loadString = alpha.toString();
+		
 		return new JsonObject(loadString);
 	}
 	
