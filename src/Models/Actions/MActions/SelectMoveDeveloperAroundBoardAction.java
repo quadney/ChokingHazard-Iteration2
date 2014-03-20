@@ -141,12 +141,12 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		return false;
 	}
 	
-	public MAction pressM(){
+	public MAction pressM(BoardModel board, JavaPlayer player){
 		return null;
 	}
 
 	@Override
-	public Action pressDelete() {
+	public Action pressDelete(GameModel game) {
 		return null;
 	}
 

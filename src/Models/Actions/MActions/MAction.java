@@ -1,6 +1,8 @@
 package Models.Actions.MActions; 
 
+import Models.BoardModel;
 import Models.GameModel;
+import Models.JavaPlayer;
 import Models.Actions.Action;
 
 /**
@@ -26,11 +28,11 @@ public abstract class MAction {
 	
 	public abstract boolean pressTab();
 	
-	public abstract Action pressDelete();
+	public abstract Action pressDelete(GameModel game);
 	
 	public abstract Action pressEnter(GameModel game);
 	
-	public abstract MAction pressM();
+	public abstract MAction pressM(BoardModel board, JavaPlayer player);
 	
 	//Accessor Methods ---------------------------------------------//
 	public int getX(){

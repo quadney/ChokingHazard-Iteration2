@@ -120,30 +120,35 @@ public class GameController {
 		//TODO methods for picking up a festival card/palace card
 		switch(e.getKeyCode()){
 		case 8:
+		case 127:
 			//released delete, delete a developer from the board
 			//need all the type checks and where they are to delete a developer
-//			if(false){
-//				currentGame.pressDelete()){
-//				board.pressDelete();
-//				players[currentGame.getPlayerIndex()].pressDelete();
-
-//			}
-//			else{
-//				currentGamePanel.makeErrorSound();
-//			}
+			
+			System.out.println("GCtrl Delete pressed");
+			Action deleteAction = currentGame.pressDelete();
+			if(deleteAction != null){
+				currentGame.addToActionHistory(deleteAction);
+				currentGame.setSelectedAction(null);
+				currentGamePanel.playPlaceTileSound();
+				board.updateBoardPanel(deleteAction, currentGame);
+				players.updatePlayerPanel(currentGame.getPlayerIndex());
+			}
+			else{
+				currentGamePanel.playErrorSound();
+			}
 			break;
 		case 9:
 			//released tab, tab through developers
 			if (currentGame.pressTab()){
-				System.out.println("Gctrl tab for not first time");
+				//System.out.println("Gctrl tab for not first time");
 				updateBoardControllerWithSelectedAction();
 			}
 			else if(players.getNumDevelopersOffBoard(currentGame.getPlayerIndex()) < 12) {
-				System.out.println("Gctrl tab for first time");
+				//System.out.println("Gctrl tab for first time");
 				currentGame.setSelectedAction(new SelectTabThroughDevelopersAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex()), players.getDevelopersOnBoard(currentGame.getPlayerIndex())));
 				updateBoardControllerWithSelectedAction();
 			} else {
-				System.out.println("Gctrl not tab blargh");
+				//System.out.println("Gctrl not tab blargh");
 				currentGamePanel.playErrorSound();
 			}
 			
@@ -155,7 +160,7 @@ public class GameController {
 			Action action = currentGame.pressEnter();
 			//currentGamePanel.playSelectDeveloperSound();  ?
 			if(action != null){
-				System.out.println("action != null in GCtrl");
+				//System.out.println("action != null in GCtrl");
 				currentGame.addToActionHistory(action);
 				//currentGame.doLastActionInHistory();
 				currentGame.setSelectedAction(null);
@@ -431,7 +436,7 @@ public class GameController {
 	}
 
 	public void pickUpPalaceCard() {
-		Action action = new DrawPalaceCardAction(currentGame.nextActionID(), currentGame.drawFromDeck().getTypeNumber());
+		Action action = new DrawPalaceCardAction(currentGame.nextActionID());
 		currentGame.drawFromDeck();
 	}
 

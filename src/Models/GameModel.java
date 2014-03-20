@@ -383,6 +383,13 @@ public class GameModel implements Serializable<GameModel> {
 		return null;
 	}
 	
+	public Action pressDelete() {
+		if(selectedAction != null){ 
+			return selectedAction.pressDelete(this);
+		}
+		return null;
+	}
+	
 	public boolean pressTab() {
 		if (selectedAction != null) {
 			return selectedAction.pressTab();
