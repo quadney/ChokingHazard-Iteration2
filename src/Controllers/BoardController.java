@@ -8,6 +8,7 @@ import Models.Developer;
 import Models.GameModel;
 import Models.JavaCell;
 import Models.Actions.Action;
+import Models.Actions.HoldFestivalAction;
 import Models.Actions.MoveDeveloperAction;
 import Models.Actions.OneSpaceTileAction;
 import Models.Actions.PlaceDeveloperOnBoardAction;
@@ -91,6 +92,9 @@ public class BoardController {
 			}
 			System.out.println(xs + " " + ys + " " + images);
 			boardPanel.placeDeveloper(ys, xs, images);
+		}
+		else if(action instanceof HoldFestivalAction){
+			boardPanel.haveFestivalOnPalace(((HoldFestivalAction)action).palaceXY[0], ((HoldFestivalAction)action).palaceXY[1]);
 		}
 		
 	}

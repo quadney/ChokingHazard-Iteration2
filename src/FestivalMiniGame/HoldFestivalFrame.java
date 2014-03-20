@@ -16,8 +16,9 @@ import Models.PalaceCard;
 public class HoldFestivalFrame extends JFrame {
 	private HoldFestivalController festController;
 	private GameController gameController;
+	int[] palaceXY;
 	
-	public HoldFestivalFrame(GameController gc, JavaPlayer[] players, int indexOfPlayerHoldingFestival, PalaceCard festivalCard, int selectedPalaceValue){
+	public HoldFestivalFrame(GameController gc, JavaPlayer[] players, int indexOfPlayerHoldingFestival, PalaceCard festivalCard, int selectedPalaceValue, int[] palaceXY){
 		setTitle("Let's Party!");
 		setSize(800, 800);
 		setResizable(false);
@@ -43,6 +44,7 @@ public class HoldFestivalFrame extends JFrame {
 		
 		//make the model, view and controller
 		startFestival(players, indexOfPlayerHoldingFestival, festivalCard, selectedPalaceValue);
+		this.palaceXY = palaceXY;
 	}
 	
 	private void startFestival(JavaPlayer[] javaPlayers, int indexOfPlayer, PalaceCard festivalCard, int selectedPalaceValue){
@@ -91,8 +93,8 @@ public class HoldFestivalFrame extends JFrame {
 		}
 	}
 	
-	public void festivalDidReturn(ArrayList<PalaceCard> cardsToDiscard){
-		this.gameController.updatePlayersAfterFestival(cardsToDiscard);
+	public void festivalDidReturn(HashMap<JavaPlayer, ArrayList<PalaceCard>> cardsToDiscardPerPerson, HashMap<JavaPlayer, Integer> famePointsWonPerPerson, PalaceCard festivalCard){
+		this.gameController.updatePlayersAfterFestival(cardsToDiscardPerPerson, famePointsWonPerPerson, festivalCard, palaceXY);
 	}
 
 }

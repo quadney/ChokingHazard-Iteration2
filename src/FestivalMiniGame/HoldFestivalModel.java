@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import Models.JavaPlayer;
 import Models.PalaceCard;
 
 public class HoldFestivalModel {
 	private ArrayList<JavaFestivalPlayer> players;
-	private ArrayList<PalaceCard> discardedPalaceTiles;
 	private HashMap<String, Integer> famePointsAwarded;
 	private int indexOfCurrentPlayer;
 	private PalaceCard festivalCard;
@@ -20,7 +20,6 @@ public class HoldFestivalModel {
 		this.indexOfCurrentPlayer = getBeginningPlayerIndex();
 		this.festivalCard = festCard;
 		this.valueOfPalaceCity = valueOfPalaceCity;
-		this.discardedPalaceTiles = new ArrayList<PalaceCard>();
 		this.famePointsAwarded = new HashMap<String, Integer>(10);
 		initFamePointsHashMap();
 		this.highestBid = 0;
@@ -46,8 +45,8 @@ public class HoldFestivalModel {
 		return this.players.get(indexOfCurrentPlayer).getTabbedImageString();
 	}
 	
-	public ArrayList<PalaceCard> getDiscardedPalaceCards(){
-		return this.discardedPalaceTiles;
+	public PalaceCard getFestivalCard(){
+		return this.festivalCard;
 	}
 	
 	public int getBeginningPlayerIndex(){
@@ -92,7 +91,6 @@ public class HoldFestivalModel {
 		if(selectedCard == null)
 			return null;
 		//increment the player's festival bid
-		discardedPalaceTiles.add(selectedCard);
 		player.addFestivalBid(selectedCard.compareForPoints(festivalCard));
 		//increment the highest bid if appropriate
 		int currentBid = player.getFestivalBid();
@@ -197,6 +195,22 @@ public class HoldFestivalModel {
 		for(JavaFestivalPlayer winner : winners){
 			winner.awardFamePoints(pointsToAward);
 		}
+	}
+	
+	public HashMap<JavaPlayer, ArrayList<PalaceCard>> getDiscardedPalaceCards(){
+		HashMap<JavaPlayer, ArrayList<PalaceCard>> hash = new HashMap<JavaPlayer, ArrayList<PalaceCard>>();
+		for(JavaFestivalPlayer player : players){
+			hash.put(player.getJavaPlayer(), player.getDiscardedCards());
+		}
+		return hash;
+	}
+	
+	public HashMap<JavaPlayer, Integer> getFamePointsWon(){
+		HashMap<JavaPlayer, Integer> hash = new HashMap<JavaPlayer, Integer>();
+		for(JavaFestivalPlayer player : players){
+			hash.put(player.getJavaPlayer(), new Integer(player.getFamePoints()));
+		}
+		return hash;
 	}
 	
 	public int getFamePointsWon(boolean ifTie){

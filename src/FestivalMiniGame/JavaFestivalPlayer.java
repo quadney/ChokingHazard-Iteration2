@@ -9,8 +9,10 @@ public class JavaFestivalPlayer {
 	private JavaPlayer player;
 	private boolean isInFestival;
 	private ArrayList<PalaceCard> palaceCards;
+	private ArrayList<PalaceCard> discardedCards;
 	private int tabCount;
 	private int festivalBid;
+	private int famePointsToAward;
 	private boolean startedFestival;
 
 	public JavaFestivalPlayer(JavaPlayer player, ArrayList<PalaceCard> validPalaceCards, boolean startedFest) {
@@ -18,9 +20,11 @@ public class JavaFestivalPlayer {
 		//if they are not able, don't create a FestivalPlayer
 		this.player = player;
 		this.palaceCards = validPalaceCards;
+		this.discardedCards = new ArrayList<PalaceCard>();
 		this.isInFestival = true;
 		this.tabCount = -1;
 		this.festivalBid = 0;
+		this.famePointsToAward = 0;
 		this.startedFestival = startedFest;
 	}
 	
@@ -41,12 +45,12 @@ public class JavaFestivalPlayer {
 		return this.tabCount;
 	}
 	
-	public boolean checkIfInFestival(){
-		return this.isInFestival;
+	public JavaPlayer getJavaPlayer(){
+		return this.player;
 	}
 	
-	public void awardFamePoints(int pointsToAward){
-		this.player.changeFamePoints(pointsToAward);
+	public boolean checkIfInFestival(){
+		return this.isInFestival;
 	}
 	
 	public void addFestivalBid(int points){
@@ -54,6 +58,10 @@ public class JavaFestivalPlayer {
 	}
 	public int getFestivalBid(){
 		return this.festivalBid;
+	}
+	
+	public ArrayList<PalaceCard> getDiscardedCards(){
+		return this.discardedCards;
 	}
 	
 	public void incrementTab(){
@@ -76,7 +84,7 @@ public class JavaFestivalPlayer {
 		if(tabCount < 0)
 			return null;
 		PalaceCard selectedCard = palaceCards.get(tabCount);
-		player.removePalaceCard(selectedCard);
+		discardedCards.add(selectedCard);
 		palaceCards.remove(tabCount);
 		tabCount = -1;
 		return selectedCard;
@@ -100,6 +108,14 @@ public class JavaFestivalPlayer {
 
 	public void endTurn(){
 		tabCount = -1;
+	}
+	
+	public void awardFamePoints(int points){
+		this.famePointsToAward += points;
+	}
+	
+	public int getFamePoints(){
+		return this.famePointsToAward;
 	}
 	
 	public void changeStartedFestivalStatus(boolean status){

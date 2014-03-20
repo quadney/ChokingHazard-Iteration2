@@ -160,8 +160,8 @@ public class GameContainerPanel extends JPanel {
 		this.displayPalaceCardEasterEgg = 0;
 	}
 	
-	public void displayHoldFestivalFrame(GameController game, JavaPlayer[] players, int indexOfPlayerHoldingFestival, PalaceCard festivalCard, int selectedPalaceValue){
-		festivalFrame = new HoldFestivalFrame(game, players, indexOfPlayerHoldingFestival, festivalCard, selectedPalaceValue);
+	public void displayHoldFestivalFrame(GameController game, JavaPlayer[] players, int indexOfPlayerHoldingFestival, PalaceCard festivalCard, int selectedPalaceValue, int[] palaceXY){
+		festivalFrame = new HoldFestivalFrame(game, players, indexOfPlayerHoldingFestival, festivalCard, selectedPalaceValue, palaceXY);
 	}
 	
 	public void closeFestivalFrame(){

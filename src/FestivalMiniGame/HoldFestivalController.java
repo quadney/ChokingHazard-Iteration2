@@ -16,7 +16,7 @@ public class HoldFestivalController {
 		this.festFrame = frame;
 		this.festModel = new HoldFestivalModel(festivalPlayers, festCard, palaceValue);
 		this.festPanel = new HoldFestivalPanel(festivalPlayers, festModel.getCurrentPlayer(), festCard.getType(), palaceValue);
-		festPanel.setFestivalController(this);
+		this.festPanel.setFestivalController(this);
 	}
 	
 	public void keyPressed(KeyEvent e){
@@ -105,7 +105,7 @@ public class HoldFestivalController {
 		//get the points per winner
 		festModel.endFestival(thereIsTie);
 		festPanel.displayWinner(festModel.getWinners(), festModel.getFamePointsWon(thereIsTie));
-		festFrame.festivalDidReturn(festModel.getDiscardedPalaceCards());
+		festFrame.festivalDidReturn(festModel.getDiscardedPalaceCards(), festModel.getFamePointsWon(), festModel.getFestivalCard());
 	}
 	
 	public void tabThroughPalaceCards(){

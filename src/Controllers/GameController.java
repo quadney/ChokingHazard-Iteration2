@@ -5,15 +5,19 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
 import ChokingHazard.GameFrame;
 import ChokingHazard.GameManager;
+
 import Models.GameModel;
+import Models.JavaPlayer;
 import Models.GameModel.GameState;
 import Models.PalaceCard;
 import Models.Actions.Action;
+import Models.Actions.HoldFestivalAction;
 import Models.Actions.DrawFestivalCardAction;
 import Models.Actions.DrawPalaceCardAction;
 import Models.Actions.EndTurnAction;
@@ -63,7 +67,7 @@ public class GameController {
 				players.getPlayerPanels(), shared.getSharedComponentPanel());
 		gameFrame.setFrameContent(currentGamePanel);
 
-		//seeIfPlayerCanHoldAFestival();
+		seeIfPlayerCanHoldAFestival();
 	}
 
 	public boolean loadGame(File file) {
@@ -379,11 +383,12 @@ public class GameController {
 				currentGame.addToActionHistory(endTurn);
 				board.pressEsc();
 				players.setNoCurrentPlayerinPlayerPanels(); // need to tell the
-															// player panel of
+				seeIfPlayerCanHoldAFestival();				// player panel of
 															// the current
 															// player to stop
 															// outlining their
 															// panel
+				currentGame.incrementPlayer();
 				players.setCurrentPlayerinPlayerPanel(currentGame
 						.getPlayerIndex()); // need to tell the new player panel
 											// that they are the current player
@@ -444,7 +449,8 @@ public class GameController {
 
 	private void seeIfPlayerCanHoldAFestival() {
 		// first make sure that the user can in fact hold a festival
-		int palaceValue = 0;
+		int palaceValue = 10;
+		int[] palaceXY = {50,50};
 		boolean fest = false;
 		if(players.canHoldFestival(currentGame.getPlayerIndex(), shared.getCurrentFestivalCard())){
 			//ask if they would like to hold a palace festival
@@ -457,25 +463,29 @@ public class GameController {
 		}
 		
 		if (fest){
-			startFestival(palaceValue);
+			startFestival(palaceValue, palaceXY);
 		}
 	}
 	
-	private void startFestival(int palaceValue){
+	private void startFestival(int palaceValue, int[] palaceXY){
 		currentGamePanel.playFestivalSound();
-		currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
+		currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue, palaceXY);
 
 	}
 
-	public void updatePlayersAfterFestival(ArrayList<PalaceCard> cardsToDiscard) {
+	public void updatePlayersAfterFestival(HashMap<JavaPlayer, ArrayList<PalaceCard>> cardsToDiscardPerPerson, HashMap<JavaPlayer, Integer> famePointsWonPerPerson, PalaceCard festCard, int[] palaceXY) {
+		HoldFestivalAction festAction = new HoldFestivalAction(currentGame.nextActionID(), cardsToDiscardPerPerson, famePointsWonPerPerson, festCard, palaceXY);
+		currentGame.addToActionHistory(festAction);
+		currentGame.doLastActionInHistory();
 		// the player's fame points and festival cards have already been taken care of.
 		// this updates the views and discards of the cards that were played in the festival
 		
-		// TODO put the festival image on the palace to let the user know that there was a festival on it
-		// TODO need to also reflect that in the board model ?
-		this.players.updatePlayersAfterFestival();
-		this.shared.updateAfterFestival(cardsToDiscard);
+		for(int i = 0; i < currentGame.getPlayers().length; i++){
+			this.players.updatePlayerPanel(i);
+		}
+		this.shared.updateSharedPanel();
 		this.currentGamePanel.closeFestivalFrame();
+		this.board.updateBoardPanel(festAction, currentGame);
 	}
 
 	public void startPlanningMode() {
