@@ -14,7 +14,7 @@ public class ReplayTest {
 		RunGame game = new RunGame();
 		
 		Simulator.newGame("mau", "meghan", "sydney");
-		Simulator.THROTTLE = 20;
+		Simulator.THROTTLE = 50;
 
 		Simulator.placeThreeSpaceTile(3, 3, 0);
 		Simulator.placeTwoSpaceTile(5, 5, 0);
@@ -36,7 +36,7 @@ public class ReplayTest {
 		Simulator.placeVillageTile(4, 12);
 		Simulator.placeVillageTile(12, 4);
 		Simulator.startReplay();
-		GameRobot.wait(13000);
+		GameRobot.wait(15000);
 		
 		Simulator.placeRiceTile(3, 9);
 		Simulator.placeRiceTile(4, 9);
@@ -47,6 +47,12 @@ public class ReplayTest {
 		Simulator.placeDeveloper(12, 11);
 		
 		Simulator.startReplay();
+		GameRobot.wait(4000);
+		
+		Simulator.placeThreeSpaceTile(1, 6, 0);
+		Simulator.placeThreeSpaceTile(2, 7, 2);
+		Simulator.placeThreeSpaceTile(4, 6, 1);
+		Simulator.placeThreeSpaceTile(4, 5, 3);
 		
 		/*Simulator.placeDeveloper(3, 3);
 		Simulator.placeDeveloper(4, 4);
