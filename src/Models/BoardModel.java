@@ -95,7 +95,7 @@ public class BoardModel implements Serializable<BoardModel> {
 			if (placedLandTile(xC, yC))
 				player.placedLandTile();
 			
-			checkForSurroundedIrrigationCells(xC, yC, tile, gameDevelopers);
+			System.out.println("CHECK FOR SURROUNDED IRRIGATION CELLS: " + checkForSurroundedIrrigationCells(xC, yC, tile, gameDevelopers));
 
 			System.out.println(toString());
 			return true;
@@ -839,6 +839,7 @@ public class BoardModel implements Serializable<BoardModel> {
 	}
 	
 	public boolean checkForSurroundedIrrigationCells(int xC, int yC, Tile tile, LinkedList<Developer> gameDevelopers) {
+		
 		if (nextToIrrigation(xC, yC, tile)) {
 			ArrayList<JavaCell> coast = new ArrayList<JavaCell>();
 			JavaPlayer highRankedPlayer = new JavaPlayer("", "");
@@ -851,6 +852,8 @@ public class BoardModel implements Serializable<BoardModel> {
 			
 			return true;
 		}
+		
+		System.out.println("NEXTTOIRRIGATION IS FALSE");
 		
 		return false;
 	} 
@@ -897,12 +900,19 @@ public class BoardModel implements Serializable<BoardModel> {
 				}
 			}
 		}
+		
+		System.out.println("RIGHT IS " + right);
+		System.out.println("LEFT IS " + left);
+		System.out.println("UP IS " + up);
+		System.out.println("DOWN IS " + down);
 
 		return right || left || down || up;
 	}
 
 	public boolean createNewBodyOfWater(int xC, int yC) {
+		System.out.println("INSIDE CREATE NEW BODY OF WATER");
 		if (!isAlreadyInBodyOfWater(xC, yC)) {
+			System.out.println("xC, yC IS NOT ALREADY IN A BODY OF WATER (THIS IS GOOD)");
 			addToBodiesOfWater(xC, yC);
 			return true;
 		}

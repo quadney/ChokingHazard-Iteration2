@@ -41,7 +41,7 @@ public class ThreeTileAction extends RotatableComponentAction {
 
 	@Override
 	public boolean redo(GameModel game) {
-		if(game.getBoard().placeTile(x, y, new Tile(TileType.threetile, rotationState), game.getCurrentPlayer())) {
+		if(game.getBoard().placeTile(x, y, new Tile(TileType.threetile, rotationState), game.getCurrentPlayer(), game.getAllPlayerDevelopers())) {
 			game.getShared().decrementThreeSpaceTiles();
 			return true;
 		}

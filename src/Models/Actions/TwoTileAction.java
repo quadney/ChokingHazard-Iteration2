@@ -28,7 +28,7 @@ public class TwoTileAction extends RotatableComponentAction {
 
 	@Override
 	public boolean redo(GameModel game) {
-		if(game.getBoard().placeTile(x, y, new Tile(TileType.twotile, rotationState), game.getCurrentPlayer())) {
+		if(game.getBoard().placeTile(x, y, new Tile(TileType.twotile, rotationState), game.getCurrentPlayer(), game.getAllPlayerDevelopers())) {
 			game.getCurrentPlayer().decrementTwo();
 			return true;
 		}
