@@ -934,5 +934,23 @@ public class BoardModel implements Serializable<BoardModel> {
 	public int getElevationAtCellXY(int x, int y) {
 		return map[x][y].getElevation();
 	}
+	
+	public ArrayList<JavaCell> getPalacesOnBoard()	
+	{
+		ArrayList<JavaCell> list = new ArrayList<JavaCell>();
+		
+		for (int i = 0; i < map.length; i++ )
+		{
+			for (int j = 0; j < map[0].length; j++)
+			{
+				if(map[i][j].getCellType().toString().startsWith("palace"))
+				{
+					list.add(map[i][j]);
+				}
+			}
+		}
+		
+		return list;
+	}
 
 }
