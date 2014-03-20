@@ -74,12 +74,13 @@ public class BoardController {
 				if(developer != null){
 					xs.push(developer.getX());
 					ys.push(developer.getY());
-					images.push(developer.getOwner().getColor());
+					//TODO LOD violation
+					images.push("player_" + developer.getOwner().getColor());
 				}
 			}
 			System.out.println(xs + " " + ys + " " + images);
 			
-			boardPanel.placeDeveloper(xs, ys, images);
+			boardPanel.placeDeveloper(ys, xs, images);
 			//game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
 		}
 	}
