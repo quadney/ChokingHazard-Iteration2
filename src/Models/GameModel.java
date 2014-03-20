@@ -567,11 +567,15 @@ public class GameModel implements Serializable<GameModel> {
 		return -1;
 	}
 
-	public void drawFestivalCard() {
-		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFestivalCard());
+	public PalaceCard drawFestivalCard() {
+		return shared.drawFestivalCard();
 	}
 
-	public void drawFromDeck() {
-		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFromDeck());
+	public PalaceCard drawFromDeck() {
+		return shared.drawFromDeck();
+	}
+	
+	public void addPalaceCard(PalaceCard card) {
+		players[indexOfCurrentPlayer].addPalaceCard(card);
 	}
 }
