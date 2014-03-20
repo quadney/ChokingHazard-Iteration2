@@ -377,18 +377,18 @@ public class GameController {
 			// check if the player has placed a land tile so they can get out of
 			// their turn
 			// released X, end turn
+			seeIfPlayerCanHoldAFestival();
 			if (currentGame.getGameState().equals(GameState.NormalMode) && currentGame.endTurn()) {
 				EndTurnAction endTurn = new EndTurnAction(currentGame.nextActionID());
 				currentGame.setSelectedAction(null);
 				currentGame.addToActionHistory(endTurn);
 				board.pressEsc();
 				players.setNoCurrentPlayerinPlayerPanels(); // need to tell the
-				seeIfPlayerCanHoldAFestival();				// player panel of
+								// player panel of
 															// the current
 															// player to stop
 															// outlining their
 															// panel
-				currentGame.incrementPlayer();
 				players.setCurrentPlayerinPlayerPanel(currentGame
 						.getPlayerIndex()); // need to tell the new player panel
 											// that they are the current player
