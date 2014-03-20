@@ -11,6 +11,7 @@ import Models.Actions.Action;
 import Models.Actions.OneSpaceTileAction;
 import Models.Actions.PlaceDeveloperOnBoardAction;
 import Models.Actions.RotatableComponentAction;
+import Models.Actions.TakeDeveloperOffBoardAction;
 import Views.BoardPanel;
 
 public class BoardController {
@@ -69,7 +70,7 @@ public class BoardController {
 //			System.out.println("in updateBoardPanel OneSpaceTileAction");
 			boardPanel.placeTile(((OneSpaceTileAction)action).getY()*50, ((OneSpaceTileAction)action).getX()*50, 0, boardModel.getElevationAtCellXY(((OneSpaceTileAction)action).getX(), ((OneSpaceTileAction)action).getY()), action.imageKey);
 		}
-		else if(action instanceof PlaceDeveloperOnBoardAction) {
+		else if(action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction) {
 //			System.out.println("in updateBoardPanel NonRotatableTileComponent");
 			Stack<Integer> xs = new Stack<Integer>();
 			Stack<Integer> ys = new Stack<Integer>(); 

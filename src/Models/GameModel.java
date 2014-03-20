@@ -95,7 +95,7 @@ public class GameModel implements Serializable<GameModel> {
 	}
 	
 	public void placeTile(int x, int y, Tile tile, JavaPlayer player){
-		gameBoard.placeTile(x, y, tile, player);
+		gameBoard.placeTile(x, y, tile, player, getAllPlayerDevelopers());
 	}
 
 	// Returns an array of players in order from highest to lowest of ranks of
@@ -387,6 +387,13 @@ public class GameModel implements Serializable<GameModel> {
 	public Action pressEnter() {
 		if (selectedAction != null) {
 			return selectedAction.pressEnter(this);
+		}
+		return null;
+	}
+	
+	public Action pressDelete() {
+		if(selectedAction != null){ 
+			return selectedAction.pressDelete(this);
 		}
 		return null;
 	}

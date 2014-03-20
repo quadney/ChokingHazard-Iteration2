@@ -26,7 +26,7 @@ public class PalaceTileAction extends OneSpaceTileAction {
 	
 	@Override
 	public boolean redo(GameModel game) {
-		if(game.getBoard().placeTile(x, y, new Tile(TileType.valueOf("palace"+value), 0), game.getCurrentPlayer())) {
+		if(game.getBoard().placeTile(x, y, new Tile(TileType.valueOf("palace"+value), 0), game.getCurrentPlayer(), game.getAllPlayerDevelopers())) {
 			game.getShared().decrementPalaceTiles(value);
 			return true;
 		}

@@ -146,17 +146,22 @@ public class GameController {
 		// TODO methods for picking up a festival card/palace card
 		switch (e.getKeyCode()) {
 		case 8:
-			// released delete, delete a developer from the board
-			// need all the type checks and where they are to delete a developer
-			// if(false){
-			// currentGame.pressDelete()){
-			// board.pressDelete();
-			// players[currentGame.getPlayerIndex()].pressDelete();
-
-			// }
-			// else{
-			// currentGamePanel.makeErrorSound();
-			// }
+		case 127:
+			//released delete, delete a developer from the board
+			//need all the type checks and where they are to delete a developer
+			
+			System.out.println("GCtrl Delete pressed");
+			Action deleteAction = currentGame.pressDelete();
+			if(deleteAction != null){
+				currentGame.addToActionHistory(deleteAction);
+				currentGame.setSelectedAction(null);
+				currentGamePanel.playPlaceTileSound();
+				board.updateBoardPanel(deleteAction, currentGame);
+				players.updatePlayerPanel(currentGame.getPlayerIndex());
+			}
+			else{
+				currentGamePanel.playErrorSound();
+			}
 			break;
 		case 9:
 			//released tab, tab through developers

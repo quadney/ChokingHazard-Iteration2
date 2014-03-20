@@ -9,9 +9,10 @@ public class TakeDeveloperOffBoardAction extends NonRotatableComponentAction {
 		super(actionID, x, y);
 	}
 	
-	public TakeDeveloperOffBoardAction() {
-
+	public TakeDeveloperOffBoardAction(){
+		
 	}
+
 
 	@Override
 	public Action loadObject(JsonObject json) {
@@ -22,8 +23,7 @@ public class TakeDeveloperOffBoardAction extends NonRotatableComponentAction {
 
 	@Override
 	public boolean redo(GameModel game) {
-		// TODO Auto-generated method stub
-		return false;
+		return game.takeDeveloperOffBoard(x, y);
 	}
 
 }

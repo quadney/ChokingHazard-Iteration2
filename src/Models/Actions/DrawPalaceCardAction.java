@@ -5,10 +5,9 @@ import Models.GameModel;
 
 public class DrawPalaceCardAction extends Action {
 
-	int value;
 	public DrawPalaceCardAction(int actionID) {
 		super(actionID);
-		//TODO image key 
+		//TODO image key based on value
 	}
 	
 	public DrawPalaceCardAction() {
