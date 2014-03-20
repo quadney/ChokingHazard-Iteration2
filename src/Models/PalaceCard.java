@@ -9,8 +9,10 @@ public class PalaceCard implements Serializable<PalaceCard> {
 	private ArrayList<Integer> symbols;
 	private int numSymbols;
 	private String cardType;
+	private boolean faceUp;
 
-	public PalaceCard(int cardType) {
+	public PalaceCard(int cardType, boolean faceUp) {
+		this.faceUp = faceUp;
 		symbols = new ArrayList<Integer>();
 
 		switch (cardType) {
@@ -130,5 +132,17 @@ public class PalaceCard implements Serializable<PalaceCard> {
 		numSymbols = Integer.parseInt(json.getString("numSymbols"));
 		cardType = json.getString("cardType");
 		return this;
+	}
+
+	public void setFaceDown() {
+		faceUp = false;
+	}
+
+	public boolean isFaceUp() {
+		return faceUp;
+	}
+
+	public void setFaceUp() {
+		faceUp = true;
 	}
 }

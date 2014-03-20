@@ -95,7 +95,7 @@ public class BoardController {
 		this.boardPanel.replaying = !b;		
 	}
 
-	public void clearBoard() {
-		boardPanel.clearBoard();
+	public void clearBoard(boolean repaint) {
+		boardPanel.clearBoard(repaint);
 	}
 }
