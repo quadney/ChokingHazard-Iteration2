@@ -320,6 +320,9 @@ public class GameController {
 				currentGamePanel.playSelectDeveloperSound();
 				updateBoardControllerWithSelectedAction();
 			}
+			else{
+				currentGamePanel.playErrorSound();
+			}
 
 			break;
 		case 80:// released P, new palace tile, need to ask for value of Tile
@@ -468,6 +471,24 @@ public class GameController {
 					currentGame.getSelectedActionX() * 50,
 					currentGame.getSelectedActionImageKey());
 		} else if (currentGame.getSelectedAction() instanceof SelectMoveDeveloperAroundBoardAction) {// developer
+
+	
+//	private void updateBoardControllerWithSelectedAction(){
+//		if (currentGame.getSelectedAction() instanceof SelectTwoTileAction || currentGame.getSelectedAction() instanceof SelectThreeTileAction){
+//			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");
+//			//System.out.println(" This is the rotation state: " + ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
+//			board.updateSelectedTileAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableComponentAction)currentGame.getSelectedAction()).getRotationState());
+//		}
+//		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
+//			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
+//			board.updateSelectedTileAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50, currentGame.getSelectedActionImageKey(), 0);
+//		}
+//		else if(currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction || currentGame.getSelectedAction() instanceof SelectTabThroughDevelopersAction){//developer
+//			//System.out.println("(In GCtrl) updating Board panel when developer action is selected");
+//			board.updateSelectedHighlightDeveloperAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50,currentGame.getSelectedActionImageKey());
+//		}
+//		else if(currentGame.getSelectedAction() instanceof SelectMoveDeveloperAroundBoardAction){//developer
+
 			System.out.println("(In GCtrl) drawing developer path");
 			board.updateSelectedPathDeveloperAction(
 					currentGame.getSelectedActionImageKey(),

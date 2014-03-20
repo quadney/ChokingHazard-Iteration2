@@ -24,21 +24,24 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		this.originalX = originalX;
 		this.originalY = originalY;
 		this.path = new LinkedList<JavaCell>();
+		path.push(board.getCellAtXY(originalX, originalY));
 		this.board = board;
 		this.player = player;
+		System.out.println("SelectMoveAroundBoard: constructor at " + x +"," + y);
 	}
 	
 	public boolean pressArrow(int xChange, int yChange) {
+		System.out.println("SelectMove: pressArrow");
 		int newX = x + xChange;
 		int newY = y + yChange;
 		if(isNonRotatableComponentOnBoard(newX, newY) ){
+			if( addJavaCellToPath(board.getCellAtXY(newX, newY), player)){
 			x = newX;
 			y = newY;
-			return addJavaCellToPath(board.getCellAtXY(x, y), player);
+			return true;
+			}
 		}
-		else{
-			return false;
-		}
+		return false;
 	}
 
 	@Override
@@ -69,8 +72,12 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 		if(javaCell.hasDeveloper() && !player.hasDeveloperOnXY(x,y)){
 			return false;
 		}
+		if(!"villagerice".contains(javaCell.getCellType())){
+			return false;
+		}
 		
 		int pathSize = path.size();
+		System.out.println("path size " + pathSize);
 		LinkedList<JavaCell> temp = new LinkedList<JavaCell>();
 		LinkedList<JavaCell> temp2 = new LinkedList<JavaCell>();
 
@@ -78,22 +85,20 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 			temp2.push(path.peek());
 			temp.push(path.pop());
 		}
-
-		JavaCell currentCell = temp.pop();
-		int count = 0;
-
-		while ((currentCell != javaCell) && count < pathSize - 1) {
-			path.push(currentCell);
-			currentCell = temp.pop();
-			count++;
-		}
 		
-		path.push(currentCell);
-		if(costOfDeveloperPath(path) >= player.getAvailableActionPoints(false)){
-			path = temp2;
-			return false;
+		if(!temp.isEmpty()){
+			JavaCell currentCell = temp.pop();
+			int count = 0;
+	
+			while ((currentCell != javaCell) && count < pathSize) {
+				path.push(currentCell);
+				if(!temp.isEmpty())
+					currentCell = temp.pop();
+				count++;
+			}
 		}
-		return true;
+		path.push(javaCell);
+		return !(costOfDeveloperPath(path) > player.getAvailableActionPoints(false));
 	}
 
 	@Override
@@ -108,23 +113,14 @@ public class SelectMoveDeveloperAroundBoardAction extends SelectNonRotatableComp
 	}
 	
 	private int costOfDeveloperPath(LinkedList<JavaCell> path){
-		int pathSize = path.size();
+		JavaCell[] pathArray = path.toArray(new JavaCell[0]);
+		
 		int actionPoints = 0;
-		JavaCell currentCell = path.removeLast();
-		JavaCell nextCell = path.removeLast();
-		for (int i = 0; i < pathSize - 2; i++) {
-			if (fromVillageToRice(currentCell, nextCell)) {
+		for(int i = 1; i < pathArray.length; i++) {
+			if (fromVillageToRice(pathArray[i-1], pathArray[i])) {
 				actionPoints++;
 			}
-
-			currentCell = nextCell;
-			nextCell = path.removeLast();
 		}
-
-		if (fromVillageToRice(currentCell, nextCell)) {
-			actionPoints++;
-		}
-
 		return actionPoints;
 	}
 	
