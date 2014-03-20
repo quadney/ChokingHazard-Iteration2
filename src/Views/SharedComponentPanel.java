@@ -1,6 +1,5 @@
 package Views;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -20,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 
 import Controllers.GameController;
+import Models.PalaceCard;
 
 @SuppressWarnings("serial")
 public class SharedComponentPanel extends JPanel{
@@ -55,10 +55,10 @@ public class SharedComponentPanel extends JPanel{
 				else{
 					playModeToggleButton.setText("Planning Mode");
 					playMode = true;
-					gameController.startPlayingMode();
 					if(!gameController.askUserIfWouldLikeToSaveChangesFromPlanningMode()) {
 						gameController.undoUntilLastPlayingMode();
 					}
+					gameController.startPlayingMode();
 				}
 			
 			}
@@ -71,7 +71,7 @@ public class SharedComponentPanel extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//tempoarily set the button disabled while it replays, then when finished replaying set it to enabled
+				//temporarily set the button disabled while it replays, then when finished replaying set it to enabled
 				if(gameController.askUserIfWouldLikeToEnterReplayMode()) {
 					setReplayButtonEnabled(false);
 					SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -242,6 +242,14 @@ public class SharedComponentPanel extends JPanel{
 		} catch(Exception e){
 			System.out.println(e.getMessage());
 		}
+	}
+
+	public void updateFestivalCard(PalaceCard card) {
+		System.out.println(imageSourceHashMap);
+		if(card.isFaceUp())
+			festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_" + card.getType())));
+		else
+			festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_palaceDeck")));
 	}
 	
 }

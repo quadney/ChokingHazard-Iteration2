@@ -426,7 +426,7 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public void drawFestivalCard() {
-		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFestivalCard());
+		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFestivalCard(this.getGameState().equals(GameState.NormalMode)));
 	}
 
 	public void drawFromDeck() {
@@ -460,5 +460,6 @@ public class GameModel implements Serializable<GameModel> {
 		for(JavaPlayer player : players) {
 			player.flipAllCards();
 		}
+		shared.flipFestivalCard();
 	}
 }

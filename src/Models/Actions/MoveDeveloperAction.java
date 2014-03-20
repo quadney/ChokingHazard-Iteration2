@@ -1,10 +1,7 @@
 package Models.Actions;
 
-import java.util.LinkedList;
-
 import Helpers.JsonObject;
 import Models.GameModel;
-import Models.JavaCell;
 
 public class MoveDeveloperAction extends NonRotatableComponentAction {
 	
