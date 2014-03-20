@@ -154,23 +154,17 @@ public class GameController {
 			// }
 			break;
 		case 9:
-			// released tab, tab through developers
-			if (currentGame.pressTab()) {
-				System.out.println("Gctrl tab for not first time");
+			//released tab, tab through developers
+			if (currentGame.pressTab()){
+				//System.out.println("Gctrl tab for not first time");
 				updateBoardControllerWithSelectedAction();
-			} else if (players.getNumDevelopersOffBoard(currentGame
-					.getPlayerIndex()) < 12) {
-				System.out.println("Gctrl tab for first time");
-				currentGame
-						.setSelectedAction(new SelectTabThroughDevelopersAction(
-								"player_"
-										+ players.getColorOfPlayer(currentGame
-												.getPlayerIndex()), players
-										.getDevelopersOnBoard(currentGame
-												.getPlayerIndex())));
+			}
+			else if(players.getNumDevelopersOffBoard(currentGame.getPlayerIndex()) < 12) {
+				//System.out.println("Gctrl tab for first time");
+				currentGame.setSelectedAction(new SelectTabThroughDevelopersAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex()), players.getDevelopersOnBoard(currentGame.getPlayerIndex())));
 				updateBoardControllerWithSelectedAction();
 			} else {
-				System.out.println("Gctrl not tab blargh");
+				//System.out.println("Gctrl not tab blargh");
 				currentGamePanel.playErrorSound();
 			}
 
@@ -180,9 +174,9 @@ public class GameController {
 			// released enter, place tile/developer onto board.
 			// System.out.println("(in GameController)Enter was pressed");
 			Action action = currentGame.pressEnter();
-			// currentGamePanel.playSelectDeveloperSound(); ?
-			if (action != null) {
-				System.out.println("action != null in GCtrl");
+			//currentGamePanel.playSelectDeveloperSound();  ?
+			if(action != null){
+				//System.out.println("action != null in GCtrl");
 				currentGame.addToActionHistory(action);
 				// currentGame.doLastActionInHistory();
 				currentGame.setSelectedAction(null);
