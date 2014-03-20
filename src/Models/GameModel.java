@@ -57,6 +57,7 @@ public class GameModel implements Serializable<GameModel> {
 		actionHistory = new Stack<Event>();
 		actionReplays = new Stack<Event>();
 		selectedAction = null;
+		this.gameState = GameState.NormalMode;
 	}
 
 	// This method is to be used by the controller to determine which buttons
@@ -417,7 +418,8 @@ public class GameModel implements Serializable<GameModel> {
 			Json.serializeArray(playerNames),
 			Json.serializeArray(playerColors),
 			Json.serializeArray(actionHistory),
-			Json.serializeArray(actionReplays)
+			Json.serializeArray(actionReplays),
+			Json.jsonPair("gameState", this.gameState.toString())
 		));
 	}
 
@@ -432,6 +434,7 @@ public class GameModel implements Serializable<GameModel> {
 		GameModel model = new GameModel(json.getStringArray("playerNames").length, json.getStringArray("playerNames"), json.getStringArray("playerColors"));
 		model.setActionHistory(actionHistory);
 		model.setActionReplays(actionReplays);
+		// TODO set game states
 		return this;
 	}
 
