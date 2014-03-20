@@ -24,7 +24,7 @@ public class Tile implements Serializable<Tile> {
 	public void setTileSpaces(TileType[][] tileCells) {
 		this.tileCells = tileCells;
 	}
-
+	
 	public String getType() {
 		int numberOfCell = numOfSpaces();
 
