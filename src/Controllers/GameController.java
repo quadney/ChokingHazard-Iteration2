@@ -506,6 +506,7 @@ public class GameController {
 	public void startPlayingMode() {
 		currentGame.setGameState(GameState.NormalMode);
 		currentGame.flipAllCards();
+		shared.updateSharedPanel();
 	}
 	
 	public void undo() {

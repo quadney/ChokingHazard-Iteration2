@@ -71,7 +71,7 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 		checkIfDeckIsEmpty();
 		return card;
 	}
-	public PalaceCard drawFestivalCard(){
+	public PalaceCard drawFestivalCard(boolean isUp){
 		//return the current festival card, and draw a new card to be the festivalCard
 		PalaceCard card = festivalCard;
 		
@@ -79,7 +79,10 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 		checkIfDeckIsEmpty();
 		
 		this.festivalCard = drawFromDeck();
-		
+		if(!isUp)
+			this.festivalCard.setFaceDown();
+		else
+			this.festivalCard.setFaceUp();
 		return card;
 	}
 	
@@ -181,6 +184,10 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 		Collections.shuffle(palaceCardDeck);
 		this.festivalCard = palaceCardDeck.pop();
 		this.discardedCardDeck = new LinkedList<PalaceCard>();
+	}
+
+	public void flipFestivalCard() {
+		this.festivalCard.setFaceUp();
 	}
 
 }
