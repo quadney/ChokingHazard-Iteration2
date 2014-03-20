@@ -424,7 +424,6 @@ public class GameController {
 	}
 
 	private void updateControllersWithAction(Action action) {
-		// TODO turn all into permanent actions instead of momentary
 		if (action instanceof IrrigationTileAction
 				|| action instanceof PalaceTileAction
 				|| action instanceof ThreeTileAction
@@ -447,9 +446,6 @@ public class GameController {
 	private void updateBoardControllerWithSelectedAction() {
 		if (currentGame.getSelectedAction() instanceof SelectTwoTileAction
 				|| currentGame.getSelectedAction() instanceof SelectThreeTileAction) {
-			// System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");
-			// System.out.println(" This is the rotation state: " +
-			// ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
 			board.updateSelectedTileAction(
 					currentGame.getSelectedActionY() * 50, currentGame
 							.getSelectedActionX() * 50, currentGame
@@ -457,44 +453,21 @@ public class GameController {
 					((SelectRotatableComponentAction) currentGame
 							.getSelectedAction()).getRotationState());
 		} else if (currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction) {
-			// System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
 			board.updateSelectedTileAction(
 					currentGame.getSelectedActionY() * 50,
 					currentGame.getSelectedActionX() * 50,
 					currentGame.getSelectedActionImageKey(), 0);
 		} else if (currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction
 				|| currentGame.getSelectedAction() instanceof SelectTabThroughDevelopersAction) {// developer
-			System.out
-					.println("(In GCtrl) updating Board panel when developer action is selected");
 			board.updateSelectedHighlightDeveloperAction(
 					currentGame.getSelectedActionY() * 50,
 					currentGame.getSelectedActionX() * 50,
 					currentGame.getSelectedActionImageKey());
-		} else if (currentGame.getSelectedAction() instanceof SelectMoveDeveloperAroundBoardAction) {// developer
-
-	
-//	private void updateBoardControllerWithSelectedAction(){
-//		if (currentGame.getSelectedAction() instanceof SelectTwoTileAction || currentGame.getSelectedAction() instanceof SelectThreeTileAction){
-//			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectRotatableTileAction");
-//			//System.out.println(" This is the rotation state: " + ((SelectRotatableTileAction)currentGame.getSelectedAction()).getRotationState());
-//			board.updateSelectedTileAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50, currentGame.getSelectedActionImageKey(), ((SelectRotatableComponentAction)currentGame.getSelectedAction()).getRotationState());
-//		}
-//		else if(currentGame.getSelectedAction() instanceof SelectOneSpaceTileAction){
-//			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
-//			board.updateSelectedTileAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50, currentGame.getSelectedActionImageKey(), 0);
-//		}
-//		else if(currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction || currentGame.getSelectedAction() instanceof SelectTabThroughDevelopersAction){//developer
-//			//System.out.println("(In GCtrl) updating Board panel when developer action is selected");
-//			board.updateSelectedHighlightDeveloperAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50,currentGame.getSelectedActionImageKey());
-//		}
-//		else if(currentGame.getSelectedAction() instanceof SelectMoveDeveloperAroundBoardAction){//developer
-
-			System.out.println("(In GCtrl) drawing developer path");
+		} else if (currentGame.getSelectedAction() instanceof SelectMoveDeveloperAroundBoardAction) {
 			board.updateSelectedPathDeveloperAction(
 					currentGame.getSelectedActionImageKey(),
 					currentGame.getPath());
 		}
-
 	}
 
 	private void seeIfPlayerCanHoldAFestival() {
