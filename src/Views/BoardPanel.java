@@ -86,7 +86,7 @@ public class BoardPanel extends JPanel {
 		g2d = tempImage.createGraphics();
 		g2d.setColor(Color.YELLOW);
 		g2d.setStroke(new BasicStroke());
-		g2d.drawImage(getImage(imageSourceHashMap.get("player_"+hashKey)), null, xLoc, yLoc);
+		g2d.drawImage(getImage(imageSourceHashMap.get(hashKey)), null, xLoc, yLoc);
 	}
 	
 	public void drawDeveloperPath(Stack<Integer> x, Stack<Integer> y){
@@ -123,7 +123,7 @@ public class BoardPanel extends JPanel {
 		g2d = tempImage.createGraphics();
 		g2d.setColor(Color.RED);
 		g2d.setStroke(new BasicStroke(2.0f));
-		g2d.drawImage(getImage(imageSourceHashMap.get("player_"+hash)), null, xLoc, yLoc);
+		g2d.drawImage(getImage(imageSourceHashMap.get(hash)), null, xLoc, yLoc);
 		g2d.drawRect(xLoc, yLoc, 50, 50);
 		g2d.dispose();
 		repaint();
@@ -140,7 +140,7 @@ public class BoardPanel extends JPanel {
 		g2d = developers.createGraphics();
 		
 		while(!x.isEmpty()){
-			g2d.drawImage(getImage(imageSourceHashMap.get("player_"+hash.pop())), null, x.pop(), y.pop());
+			g2d.drawImage(getImage(imageSourceHashMap.get(hash.pop())), null, x.pop(), y.pop());
 		}
 		g2d.dispose();
 	}
