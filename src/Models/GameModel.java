@@ -29,7 +29,7 @@ public class GameModel implements Serializable<GameModel> {
 										// for the purposes of Replay Mode
 
 	private GameState gameState;
-	private int actionIDCounter; // Provides unique actionIDs to every action
+	public int actionIDCounter; // Provides unique actionIDs to every action
 									// created. To be incremented after each
 									// action instantiation.
 
@@ -407,46 +407,42 @@ public class GameModel implements Serializable<GameModel> {
 
 	@Override
 	public String serialize() {
-		return Json.jsonObject(Json.jsonMembers(Json.jsonPair("gameBoard",
-				gameBoard.serialize()), Json.jsonPair("gameState",
-				gameState.toString()), Json.jsonPair("actionHistory",
-				Json.serializeArray(actionHistory)), Json.jsonPair(
-				"actionReplays", Json.serializeArray(actionReplays)), Json
-				.jsonPair("players", Json.serializeArray(players)), Json
-				.jsonPair("indexOfCurrentPlayer",
-						Json.jsonValue(indexOfCurrentPlayer + "")), Json
-				.jsonPair("isFinalRound", Json.jsonValue(isFinalRound + "")),
-				Json.jsonPair("actionIDCounter",
-						Json.jsonValue(actionIDCounter + ""))));
+		Stack<String> playerNames = new Stack<String>();
+		Stack<String> playerColors = new Stack<String>();
+		for(JavaPlayer player : players) {
+			playerNames.push(player.getName());
+			playerNames.push(player.getColor());
+		}
+		return Json.jsonObject(Json.jsonElements(
+			Json.serializeArray(playerNames),
+			Json.serializeArray(playerColors),
+			Json.serializeArray(actionHistory),
+			Json.serializeArray(actionReplays)
+		));
 	}
 
 	@Override
 	public GameModel loadObject(JsonObject json) {
-		gameState = GameState.valueOf(json.getString("gameState"));
-		gameBoard = (new BoardModel()).loadObject(json
-				.getJsonObject("gameBoard"));
-		indexOfCurrentPlayer = Integer.parseInt(json
-				.getString("indexOfCurrentPlayer"));
-		isFinalRound = Boolean.parseBoolean(json.getString("isFinalRound"));
-		actionIDCounter = Integer.parseInt(json.getString("actionIDCounter"));
-
-		this.players = new JavaPlayer[json.getJsonObjectArray("players").length];
-		for (int x = 0; x < players.length; ++x) {
-			json.getJsonObjectArray("players")[x].addKeyManually("map",
-					gameBoard.getMap());
-			players[x] = (new JavaPlayer("temp", "temp")).loadObject(json
-					.getJsonObjectArray("players")[x]);
-		}
-
 		this.actionHistory = new Stack<Event>();
-		for (JsonObject obj : json.getJsonObjectArray("actionHistory"))
-			actionHistory.push(Action.loadAction(obj));
-
 		this.actionReplays = new Stack<Event>();
-		for (JsonObject obj : json.getJsonObjectArray("actionReplays"))
-			actionReplays.push(Action.loadAction(obj));
-
+		for(JsonObject object : ((JsonObject[])json.getObject("actionHistory")))
+			this.actionHistory.push(Action.loadAction(object));
+		for(JsonObject object : ((JsonObject[])json.getObject("actionReplays")))
+			this.actionReplays.push(Action.loadAction(object));
+		GameModel model = new GameModel(json.getStringArray("playerNames").length, json.getStringArray("playerNames"), json.getStringArray("playerColors"));
+		model.setActionHistory(actionHistory);
+		model.setActionReplays(actionReplays);
 		return this;
+	}
+
+	private void setActionReplays(Stack<Event> actionReplays2) {
+		this.actionReplays = actionReplays2;
+		
+	}
+
+	private void setActionHistory(Stack<Event> actionHistory2) {
+		this.actionHistory = actionHistory2;
+		
 	}
 
 	public void addToActionHistory(Action action) {
