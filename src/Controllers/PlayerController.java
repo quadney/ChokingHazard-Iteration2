@@ -9,10 +9,10 @@ public class PlayerController {
 	private JavaPlayer[] playerModels;
 	private PlayerPanel[] playerPanels;
 	
-	public PlayerController(int numPlayers, JavaPlayer[] players) {
+	public PlayerController(JavaPlayer[] players) {
 		this.playerModels = players;
-		this.playerPanels = new PlayerPanel[numPlayers];
-		for(int i = 0; i < numPlayers ; i++){
+		this.playerPanels = new PlayerPanel[players.length];
+		for(int i = 0; i < players.length ; i++){
 			playerPanels[i] = new PlayerPanel(players[i].getName(), players[i].getColor());
 			updatePlayerPanel(i);
 		}

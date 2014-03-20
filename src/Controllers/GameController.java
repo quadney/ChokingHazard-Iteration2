@@ -45,8 +45,9 @@ public class GameController {
 	public void createNewGame(int numPlayers, String[] playerNames, String[] playerColors){
 		//create controllers
 		currentGame = new GameModel(numPlayers, playerNames, playerColors);
+		
 		board = new BoardController(currentGame.getBoard());
-		players = new PlayerController(numPlayers, currentGame.getPlayers()); //change player controller to query the model for the player info
+		players = new PlayerController(currentGame.getPlayers()); //change player controller to query the model for the player info
 		shared = new SharedComponentController(currentGame.getShared(), this); //change this to work
 		
 		//this initializes the dealing of the palace cards
@@ -61,6 +62,19 @@ public class GameController {
 	
 	public boolean loadGame(File file){
 		currentGame.loadObject(gameManager.loadGame(file));
+		
+		board = new BoardController(currentGame.getBoard());
+		players = new PlayerController(currentGame.getPlayers()); //change player controller to query the model for the player info
+		shared = new SharedComponentController(currentGame.getShared(), this); //change this to work
+		
+		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
+		
+		//TODO need to load everything from the board model to the board panel
+		//board.loadGame();
+		
+		currentGamePanel = new GameContainerPanel(board.getBoardPanel(), players.getPlayerPanels(), shared.getSharedComponentPanel());
+		gameFrame.setFrameContent(currentGamePanel);
+		
 		return true;
 	}
 	
@@ -408,8 +422,8 @@ public class GameController {
 	
 	private void startFestival(int palaceValue){
 		//TODO testing
-		currentGamePanel.playFestivalSound();
-		//currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
+		//currentGamePanel.playFestivalSound();
+		currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
 	}
 	
 	public void updatePlayersAfterFestival(ArrayList<PalaceCard> cardsToDiscard){

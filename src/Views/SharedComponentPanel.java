@@ -173,8 +173,10 @@ public class SharedComponentPanel extends JPanel{
 		this.tenPalaceTiles.setText(""+num);
 	}
 	public void updateNumPalaceCards(int num){
-		//You're welcome Sydney --mrrow //lol
 		this.palaceDeck.setText(""+num);
+	}
+	public void updateFestivalCard(String newFestivalCardHashKey){
+		this.festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_"+newFestivalCardHashKey)));
 	}
 	
 	public void setReplayButtonEnabled(boolean yes){
