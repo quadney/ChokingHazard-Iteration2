@@ -6,6 +6,7 @@ import Models.Actions.*;
 import java.util.*;
 
 import Models.Actions.MActions.MAction;
+import Models.Actions.MActions.SelectMoveDeveloperAroundBoardAction;
 
 // This enum declaration might need to be moved, not sure how accessible it is right now 
 // (needs to be accessible by GameModel and the Controller). #JavaTroubles
@@ -19,7 +20,6 @@ public class GameModel implements Serializable<GameModel> {
 	private JavaPlayer[] players;
 	private SharedComponentModel shared;
 	private int indexOfCurrentPlayer;
-	private boolean isFinalRound;
 	public MAction selectedAction;
 
 	private Stack<Event> actionHistory; // This holds a history of the actions
@@ -35,28 +35,29 @@ public class GameModel implements Serializable<GameModel> {
 
 	public GameModel(int numberPlayers, String[] playerNames,
 			String[] playerColors) {
-		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.shared = new SharedComponentModel();
 		this.players = new JavaPlayer[numberPlayers];
 		for (int i = 0; i < players.length; i++) {
 			players[i] = new JavaPlayer(playerNames[i], playerColors[i]);
+			System.out.println(players[i].getColor());
 		}
 		actionHistory = new Stack<Event>();
 		actionReplays = new Stack<Event>();
 		selectedAction = null;
+		this.gameState = GameState.NormalMode;
 	}
 
 	// created for loading the game
 	public GameModel(int numberPlayers) {
-		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.players = new JavaPlayer[numberPlayers];
 		actionHistory = new Stack<Event>();
 		actionReplays = new Stack<Event>();
 		selectedAction = null;
+		this.gameState = GameState.NormalMode;
 	}
 
 	// This method is to be used by the controller to determine which buttons
@@ -74,16 +75,15 @@ public class GameModel implements Serializable<GameModel> {
 
 	// Used for testing the Actions
 
-	public boolean endTurn() {
-		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];
-		if (!currentPlayer.canEndTurn()) // checks for land tile placement
-			return false;
-		indexOfCurrentPlayer++;
-		indexOfCurrentPlayer = indexOfCurrentPlayer % players.length; // tab
-																		// through
-																		// players
-
-		return true;
+	public boolean endTurn() {										//this is called by TriggerSwitchTurn Action and the GameController.
+																	//if valid, changes all states accordingly, if not, doesn't do a thing
+		JavaPlayer currentPlayer = players[indexOfCurrentPlayer];	//gets the current player out of the container
+		if (currentPlayer.endPlayerTurn()){							//if the player can validly end their turn. All the player stuff will have been manipulated
+			//System.out.println("player ended turn and index is being incremented");
+			indexOfCurrentPlayer = ++indexOfCurrentPlayer % players.length;				//switches the curentPlayer to the next player
+			return true;											//tells the caller that everything worked out!
+		}
+		return false;
 	}
 	
 	public void placeTile(int x, int y, Tile tile, JavaPlayer player){
@@ -320,22 +320,7 @@ public class GameModel implements Serializable<GameModel> {
 		return this.indexOfCurrentPlayer;
 	}
 
-	public boolean pressSpace() {
-		if (selectedAction != null) {
-			return selectedAction.pressSpace();
-		}
-		return false;
-	}
-
-	public Action pressEnter() {
-		if (selectedAction != null) {
-			return selectedAction.pressEnter(this);
-		}
-		return null;
-	}
-
-	// Methods for MAction/selected action traversal that is needed by the
-	// controller
+	//------ Methods for MAction/selected ------------------------------
 
 	public int getSelectedActionX() {
 		return selectedAction.getX();
@@ -354,9 +339,7 @@ public class GameModel implements Serializable<GameModel> {
 		return selectedAction;
 	}
 
-	public void pressEsc() {
-		selectedAction = null;
-	}
+	//--------------Key presses to interact with SelectedActions-------------
 
 	public boolean pressLeft() {
 		if (selectedAction != null) {
@@ -385,6 +368,36 @@ public class GameModel implements Serializable<GameModel> {
 		}
 		return false;
 	}
+	
+	public boolean pressSpace() {
+		if (selectedAction != null) {
+			return selectedAction.pressSpace();
+		}
+		return false;
+	}
+
+	public Action pressEnter() {
+		if (selectedAction != null) {
+			return selectedAction.pressEnter(this);
+		}
+		return null;
+	}
+	
+	public boolean pressTab() {
+		if (selectedAction != null) {
+			return selectedAction.pressTab();
+		}
+		return false;
+	}
+	
+	public boolean pressM() {
+		return false;
+	}
+	
+	public void pressEsc() {
+		selectedAction = null;
+	}
+
 
 	public boolean setSelectedAction(MAction selectedAction) {
 		// if(this.selectedAction == null){
@@ -399,54 +412,68 @@ public class GameModel implements Serializable<GameModel> {
 
 	// Method used in Event-----------------------------------------------------
 
-	public void setIsFinalRound(boolean b) { // used in TriggeredFinalRound
-		this.isFinalRound = b;
+	public void isFinalRound(boolean b) { // used in TriggeredFinalRound
+		shared.isFinalRound();
 	}
 
 	// ---------------------------------------------------------------------------
 
 	@Override
 	public String serialize() {
-		return Json.jsonObject(Json.jsonMembers(Json.jsonPair("gameBoard",
-				gameBoard.serialize()), Json.jsonPair("gameState",
-				gameState.toString()), Json.jsonPair("actionHistory",
-				Json.serializeArray(actionHistory)), Json.jsonPair(
-				"actionReplays", Json.serializeArray(actionReplays)), Json
-				.jsonPair("players", Json.serializeArray(players)), Json
-				.jsonPair("indexOfCurrentPlayer",
-						Json.jsonValue(indexOfCurrentPlayer + "")), Json
-				.jsonPair("isFinalRound", Json.jsonValue(isFinalRound + "")),
-				Json.jsonPair("actionIDCounter",
-						Json.jsonValue(actionIDCounter + ""))));
+		Stack<String> playerNames = new Stack<String>();
+		Stack<String> playerColors = new Stack<String>();
+		for(JavaPlayer player : players) {
+			playerNames.push(player.getName());
+			playerColors.push(player.getColor());
+		}
+		String serializedHistory = actionHistory.empty() ? "null" : Json.serializeArray(this.actionHistory);
+		String serializedReplays = actionReplays.empty() ? "null" : Json.serializeArray(this.actionReplays);
+		return Json.jsonObject(Json.jsonElements(
+			Json.jsonPair("playerNames", Json.serializeArray(playerNames)),
+			Json.jsonPair("playerColors", Json.serializeArray(playerColors)),
+			Json.jsonPair("actionHistory", serializedHistory),
+			Json.jsonPair("actionReplays", serializedReplays),
+			Json.jsonPair("gameState", this.gameState.toString())
+		));
 	}
 
 	@Override
 	public GameModel loadObject(JsonObject json) {
-		gameState = GameState.valueOf(json.getString("gameState"));
-		gameBoard = (new BoardModel()).loadObject(json
-				.getJsonObject("gameBoard"));
-		indexOfCurrentPlayer = Integer.parseInt(json
-				.getString("indexOfCurrentPlayer"));
-		isFinalRound = Boolean.parseBoolean(json.getString("isFinalRound"));
-		actionIDCounter = Integer.parseInt(json.getString("actionIDCounter"));
-
-		this.players = new JavaPlayer[json.getJsonObjectArray("players").length];
-		for (int x = 0; x < players.length; ++x) {
-			json.getJsonObjectArray("players")[x].addKeyManually("map",
-					gameBoard.getMap());
-			players[x] = (new JavaPlayer("temp", "temp")).loadObject(json
-					.getJsonObjectArray("players")[x]);
-		}
-
 		this.actionHistory = new Stack<Event>();
-		for (JsonObject obj : json.getJsonObjectArray("actionHistory"))
-			actionHistory.push(Action.loadAction(obj));
-
 		this.actionReplays = new Stack<Event>();
-		for (JsonObject obj : json.getJsonObjectArray("actionReplays"))
-			actionReplays.push(Action.loadAction(obj));
+		if(json.getObject("actionHistory") != null)
+			for(int x = 0; x < ((Object[])json.getObject("actionHistory")).length; ++x)
+				this.actionHistory.push(Action.loadAction((JsonObject)((Object[])json.getObject("actionHistory"))[x]));
+		if(json.getObject("actionReplays") != null)
+			for(int x = 0; x < ((Object[])json.getObject("actionReplays")).length; ++x)
+				this.actionHistory.push(Action.loadAction((JsonObject)((Object[])json.getObject("actionReplays"))[x]));
+		String[] names = new String[((Object[])json.getObject("playerNames")).length];
+		String[] colors = new String[((Object[])json.getObject("playerColors")).length];
+		for(int x = 0; x < names.length; ++x) {
+			colors[x] = (String)((Object[])json.getObject("playerColors"))[x];
+			names[x] = (String)((Object[])json.getObject("playerNames"))[x];
+		}
+		System.out.println(((Object[])json.getObject("playerNames")));
+		GameModel model = new GameModel(names.length, names, colors);
+		model.setActionHistory(actionHistory);
+		model.setActionReplays(actionReplays);
+		model.setGameState(GameState.valueOf(json.getString("gameState")));
+		// TODO set game states
+		return model;
+	}
 
-		return this;
+	private void setGameState(GameState state) {
+		this.gameState = state;
+	}
+
+	private void setActionReplays(Stack<Event> actionReplays2) {
+		this.actionReplays = actionReplays2;
+		
+	}
+
+	private void setActionHistory(Stack<Event> actionHistory2) {
+		this.actionHistory = actionHistory2;
+		
 	}
 
 	public void addToActionHistory(Action action) {
@@ -480,12 +507,75 @@ public class GameModel implements Serializable<GameModel> {
 		return gameBoard.getNextCellId();
 	}
 
-	public void placeDeveloperOnBoard(int x, int y) {
-		gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y),
+	public boolean placeDeveloperOnBoard(int x, int y) {
+		return gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y),
 				players[indexOfCurrentPlayer]);
 	}
 	
-	public void takeDeveloperOffBoard(int x, int y) {
-		gameBoard.removeDatDeveloperOffDaBoard(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
+	public boolean takeDeveloperOffBoard(int x, int y) {
+		return gameBoard.removeDatDeveloperOffDaBoard(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
+	}
+	
+	public LinkedList<Developer> getAllPlayerDevelopers() {
+		LinkedList<Developer> list = new LinkedList<Developer>();
+		for(JavaPlayer player : players)
+			list.addAll(Arrays.asList(player.getDevelopersOnBoard()));
+		return list;
+	}
+
+	public LinkedList<JavaCell> getPath() {
+		if(selectedAction instanceof SelectMoveDeveloperAroundBoardAction){
+			return ((SelectMoveDeveloperAroundBoardAction)selectedAction).getPath();
+		}
+		return null;
+	}
+	
+	public int nextActionID() {
+		return ++actionIDCounter;
+	}
+	
+	public void undoAction() {
+		if(!gameState.equals(GameState.PlanningMode))
+			return;
+		Action[] actions = actionHistory.toArray(new Action[1]);
+		actionHistory.pop();
+		for(int x = 0; x < actions.length-1; ++x) 
+			actions[x].doAction(this);
+	}
+	
+	public void redoAllActionsUntil(int actionID, boolean slowForReplayMode) {
+		Action[] actions = actionHistory.toArray(new Action[1]);
+		actionHistory.clear();
+		for(int x = 0; x < actions.length; ++x) {
+			actions[x].doAction(this);
+			if(actions[x].getActionID() == actionID)
+				return;
+			actionHistory.push(actions[x]);
+		}
+	}
+	
+	public int getStartOfRoundActionID() {
+		int index = this.indexOfCurrentPlayer;
+		Action[] actions = actionHistory.toArray(new Action[1]);
+		for(int x = actions.length - 1; x >= 0; --x){
+			if(actions[x] instanceof EndTurnAction) {
+				--index;
+				if(index == 0)
+					return actions[x].getActionID();
+			}
+		}
+		return -1;
+	}
+
+	public PalaceCard drawFestivalCard() {
+		return shared.drawFestivalCard();
+	}
+
+	public PalaceCard drawFromDeck() {
+		return shared.drawFromDeck();
+	}
+	
+	public void addPalaceCard(PalaceCard card) {
+		players[indexOfCurrentPlayer].addPalaceCard(card);
 	}
 }

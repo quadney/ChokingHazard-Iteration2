@@ -5,8 +5,14 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -24,10 +30,8 @@ public class GameContainerPanel extends JPanel {
 	private final static int WIDTH = 1300;
 	private final static int HEIGHT = 840;
 	private HashMap<String, String> imageSourceHashMap; 
-	DisplayPlayersPalaceCardsFrame palaceCardFrame;
-	HoldFestivalFrame festivalFrame;
-	private JButton toggleGameModeButton;
-	private JButton replayModeButton;
+	private DisplayPlayersPalaceCardsFrame palaceCardFrame;
+	private HoldFestivalFrame festivalFrame;
 	
 	public GameContainerPanel(BoardPanel board, PlayerPanel[] players, SharedComponentPanel shared){
 		super(new BorderLayout());
@@ -35,9 +39,6 @@ public class GameContainerPanel extends JPanel {
 		initHashMap();
 		setMaximumSize(new Dimension(WIDTH, HEIGHT));
 		setBorder(BorderFactory.createEmptyBorder(0, 25, 10, 25));
-		
-		toggleGameModeButton = new JButton("Play Mode");
-		replayModeButton = new JButton("Replay");
 		
 		initPanels(board, players, shared);
 	}
@@ -124,6 +125,26 @@ public class GameContainerPanel extends JPanel {
 		return false;
 	}
 	
+	public String askUserWhatNameToSaveGameAs(){
+		String fileName = "";
+		boolean okFileName = false;
+		while(!okFileName ){
+			try{
+				fileName = JOptionPane.showInputDialog("Name save file as?");
+				String s = ".*[ /\\\\?%*:|\"<>.].*";
+				if (fileName.matches(s) || fileName.equals("")){
+					JOptionPane.showMessageDialog(null, "Please enter a valid name");
+				}
+				else {
+					okFileName = true;
+				}
+			}catch(NullPointerException e){
+				return null;
+			}
+		}
+		return fileName;
+	}
+	
 	public void displayPalaceCardFrame(JavaPlayer player){
 		palaceCardFrame = new DisplayPlayersPalaceCardsFrame(player, imageSourceHashMap);
 		palaceCardFrame.setVisible(true);
@@ -137,9 +158,60 @@ public class GameContainerPanel extends JPanel {
 		festivalFrame.dispose();
 	}
 	
-	public static void tellPeopleTheyAintPlacedNoLandTile()
-	{
+	public void tellPeopleTheyAintPlacedNoLandTile(){
 		JOptionPane.showMessageDialog( null, "You haven't placed a land tile :(");
+	}
+
+	public void playErrorSound() {
+		String errorSound = "bin/sounds/error.wav";
+		playSound(errorSound);
+	}
+	
+	public void playFestivalSound(){
+		//TODO this is called at the end of the festival 
+		//String errorSound = "bin/sounds/festival.wav";
+		//playSound(errorSound);
+	}
+	
+	public void playDrawCardSound(){
+		String errorSound = "bin/sounds/drawCard.wav";
+		playSound(errorSound);
+	}
+	
+	public void playSelectDeveloperSound(){
+		String errorSound = "bin/sounds/selectDeveloper.wav";
+		playSound(errorSound);
+	}
+
+	public void playMoveComponentSound(){
+		String errorSound = "bin/sounds/move.wav";
+		playSound(errorSound);
+	}
+	
+	public void playPlaceTileSound(){
+		String errorSound = "bin/sounds/placeTile.wav";
+		playSound(errorSound);
+	}
+	
+	private void playSound(String src){
+		Clip sound = null;
+		try {
+			
+			AudioInputStream audio = AudioSystem.getAudioInputStream(new File(src));
+			sound = AudioSystem.getClip();
+			sound.open(audio);
+			sound.loop(0);
+			sound.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }

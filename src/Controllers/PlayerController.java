@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.Developer;
 import Models.JavaPlayer;
 import Models.PalaceCard;
 import Views.PlayerPanel;
@@ -97,8 +98,7 @@ public class PlayerController {
 	}
 
 	public String getColorOfPlayer(int playerIndex) {
-		playerModels[playerIndex].getColor();
-		return null;
+		return playerModels[playerIndex].getColor();
 	}
 
 	
@@ -139,6 +139,15 @@ public class PlayerController {
 		
 		// tells the panel the number of developers off the board
 		playerPanels[playerIndex].updateDevelopersOffBoard(playerModels[playerIndex].getDevelopersOffBoard());
+	}
+
+	public Developer[] getDevelopersOnBoard(int playerIndex) {
+		return playerModels[playerIndex].getDevelopersOnBoard();
+		
+	}
+
+	public int getNumDevelopersOffBoard(int playerIndex) {
+		return playerModels[playerIndex].getDevelopersOffBoard();
 	}
 	
 }

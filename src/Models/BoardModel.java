@@ -714,7 +714,7 @@ public class BoardModel implements Serializable<BoardModel>  {
 			return 1;
 	}
 
-	public boolean moveDeveloper(JavaPlayer player) {
+	public boolean moveDeveloper(JavaPlayer player, LinkedList<JavaCell> path) {
 		int pathSize = path.size();
 		int actionPoints = 0;
 		JavaCell currentCell = path.removeLast();
@@ -740,26 +740,26 @@ public class BoardModel implements Serializable<BoardModel>  {
 		return false;
 	}
 
-	public boolean addJavaCellToPath(JavaCell javaCell) {
-		int pathSize = path.size();
-		LinkedList<JavaCell> temp = new LinkedList<JavaCell>();
-
-		for (int i = 0; i < pathSize; i++) {
-			temp.push(path.pop());
-		}
-
-		JavaCell currentCell = temp.pop();
-		int count = 0;
-
-		while ((currentCell != javaCell) && count < pathSize - 1) {
-			path.push(currentCell);
-			currentCell = temp.pop();
-			count++;
-		}
-
-		path.push(currentCell);
-		return true;
-	}
+//	public boolean addJavaCellToPath(JavaCell javaCell) {
+//		int pathSize = path.size();
+//		LinkedList<JavaCell> temp = new LinkedList<JavaCell>();
+//
+//		for (int i = 0; i < pathSize; i++) {
+//			temp.push(path.pop());
+//		}
+//
+//		JavaCell currentCell = temp.pop();
+//		int count = 0;
+//
+//		while ((currentCell != javaCell) && count < pathSize - 1) {
+//			path.push(currentCell);
+//			currentCell = temp.pop();
+//			count++;
+//		}
+//
+//		path.push(currentCell);
+//		return true;
+//	}
 
 	public boolean hasAdjacentLandSpaceTile(JavaCell cell) {
 		int x = cell.getX();
@@ -1008,7 +1008,7 @@ public class BoardModel implements Serializable<BoardModel>  {
 	public String serialize() {
 		return Json.jsonObject(Json.jsonMembers(
 				Json.jsonPair("map", Json.serializeArray(map)),
-				Json.jsonPair("path", Json.serializeArray(path)),
+				//Json.jsonPair("path", Json.serializeArray(path)),
 				Json.jsonPair("connectedPalaces",
 						Json.serializeArray(connectedPalaces))));
 	}

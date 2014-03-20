@@ -1,6 +1,5 @@
 package Models.Actions.MActions;
 
-import Models.GameModel;
 import Models.Actions.Action;
 
 public abstract class SelectOneSpaceTileAction extends SelectNonRotatableComponentAction {
@@ -19,6 +18,10 @@ public abstract class SelectOneSpaceTileAction extends SelectNonRotatableCompone
 		return null;
 	}
 	
+	public MAction pressM(){
+		return null;
+	}
+	
 	public boolean isNonRotatableComponentOnBoard(int x, int y) {
 		if(x < 0 || x > 13){ //check if changes in x are invalid
 			return false;
@@ -28,12 +31,6 @@ public abstract class SelectOneSpaceTileAction extends SelectNonRotatableCompone
 		}
 		else
 			return true;
-	}
-
-	@Override
-	public Action pressEnter(GameModel game) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
    
