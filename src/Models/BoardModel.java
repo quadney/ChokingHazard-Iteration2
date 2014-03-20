@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-
+import java.util.HashMap;
 import Helpers.JsonObject;
 import Models.Tile.TileType;
 
@@ -170,16 +170,6 @@ public class BoardModel implements Serializable<BoardModel>  {
 				}
 			}
 		}
-
-		String s = "";
-
-		for (int i = 0; i < testingMap.length; i++) {
-			for (int j = 0; j < testingMap[i].length; j++) {
-				s += testingMap[i][j].getElevation() + " ";
-			}
-			s += "\n";
-		}
-		System.out.println("Printing miniMap: \n" + s);
 
 		return testingMap;
 	}
@@ -445,7 +435,7 @@ public class BoardModel implements Serializable<BoardModel>  {
 
 	public boolean canUpgradePalace(int x, int y, JavaCell palace,
 			JavaCell[][] map) {
-		if (getPalaceSize(map[x][y]) <= getPalaceSize(palace)) {
+		if (getPalaceSize(map[x][y]) < getPalaceSize(palace)) {
 			return true;
 		}
 
@@ -610,7 +600,7 @@ public class BoardModel implements Serializable<BoardModel>  {
 
 	public boolean canPlaceDeveloper(JavaCell locationCell, JavaPlayer player) {
 		// Can only place on village or rice space
-		if (!(isTileOrLand(locationCell.getX(), locationCell.getY())))
+		if (!isTileOrLand(locationCell.getX(), locationCell.getY()))
 			return false;
 
 		// Can only place if no developer is already occupying space
@@ -974,6 +964,28 @@ public class BoardModel implements Serializable<BoardModel>  {
 		}
 		
 		return coast;
+	}
+	
+	public JavaPlayer playerWithHighestRankedDeveloperSurroundingBodyOfWater(ArrayList<JavaCell> coast, LinkedList<Developer> gameDevelopers) {
+		int dontSearchAtOrAboveThisElevation = 200;
+		int maxElevation = 0;
+		HashMap<JavaPlayer, Integer> playersWithDevelopersAtMaxElevation = new HashMap<JavaPlayer, Integer>();
+		while (dontSearchAtOrAboveThisElevation > 0) {
+			for (int i = 0; i < coast.size(); i++) {
+				if (maxElevation < coast.get(i).getElevation() && coast.get(i).getElevation() < dontSearchAtOrAboveThisElevation) {
+					maxElevation = coast.get(i).getElevation();
+				}
+			}
+			
+			for (int i = 0; i < coast.size(); i++) {
+				if (maxElevation == coast.get(i).getElevation()) {
+					//for (int j = 0; j < gameDevelopers)
+				}
+			}
+			
+		}
+		
+		return new JavaPlayer("name", "color");
 	}
 	
 	public boolean awardFamePointsForSurroundingBodyOfWater(int numSurroundedIrrigationTiles, JavaPlayer player) {

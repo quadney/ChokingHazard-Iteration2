@@ -241,18 +241,14 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return palacesInteractedWith.contains(cell);
 	}
 	
-	public boolean placeDevOnBoard( JavaCell location){
+	public boolean placeDevOnBoard(JavaCell location) {
+		developersArray[selectedDeveloperIndex] = new Developer(this);
+		associateDeveloperWithCell(location); 
 		
-		
-			developersArray[selectedDeveloperIndex] = new Developer(this);
-			associateDeveloperWithCell(location); 
-		
-		return false;
-			
+		return true;
 	}
 	
-	private int getNextAvailable(){
-	
+	private int getNextAvailable() {
 		for(int i = 0; i < developersArray.length; i++){
 			if(developersArray[i] == null){
 				selectedDeveloperIndex = i;
