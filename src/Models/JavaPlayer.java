@@ -302,6 +302,15 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		actionPoints--;
 	}
 	
+	public boolean canHoldFestival(PalaceCard festivalCard){
+		for(PalaceCard currentCard : palaceCards){
+			if(currentCard.compareHasSymbols(festivalCard) && currentCard.compareNumSymbols(festivalCard)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	//----------------------------------------
 
 	@Override

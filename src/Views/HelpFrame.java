@@ -11,21 +11,19 @@ import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
 public class HelpFrame extends JFrame {
-	private final int WIDTH, HEIGHT;
 	BufferedImage helpImage;
 	
 	public HelpFrame(){
-		WIDTH = 915;
-		HEIGHT = 450;
-		setTitle("Keyboard Controls");
-		setSize(WIDTH, HEIGHT);
-		setResizable(false);
+		setTitle("HELP ME");
+		
 		loadPanel();
 	}
 	
 	private void loadPanel(){
 		try{
 			helpImage = ImageIO.read(this.getClass().getResource("/images/helpControls.png"));
+			setSize(helpImage.getWidth(), helpImage.getHeight());
+			setResizable(false);
 			displayBufferedImage(helpImage);
 		}catch(IOException e){
 				System.out.println(e);

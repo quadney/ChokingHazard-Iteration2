@@ -287,6 +287,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	@Override
 	public GameModel loadObject(JsonObject json) {
+		System.out.println("loading object");
 		this.actionHistory = new Stack<Event>();
 		this.actionReplays = new Stack<Event>();
 		if (json.getObject("actionHistory") != null)

@@ -1,0 +1,115 @@
+{
+
+  "playerNames" : [
+  
+    "Player: 0",
+    "Player: 1",
+    "Player: 2",
+    "Player: 3"
+  ],
+  "playerColors" : [
+  
+    "red",
+    "orange",
+    "yellow",
+    "green"
+  ],
+  "actionHistory" : [
+  
+    {
+    
+      "actionID" : 1,
+      "imageKey" : threeTile,
+      "x" : 4,
+      "y" : 5,
+      "rotationState" : 0,
+      "isFinalRound" : false,
+      "actionType" : ThreeTileAction
+    },
+    {
+    
+      "actionID" : 2,
+      "imageKey" : twoTile,
+      "x" : 8,
+      "y" : 7,
+      "rotationState" : 0,
+      "actionType" : TwoTileAction
+    },
+    {
+    
+      "actionID" : 3,
+      "imageKey" : threeTile,
+      "x" : 5,
+      "y" : 7,
+      "rotationState" : 2,
+      "isFinalRound" : false,
+      "actionType" : ThreeTileAction
+    },
+    {
+    
+      "actionID" : 4,
+      "imageKey" : threeTile,
+      "x" : 4,
+      "y" : 6,
+      "rotationState" : 1,
+      "isFinalRound" : false,
+      "actionType" : ThreeTileAction
+    },
+    {
+    
+      "actionID" : 7,
+      "imageKey" : threeTile,
+      "x" : 3,
+      "y" : 8,
+      "rotationState" : 1,
+      "isFinalRound" : false,
+      "actionType" : ThreeTileAction
+    },
+    {
+    
+      "actionID" : 8,
+      "imageKey" : threeTile,
+      "x" : 4,
+      "y" : 7,
+      "rotationState" : 3,
+      "isFinalRound" : false,
+      "actionType" : ThreeTileAction
+    },
+    {
+    
+      "actionID" : 15,
+      "imageKey" : irrigationTile,
+      "x" : 6,
+      "y" : 6,
+      "actionType" : IrrigationTileAction
+    },
+    {
+    
+      "actionID" : 16,
+      "imageKey" : threeTile,
+      "x" : 7,
+      "y" : 7,
+      "rotationState" : 2,
+      "isFinalRound" : false,
+      "actionType" : ThreeTileAction
+    },
+    {
+    
+      "actionID" : 17,
+      "imageKey" : threeTile,
+      "x" : 7,
+      "y" : 5,
+      "rotationState" : 2,
+      "isFinalRound" : false,
+      "actionType" : ThreeTileAction
+    },
+    {
+    
+      "actionID" : -1,
+      "imageKey" : null,
+      "actionType" : UseActionTokenAction
+    }
+  ],
+  "actionReplays" : null,
+  "gameState" : NormalMode
+}
