@@ -83,6 +83,7 @@ public class Simulator {
 		GameRobot.type(filename);
 		GameRobot.pressEnter();
 		GameRobot.wait(TIME_BETWEEN_MAIN_COMMANDS);
+		GameRobot.pressEnter();
 	}
 
 	/** 

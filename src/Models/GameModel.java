@@ -20,7 +20,6 @@ public class GameModel implements Serializable<GameModel> {
 	private JavaPlayer[] players;
 	private SharedComponentModel shared;
 	private int indexOfCurrentPlayer;
-	private boolean isFinalRound;
 	public MAction selectedAction;
 
 	private Stack<Event> actionHistory; // This holds a history of the actions
@@ -36,7 +35,6 @@ public class GameModel implements Serializable<GameModel> {
 
 	public GameModel(int numberPlayers, String[] playerNames,
 			String[] playerColors) {
-		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.shared = new SharedComponentModel();
@@ -48,11 +46,11 @@ public class GameModel implements Serializable<GameModel> {
 		actionHistory = new Stack<Event>();
 		actionReplays = new Stack<Event>();
 		selectedAction = null;
+		this.gameState = GameState.NormalMode;
 	}
 
 	// created for loading the game
 	public GameModel(int numberPlayers) {
-		this.isFinalRound = false;
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.players = new JavaPlayer[numberPlayers];
@@ -414,8 +412,8 @@ public class GameModel implements Serializable<GameModel> {
 
 	// Method used in Event-----------------------------------------------------
 
-	public void setIsFinalRound(boolean b) { // used in TriggeredFinalRound
-		this.isFinalRound = b;
+	public void isFinalRound(boolean b) { // used in TriggeredFinalRound
+		shared.isFinalRound();
 	}
 
 	// ---------------------------------------------------------------------------
@@ -426,13 +424,15 @@ public class GameModel implements Serializable<GameModel> {
 		Stack<String> playerColors = new Stack<String>();
 		for(JavaPlayer player : players) {
 			playerNames.push(player.getName());
-			playerNames.push(player.getColor());
+			playerColors.push(player.getColor());
 		}
+		String serializedHistory = actionHistory.empty() ? "null" : Json.serializeArray(this.actionHistory);
+		String serializedReplays = actionReplays.empty() ? "null" : Json.serializeArray(this.actionReplays);
 		return Json.jsonObject(Json.jsonElements(
-			Json.serializeArray(playerNames),
-			Json.serializeArray(playerColors),
-			Json.serializeArray(actionHistory),
-			Json.serializeArray(actionReplays),
+			Json.jsonPair("playerNames", Json.serializeArray(playerNames)),
+			Json.jsonPair("playerColors", Json.serializeArray(playerColors)),
+			Json.jsonPair("actionHistory", serializedHistory),
+			Json.jsonPair("actionReplays", serializedReplays),
 			Json.jsonPair("gameState", this.gameState.toString())
 		));
 	}
@@ -441,15 +441,29 @@ public class GameModel implements Serializable<GameModel> {
 	public GameModel loadObject(JsonObject json) {
 		this.actionHistory = new Stack<Event>();
 		this.actionReplays = new Stack<Event>();
-		for(JsonObject object : ((JsonObject[])json.getObject("actionHistory")))
-			this.actionHistory.push(Action.loadAction(object));
-		for(JsonObject object : ((JsonObject[])json.getObject("actionReplays")))
-			this.actionReplays.push(Action.loadAction(object));
-		GameModel model = new GameModel(json.getStringArray("playerNames").length, json.getStringArray("playerNames"), json.getStringArray("playerColors"));
+		if(json.getObject("actionHistory") != null)
+			for(int x = 0; x < ((Object[])json.getObject("actionHistory")).length; ++x)
+				this.actionHistory.push(Action.loadAction((JsonObject)((Object[])json.getObject("actionHistory"))[x]));
+		if(json.getObject("actionReplays") != null)
+			for(int x = 0; x < ((Object[])json.getObject("actionReplays")).length; ++x)
+				this.actionHistory.push(Action.loadAction((JsonObject)((Object[])json.getObject("actionReplays"))[x]));
+		String[] names = new String[((Object[])json.getObject("playerNames")).length];
+		String[] colors = new String[((Object[])json.getObject("playerColors")).length];
+		for(int x = 0; x < names.length; ++x) {
+			colors[x] = (String)((Object[])json.getObject("playerColors"))[x];
+			names[x] = (String)((Object[])json.getObject("playerNames"))[x];
+		}
+		System.out.println(((Object[])json.getObject("playerNames")));
+		GameModel model = new GameModel(names.length, names, colors);
 		model.setActionHistory(actionHistory);
 		model.setActionReplays(actionReplays);
+		model.setGameState(GameState.valueOf(json.getString("gameState")));
 		// TODO set game states
-		return this;
+		return model;
+	}
+
+	private void setGameState(GameState state) {
+		this.gameState = state;
 	}
 
 	private void setActionReplays(Stack<Event> actionReplays2) {
@@ -518,5 +532,38 @@ public class GameModel implements Serializable<GameModel> {
 	
 	public int nextActionID() {
 		return ++actionIDCounter;
+	}
+	
+	public void undoAction() {
+		if(!gameState.equals(GameState.PlanningMode))
+			return;
+		Action[] actions = actionHistory.toArray(new Action[1]);
+		actionHistory.pop();
+		for(int x = 0; x < actions.length-1; ++x) 
+			actions[x].doAction(this);
+	}
+	
+	public void redoAllActionsUntil(int actionID, boolean slowForReplayMode) {
+		Action[] actions = actionHistory.toArray(new Action[1]);
+		actionHistory.clear();
+		for(int x = 0; x < actions.length; ++x) {
+			actions[x].doAction(this);
+			if(actions[x].getActionID() == actionID)
+				return;
+			actionHistory.push(actions[x]);
+		}
+	}
+	
+	public int getStartOfRoundActionID() {
+		int index = this.indexOfCurrentPlayer;
+		Action[] actions = actionHistory.toArray(new Action[1]);
+		for(int x = actions.length - 1; x >= 0; --x){
+			if(actions[x] instanceof EndTurnAction) {
+				--index;
+				if(index == 0)
+					return actions[x].getActionID();
+			}
+		}
+		return -1;
 	}
 }

@@ -111,11 +111,16 @@ public class Json {
     	LinkedList<String> list = new LinkedList<String>();
     	if(obj instanceof Stack) {
     		obj = ((Stack<Object>) obj).toArray();
+        	System.out.println(obj);
     	}
     	else if(obj instanceof List) {
     		obj = ((List<Object>) obj).toArray();
     	}
-    	if(obj instanceof int[]) {
+    	if(obj instanceof Object[] && ((Object[])obj)[0] instanceof String) {
+			for(int x = 0; x < ((Object[])obj).length; ++x) 
+				list.add(Json.jsonValue(((Object[])obj)[x] + ""));
+    	}
+    	else if(obj instanceof int[]) {
 			int[] arr = (int[]) obj;
 			for(int x = 0; x < arr.length; ++x) 
 				list.add(Json.jsonValue(arr[x] + ""));
@@ -141,7 +146,7 @@ public class Json {
 				list.add(Json.jsonValue(arr[x] + ""));
     	}
     	
-    	if(!(obj instanceof Object[]) || (obj instanceof String[]))
+    	if(!(obj instanceof Object[]) || (((Object[])obj)[0] instanceof String))
     		return Json.jsonArray(Json.jsonElements((String[]) list.toArray(new String[1])));
     		
 		Object[] arr =  (Object[]) obj;
