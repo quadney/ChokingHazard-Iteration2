@@ -275,7 +275,7 @@ public class GameController {
 		if (action instanceof IrrigationTileAction || action instanceof PalaceTileAction || action instanceof ThreeTileAction
 		|| action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction || action instanceof TwoTileAction
 		|| action instanceof VillageTileAction || action instanceof RiceTileAction || action instanceof MoveDeveloperAction)
-			board.updateBoardPanel(action);
+			board.updateBoardPanel(action, currentGame);
 		players.updatePlayerPanel(currentGame.getPlayerIndex());
 	}
 	
