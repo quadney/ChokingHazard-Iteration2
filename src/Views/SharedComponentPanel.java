@@ -17,7 +17,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
 
 import Controllers.GameController;
 
@@ -47,7 +46,6 @@ public class SharedComponentPanel extends JPanel{
 		playModeToggleButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if(playMode){
 					playModeToggleButton.setText("Play Mode");
 					playMode = false;
@@ -56,7 +54,7 @@ public class SharedComponentPanel extends JPanel{
 					playModeToggleButton.setText("Planning Mode");
 					playMode = true;
 				}
-				
+			
 				gameController.startPlanningMode();
 			}
 		});
