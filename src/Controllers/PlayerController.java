@@ -1,5 +1,7 @@
 package Controllers;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import Models.Developer;
 import Models.JavaPlayer;
 import Models.PalaceCard;
@@ -98,8 +100,7 @@ public class PlayerController {
 	}
 
 	public String getColorOfPlayer(int playerIndex) {
-		playerModels[playerIndex].getColor();
-		return null;
+		return playerModels[playerIndex].getColor();
 	}
 
 	

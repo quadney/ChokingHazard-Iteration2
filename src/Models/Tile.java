@@ -9,6 +9,7 @@ public class Tile implements Serializable<Tile> {
 			return this.toString().startsWith("palace");
 		}
 	}
+	
 	private TileType[][] tileCells;
 
 	public Tile(TileType type, int rotationState) {
@@ -57,37 +58,39 @@ public class Tile implements Serializable<Tile> {
 			tileCells[1][1] = type;
 		}
 	}
-	
-	public void rotationToRotationState(int rotationState) { 
+
+	public void rotationToRotationState(int rotationState) {
 		int rotations = (rotationState - getRotationState() + 4) % 4;
-		for(int x = 0; x < rotations; ++x)
+		for (int x = 0; x < rotations; ++x)
 			rotate();
 	}
-	
+
 	private int getRotationState() {
-		int[] xx = {1, 2, 1, 0};
-		int[] yy = {2, 1, 0, 1};
-		for(int i = 0; i < xx.length; ++i)
-			if(tileCells[xx[i]][yy[i]] != null && tileCells[xx[(i+1)%xx.length]][yy[(i+1)%yy.length]] != null)
+		int[] xx = { 1, 2, 1, 0 };
+		int[] yy = { 2, 1, 0, 1 };
+		for (int i = 0; i < xx.length; ++i)
+			if (tileCells[xx[i]][yy[i]] != null
+					&& tileCells[xx[(i + 1) % xx.length]][yy[(i + 1)
+							% yy.length]] != null)
 				return i;
-		for(int i = 0; i < xx.length; ++i)
-			if(tileCells[xx[i]][yy[i]] != null)
+		for (int i = 0; i < xx.length; ++i)
+			if (tileCells[xx[i]][yy[i]] != null)
 				return i;
 		return 0;
 	}
-	
+
 	public void rotate() {
-		int[] xx = {1, 2, 1, 0};
-		int[] yy = {2, 1, 0, 1};
-		TileType temp = tileCells[xx[xx.length-1]][yy[yy.length-1]];
-		for(int i = xx.length-1; i > 0; --i)
-			tileCells[xx[i]][yy[i]] = tileCells[xx[i-1]][yy[i-1]];
+		int[] xx = { 1, 2, 1, 0 };
+		int[] yy = { 2, 1, 0, 1 };
+		TileType temp = tileCells[xx[xx.length - 1]][yy[yy.length - 1]];
+		for (int i = xx.length - 1; i > 0; --i)
+			tileCells[xx[i]][yy[i]] = tileCells[xx[i - 1]][yy[i - 1]];
 		tileCells[xx[0]][yy[0]] = temp;
 	}
 
 	public String toString() {
 		String str = "";
-		for(int x = 0; x < 3; ++x)  {
+		for (int x = 0; x < 3; ++x) {
 			for (int y = 0; y < 3; ++y) {
 				str += tileCells[x][y] + "\t";
 			}
@@ -95,7 +98,7 @@ public class Tile implements Serializable<Tile> {
 		}
 		return str;
 	}
-	
+
 	@Override
 	public String serialize() {
 		return null;
@@ -107,10 +110,10 @@ public class Tile implements Serializable<Tile> {
 	}
 
 	public int numOfSpaces() {
-		int count = 0; 
-		for(int x = 0; x < tileCells.length; ++x)
+		int count = 0;
+		for (int x = 0; x < tileCells.length; ++x)
 			for (int y = 0; y < tileCells[0].length; ++y)
-				if(tileCells[x][y] != null)
+				if (tileCells[x][y] != null)
 					++count;
 		return count;
 	}

@@ -231,9 +231,9 @@ public class GameController {
 		case 68: //released D, add new developer onto board
 			//currentGame.setSelectedActionDeveloper(new MAction("")); //somehow know the developer hash with the player color
 			if(players.selectDeveloper(currentGame.getPlayerIndex())){
-				System.out.println("red is the (hard coded) current player color.");
+				System.out.println("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex()));
 				//currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("developer_" + players.getColorOfPlayer(currentGame.getPlayerIndex())));
-				currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("red"));
+				currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex())));
 				updateBoardControllerWithSelectedAction();
 			}
 			else{

@@ -23,6 +23,6 @@ public class PlaceDeveloperOnBoardAction extends NonRotatableComponentAction {
 
 	@Override
 	public boolean redo(GameModel game) {
-		 return game.placeDeveloperOnBoard(x, y);
+		return game.placeDeveloperOnBoard(x,y);
 	}
 }

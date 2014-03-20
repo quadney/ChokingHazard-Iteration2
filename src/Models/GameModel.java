@@ -42,6 +42,7 @@ public class GameModel implements Serializable<GameModel> {
 		this.players = new JavaPlayer[numberPlayers];
 		for (int i = 0; i < players.length; i++) {
 			players[i] = new JavaPlayer(playerNames[i], playerColors[i]);
+			System.out.println(players[i].getColor());
 		}
 		actionHistory = new Stack<Event>();
 		actionReplays = new Stack<Event>();
@@ -92,7 +93,7 @@ public class GameModel implements Serializable<GameModel> {
 	// Returns an array of players in order from highest to lowest of ranks of
 	// players
 	// valid on a palace/city
-	public ArrayList<JavaPlayer> getPalaceRanks(JavaCell palace) {
+	public ArrayList<ArrayList<JavaPlayer>> getPalaceRanks(JavaCell palace) {
 		ArrayList<JavaCell> city = gameBoard.getCityFromRootCell(palace);
 
 		HashMap<JavaPlayer, Integer> scores = new HashMap<JavaPlayer, Integer>();
@@ -122,19 +123,24 @@ public class GameModel implements Serializable<GameModel> {
 			values.add(i);
 		Collections.sort(values);
 
-		ArrayList<JavaPlayer> players = new ArrayList<JavaPlayer>();
+		ArrayList<ArrayList<JavaPlayer>> players = new ArrayList<ArrayList<JavaPlayer>>();
+   	  
+   	  for(Integer i:values) 
+        {
+            ArrayList<JavaPlayer> rank = new ArrayList<JavaPlayer>();
+            for(JavaPlayer p : scores.keySet()) 
+            {
+      	      if(scores.get(p) == i) 
+                  rank.add(p); 
+            }
+            players.add(rank); 
+        }
+   	  
+   	  return players;
 
-		for (Integer i : values) {
-			for (JavaPlayer p : scores.keySet()) {
-				if (scores.get(p) == i)
-					players.add(p);
-			}
-		}
-
-		return players;
 
 	}
-
+	
 	/*
 	 * public ArrayList<JavaPlayer> getIrrigationRanks(JavaCell cell) { int x =
 	 * cell.getX(); int y = cell.getY();
@@ -188,71 +194,91 @@ public class GameModel implements Serializable<GameModel> {
 	// Returns an array of players in order from highest to lowest of ranks of
 	// players
 	// valid on a palace/city
-	/*
-	 * public ArrayList<Player> getPalaceRanks(JavaCell palace) {
-	 * ArrayList<JavaCell> city = gameBoard.getCityFromRootCell(palace);
-	 * 
-	 * HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
-	 * 
-	 * for(JavaCell c : city) { if(getDeveloperOnCell(c) != null) { Developer d
-	 * = getDeveloperOnCell(c); Player p = d.getOwner(); int rank =
-	 * c.getElevation();
-	 * 
-	 * if(!scores.containsKey(p)) { scores.put(p, rank); } else { int newRank =
-	 * c.getElevation(); if(newRank > rank) scores.put(p, newRank); } } }
-	 * 
-	 * //we now have each player mapped to their rank or not mapped if they
-	 * don't have a developer //on the city.
-	 * 
-	 * ArrayList<Integer> values = new ArrayList<Integer>(); for(Integer
-	 * i:scores.values()) values.add(i); Collections.sort(values);
-	 * 
-	 * ArrayList<Player> players = new ArrayList<Player>();
-	 * 
-	 * for(Integer i:values) { for(Player p : scores.keySet()) {
-	 * if(scores.get(p) == i) players.add(p); } }
-	 * 
-	 * return players;
-	 * 
-	 * }
-	 * 
-	 * public ArrayList<Player> getIrrigationRanks(JavaCell cell) { int x =
-	 * cell.getX(); int y = cell.getY();
-	 * 
-	 * HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
-	 * 
-	 * JavaCell[][] map = gameBoard.getMap();
-	 * 
-	 * if (y < 13 && getDeveloperOnCell(map[y + 1][x]) != null) { JavaCell c =
-	 * map[y + 1][x]; Developer d = getDeveloperOnCell(map[y + 1][x]); Player p
-	 * = d.getOwner(); int rank = c.getElevation(); if(!scores.containsKey(p)) {
-	 * scores.put(p, rank); } else { int newRank = c.getElevation(); if(newRank
-	 * > rank) scores.put(p, newRank); } } if (y > 0 && getDeveloperOnCell(map[y
-	 * - 1][x]) != null) { JavaCell c = map[y - 1][x]; Developer d =
-	 * getDeveloperOnCell(map[y - 1][x]); Player p = d.getOwner(); int rank =
-	 * cell.getElevation(); if(!scores.containsKey(p)) { scores.put(p, rank); }
-	 * else { int newRank = c.getElevation(); if(newRank > rank) scores.put(p,
-	 * newRank); } } if (x < 14 && getDeveloperOnCell(map[y][x + 1]) != null) {
-	 * JavaCell c = map[y][x+1]; Developer d = getDeveloperOnCell(map[y][x +
-	 * 1]); Player p = d.getOwner(); int rank = c.getElevation();
-	 * if(!scores.containsKey(p)) { scores.put(p, rank); } else { int newRank =
-	 * c.getElevation(); if(newRank > rank) scores.put(p, newRank); } } if (x >
-	 * 0 && getDeveloperOnCell(map[y][x - 1]) != null) { JavaCell c =
-	 * map[y][x-1]; Developer d = getDeveloperOnCell(map[y][x - 1]); Player p =
-	 * d.getOwner(); int rank = cell.getElevation(); if(!scores.containsKey(p))
-	 * { scores.put(p, rank); } else { int newRank = c.getElevation();
-	 * if(newRank > rank) scores.put(p, newRank); } }
-	 * 
-	 * ArrayList<Integer> values = new ArrayList<Integer>(); for(Integer
-	 * i:scores.values()) values.add(i); Collections.sort(values);
-	 * 
-	 * ArrayList<Player> players = new ArrayList<Player>();
-	 * 
-	 * for(Integer i:values) { for(Player p : scores.keySet()) {
-	 * if(scores.get(p) == i) players.add(p); } }
-	 * 
-	 * return players; }
-	 */
+	
+	  /*public ArrayList<ArrayList<Player>> getPalaceRanks(JavaCell palace) {
+     
+   	  ArrayList<JavaCell> city = gameBoard.getCityFromRootCell(palace);
+   	  
+   	  HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
+   	  
+   	  for(JavaCell c : city) 
+        { 
+           if(getDeveloperOnCell(c) != null) 
+           { 
+             Developer d = getDeveloperOnCell(c); Player p = d.getOwner(); 
+             int rank = c.getElevation();
+      	    if(!scores.containsKey(p)) 
+             { 
+               scores.put(p, rank); 
+             } 
+             else 
+             { 
+               int newRank = c.getElevation(); if(newRank > rank) scores.put(p, newRank); 
+             } 
+           } 
+        }
+   	  
+   	  //we now have each player mapped to their rank or not mapped if they
+   	  //don't have a developer on the city.
+   	  
+   	  ArrayList<Integer> values = new ArrayList<Integer>(); for(Integer
+   	  i:scores.values()) values.add(i); Collections.sort(values);
+   	  
+   	  ArrayList<ArrayList<Player>> players = new ArrayList<Player>();
+   	  
+   	  for(Integer i:values) 
+        {
+            ArrayList<Player> rank = new ArrayList<Player>();
+            for(Player p : scores.keySet()) 
+            {
+      	      if(scores.get(p) == i) 
+                  rank.add(p); 
+            }
+            players.add(rank); 
+        }
+   	  
+   	  return players;
+	  
+	  }
+	  
+	  public ArrayList<Player> getIrrigationRanks(JavaCell cell) { int x =
+	  cell.getX(); int y = cell.getY();
+	  
+	  HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
+	  
+	  JavaCell[][] map = gameBoard.getMap();
+	  
+	  if (y < 13 && getDeveloperOnCell(map[y + 1][x]) != null) { JavaCell c =
+	  map[y + 1][x]; Developer d = getDeveloperOnCell(map[y + 1][x]); Player p
+	  = d.getOwner(); int rank = c.getElevation(); if(!scores.containsKey(p)) {
+	  scores.put(p, rank); } else { int newRank = c.getElevation(); if(newRank
+	  > rank) scores.put(p, newRank); } } if (y > 0 && getDeveloperOnCell(map[y
+	  - 1][x]) != null) { JavaCell c = map[y - 1][x]; Developer d =
+	  getDeveloperOnCell(map[y - 1][x]); Player p = d.getOwner(); int rank =
+	  cell.getElevation(); if(!scores.containsKey(p)) { scores.put(p, rank); }
+	  else { int newRank = c.getElevation(); if(newRank > rank) scores.put(p,
+	  newRank); } } if (x < 14 && getDeveloperOnCell(map[y][x + 1]) != null) {
+	  JavaCell c = map[y][x+1]; Developer d = getDeveloperOnCell(map[y][x +
+	  1]); Player p = d.getOwner(); int rank = c.getElevation();
+	  if(!scores.containsKey(p)) { scores.put(p, rank); } else { int newRank =
+	  c.getElevation(); if(newRank > rank) scores.put(p, newRank); } } if (x >
+	  0 && getDeveloperOnCell(map[y][x - 1]) != null) { JavaCell c =
+	  map[y][x-1]; Developer d = getDeveloperOnCell(map[y][x - 1]); Player p =
+	  d.getOwner(); int rank = cell.getElevation(); if(!scores.containsKey(p))
+	  { scores.put(p, rank); } else { int newRank = c.getElevation();
+	  if(newRank > rank) scores.put(p, newRank); } }
+	  
+	  ArrayList<Integer> values = new ArrayList<Integer>(); for(Integer
+	  i:scores.values()) values.add(i); Collections.sort(values);
+	  
+	  ArrayList<Player> players = new ArrayList<Player>();
+	  
+	  for(Integer i:values) { for(Player p : scores.keySet()) {
+	  if(scores.get(p) == i) players.add(p); } }
+	  
+	  return players; }
+	 
+>>>>>>> 2b6a227283a2a6f9dc324d6ed4eb0995d864d2ad
 	/**
 	 * Backtracks GameModel state to end of current player's previous turn,
 	 * storing all backtracked moves in actionReplays stack. Also changes
@@ -466,6 +492,18 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public boolean placeDeveloperOnBoard(int x, int y) {
-		return gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
+		return gameBoard.placeDeveloper(gameBoard.getCellAtXY(x, y),
+				players[indexOfCurrentPlayer]);
+	}
+	
+	public boolean takeDeveloperOffBoard(int x, int y) {
+		return gameBoard.removeDatDeveloperOffDaBoard(gameBoard.getCellAtXY(x, y), players[indexOfCurrentPlayer] );
+	}
+	
+	public LinkedList<Developer> getAllPlayerDevelopers() {
+		LinkedList<Developer> list = new LinkedList<Developer>();
+		for(JavaPlayer player : players)
+			list.addAll(Arrays.asList(player.getDevelopersOnBoard()));
+		return list;
 	}
 }

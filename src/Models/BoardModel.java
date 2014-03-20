@@ -49,7 +49,17 @@ public class BoardModel implements Serializable<BoardModel> {
 			/*
 			 * are we going to be creating the tile here? if we are then we need
 			 * to increase cellId here.
-			 */
+			 */int number;
+						if (tile.getType() == "two") {
+							number = 2;
+						} else if (tile.getType() == "three") {
+							number = 3;
+
+						} else if (tile.getType() == "one") {
+							number = 1;
+						} else {
+							number = 0;
+						}
 			cellId++;
 			for (int i = 0; i < tileCells.length; i++)
 				for (int j = 0; j < tileCells[i].length; j++)
@@ -63,6 +73,8 @@ public class BoardModel implements Serializable<BoardModel> {
 						map[miniMap[i][j].getX()][miniMap[i][j].getY()]
 								.setElevation(map[miniMap[i][j].getX()][miniMap[i][j]
 										.getY()].getElevation() + 1);
+						map[miniMap[i][j].getX()][miniMap[i][j].getY()].setNumOriginalSpaces(number);
+						
 					}
 			
 			if(placedLandTile(xC, yC))
@@ -91,12 +103,16 @@ public class BoardModel implements Serializable<BoardModel> {
 		int neededActionPoints = checkNeededActionPoints(miniMap, tile);
 		
 		//boolean needed to check the amount of available AP points
-		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1].toString()); 
+		boolean isLandTile = "villagerice".contains(tile.getTileCells()[1][1].toString());
+		boolean palaceOK = true;
+		if (tile.getTileCells()[1][1].isPalace()) {
+			palaceOK = placePalace(xC, yC, miniMap[1][1], map, player);
+		}
 
 		System.out.println("palace placement: " + checkPalacePlacement(miniMap, tile));
 		System.out.println("palace tilesBelow: " + checkTilesBelow(miniMap, tile));
 		System.out.println("palace elevation: " + checkElevation(miniMap, tile, xC, yC));
-		System.out.println("palace I: " + checkIrrigationPlacement(miniMap, tile));
+		System.out.println("palace Irrigation: " + checkIrrigationPlacement(miniMap, tile));
 		System.out.println("palace DevOnCell: " + checkDeveloperOnCell(miniMap, tile));
 		System.out.println("palace CityConn: " + checkCityConnection(miniMap, tile));
 		System.out.println("palace edge: " + checkEdgePlacement(miniMap, tile));
@@ -109,7 +125,9 @@ public class BoardModel implements Serializable<BoardModel> {
 				&& checkDeveloperOnCell(miniMap, tile)
 				&& checkCityConnection(miniMap, tile)
 				&& checkEdgePlacement(miniMap, tile)
-				&& player.decrementNActionPoints(neededActionPoints, isLandTile)) {
+				&& player.decrementNActionPoints(neededActionPoints, isLandTile)
+				&& palaceOK) {
+	
 			return true;
 		}
 
@@ -122,12 +140,23 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		for (int i = 0, x = xC - 1; i < 3; i++, x++) {
 			for (int j = 0, y = yC - 1; j < 3; j++, y++) {
-				if ((x >= 0 && x <= map.length) && (y >= 0)
-						&& (y <= map[0].length)) {
+				if ((x >= 0 && x < map.length) && (y >= 0)
+						&& (y < map[0].length)) {
 					testingMap[i][j] = map[x][y];
 				}
 			}
 		}
+		
+
+			String s = "";
+
+			for (int i = 0; i < testingMap.length; i++) {
+				for (int j = 0; j < testingMap[i].length; j++) {
+					s += testingMap[i][j].getElevation() + " ";
+				}
+				s += "\n";
+			}
+				System.out.println("Printing miniMap: \n" + s);
 
 		return testingMap;
 	}
@@ -181,28 +210,8 @@ public class BoardModel implements Serializable<BoardModel> {
 		int testId = miniMap[1][1].getCellId();
 		int testing = 0;
 
-		for (int i = 0; i < tileCells.length; i++) {
-			for (int j = 0; j < tileCells[i].length; j++) {
-				if (tileCells[i][j] != null	&& miniMap[i][j].getElevation() >= 0) {
-					System.out.println("in the 1st if statement");
-					
-					if (testId == 0) {
-						testId = miniMap[i][j].getCellId();
-						System.out.println("The id is: " + testId);
-					} else {
-						if (testId != miniMap[i][j].getCellId())
-							return true;
-						else
-							numberOfTilesBelow++;
-					}
-				}
-				if( miniMap[i][j] != null && miniMap[i][j].getElevation() >= 0 && miniMap[1][1].getCellId() == miniMap[i][j].getCellId()){
-					testing++;
-				}
-			}
-		}
+	
 
-		System.out.println("The # of tiles below: " + numberOfTilesBelow + "testing: " + testing);
 
 		int number;
 		if (tile.getType() == "two") {
@@ -215,6 +224,43 @@ public class BoardModel implements Serializable<BoardModel> {
 		} else {
 			number = 0;
 		}
+		
+		
+		
+		for (int i = 0; i < tileCells.length; i++) {
+			for (int j = 0; j < tileCells[i].length; j++) {
+				//System.out.println("original: "+miniMap[i][j].getNumOriginalSpaces() + "  " + number);
+				//System.out.println(i + " " + j + miniMap[i][j].getCellType());
+				
+				if(miniMap[1][1].getNumOriginalSpaces() == 1 && number == 1)
+					return false;
+				if(miniMap[1][1].getNumOriginalSpaces() > 1 && number == 1)
+					return true;
+				
+				if (tileCells[i][j] != null	&& miniMap[i][j].getElevation() >= 0) {
+					System.out.println("in the 1st if statement: " + testId);
+					
+					if (testId == 0) {
+						testId = miniMap[i][j].getCellId();
+						System.out.println("The id is: " + testId);
+					} else {
+						if (testId != miniMap[i][j].getCellId())
+							return true;
+						else
+							numberOfTilesBelow++;
+					}
+				}			
+			//	System.out.println("elevation: " + miniMap[i][j].getElevation() + "getCellIdmini: " + miniMap[1][1].getCellId() + "getCellId: " + miniMap[i][j].getCellId()  );
+			//	System.out.println("The # of tiles below: " + numberOfTilesBelow + "testing: " + testing);
+
+				if( miniMap[i][j] != null && miniMap[i][j].getElevation() >= 0 && miniMap[1][1].getCellId() == miniMap[i][j].getCellId()){
+					testing++;
+				}
+				
+				
+			}
+		}
+		
 		if (number != numberOfTilesBelow || testing > numberOfTilesBelow)
 			return true;
 		else
@@ -348,14 +394,73 @@ public class BoardModel implements Serializable<BoardModel> {
 		return;
 	}
 	
-	public boolean canPlacePalace(int x, int y, JavaCell palace) {
-		return true;
+	public boolean placePalace(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
+		if (map[x][y].getCellType() == "village" 
+			&& mutualPalacePlacementRequirementsOK(x, y, palace, map, player)) {
+			
+			return true;
+		}
+		
+		else if (map[x][y].getCellType().contains("palace")
+				&& mutualPalacePlacementRequirementsOK(x, y, palace, map, player)
+				&& canUpgradePalace(x, y, palace, map)) {
+				
+			return true;
+		}
+		
+		else {					
+			return false;
+		}
 	}
 	
-	public boolean canUpgradePalace(int x, int y, JavaCell palace) {
+	public boolean canUpgradePalace(int x, int y, JavaCell palace, JavaCell[][] map) {
+		if (getPalaceSize(map[x][y]) <= getPalaceSize(palace)) {
+			return true;
+		}
+		
 		return false;
 	}
 
+	public boolean mutualPalacePlacementRequirementsOK(int x, int y, JavaCell palace, JavaCell[][] map, JavaPlayer player) {
+		if (findNumberConnected(x,y,map) >= getPalaceSize(palace)
+				&& !hasAlreadyBeenModified(palace, player)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public int getPalaceSize(JavaCell palace) {
+		int palaceSize = 200;
+		
+		switch (palace.getCellType()) {
+			case "2palace":
+				palaceSize = 2;
+				break;
+			case "4palace":
+				palaceSize = 4;
+				break;
+			case "6palace":
+				palaceSize = 6;
+				break;
+			case "8palace":
+				palaceSize = 8;
+				break;
+			case "10palace":
+				palaceSize = 10;
+				break;
+			default:
+				break;
+		}
+		
+		return palaceSize;
+	}
+	
+	private boolean hasAlreadyBeenModified(JavaCell palace, JavaPlayer player) {
+		
+		return player.cellInPalacesInteractedWith(palace);
+	}
+	
 	public static int findNumberConnected(int x, int y, JavaCell[][] map) {
 		JavaCell[][] copy = new JavaCell[14][14];
 		for (int i = 0; i < 14; i++)
@@ -396,17 +501,6 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		return up + left + right + down + 1;
 	}
-
-// Returns the number of village Spaces surrounding the given Cell. Called
-// by checkIfICanUpgradePalace to make sure number of surrounding villages
-// is greater than or equal to the palace number.
-/*private int checkForNumberOfVillages(Cell cell)
-{
-setConnectedCells(cell);
-return cell.getConnectedCells().size();
-}*/
-
-
 	
 	private boolean checkEdgePlacement(JavaCell[][] miniMap, Tile tile) {
 
@@ -509,12 +603,40 @@ return cell.getConnectedCells().size();
 
 		// Check that player has available AP for this
 		// First determine type of move/cost
-		if (!player.decrementNActionPoints(1, false) || !player.canPlaceDeveloperOnBoard()) // TODO: Check lowlands or
+		if (!player.decrementNActionPoints(locationCell.getActionPointsFromDeveloperMove(), false) || !player.canPlaceDeveloperOnBoard()) // TODO: Check lowlands or
 			// mountains
 			return false;
 		
 		return true;
 	}
+	
+	public boolean removeDatDeveloperOffDaBoard(JavaCell jailCell, JavaPlayer theHomie)
+	{
+		// Check if its an border cell
+		if (!jailCell.isBorder())
+		{	
+			// If its not on the border, needs to be next to it
+			if(!jailCell.isNextToBorder())
+				return false; // Can't do it, homie goes back to Jail
+			
+			// If it's next to the border, needs an adjacent empty tile in border
+			if(!hasAdjacentEmptyTile(jailCell))
+				return false; // Can't do it, homie goes back to Jail
+		}
+		
+		// Else, he is on the border, we can proceed with bail procedures
+		if(!theHomie.decrementNActionPoints(jailCell.getActionPointsFromDeveloperMove(), false))
+			return false; // Can't do it, homie goes back to Jail
+		
+		// By this point, we've made it through all the bail procedures and homie has paid his dues (action points)
+		// He is now free to go
+		
+		theHomie.removeDeveloperFromArray();
+		
+		return true; // The homie is free ~ ~ ~
+		
+	}
+	
 
 	public boolean hasAdjacentEmptyTile(JavaCell cell) {
 		int x = cell.getX();
@@ -559,16 +681,6 @@ return cell.getConnectedCells().size();
 			return 2;
 		else
 			return 1;
-	}
-
-	public void removeDeveloper(JavaCell javaCell, JavaPlayer player) {
-		// Turn off hasDeveloper
-		javaCell.removeDeveloper();
-		// Remove currently selected developer from dev array
-		player.removeDeveloperFromArray(); // Must check that this works later
-											// on TODO
-		// Decrement actions points
-		player.decrementNActionPoints(1, false);
 	}
 
 	public boolean moveDeveloper(JavaPlayer player, LinkedList<JavaCell> path) {
