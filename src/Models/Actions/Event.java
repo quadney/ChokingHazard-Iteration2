@@ -1,8 +1,9 @@
 package Models.Actions;
 
 import Models.GameModel;
+import Models.Serializable;
 
-public abstract class Event {
+public abstract class Event implements Serializable<Action> {
 
 	public Event() {
 		// TODO Auto-generated constructor stub

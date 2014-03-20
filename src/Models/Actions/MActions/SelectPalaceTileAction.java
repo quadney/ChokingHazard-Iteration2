@@ -19,7 +19,7 @@ public class SelectPalaceTileAction extends SelectOneSpaceTileAction {
 	}
 	
 	public Action pressEnter(GameModel game) {
-		PalaceTileAction action = new PalaceTileAction(-1, x, y, value);
+		PalaceTileAction action = new PalaceTileAction(game.nextActionID(), x, y, value);
 		if(action.doAction(game))
 			return action; 
 		return null;
