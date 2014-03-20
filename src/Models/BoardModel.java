@@ -570,8 +570,8 @@ public class BoardModel implements Serializable<BoardModel>  {
 			number = 0;
 		}
 
-		System.out.println("in checkedge the outer cell length is: "
-				+ outerCells.length);
+//		System.out.println("in checkedge the outer cell length is: "
+//				+ outerCells.length);
 
 		for (int i = 0; i < outerCells.length; i++) {
 			for (int j = 0; j < cells.length; j++) {

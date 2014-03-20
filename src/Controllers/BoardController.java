@@ -61,16 +61,16 @@ public class BoardController {
 
 	public void updateBoardPanel(Action action, GameModel game) {
 		if(action instanceof RotatableComponentAction){
-			System.out.println("in updateBoardPanel RotatableTileComponent");
+//			System.out.println("in updateBoardPanel RotatableTileComponent");
 			boardPanel.placeTile(((RotatableComponentAction)action).getY()*50, ((RotatableComponentAction)action).getX()*50, ((RotatableComponentAction)action).getRotationState(), boardModel.getElevationAtCellXY(((RotatableComponentAction)action).getX(), ((RotatableComponentAction)action).getY()), action.imageKey);
 		}
 		
 		else if(action instanceof OneSpaceTileAction){
-			System.out.println("in updateBoardPanel OneSpaceTileAction");
+//			System.out.println("in updateBoardPanel OneSpaceTileAction");
 			boardPanel.placeTile(((OneSpaceTileAction)action).getY()*50, ((OneSpaceTileAction)action).getX()*50, 0, boardModel.getElevationAtCellXY(((OneSpaceTileAction)action).getX(), ((OneSpaceTileAction)action).getY()), action.imageKey);
 		}
 		else if(action instanceof PlaceDeveloperOnBoardAction) {
-			System.out.println("in updateBoardPanel NonRotatableTileComponent");
+//			System.out.println("in updateBoardPanel NonRotatableTileComponent");
 			Stack<Integer> xs = new Stack<Integer>();
 			Stack<Integer> ys = new Stack<Integer>(); 
 			Stack<String> images = new Stack<String>(); 
