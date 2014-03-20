@@ -56,17 +56,15 @@ public class HoldFestivalFrame extends JFrame {
 			if(players[i] == null){
 				continue;
 			}
-			else{
+			else if (players[i].canHoldFestival(festivalCard)){
 				//get valid palace cards
 				ArrayList<PalaceCard> playerPalaceCards = players[i].getPalaceCards();
 				ArrayList<PalaceCard> validPalaceCards = new ArrayList<PalaceCard>();
 				
-				for(int j = 0; j < playerPalaceCards.size(); j++) {
-					if(playerPalaceCards.get(j).compareNumSymbols(festivalCard)){
-						if(playerPalaceCards.get(j).compareHasSymbols(festivalCard)){
+				for(PalaceCard card : playerPalaceCards) {
+					if(card.compareNumSymbols(festivalCard) && card.compareHasSymbols(festivalCard)){
 							// add a copy of the card
-							validPalaceCards.add(playerPalaceCards.get(j));
-						}
+							validPalaceCards.add(card);
 					}
 				}
 				if(validPalaceCards.isEmpty()){

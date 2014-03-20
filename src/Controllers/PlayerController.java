@@ -83,6 +83,9 @@ public class PlayerController {
 //		return playerModels[playerIndex].canDeleteDeveloperOnBoardPlayerCheck(actionPointCost);
 //	}
 	
+	public boolean canHoldFestival(int index, PalaceCard card){
+		return playerModels[index].canHoldFestival(card);
+	}
 	
 	//----------------------------------------------------------------------------
 	//Select Final turn method - only occurs if this is valid to do

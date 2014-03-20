@@ -67,8 +67,8 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 	}
 	
 	public PalaceCard drawFromDeck(){
-		PalaceCard card = palaceCardDeck.pop();
 		checkIfDeckIsEmpty();
+		PalaceCard card = palaceCardDeck.pop();
 		return card;
 	}
 	public PalaceCard drawFestivalCard(){

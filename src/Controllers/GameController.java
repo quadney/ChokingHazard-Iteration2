@@ -444,33 +444,36 @@ public class GameController {
 	}
 
 	private void seeIfPlayerCanHoldAFestival() {
-		// TODO need to first make sure that the user can in fact hold a
-		// festival
-		// TODO need to get the palace and palace vaule that the player wants it
-		// to be on
-		// TODO put the festival image on the palace to let the user know that
-		// there was a festival on it
-		int palaceValue = 10;
-		// TODO need to also reflect that in the board model ?
-		// TODO
-		boolean fest = currentGamePanel
-				.askUserIfWouldLikeToHoldAPalaceFestival();
-		if (fest)
+		// first make sure that the user can in fact hold a festival
+		int palaceValue = 0;
+		boolean fest = false;
+		if(players.canHoldFestival(currentGame.getPlayerIndex(), shared.getCurrentFestivalCard())){
+			//ask if they would like to hold a palace festival
+			if(currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival()){
+				fest = true;
+				//TODO get the palace and palace value that the player wants it to be on
+				//call the P action yes?
+			}
+			
+		}
+		
+		if (fest){
 			startFestival(palaceValue);
+		}
 	}
 	
 	private void startFestival(int palaceValue){
-		//TODO testing
-		//currentGamePanel.playFestivalSound();
-		//currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
+		currentGamePanel.playFestivalSound();
+		currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
 
 	}
 
 	public void updatePlayersAfterFestival(ArrayList<PalaceCard> cardsToDiscard) {
-		// the player's fame points and festival cards have already been taken
-		// care of.
-		// this updates the views and discards of the cards that were played in
-		// the festival
+		// the player's fame points and festival cards have already been taken care of.
+		// this updates the views and discards of the cards that were played in the festival
+		
+		// TODO put the festival image on the palace to let the user know that there was a festival on it
+		// TODO need to also reflect that in the board model ?
 		this.players.updatePlayersAfterFestival();
 		this.shared.updateAfterFestival(cardsToDiscard);
 		this.currentGamePanel.closeFestivalFrame();
