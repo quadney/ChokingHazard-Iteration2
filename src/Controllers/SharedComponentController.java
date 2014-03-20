@@ -9,10 +9,10 @@ public class SharedComponentController {
 	private SharedComponentModel sharedModel;
 	private SharedComponentPanel sharedPanel;
 
-	public SharedComponentController(SharedComponentModel shared){
+	public SharedComponentController(SharedComponentModel shared, GameController gameController){
 		//new game constructor
 		this.sharedModel = shared;
-		this.sharedPanel = new SharedComponentPanel(sharedModel.getFestivalCardType());
+		this.sharedPanel = new SharedComponentPanel(sharedModel.getFestivalCardType(), gameController);
 		updateSharedPanel();
 		//there's no festival card for this deck. so when dealPalaceCards(numPlayers) is called, it will create a festival card
 	}
