@@ -458,8 +458,13 @@ public class GameModel implements Serializable<GameModel> {
 		GameModel model = new GameModel(names.length, names, colors);
 		model.setActionHistory(actionHistory);
 		model.setActionReplays(actionReplays);
+		model.setGameState(GameState.valueOf(json.getString("gameState")));
 		// TODO set game states
-		return this;
+		return model;
+	}
+
+	private void setGameState(GameState state) {
+		this.gameState = state;
 	}
 
 	private void setActionReplays(Stack<Event> actionReplays2) {
