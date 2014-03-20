@@ -89,7 +89,7 @@ public class JavaCell implements Serializable<JavaCell> {
    
    public int getActionPointsFromDeveloperMove()
    {
-	   if (this.yVal > 6) //From lowlands
+	   if (this.xVal > 6) //From lowlands
 		   return 1;
 	   else
 		   return 2; //From mountains

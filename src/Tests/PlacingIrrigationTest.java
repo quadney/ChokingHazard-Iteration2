@@ -19,9 +19,10 @@ public class PlacingIrrigationTest {
 			Simulator.newGame("p", "c");
 			Simulator.TIME_BETWEEN_MAIN_COMMANDS = 300;
 			Simulator.THROTTLE = 50;
-			
 			Thread.sleep(500);
 			GameRobot.pressEscape();
+			
+			
 			Simulator.placeIrrigationTile(2, 1);
 			Simulator.placeRiceTile(3, 1);
 			Simulator.placeVillageTile(4, 1);

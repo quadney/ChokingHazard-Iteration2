@@ -64,4 +64,12 @@ public class Developer implements Serializable<Developer>
 	public boolean isOnThisXY(int x, int y) {
 		return x == this.getX() && y == this.getY();
 	}
+
+	public boolean moveDeveloperIfOnThisXY(JavaCell origin, JavaCell newLocation) {
+		if(location == origin){
+			location = newLocation;
+			return true;
+		}
+		return false;
+	}
 }
