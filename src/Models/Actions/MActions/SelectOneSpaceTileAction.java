@@ -1,6 +1,5 @@
 package Models.Actions.MActions;
 
-import Models.GameModel;
 import Models.Actions.Action;
 
 public abstract class SelectOneSpaceTileAction extends SelectNonRotatableComponentAction {
@@ -32,12 +31,6 @@ public abstract class SelectOneSpaceTileAction extends SelectNonRotatableCompone
 		}
 		else
 			return true;
-	}
-
-	@Override
-	public Action pressEnter(GameModel game) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
    
