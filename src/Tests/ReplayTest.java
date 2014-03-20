@@ -13,28 +13,39 @@ public class ReplayTest {
 		@SuppressWarnings("unused")
 		RunGame game = new RunGame();
 		
-		Simulator.newGame("p", "c");
+		Simulator.newGame("mau", "meghan", "sydney");
 		Simulator.THROTTLE = 20;
 
 		Simulator.placeThreeSpaceTile(3, 3, 0);
-		
 		Simulator.placeTwoSpaceTile(5, 5, 0);
 		Simulator.placeThreeSpaceTile(7, 7, 0);
-		
 		Simulator.placeTwoSpaceTile(9, 9, 0);
 		Simulator.placeTwoSpaceTile(11, 11, 0);
 		Simulator.placeTwoSpaceTile(9, 3, 0);
+		Simulator.startReplay();
+		GameRobot.wait(7000);
 		
-
 		Simulator.placeThreeSpaceTile(7, 2, 0);
 		Simulator.endTurn(0);
 		
 		Simulator.placeTwoSpaceTile(2, 7, 0);
 		Simulator.endTurn(0);
+		
 		Simulator.placeThreeSpaceTile(8, 4, 0);
 		Simulator.placeVillageTile(12, 12);
 		Simulator.placeVillageTile(4, 12);
 		Simulator.placeVillageTile(12, 4);
+		Simulator.startReplay();
+		GameRobot.wait(13000);
+		
+		Simulator.placeRiceTile(3, 9);
+		Simulator.placeRiceTile(4, 9);
+		Simulator.endTurn(0);
+		
+		Simulator.placeDeveloper(12, 12);
+		Simulator.placeThreeSpaceTile(12, 6, 0);
+		Simulator.placeDeveloper(12, 11);
+		
 		Simulator.startReplay();
 		
 		/*Simulator.placeDeveloper(3, 3);

@@ -247,7 +247,6 @@ public class SharedComponentPanel extends JPanel{
 	}
 
 	public void updateFestivalCard(PalaceCard card) {
-		System.out.println(imageSourceHashMap);
 		if(card.isFaceUp())
 			festivalCard.setIcon(new ImageIcon(imageSourceHashMap.get("layout_" + card.getType())));
 		else
