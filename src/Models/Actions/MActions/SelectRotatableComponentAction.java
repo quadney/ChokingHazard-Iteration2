@@ -17,6 +17,10 @@ public abstract class SelectRotatableComponentAction extends MAction {
 	public Action pressDelete(){
 		return null;
 	}
+	
+	public MAction pressM(){
+		return null;
+	}
 
 	public boolean pressSpace() {
 		int newRotationState = (rotationState + 1)  % 4;
