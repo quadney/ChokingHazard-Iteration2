@@ -287,6 +287,9 @@ public class GameController {
 				currentGamePanel.playSelectDeveloperSound();
 				updateBoardControllerWithSelectedAction();
 			}
+			else{
+				currentGamePanel.playErrorSound();
+			}
 			
 		
 			break;
@@ -389,7 +392,7 @@ public class GameController {
 			board.updateSelectedTileAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
 		else if(currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction || currentGame.getSelectedAction() instanceof SelectTabThroughDevelopersAction){//developer
-			System.out.println("(In GCtrl) updating Board panel when developer action is selected");
+			//System.out.println("(In GCtrl) updating Board panel when developer action is selected");
 			board.updateSelectedHighlightDeveloperAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50,currentGame.getSelectedActionImageKey());
 		}
 		else if(currentGame.getSelectedAction() instanceof SelectMoveDeveloperAroundBoardAction){//developer

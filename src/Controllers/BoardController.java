@@ -43,13 +43,16 @@ public class BoardController {
 		Stack<Integer> x = new Stack<Integer>();
 		Stack<Integer> y = new Stack<Integer>();
 		
+		//System.out.println(path.peekFirst().getY() + " " + path.peekFirst().getX() );
+		
 		//draws the developer on the cell the were originally on
-		boardPanel.selectHighlightedDeveloper(imageKey, path.peekFirst().getX(), path.peekFirst().getY());
+		
+		//boardPanel.selectHighlightedDeveloper(imageKey, path.peekFirst().getY()*50, path.peekFirst().getX()*50);
 		
 		//puts the path 
 		for(JavaCell c: path){
-			x.add(c.getX());
-			y.add(c.getY());
+			x.add(c.getX()*50);
+			y.add(c.getY()*50);
 		}
 		
 		//remember to flip x and y
