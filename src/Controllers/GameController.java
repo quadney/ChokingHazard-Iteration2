@@ -49,7 +49,6 @@ public class GameController {
 		shared = new SharedComponentController(currentGame.getShared()); //change this to work
 		
 		//this initializes the dealing of the palace cards
-		//the shared dealPalaceCards returns the dealt palace cards
 		//and then the player sets those dealt cards as the cards
 		players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
 		players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex());
@@ -121,11 +120,9 @@ public class GameController {
 			break;
 		case 9:
 			//released tab, tab through developers
-			if(players.getDeveloperArray(currentGame.getPlayerIndex()) != null){
-				//currentGame.setSelectedAction(new SelectTabThroughDevelopersAction(  ""    , players.getDeveloperArray(currentGame.getPlayerIndex())));
-			
-			}
-			else{
+			if (players.getNumDevelopersOffBoard(currentGame.getPlayerIndex()) < 12) {
+				currentGame.setSelectedAction(new SelectTabThroughDevelopersAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex()), players.getDevelopersOnBoard(currentGame.getPlayerIndex())));
+			} else {
 				currentGamePanel.makeErrorSound();
 			}
 			
@@ -231,8 +228,6 @@ public class GameController {
 		case 68: //released D, add new developer onto board
 			//currentGame.setSelectedActionDeveloper(new MAction("")); //somehow know the developer hash with the player color
 			if(players.selectDeveloper(currentGame.getPlayerIndex())){
-				System.out.println("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex()));
-				//currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("developer_" + players.getColorOfPlayer(currentGame.getPlayerIndex())));
 				currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex())));
 				updateBoardControllerWithSelectedAction();
 			}

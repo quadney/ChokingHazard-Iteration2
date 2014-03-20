@@ -36,6 +36,7 @@ public class GameModel implements Serializable<GameModel> {
 	public GameModel(int numberPlayers, String[] playerNames,
 			String[] playerColors) {
 		this.isFinalRound = false;
+		this.gameState=
 		this.indexOfCurrentPlayer = 0;
 		this.gameBoard = new BoardModel();
 		this.shared = new SharedComponentModel();

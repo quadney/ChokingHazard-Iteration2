@@ -143,9 +143,13 @@ public class PlayerController {
 		playerPanels[playerIndex].updateDevelopersOffBoard(playerModels[playerIndex].getDevelopersOffBoard());
 	}
 
-	public Developer[] getDeveloperArray(int playerIndex) {
+	public Developer[] getDevelopersOnBoard(int playerIndex) {
 		return playerModels[playerIndex].getDevelopersOnBoard();
 		
+	}
+
+	public int getNumDevelopersOffBoard(int playerIndex) {
+		return playerModels[playerIndex].getDevelopersOffBoard();
 	}
 	
 }

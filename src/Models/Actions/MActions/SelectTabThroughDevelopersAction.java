@@ -7,7 +7,7 @@ import Models.JavaPlayer;
 import Models.Actions.Action;
 import Models.Actions.TakeDeveloperOffBoardAction;
 
-public abstract class SelectTabThroughDevelopersAction extends MAction {
+public class SelectTabThroughDevelopersAction extends MAction {
 
 	int tabCount = 0;
 	int numOfDevelopers;
@@ -63,6 +63,20 @@ public abstract class SelectTabThroughDevelopersAction extends MAction {
 	
 	private int getYOfDeveloperAtIndexTabCount(){
 		return developersArray[tabCount].getY();
+	}
+
+
+	@Override
+	public Action pressDelete() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Action pressEnter(GameModel game) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

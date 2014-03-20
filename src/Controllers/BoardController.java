@@ -52,9 +52,11 @@ public class BoardController {
 			Stack<Integer> ys = new Stack<Integer>(); 
 			Stack<String> images = new Stack<String>(); 
 			for(Developer developer : game.getAllPlayerDevelopers()){
-				xs.push(developer.getX());
-				ys.push(developer.getY());
-				images.push(developer.getOwner().getColor());
+				if(developer != null){
+					xs.push(developer.getX());
+					ys.push(developer.getY());
+					images.push(developer.getOwner().getColor());
+				}
 			}
 			System.out.println(xs + " " + ys + " " + images);
 			
