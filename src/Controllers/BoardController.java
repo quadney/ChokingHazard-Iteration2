@@ -34,6 +34,10 @@ public class BoardController {
 		boardPanel.selectHighlightedDeveloper(imageKey, x, y);
 	}
 	
+//	public void updateSelectedTabDeveloperAction(int x, int y){
+//		boardPanel.selectHighlightedDeveloper(imageKey, x, y);
+//	}
+	
 	public void updateSelectedPathDeveloperAction(String imageKey, LinkedList<JavaCell> path){
 		Stack<Integer> x = new Stack<Integer>();
 		Stack<Integer> y = new Stack<Integer>();
@@ -72,8 +76,8 @@ public class BoardController {
 			Stack<String> images = new Stack<String>(); 
 			for(Developer developer : game.getAllPlayerDevelopers()){
 				if(developer != null){
-					xs.push(developer.getX());
-					ys.push(developer.getY());
+					xs.push(developer.getX()*50);
+					ys.push(developer.getY()*50);
 					//TODO LOD violation
 					images.push("player_" + developer.getOwner().getColor());
 				}

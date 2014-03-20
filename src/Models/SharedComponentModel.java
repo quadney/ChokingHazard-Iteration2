@@ -177,4 +177,8 @@ public class SharedComponentModel implements Serializable<SharedComponentModel> 
 		return this;
 	}
 
+	public boolean isFinalRound() {
+		return threeSpaceTiles == 0;
+	}
+
 }
