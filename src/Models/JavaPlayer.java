@@ -240,7 +240,6 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 	}
 	
 	private int getNextAvailableDeveloperSpot(){
-	
 		for(int i = 0; i < developersArray.length; i++){
 			if(developersArray[i] == null){
 				return i;

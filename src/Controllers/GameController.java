@@ -436,7 +436,7 @@ public class GameController {
 	}
 
 	public void pickUpPalaceCard() {
-		Action action = new DrawPalaceCardAction(currentGame.nextActionID(), currentGame.drawFromDeck().getTypeNumber());
+		Action action = new DrawPalaceCardAction(currentGame.nextActionID());
 		currentGame.drawFromDeck();
 	}
 
