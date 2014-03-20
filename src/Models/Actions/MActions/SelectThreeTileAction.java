@@ -49,7 +49,7 @@ public class SelectThreeTileAction extends SelectRotatableComponentAction{
 
 	@Override
 	public Action pressEnter(GameModel game) {
-		ThreeTileAction action = new ThreeTileAction(-1, x, y, rotationState);
+		ThreeTileAction action = new ThreeTileAction(game.nextActionID(), x, y, rotationState);
 		if(action.doAction(game))
 			return action; 
 		return null;

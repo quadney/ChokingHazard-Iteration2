@@ -29,7 +29,7 @@ public class GameModel implements Serializable<GameModel> {
 										// for the purposes of Replay Mode
 
 	private GameState gameState;
-	public int actionIDCounter; // Provides unique actionIDs to every action
+	private int actionIDCounter; // Provides unique actionIDs to every action
 									// created. To be incremented after each
 									// action instantiation.
 
@@ -490,5 +490,9 @@ public class GameModel implements Serializable<GameModel> {
 		for(JavaPlayer player : players)
 			list.addAll(Arrays.asList(player.getDevelopersOnBoard()));
 		return list;
+	}
+
+	public int nextActionID() {
+		return ++actionIDCounter;
 	}
 }
