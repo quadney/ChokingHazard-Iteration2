@@ -365,4 +365,13 @@ public class JavaPlayer implements Serializable<JavaPlayer> {
 		return palaceCards.size();
 	}
 
+	public boolean hasDeveloperOnXY(int x, int y) {
+		for(int i = 0; i < developersArray.length; i++){
+			if(developersArray[i] != null && developersArray[i].isOnThisXY(x,y)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

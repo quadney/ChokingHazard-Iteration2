@@ -54,4 +54,10 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectNonRotatableCompone
 		return null;
 	}
 
+	@Override
+	public MAction pressM() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

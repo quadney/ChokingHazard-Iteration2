@@ -1,10 +1,12 @@
 package Controllers;
 
+import java.util.LinkedList;
 import java.util.Stack;
 
 import Models.BoardModel;
 import Models.Developer;
 import Models.GameModel;
+import Models.JavaCell;
 import Models.Actions.Action;
 import Models.Actions.OneSpaceTileAction;
 import Models.Actions.PlaceDeveloperOnBoardAction;
@@ -28,8 +30,25 @@ public class BoardController {
 		boardPanel.moveTile(x, y, rotationState, imageKey);
 	}
 	
-	public void updateSelectedDeveloperAction(int x, int y, String imageKey){
+	public void updateSelectedHighlightDeveloperAction(int x, int y, String imageKey){
 		boardPanel.selectHighlightedDeveloper(imageKey, x, y);
+	}
+	
+	public void updateSelectedPathDeveloperAction(String imageKey, LinkedList<JavaCell> path){
+		Stack<Integer> x = new Stack<Integer>();
+		Stack<Integer> y = new Stack<Integer>();
+		
+		//draws the developer on the cell the were originally on
+		boardPanel.selectHighlightedDeveloper(imageKey, path.peekFirst().getX(), path.peekFirst().getY());
+		
+		//puts the path 
+		for(JavaCell c: path){
+			x.add(c.getX());
+			y.add(c.getY());
+		}
+		
+		//remember to flip x and y
+		boardPanel.drawDeveloperPath(y, x);
 	}
 
 	public void pressEsc() {
@@ -52,9 +71,11 @@ public class BoardController {
 			Stack<Integer> ys = new Stack<Integer>(); 
 			Stack<String> images = new Stack<String>(); 
 			for(Developer developer : game.getAllPlayerDevelopers()){
-				xs.push(developer.getX());
-				ys.push(developer.getY());
-				images.push(developer.getOwner().getColor());
+				if(developer != null){
+					xs.push(developer.getX());
+					ys.push(developer.getY());
+					images.push(developer.getOwner().getColor());
+				}
 			}
 			System.out.println(xs + " " + ys + " " + images);
 			
