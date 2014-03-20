@@ -122,6 +122,8 @@ public class GameModel implements Serializable<GameModel> {
 		for (Integer i : scores.values())
 			values.add(i);
 		Collections.sort(values);
+		
+		Collections.reverse(values);
 
 		ArrayList<ArrayList<JavaPlayer>> players = new ArrayList<ArrayList<JavaPlayer>>();
    	  

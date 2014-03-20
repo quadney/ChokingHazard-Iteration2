@@ -96,6 +96,8 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		return false;
 	}
+	
+
 
 	public boolean checkValidTilePlacement(int xC, int yC, Tile tile,
 			JavaPlayer player, JavaCell[][] miniMap) {
