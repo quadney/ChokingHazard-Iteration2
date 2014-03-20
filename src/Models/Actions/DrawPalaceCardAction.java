@@ -1,6 +1,5 @@
 package Models.Actions;
 
-import Helpers.Json;
 import Helpers.JsonObject;
 import Models.GameModel;
 
@@ -14,15 +13,6 @@ public class DrawPalaceCardAction extends Action {
 	public DrawPalaceCardAction() {
 
 	}
-
-	
-	public String serialize() {
-		return Json.jsonObject(Json.jsonElements(
-			Json.jsonPair("actionID", this.actionID + ""), 
-			Json.jsonPair("imageKey", this.imageKey),
-			Json.jsonPair("actionType", this.getClass().getSimpleName())
-		));
-	}
 	
 	@Override
 	public Action loadObject(JsonObject json) {
@@ -31,8 +21,8 @@ public class DrawPalaceCardAction extends Action {
 
 	@Override
 	public boolean redo(GameModel game) {
-		// TODO Auto-generated method stub
-		return false;
+		game.drawFromDeck();
+		return true;
 	}
 
 }

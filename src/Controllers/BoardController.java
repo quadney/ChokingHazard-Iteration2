@@ -43,13 +43,16 @@ public class BoardController {
 		Stack<Integer> x = new Stack<Integer>();
 		Stack<Integer> y = new Stack<Integer>();
 		
+		//System.out.println(path.peekFirst().getY() + " " + path.peekFirst().getX() );
+		
 		//draws the developer on the cell the were originally on
-		boardPanel.selectHighlightedDeveloper(imageKey, path.peekFirst().getX(), path.peekFirst().getY());
+		
+		//boardPanel.selectHighlightedDeveloper(imageKey, path.peekFirst().getY()*50, path.peekFirst().getX()*50);
 		
 		//puts the path 
 		for(JavaCell c: path){
-			x.add(c.getX());
-			y.add(c.getY());
+			x.add(c.getX()*50);
+			y.add(c.getY()*50);
 		}
 		
 		//remember to flip x and y
@@ -62,16 +65,16 @@ public class BoardController {
 
 	public void updateBoardPanel(Action action, GameModel game) {
 		if(action instanceof RotatableComponentAction){
-			System.out.println("in updateBoardPanel RotatableTileComponent");
+//			System.out.println("in updateBoardPanel RotatableTileComponent");
 			boardPanel.placeTile(((RotatableComponentAction)action).getY()*50, ((RotatableComponentAction)action).getX()*50, ((RotatableComponentAction)action).getRotationState(), boardModel.getElevationAtCellXY(((RotatableComponentAction)action).getX(), ((RotatableComponentAction)action).getY()), action.imageKey);
 		}
 		
 		else if(action instanceof OneSpaceTileAction){
-			System.out.println("in updateBoardPanel OneSpaceTileAction");
+//			System.out.println("in updateBoardPanel OneSpaceTileAction");
 			boardPanel.placeTile(((OneSpaceTileAction)action).getY()*50, ((OneSpaceTileAction)action).getX()*50, 0, boardModel.getElevationAtCellXY(((OneSpaceTileAction)action).getX(), ((OneSpaceTileAction)action).getY()), action.imageKey);
 		}
 		else if(action instanceof PlaceDeveloperOnBoardAction || action instanceof TakeDeveloperOffBoardAction) {
-			System.out.println("in updateBoardPanel NonRotatableTileComponent");
+//			System.out.println("in updateBoardPanel NonRotatableTileComponent");
 			Stack<Integer> xs = new Stack<Integer>();
 			Stack<Integer> ys = new Stack<Integer>(); 
 			Stack<String> images = new Stack<String>(); 
@@ -88,5 +91,13 @@ public class BoardController {
 			boardPanel.placeDeveloper(ys, xs, images);
 			//game.getCurrentPlayer().getColor(), ((NonRotatableComponentAction)action).getY()*50, ((NonRotatableComponentAction)action).getX()*50);
 		}
+	}
+
+	public void setRedraw(boolean b) {
+		this.boardPanel.replaying = !b;		
+	}
+
+	public void clearBoard() {
+		boardPanel.clearBoard();
 	}
 }

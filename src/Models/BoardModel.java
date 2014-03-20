@@ -58,7 +58,7 @@ public class BoardModel implements Serializable<BoardModel> {
 		JavaCell[][] miniMap = createTestMap(xC, yC);
 		TileType[][] tileCells = tile.getTileCells();
 
-		if (checkValidTilePlacement(xC, yC, tile, player, miniMap)) {
+		if (checkValidTilePlacement(xC, yC, tile, player, miniMap, gameDevelopers)) {
 			/*
 			 * are we going to be creating the tile here? if we are then we need
 			 * to increase cellId here.
@@ -110,6 +110,7 @@ public class BoardModel implements Serializable<BoardModel> {
 			System.out.println("CHECK FOR SURROUNDED IRRIGATION CELLS: "
 					+ checkForSurroundedIrrigationCells(xC, yC, tile,
 							gameDevelopers));
+
 
 			bodiesOfWater.clear();
 
@@ -268,11 +269,11 @@ public class BoardModel implements Serializable<BoardModel> {
 
 				if (tileCells[i][j] != null
 						&& miniMap[i][j].getElevation() >= 0) {
-					System.out.println("in the 1st if statement: " + testId);
+//					System.out.println("in the 1st if statement: " + testId);
 
 					if (testId == 0) {
 						testId = miniMap[i][j].getCellId();
-						System.out.println("The id is: " + testId);
+//						System.out.println("The id is: " + testId);
 					} else {
 						if (testId != miniMap[i][j].getCellId())
 							return true;
@@ -640,8 +641,8 @@ public class BoardModel implements Serializable<BoardModel> {
 			number = 0;
 		}
 
-		System.out.println("in checkedge the outer cell length is: "
-				+ outerCells.length);
+//		System.out.println("in checkedge the outer cell length is: "
+//				+ outerCells.length);
 
 		for (int i = 0; i < outerCells.length; i++) {
 
@@ -656,9 +657,9 @@ public class BoardModel implements Serializable<BoardModel> {
 
 		}
 
-		System.out.println("COUNT IS: " + count);
+//		System.out.println("COUNT IS: " + count);
 
-		System.out.println("count: " + count + "number" + number);
+//		System.out.println("count: " + count + "number" + number);
 
 		if (count == number) {
 			return false;
@@ -1292,5 +1293,35 @@ public class BoardModel implements Serializable<BoardModel> {
 		}
 
 		return list;
+	}
+
+	public void reset() {
+		this.map = new JavaCell[14][14];
+		this.outerCells = new JavaCell[52];
+		this.irrigationMap = new JavaCell[14][14];
+		this.path = new LinkedList<JavaCell>();
+		connectedPalaces = new ArrayList<JavaCell>();
+		visitedVillages = new ArrayList<JavaCell>();
+		bodiesOfWater = new ArrayList<ArrayList<JavaCell>>();
+		//coast = new ArrayList<JavaCell>();
+		cellId = 0;
+
+		int i = 0;
+		for (int x = 0; x < map.length; x++) {
+			for (int y = 0; y < map[0].length; y++) {
+				map[x][y] = new JavaCell(x, y, 0);
+				irrigationMap[x][y] = new JavaCell(x, y, 0);
+
+				if ((x == 0 || x == 13)) {
+					outerCells[i] = map[x][y];
+					i++;
+				}
+
+				else if ((y == 0 || y == 13) && (x != 0 && x != 13)) {
+					outerCells[i] = map[x][y];
+					i++;
+				}
+			}
+		}
 	}
 }

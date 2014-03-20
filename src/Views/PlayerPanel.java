@@ -25,6 +25,7 @@ public class PlayerPanel extends JPanel{
 	private JLabel playerName, famePoints, actionPointsLeft, developers, oneTileRice, oneTileVillage, twoTile, actionTokens;
 	private JLabel palaceCards;
 	private HashMap<String, String> imageSourceHashMap;
+	public static int TEST_FONT = 40;
 	
 	public PlayerPanel(String name, String color){
 		setLayout(new FlowLayout());
@@ -62,7 +63,7 @@ public class PlayerPanel extends JPanel{
         leftPlayerInfo.add(playerName);
         
         actionPointsLeft = new JLabel("");
-        actionPointsLeft.setFont(new Font("Lucida Grande", 0, 48)); 
+        actionPointsLeft.setFont(new Font("Lucida Grande", 0, TEST_FONT)); 
         actionPointsLeft.setHorizontalAlignment(SwingConstants.CENTER);
         actionPointsLeft.setPreferredSize(new Dimension(60, 60));
         actionPointsLeft.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));

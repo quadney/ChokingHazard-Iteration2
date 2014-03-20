@@ -10,11 +10,11 @@ import Models.Actions.MActions.SelectMoveDeveloperAroundBoardAction;
 
 // This enum declaration might need to be moved, not sure how accessible it is right now 
 // (needs to be accessible by GameModel and the Controller). #JavaTroubles
-enum GameState {
-	ReplayMode, PlanningMode, NormalMode
-}
 
 public class GameModel implements Serializable<GameModel> {
+	public enum GameState {
+		ReplayMode, PlanningMode, NormalMode
+	}
 	// VARIABLES
 	private BoardModel gameBoard;
 	private JavaPlayer[] players;
@@ -32,6 +32,7 @@ public class GameModel implements Serializable<GameModel> {
 	private int actionIDCounter; // Provides unique actionIDs to every action
 									// created. To be incremented after each
 									// action instantiation.
+	private int lastPlanningModeActionID = 0;
 
 	public GameModel(int numberPlayers, String[] playerNames,
 			String[] playerColors) {
@@ -60,6 +61,13 @@ public class GameModel implements Serializable<GameModel> {
 		this.gameState = GameState.NormalMode;
 	}
 
+	public void clearForReplay() {
+		this.indexOfCurrentPlayer = 0;
+		this.gameBoard.reset();
+		this.shared.reset();
+		for (int i = 0; i < players.length; i++)
+			players[i].reset();
+	}
 	// This method is to be used by the controller to determine which buttons
 	// are visible/enabled in the view (and other visual components). For
 	// example, if the gameState is PlanningMode, the undo button and exit
@@ -170,6 +178,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	public boolean pressLeft() {
 		if (selectedAction != null) {
+			
 			return selectedAction.pressArrow(0, -1);
 		}
 		return false;
@@ -177,6 +186,7 @@ public class GameModel implements Serializable<GameModel> {
 
 	public boolean pressUp() {
 		if (selectedAction != null) {
+			
 			return selectedAction.pressArrow(-1, 0);
 		}
 		return false;
@@ -184,8 +194,10 @@ public class GameModel implements Serializable<GameModel> {
 
 	public boolean pressRight() {
 		if (selectedAction != null) {
+			System.out.println("GMod: pressRight");
 			return selectedAction.pressArrow(0, 1);
 		}
+		System.out.println("GMod: pressRight selectedAction null");
 		return false;
 	}
 
@@ -225,6 +237,11 @@ public class GameModel implements Serializable<GameModel> {
 	}
 
 	public boolean pressM() {
+		if (selectedAction != null) {
+			MAction sAction = selectedAction.pressM(gameBoard, this.getCurrentPlayer());
+			selectedAction = sAction;
+			return true;
+		}
 		return false;
 	}
 
@@ -300,7 +317,7 @@ public class GameModel implements Serializable<GameModel> {
 		return model;
 	}
 
-	private void setGameState(GameState state) {
+	public void setGameState(GameState state) {
 		this.gameState = state;
 	}
 
@@ -407,15 +424,31 @@ public class GameModel implements Serializable<GameModel> {
 		return -1;
 	}
 
-	public PalaceCard drawFestivalCard() {
-		return shared.drawFestivalCard();
+	public void drawFestivalCard() {
+		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFestivalCard());
 	}
 
-	public PalaceCard drawFromDeck() {
-		return shared.drawFromDeck();
+	public void drawFromDeck() {
+		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFromDeck());
+	}
+
+	public Action[] getActions() {
+		return actionHistory.toArray(new Action[1]);
+	}
+
+	public Stack<Event> getActionHistory() {
+		return actionHistory;
+	}
+
+	public void setLastPlanningModeActionID() {
+		lastPlanningModeActionID  = ((Action)actionHistory.peek()).getActionID();
 	}
 
 	public void addPalaceCard(PalaceCard card) {
 		players[indexOfCurrentPlayer].addPalaceCard(card);
+}
+
+	public int getLastPlanningModeActionID() {
+		return lastPlanningModeActionID;
 	}
 }

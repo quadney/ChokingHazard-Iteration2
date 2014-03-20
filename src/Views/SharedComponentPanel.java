@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
 import Controllers.GameController;
 
@@ -49,15 +50,20 @@ public class SharedComponentPanel extends JPanel{
 				if(playMode){
 					playModeToggleButton.setText("Play Mode");
 					playMode = false;
+					gameController.startPlanningMode();
 				}
 				else{
 					playModeToggleButton.setText("Planning Mode");
 					playMode = true;
+					gameController.startPlayingMode();
+					if(!gameController.askUserIfWouldLikeToSaveChangesFromPlanningMode()) {
+						gameController.undoUntilLastPlayingMode();
+					}
 				}
 			
-				gameController.startPlanningMode();
 			}
 		});
+		playModeToggleButton.setFocusable(false);
 		buttonPanel.add(playModeToggleButton);
 		
 		replayButton = new JButton("Replay");
@@ -66,11 +72,21 @@ public class SharedComponentPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//tempoarily set the button disabled while it replays, then when finished replaying set it to enabled
-				setReplayButtonEnabled(false);
-				
-				gameController.startReplay();
+				if(gameController.askUserIfWouldLikeToEnterReplayMode()) {
+					setReplayButtonEnabled(false);
+					SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+						@Override
+						protected Void doInBackground() throws Exception {
+							gameController.startReplay();
+							setReplayButtonEnabled(true);
+							return null;
+						}
+					};
+					worker.execute();
+				}
 			}
 		});
+		replayButton.setFocusable(false);
 		buttonPanel.add(replayButton);
 		
 		threeTiles = newJLabel("", imageSourceHashMap.get("layout_threeTile")); 
@@ -108,6 +124,7 @@ public class SharedComponentPanel extends JPanel{
 				System.out.println("draw from palace deck");
 			}
 		});
+        palaceDeck.setFocusable(false);
         add(palaceDeck);
         //palaceDeck = newJLabel("", imageSourceHashMap.get("layout_palaceDeck"));
         //add(palaceDeck);
@@ -125,6 +142,7 @@ public class SharedComponentPanel extends JPanel{
 				System.out.println("draw festival card");
 			}
 		});
+        festivalCard.setFocusable(false);
         add(festivalCard);
 //        festivalCard = newJLabel(" ", imageSourceHashMap.get("layout_"+festivalCardHashKey));
 //        add(festivalCard);
