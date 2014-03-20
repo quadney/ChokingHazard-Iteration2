@@ -2,8 +2,6 @@ package Models.Actions.MActions;
 
 import Models.Developer;
 import Models.GameModel;
-import Models.JavaCell;
-import Models.JavaPlayer;
 import Models.Actions.Action;
 import Models.Actions.TakeDeveloperOffBoardAction;
 
@@ -46,11 +44,11 @@ public class SelectTabThroughDevelopersAction extends MAction {
 	
 	public Action pressDelete(GameModel game){
 		//Brett is writing the method below right now
-		if(true){//game.removeDeveloperOffBoard(this.getXOfDeveloperAtIndexTabCount(), this.getYOfDeveloperAtIndexTabCount())){
+//		if(true){//game.removeDeveloperOffBoard(this.getXOfDeveloperAtIndexTabCount(), this.getYOfDeveloperAtIndexTabCount())){
 			return new TakeDeveloperOffBoardAction(-1,this.getXOfDeveloperAtIndexTabCount(), this.getYOfDeveloperAtIndexTabCount() );//JavaCell javaCell, JavaPlayer player
-		}
-		else
-			return null;
+//		}
+//		else
+//			return null;
 	}
 	
 	public Action pressEnter(){
