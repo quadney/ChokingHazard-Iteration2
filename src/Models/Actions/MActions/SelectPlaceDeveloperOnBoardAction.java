@@ -1,6 +1,8 @@
 package Models.Actions.MActions;
 
+import Models.BoardModel;
 import Models.GameModel;
+import Models.JavaPlayer;
 import Models.Actions.Action;
 import Models.Actions.PlaceDeveloperOnBoardAction;
 
@@ -55,7 +57,7 @@ public class SelectPlaceDeveloperOnBoardAction extends SelectNonRotatableCompone
 	}
 
 	@Override
-	public MAction pressM() {
+	public MAction pressM(BoardModel board, JavaPlayer player) {
 		// TODO Auto-generated method stub
 		return null;
 	}

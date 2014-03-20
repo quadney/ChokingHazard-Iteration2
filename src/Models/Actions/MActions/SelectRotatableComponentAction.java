@@ -1,5 +1,7 @@
 package Models.Actions.MActions;
 
+import Models.BoardModel;
+import Models.JavaPlayer;
 import Models.Actions.Action;
 
 public abstract class SelectRotatableComponentAction extends MAction {
@@ -18,7 +20,7 @@ public abstract class SelectRotatableComponentAction extends MAction {
 		return null;
 	}
 	
-	public MAction pressM(){
+	public MAction pressM(BoardModel board, JavaPlayer player){
 		return null;
 	}
 

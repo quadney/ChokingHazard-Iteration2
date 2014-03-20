@@ -1,5 +1,6 @@
 package Models.Actions.MActions;
 
+import Models.BoardModel;
 import Models.Developer;
 import Models.GameModel;
 import Models.JavaCell;
@@ -45,9 +46,9 @@ public class SelectTabThroughDevelopersAction extends MAction {
 	}
 	
 	public Action pressDelete(GameModel game){
-		//Brett is writing the method below right now
-		if(true){//game.removeDeveloperOffBoard(this.getXOfDeveloperAtIndexTabCount(), this.getYOfDeveloperAtIndexTabCount())){
-			return new TakeDeveloperOffBoardAction(-1,this.getXOfDeveloperAtIndexTabCount(), this.getYOfDeveloperAtIndexTabCount() );//JavaCell javaCell, JavaPlayer player
+		TakeDeveloperOffBoardAction action = new TakeDeveloperOffBoardAction(game.nextActionID(), this.getXOfDeveloperAtIndexTabCount(), this.getYOfDeveloperAtIndexTabCount());
+		if(action.doAction(game)){
+			return action;
 		}
 		else
 			return null;
@@ -57,8 +58,8 @@ public class SelectTabThroughDevelopersAction extends MAction {
 		return null;
 	}
 	
-	public MAction pressM(){
-		return null; //new SelectMoveDeveloperAroundBoardAction(this.imageKey, this.getXOfDeveloperAtIndexTabCount(), this.getYOfDeveloperAtIndexTabCount());
+	public MAction pressM(BoardModel board, JavaPlayer player){
+		return new SelectMoveDeveloperAroundBoardAction(this.imageKey, this.getXOfDeveloperAtIndexTabCount(), this.getYOfDeveloperAtIndexTabCount(), board, player);
 	}
 	
 	private int getXOfDeveloperAtIndexTabCount(){
