@@ -416,19 +416,19 @@ public class GameModel implements Serializable<GameModel> {
 
 	public int getStartOfRoundActionID() {
 		int index = this.indexOfCurrentPlayer;
-		Action[] actions = actionHistory.toArray(new Action[1]);
+		Action[] actions = actionHistory.toArray(new Action[0]);
 		for (int x = actions.length - 1; x >= 0; --x) {
 			if (actions[x] instanceof EndTurnAction) {
 				--index;
 				if(index < 0)
-					return actions[x].getActionID();
+					return x;
 			}
 		}
-		return -1;
+		return 0;
 	}
 
 	public void drawFestivalCard() {
-		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFestivalCard());
+		players[indexOfCurrentPlayer].addPalaceCard(shared.drawFestivalCard(this.getGameState().equals(GameState.NormalMode)));
 	}
 
 	public void drawFromDeck() {
@@ -462,5 +462,6 @@ public class GameModel implements Serializable<GameModel> {
 		for(JavaPlayer player : players) {
 			player.flipAllCards();
 		}
+		shared.flipFestivalCard();
 	}
 }

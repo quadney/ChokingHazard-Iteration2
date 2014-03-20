@@ -486,6 +486,7 @@ public class GameController {
 	public void startPlayingMode() {
 		currentGame.setGameState(GameState.NormalMode);
 		currentGame.flipAllCards();
+		shared.updateSharedPanel();
 	}
 	
 	public void undo() {
@@ -500,17 +501,15 @@ public class GameController {
 
 	public void startReplay() {
 		System.out.println("START OF ROUND ACTION ID: " + currentGame.getStartOfRoundActionID());
+		Action[] actions = currentGame.getActions();
+		int startOfRoundIndex = currentGame.getStartOfRoundActionID();
+		System.out.println("START OF ROUND ACTION ID: " + currentGame.getStartOfRoundActionID());
+		System.out.println(Arrays.toString(actions));
+		System.out.println("START OF ROUND " + startOfRoundIndex);
 		currentGame.clearForReplay();
 		board.clearBoard(false);
-		Action[] actions = currentGame.getActions();
-		int startOfRoundIndex = 0;
-		for(int x = 0; x < actions.length; ++x)
-			if(actions[x].getActionID() == currentGame.getStartOfRoundActionID())
-				startOfRoundIndex = x;
-		System.out.println(Arrays.toString(actions));
-		System.out.println("START OF ROUND" + startOfRoundIndex);
-		doActions(actions, 0, startOfRoundIndex-1, false, false);
-		doActions(actions, startOfRoundIndex-1, actions.length, true, true);
+		doActions(actions, 0, startOfRoundIndex > 0 ? startOfRoundIndex-1 : 0, false, false);
+		doActions(actions, startOfRoundIndex > 0 ? startOfRoundIndex-1 : 0, actions.length, true, true);
 	}
 
 	public void undoUntilLastPlayingMode() {

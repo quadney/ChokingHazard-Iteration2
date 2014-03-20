@@ -1,7 +1,5 @@
 package Models.Actions;
 
-import java.util.LinkedList;
-
 import Helpers.JsonObject;
 import Models.GameModel;
 
