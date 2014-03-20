@@ -48,6 +48,7 @@ public class GameModel implements Serializable<GameModel> {
 		actionHistory = new Stack<Event>();
 		actionReplays = new Stack<Event>();
 		selectedAction = null;
+		this.gameState = GameState.NormalMode;
 	}
 
 	// created for loading the game
@@ -424,13 +425,15 @@ public class GameModel implements Serializable<GameModel> {
 		Stack<String> playerColors = new Stack<String>();
 		for(JavaPlayer player : players) {
 			playerNames.push(player.getName());
-			playerNames.push(player.getColor());
+			playerColors.push(player.getColor());
 		}
+		String serializedHistory = actionHistory.empty() ? "{}" : Json.serializeArray(playerNames);
+		String serializedReplays = actionReplays.empty() ? "{}" : Json.serializeArray(playerNames);
 		return Json.jsonObject(Json.jsonElements(
-			Json.serializeArray(playerNames),
-			Json.serializeArray(playerColors),
-			Json.serializeArray(actionHistory),
-			Json.serializeArray(actionReplays),
+			Json.jsonPair("playerNames", Json.serializeArray(playerNames)),
+			Json.jsonPair("playerColors", Json.serializeArray(playerColors)),
+			Json.jsonPair("actionHistory", serializedHistory),
+			Json.jsonPair("actionReplays", serializedReplays),
 			Json.jsonPair("gameState", this.gameState.toString())
 		));
 	}
