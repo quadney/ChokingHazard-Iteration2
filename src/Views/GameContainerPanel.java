@@ -5,8 +5,14 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -155,6 +161,28 @@ public class GameContainerPanel extends JPanel {
 	public static void tellPeopleTheyAintPlacedNoLandTile()
 	{
 		JOptionPane.showMessageDialog( null, "You haven't placed a land tile :(");
+	}
+	
+	public void soundTest(){
+		String src = "bin/sounds/scissors.wav";
+		Clip sound = null;
+		try {
+			
+			AudioInputStream audio = AudioSystem.getAudioInputStream(new File(src));
+			sound = AudioSystem.getClip();
+			sound.open(audio);
+			sound.loop(1);
+			sound.start();
+			
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }

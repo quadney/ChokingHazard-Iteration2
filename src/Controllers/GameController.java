@@ -310,7 +310,7 @@ public class GameController {
 		//TODO need to get the palace and palace vaule that the player wants it to be on
 		//TODO put the festival image on the palace to let the user know that there was a festival on it
 		int palaceValue = 10;
-		//TODO need to also reflect that in the board model
+		//TODO need to also reflect that in the board model ?
 		//TODO 
 		boolean fest = currentGamePanel.askUserIfWouldLikeToHoldAPalaceFestival();
 		if(fest)
@@ -318,7 +318,8 @@ public class GameController {
 	}
 	
 	private void startFestival(int palaceValue){
-		currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
+		currentGamePanel.soundTest();
+		//currentGamePanel.displayHoldFestivalFrame(this, players.getPlayerModels(), currentGame.getPlayerIndex(), shared.getCurrentFestivalCard(), palaceValue);
 	}
 	
 	public void updatePlayersAfterFestival(ArrayList<PalaceCard> cardsToDiscard){
