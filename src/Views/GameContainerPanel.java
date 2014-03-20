@@ -158,8 +158,7 @@ public class GameContainerPanel extends JPanel {
 		festivalFrame.dispose();
 	}
 	
-	public static void tellPeopleTheyAintPlacedNoLandTile()
-	{
+	public void tellPeopleTheyAintPlacedNoLandTile(){
 		JOptionPane.showMessageDialog( null, "You haven't placed a land tile :(");
 	}
 	
@@ -183,6 +182,11 @@ public class GameContainerPanel extends JPanel {
 		}
 		
 		
+	}
+
+	public void makeErrorSound() {
+		//TODO makes sound every time a player presses a button and it wasn't a valid move
+		//Called by the GameController
 	}
 
 }

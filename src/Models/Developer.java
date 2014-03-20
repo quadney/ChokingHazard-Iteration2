@@ -60,4 +60,8 @@ public class Developer implements Serializable<Developer>
 		// TODO check to make sure player is getting set
 		return this;
 	}
+
+	public boolean isOnThisXY(int x, int y) {
+		return x == this.getX() && y == this.getY();
+	}
 }

@@ -50,7 +50,6 @@ public class GameController {
 		shared = new SharedComponentController(currentGame.getShared(), this); //change this to work
 		
 		//this initializes the dealing of the palace cards
-		//the shared dealPalaceCards returns the dealt palace cards
 		//and then the player sets those dealt cards as the cards
 		players.dealPalaceCards(shared.dealPalaceCards(numPlayers));
 		players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex());
@@ -122,19 +121,27 @@ public class GameController {
 		case 8:
 			//released delete, delete a developer from the board
 			//need all the type checks and where they are to delete a developer
-//			if(currentGame.pressDelete()){
+			if(false){//currentGame.pressDelete()){
 //				board.pressDelete();
 //				players[currentGame.getPlayerIndex()].pressDelete();
-//			}
+			}
+			else{
+				currentGamePanel.makeErrorSound();
+			}
 			break;
 		case 9:
 			//released tab, tab through developers
+			if (players.getNumDevelopersOffBoard(currentGame.getPlayerIndex()) < 12) {
+				currentGame.setSelectedAction(new SelectTabThroughDevelopersAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex()), players.getDevelopersOnBoard(currentGame.getPlayerIndex())));
+			} else {
+				currentGamePanel.makeErrorSound();
+			}
 			
 			break;
 		case 10:
 			
 			//released enter, place tile/developer onto board.
-			System.out.println("(in GameController)Enter was pressed");
+			//System.out.println("(in GameController)Enter was pressed");
 			Action action = currentGame.pressEnter();
 			if(action != null){
 				System.out.println("action != null in GCtrl");
@@ -142,6 +149,9 @@ public class GameController {
 				//currentGame.doLastActionInHistory();
 				currentGame.setSelectedAction(null);
 				updateControllersWithAction(action);
+			}
+			else{
+				currentGamePanel.makeErrorSound();
 			}
 			break;	
 		case 27:
@@ -162,25 +172,42 @@ public class GameController {
 				updateBoardControllerWithSelectedAction();
 				//System.out.println("(in GameController)Space was valid and attempted to updateBoardController");
 			}
+			else{
+				currentGamePanel.makeErrorSound();
+			}
 			break;
 			
 	// using these arrow keys for movement of developers and tiles
 		case 37:
-			if(currentGame.pressLeft())
+			if(currentGame.pressLeft()){
 				updateBoardControllerWithSelectedAction();
+			}
+			else{
+				currentGamePanel.makeErrorSound();
+			}
 			break;
 		case 38:
-			if(currentGame.pressUp())
+			if(currentGame.pressUp()){
 				updateBoardControllerWithSelectedAction();
+			}
+			else{
+				currentGamePanel.makeErrorSound();
+			}
 			break;
 		case 39:
-			if(currentGame.pressRight())
+			if(currentGame.pressRight()){
 				updateBoardControllerWithSelectedAction();
+			}
+			else{
+				currentGamePanel.makeErrorSound();
+			}
 			break;
 		case 40:
 			if(currentGame.pressDown()){
-				//System.out.println("(In GCtrl) pressed down");
 				updateBoardControllerWithSelectedAction();
+			}
+			else{
+				currentGamePanel.makeErrorSound();
 			}
 			break;
 	// --------------------------------------------------------------------
@@ -191,9 +218,11 @@ public class GameController {
 			if(players.selectTwoTile(currentGame.getPlayerIndex())){
 				currentGame.setSelectedAction(new SelectTwoTileAction("twoTile"));
 					updateBoardControllerWithSelectedAction();
-				}
+			}
+			else{
+				currentGamePanel.makeErrorSound();
+			}
 			
-
 			break;
 		case 51: //released 3, select three space tile
 			//check if player has enough AP and if sharedComponent has any more 3 tiles (I could check game state but we could always change how the game state works...)
@@ -201,15 +230,20 @@ public class GameController {
 			if(players.selectThreeTile(currentGame.getPlayerIndex()) && shared.selectThreeTile()){
 				currentGame.setSelectedAction(new SelectThreeTileAction("threeTile"));
 					updateBoardControllerWithSelectedAction();
-				}
+			}
+			else{
+				currentGamePanel.makeErrorSound();
+			}
 
 			break;
 		case 68: //released D, add new developer onto board
 			//currentGame.setSelectedActionDeveloper(new MAction("")); //somehow know the developer hash with the player color
 			if(players.selectDeveloper(currentGame.getPlayerIndex())){
-				//currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("developer_" + players.getColorOfPlayer(currentGame.getPlayerIndex())));
-				currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction(players.getColorOfPlayer(currentGame.getPlayerIndex())));
+				currentGame.setSelectedAction(new SelectPlaceDeveloperOnBoardAction("player_" + players.getColorOfPlayer(currentGame.getPlayerIndex())));
 				updateBoardControllerWithSelectedAction();
+			}
+			else{
+				currentGamePanel.makeErrorSound();
 			}
 			break;
 		case 73: //released I, add new Irrigation tile
@@ -218,6 +252,16 @@ public class GameController {
 				currentGame.setSelectedAction(new SelectIrrigationTileAction("irrigationTile"));
 				updateBoardControllerWithSelectedAction();
 			}
+			else{
+				currentGamePanel.makeErrorSound();
+			}
+			break;
+		case 77:
+			if(currentGame.pressM()){
+				updateBoardControllerWithSelectedAction();
+			}
+			
+		
 			break;
 		case 80://released P, new palace tile, need to ask for value of Tile
 			
@@ -225,11 +269,12 @@ public class GameController {
 			int value = currentGamePanel.promptUserForPalaceValue();
 			
 			//check player to see if they have enough AP and check shared to see if there are enough
-			if (players.selectPalaceTile(currentGame.getPlayerIndex())
-					&& shared.selectPalaceTile(value)) {
-				currentGame.setSelectedAction(new SelectPalaceTileAction(
-						"palace" + value + "Tile", value));
+			if (players.selectPalaceTile(currentGame.getPlayerIndex()) && shared.selectPalaceTile(value)) {
+				currentGame.setSelectedAction(new SelectPalaceTileAction("palace" + value + "Tile", value));
 				updateBoardControllerWithSelectedAction();
+			}
+			else{
+				currentGamePanel.makeErrorSound();
 			}
 			break;
 		case 82:
@@ -239,7 +284,9 @@ public class GameController {
 				currentGame.setSelectedAction(new SelectRiceTileAction(
 						"riceTile"));
 				updateBoardControllerWithSelectedAction();
-
+			}
+			else{
+				currentGamePanel.makeErrorSound();
 			}
 			break;
 		case 84:
@@ -248,7 +295,11 @@ public class GameController {
 			if(players.selectActionToken(currentGame.getPlayerIndex())){
 				UseActionTokenAction actionTokenAction = new UseActionTokenAction(-1);
 				currentGame.addToActionHistory(actionTokenAction);
+				currentGame.doLastActionInHistory();
 				updateControllersWithAction(actionTokenAction);
+			}
+			else{
+				currentGamePanel.makeErrorSound();
 			}
 
 			break;
@@ -258,7 +309,9 @@ public class GameController {
 			if(players.selectVillageTile(currentGame.getPlayerIndex())){
 				currentGame.setSelectedAction(new SelectVillageTileAction("villageTile"));
 					updateBoardControllerWithSelectedAction();
-				
+			}
+			else{
+				currentGamePanel.makeErrorSound();
 			}
 			break;
 		case 88:
@@ -272,7 +325,10 @@ public class GameController {
 				players.setNoCurrentPlayerinPlayerPanels(); //need to tell the player panel of the current player to stop outlining their panel
 				players.setCurrentPlayerinPlayerPanel(currentGame.getPlayerIndex()); //need to tell the new player panel that they are the current player
 			}
-			
+			else{
+				currentGamePanel.tellPeopleTheyAintPlacedNoLandTile();
+				currentGamePanel.makeErrorSound();
+			}
 			break;		
 		}
 	}
@@ -299,9 +355,13 @@ public class GameController {
 			//System.out.println("In updateBoardControllerWithSelectedAction() in GameController where instanceof SelectNonRotatableTileAction");
 			board.updateSelectedTileAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50, currentGame.getSelectedActionImageKey(), 0);
 		}
-		else{//developer
-			//System.out.println("(In GCtrl) updating Board panel when developer action is selected");
-			board.updateSelectedDeveloperAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50,currentGame.getSelectedActionImageKey());
+		else if(currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction){//developer
+			System.out.println("(In GCtrl) updating Board panel when developer action is selected");
+			board.updateSelectedHighlightDeveloperAction(currentGame.getSelectedActionY()*50, currentGame.getSelectedActionX()*50,currentGame.getSelectedActionImageKey());
+		}
+		else if(currentGame.getSelectedAction() instanceof SelectPlaceDeveloperOnBoardAction){//developer
+			System.out.println("(In GCtrl) drawing developer path");
+			board.updateSelectedPathDeveloperAction(currentGame.getSelectedActionImageKey(), currentGame.getPath());
 		}
 	}
 	
